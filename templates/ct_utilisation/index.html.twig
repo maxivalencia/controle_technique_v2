@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Utilisation{% endblock %}
+
+{% block body %}
+    <h1>Liste Utilisation</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>libellé</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_utilisation in ct_utilisations %}
+            <tr>
+                <td>{{ ct_utilisation.id }}</td>
+                <td>{{ ct_utilisation.utLibelle }}</td>
+                <td>
+                    <a href="{{ path('app_ct_utilisation_show', {'id': ct_utilisation.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_utilisation_edit', {'id': ct_utilisation.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_utilisations) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_utilisation_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

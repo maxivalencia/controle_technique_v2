@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Motif{% endblock %}
+
+{% block body %}
+    <h1>Liste Motif</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>libellé</th>
+                <th>est-calculable</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_motif in ct_motifs %}
+            <tr>
+                <td>{{ ct_motif.id }}</td>
+                <td>{{ ct_motif.mtfLibelle }}</td>
+                <td>{{ ct_motif.mtfIsCalculable ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_ct_motif_show', {'id': ct_motif.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_motif_edit', {'id': ct_motif.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_motifs) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_motif_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

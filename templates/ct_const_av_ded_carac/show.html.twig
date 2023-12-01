@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Caractéristique Constatation{% endblock %}
+
+{% block body %}
+    <h1>Caractéristique Constatation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_const_av_ded_carac.id }}</td>
+            </tr>
+            <tr>
+                <th>cylindre</th>
+                <td>{{ ct_const_av_ded_carac.cadCylindre }}</td>
+            </tr>
+            <tr>
+                <th>puissance</th>
+                <td>{{ ct_const_av_ded_carac.cadPuissance }}</td>
+            </tr>
+            <tr>
+                <th>poids à vide</th>
+                <td>{{ ct_const_av_ded_carac.cadPoidsVide }}</td>
+            </tr>
+            <tr>
+                <th>charge utile</th>
+                <td>{{ ct_const_av_ded_carac.cadChargeUtile }}</td>
+            </tr>
+            <tr>
+                <th>hauteur</th>
+                <td>{{ ct_const_av_ded_carac.cadHauteur }}</td>
+            </tr>
+            <tr>
+                <th>largeur</th>
+                <td>{{ ct_const_av_ded_carac.cadLargeur }}</td>
+            </tr>
+            <tr>
+                <th>longueur</th>
+                <td>{{ ct_const_av_ded_carac.cadLongueur }}</td>
+            </tr>
+            <tr>
+                <th>numéro de série du type</th>
+                <td>{{ ct_const_av_ded_carac.cadNumSerieType }}</td>
+            </tr>
+            <tr>
+                <th>numéro moteur</th>
+                <td>{{ ct_const_av_ded_carac.cadNumMoteur }}</td>
+            </tr>
+            <tr>
+                <th>type véhicule</th>
+                <td>{{ ct_const_av_ded_carac.cadTypeCar }}</td>
+            </tr>
+            <tr>
+                <th>Autre</th>
+                <td>{{ ct_const_av_ded_carac.cadPoidsMaxima }}</td>
+            </tr>
+            <tr>
+                <th>poids total à charge</th>
+                <td>{{ ct_const_av_ded_carac.cadPoidsTotalCharge }}</td>
+            </tr>
+            <tr>
+                <th>date première circulation</th>
+                <td>{{ ct_const_av_ded_carac.cadPremiereCircule }}</td>
+            </tr>
+            <tr>
+                <th>nombre assis</th>
+                <td>{{ ct_const_av_ded_carac.cadNbrAssis }}</td>
+            </tr>
+        </tbody>
+    </table>
+	
+	<table class="table" style="width:450px;">
+        <tbody>
+            <tr>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_const_av_ded_carac_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                </td>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_const_av_ded_carac_edit', {'id': ct_const_av_ded_carac.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td>
+                <td style="width:150px;">
+                    {{ include('ct_const_av_ded_carac/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

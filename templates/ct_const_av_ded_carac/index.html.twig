@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Caractéristique Constatation{% endblock %}
+
+{% block body %}
+    <h1>Liste Caractéristique Constatation</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>cylindre</th>
+                <th>puissance</th>
+                <th>poids à vide</th>
+                <th>charge utile</th>
+                <th>hauteur</th>
+                <th>largeur</th>
+                <th>longueur</th>
+                <th>num serie du type</th>
+                <th>num moteur</th>
+                <th>type carrosserie</th>
+                <th>autre</th>
+                <th>poids total à charge</th>
+                <th>premiere circulation</th>
+                <th>nbr assis</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_const_av_ded_carac in ct_const_av_ded_caracs %}
+            <tr>
+                <td>{{ ct_const_av_ded_carac.id }}</td>
+                <td>{{ ct_const_av_ded_carac.cadCylindre }}</td>
+                <td>{{ ct_const_av_ded_carac.cadPuissance }}</td>
+                <td>{{ ct_const_av_ded_carac.cadPoidsVide }}</td>
+                <td>{{ ct_const_av_ded_carac.cadChargeUtile }}</td>
+                <td>{{ ct_const_av_ded_carac.cadHauteur }}</td>
+                <td>{{ ct_const_av_ded_carac.cadLargeur }}</td>
+                <td>{{ ct_const_av_ded_carac.cadLongueur }}</td>
+                <td>{{ ct_const_av_ded_carac.cadNumSerieType }}</td>
+                <td>{{ ct_const_av_ded_carac.cadNumMoteur }}</td>
+                <td>{{ ct_const_av_ded_carac.cadTypeCar }}</td>
+                <td>{{ ct_const_av_ded_carac.cadPoidsMaxima }}</td>
+                <td>{{ ct_const_av_ded_carac.cadPoidsTotalCharge }}</td>
+                <td>{{ ct_const_av_ded_carac.cadPremiereCircule }}</td>
+                <td>{{ ct_const_av_ded_carac.cadNbrAssis }}</td>
+                <td>
+                    <a href="{{ path('app_ct_const_av_ded_carac_show', {'id': ct_const_av_ded_carac.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_const_av_ded_carac_edit', {'id': ct_const_av_ded_carac.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="16">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_const_av_ded_caracs) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_const_av_ded_carac_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

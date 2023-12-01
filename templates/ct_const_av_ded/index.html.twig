@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Constatation{% endblock %}
+
+{% block body %}
+    <h1>Liste Constatation</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>provenance</th>
+                <th>divers</th>
+                <th>nom propriétaire</th>
+                <th>adresse propriétaire</th>
+                <th>état</th>
+                <th>sécurité personne</th>
+                <th>sécurité marchandise</th>
+                <th>protec_env</th>
+                <th>numero</th>
+                <th>immatriculation</th>
+                <th>date embarquement</th>
+                <th>lieu embarquement</th>
+                <th>created</th>
+                <th>observation</th>
+                <th>conforme</th>
+                <th>est-active</th>
+                <th>généré</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_const_av_ded in ct_const_av_deds %}
+            <tr>
+                <td>{{ ct_const_av_ded.id }}</td>
+                <td>{{ ct_const_av_ded.cadProvenance }}</td>
+                <td>{{ ct_const_av_ded.cadDivers }}</td>
+                <td>{{ ct_const_av_ded.cadProprietaireNom }}</td>
+                <td>{{ ct_const_av_ded.cadProprietaireAdresse }}</td>
+                <td>{{ ct_const_av_ded.cadBonEtat ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_const_av_ded.cadSecPers ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_const_av_ded.cadSecMarch ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_const_av_ded.cadProtecEnv ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_const_av_ded.cadNumero }}</td>
+                <td>{{ ct_const_av_ded.cadImmatriculation }}</td>
+                <td>{{ ct_const_av_ded.cadDateEmbarquement ? ct_const_av_ded.cadDateEmbarquement|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_const_av_ded.cadLieuEmbarquement }}</td>
+                <td>{{ ct_const_av_ded.cadCreated ? ct_const_av_ded.cadCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_const_av_ded.cadObservation }}</td>
+                <td>{{ ct_const_av_ded.cadConforme ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_const_av_ded.cadIsActive ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_const_av_ded.cadGenere }}</td>
+                <td>
+                    <a href="{{ path('app_ct_const_av_ded_show', {'id': ct_const_av_ded.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_const_av_ded_edit', {'id': ct_const_av_ded.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="19">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_const_av_deds) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_const_av_ded_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

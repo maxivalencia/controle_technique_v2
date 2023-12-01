@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Genre{% endblock %}
+
+{% block body %}
+    <h1>Liste Genre</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>libellé</th>
+                <th>code</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_genre in ct_genres %}
+            <tr>
+                <td>{{ ct_genre.id }}</td>
+                <td>{{ ct_genre.grLibelle }}</td>
+                <td>{{ ct_genre.grCode }}</td>
+                <td>
+                    <a href="{{ path('app_ct_genre_show', {'id': ct_genre.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_genre_edit', {'id': ct_genre.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_genres) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_genre_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

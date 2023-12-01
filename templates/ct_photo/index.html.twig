@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Photo{% endblock %}
+
+{% block body %}
+    <h1>Liste Photo</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>controle_id</th>
+                <th>nom</th>
+                <th>dossier</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_photo in ct_photos %}
+            <tr>
+                <td>{{ ct_photo.id }}</td>
+                <td>{{ ct_photo.ctControleId }}</td>
+                <td>{{ ct_photo.phtNom }}</td>
+                <td>{{ ct_photo.phtDossier }}</td>
+                <td>
+                    <a href="{{ path('app_ct_photo_show', {'id': ct_photo.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_photo_edit', {'id': ct_photo.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_photos) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_photo_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste User{% endblock %}
+
+{% block body %}
+    <h1>Liste User</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom d'utilisateur</th>
+                <th>Rôles</th>
+                <th>Mot de passe</th>
+                <th>Active</th>
+                <th>dernière connexion</th>
+                <th>mail</th>
+                <th>nom</th>
+                <th>adresse</th>
+                <th>created_at</th>
+                <th>updated_at</th>
+                <th>téléphone</th>
+                <th>nbr connexion</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_user in ct_users %}
+            <tr>
+                <td>{{ ct_user.id }}</td>
+                <td>{{ ct_user.username }}</td>
+                <td>{{ ct_user.roles ? ct_user.roles|json_encode : '' }}</td>
+                <td>{{ ct_user.password }}</td>
+                <td>{{ ct_user.usrEnable ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_user.usrLastLogin ? ct_user.usrLastLogin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_user.usrMail }}</td>
+                <td>{{ ct_user.usrNom }}</td>
+                <td>{{ ct_user.usrAdresse }}</td>
+                <td>{{ ct_user.usrCreatedAt ? ct_user.usrCreatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_user.usrUpdatedAt ? ct_user.usrUpdatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_user.usrTelephone }}</td>
+                <td>{{ ct_user.usrNbrConnexion }}</td>
+                <td>
+                    <a href="{{ path('app_ct_user_show', {'id': ct_user.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_user_edit', {'id': ct_user.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="14">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_users) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_user_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

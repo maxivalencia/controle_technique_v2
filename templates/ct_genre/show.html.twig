@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Genre{% endblock %}
+
+{% block body %}
+    <h1>Genre</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_genre.id }}</td>
+            </tr>
+            <tr>
+                <th>libellé</th>
+                <td>{{ ct_genre.grLibelle }}</td>
+            </tr>
+            <tr>
+                <th>code</th>
+                <td>{{ ct_genre.grCode }}</td>
+            </tr>
+        </tbody>
+    </table>
+	
+	<table class="table" style="width:450px;">
+        <tbody>
+            <tr>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_genre_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                </td>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_genre_edit', {'id': ct_genre.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td>
+                <td style="width:150px;">
+                    {{ include('ct_genre/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

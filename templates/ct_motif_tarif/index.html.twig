@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Tarif Motif{% endblock %}
+
+{% block body %}
+    <h1>Liste Tarif Motif</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>prix</th>
+                <th>date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_motif_tarif in ct_motif_tarifs %}
+            <tr>
+                <td>{{ ct_motif_tarif.id }}</td>
+                <td>{{ ct_motif_tarif.mtfTrfPrix }}</td>
+                <td>{{ ct_motif_tarif.mtfTrfDate ? ct_motif_tarif.mtfTrfDate|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_ct_motif_tarif_show', {'id': ct_motif_tarif.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_motif_tarif_edit', {'id': ct_motif_tarif.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_motif_tarifs) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_motif_tarif_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

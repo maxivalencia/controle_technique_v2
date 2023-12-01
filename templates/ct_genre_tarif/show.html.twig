@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tarif Genre{% endblock %}
+
+{% block body %}
+    <h1>Tarif Genre</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_genre_tarif.id }}</td>
+            </tr>
+            <tr>
+                <th>prix</th>
+                <td>{{ ct_genre_tarif.grtPrix }}</td>
+            </tr>
+            <tr>
+                <th>année</th>
+                <td>{{ ct_genre_tarif.grtAnnee ? ct_genre_tarif.grtAnnee|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+	
+	<table class="table" style="width:450px;">
+        <tbody>
+            <tr>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_genre_tarif_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                </td>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_genre_tarif_edit', {'id': ct_genre_tarif.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td>
+                <td style="width:150px;">
+                    {{ include('ct_genre_tarif/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

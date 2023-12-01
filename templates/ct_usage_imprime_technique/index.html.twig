@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Utilisation Imprimé Technique{% endblock %}
+
+{% block body %}
+    <h1>Liste Utilisation Imprimé Technique</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>libellé</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_usage_imprime_technique in ct_usage_imprime_techniques %}
+            <tr>
+                <td>{{ ct_usage_imprime_technique.id }}</td>
+                <td>{{ ct_usage_imprime_technique.uitLibelle }}</td>
+                <td>
+                    <a href="{{ path('app_ct_usage_imprime_technique_show', {'id': ct_usage_imprime_technique.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_usage_imprime_technique_edit', {'id': ct_usage_imprime_technique.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_usage_imprime_techniques) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_usage_imprime_technique_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

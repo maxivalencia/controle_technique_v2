@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Procès-Verbal{% endblock %}
+
+{% block body %}
+    <h1>Liste Procès-Verbal</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>type</th>
+                <th>tarif</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_proces_verbal in ct_proces_verbals %}
+            <tr>
+                <td>{{ ct_proces_verbal.id }}</td>
+                <td>{{ ct_proces_verbal.pvType }}</td>
+                <td>{{ ct_proces_verbal.pvTarif }}</td>
+                <td>
+                    <a href="{{ path('app_ct_proces_verbal_show', {'id': ct_proces_verbal.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_proces_verbal_edit', {'id': ct_proces_verbal.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_proces_verbals) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_proces_verbal_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Imprimé Technique Utilisé{% endblock %}
+
+{% block body %}
+    <h1>Imprimé Technique Utilisé</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_imprime_tech_use.id }}</td>
+            </tr>
+            <tr>
+                <th>controle_id</th>
+                <td>{{ ct_imprime_tech_use.ctControleId }}</td>
+            </tr>
+            <tr>
+                <th>numéro</th>
+                <td>{{ ct_imprime_tech_use.ituNumero }}</td>
+            </tr>
+            <tr>
+                <th>Utilisé</th>
+                <td>{{ ct_imprime_tech_use.ituUsed ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Actived_at</th>
+                <td>{{ ct_imprime_tech_use.activedAt ? ct_imprime_tech_use.activedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ ct_imprime_tech_use.createdAt ? ct_imprime_tech_use.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ ct_imprime_tech_use.updatedAt ? ct_imprime_tech_use.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>observation</th>
+                <td>{{ ct_imprime_tech_use.ituObservation }}</td>
+            </tr>
+            <tr>
+                <th>est-visible</th>
+                <td>{{ ct_imprime_tech_use.ituIsVisible ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+	
+	<table class="table" style="width:450px;">
+        <tbody>
+            <tr>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_imprime_tech_use_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                </td>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_imprime_tech_use_edit', {'id': ct_imprime_tech_use.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td>
+                <td style="width:150px;">
+                    {{ include('ct_imprime_tech_use/_delete_form.html.twig') }} 
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

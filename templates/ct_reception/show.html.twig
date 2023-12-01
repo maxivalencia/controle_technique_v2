@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reception{% endblock %}
+
+{% block body %}
+    <h1>Reception</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_reception.id }}</td>
+            </tr>
+            <tr>
+                <th>mise en service</th>
+                <td>{{ ct_reception.rcpMiseService ? ct_reception.rcpMiseService|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>immatriculation</th>
+                <td>{{ ct_reception.rcpImmatriculation }}</td>
+            </tr>
+            <tr>
+                <th>propriétaire</th>
+                <td>{{ ct_reception.rcpProprietaire }}</td>
+            </tr>
+            <tr>
+                <th>profession</th>
+                <td>{{ ct_reception.rcpProfession }}</td>
+            </tr>
+            <tr>
+                <th>adresse</th>
+                <td>{{ ct_reception.rcpAdresse }}</td>
+            </tr>
+            <tr>
+                <th>nombre assis</th>
+                <td>{{ ct_reception.rcpNbrAssis }}</td>
+            </tr>
+            <tr>
+                <th>nombre debout</th>
+                <td>{{ ct_reception.rcpNgrDebout }}</td>
+            </tr>
+            <tr>
+                <th>numéro pv</th>
+                <td>{{ ct_reception.rcpNumPv }}</td>
+            </tr>
+            <tr>
+                <th>numéro groupe</th>
+                <td>{{ ct_reception.rcpNumGroup }}</td>
+            </tr>
+            <tr>
+                <th>created</th>
+                <td>{{ ct_reception.rcpCreated ? ct_reception.rcpCreated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>est-active</th>
+                <td>{{ ct_reception.rcpIsActive ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>généré</th>
+                <td>{{ ct_reception.rcpGenere }}</td>
+            </tr>
+            <tr>
+                <th>observation</th>
+                <td>{{ ct_reception.rcpObservation }}</td>
+            </tr>
+        </tbody>
+    </table>
+	
+	<table class="table" style="width:450px;">
+        <tbody>
+            <tr>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_reception_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                </td>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_reception_edit', {'id': ct_reception.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td>
+                <td style="width:150px;">
+                    {{ include('ct_reception/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

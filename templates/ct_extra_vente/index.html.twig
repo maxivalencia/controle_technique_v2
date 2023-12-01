@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Extra Vente{% endblock %}
+
+{% block body %}
+    <h1>Liste Extra Vente</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>created_at</th>
+                <th>est-active</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_extra_vente in ct_extra_ventes %}
+            <tr>
+                <td>{{ ct_extra_vente.id }}</td>
+                <td>{{ ct_extra_vente.exvCreatedAt ? ct_extra_vente.exvCreatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_extra_vente.exvIsActive ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_ct_extra_vente_show', {'id': ct_extra_vente.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_extra_vente_edit', {'id': ct_extra_vente.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_extra_ventes) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_extra_vente_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

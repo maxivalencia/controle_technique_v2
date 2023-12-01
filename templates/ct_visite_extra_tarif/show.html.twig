@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tarif Visite Extra{% endblock %}
+
+{% block body %}
+    <h1>Tarif Visite Extra</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_visite_extra_tarif.id }}</td>
+            </tr>
+            <tr>
+                <th>année</th>
+                <td>{{ ct_visite_extra_tarif.vetAnnee }}</td>
+            </tr>
+            <tr>
+                <th>prix</th>
+                <td>{{ ct_visite_extra_tarif.vetPrix }}</td>
+            </tr>
+        </tbody>
+    </table>
+	
+	<table class="table" style="width:450px;">
+        <tbody>
+            <tr>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_visite_extra_tarif_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                </td>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_visite_extra_tarif_edit', {'id': ct_visite_extra_tarif.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td>
+                <td style="width:150px;">
+                    {{ include('ct_visite_extra_tarif/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

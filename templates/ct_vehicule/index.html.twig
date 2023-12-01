@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Véhicule{% endblock %}
+
+{% block body %}
+    <h1>Liste Véhicule</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>cylindre</th>
+                <th>puissance</th>
+                <th>poids à vide</th>
+                <th>charge utile</th>
+                <th>hauteur</th>
+                <th>largeur</th>
+                <th>longueur</th>
+                <th>num de série du type</th>
+                <th>num moteur</th>
+                <th>created</th>
+                <th>provenance</th>
+                <th>type</th>
+                <th>poids total à charge</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_vehicule in ct_vehicules %}
+            <tr>
+                <td>{{ ct_vehicule.id }}</td>
+                <td>{{ ct_vehicule.vhcCylindre }}</td>
+                <td>{{ ct_vehicule.vhcPuissance }}</td>
+                <td>{{ ct_vehicule.vhcPoidsVide }}</td>
+                <td>{{ ct_vehicule.vhcChargeUtile }}</td>
+                <td>{{ ct_vehicule.vhcHauteur }}</td>
+                <td>{{ ct_vehicule.vhcLargeur }}</td>
+                <td>{{ ct_vehicule.vhcLongueur }}</td>
+                <td>{{ ct_vehicule.vhcNumSerie }}</td>
+                <td>{{ ct_vehicule.vhcNumMoteur }}</td>
+                <td>{{ ct_vehicule.vhcCreated ? ct_vehicule.vhcCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_vehicule.vhcProvenance }}</td>
+                <td>{{ ct_vehicule.vhcType }}</td>
+                <td>{{ ct_vehicule.vhcPoidsTotalCharge }}</td>
+                <td>
+                    <a href="{{ path('app_ct_vehicule_show', {'id': ct_vehicule.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_vehicule_edit', {'id': ct_vehicule.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_vehicules) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_vehicule_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

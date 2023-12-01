@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Photo{% endblock %}
+
+{% block body %}
+    <h1>Photo</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_photo.id }}</td>
+            </tr>
+            <tr>
+                <th>controle_id</th>
+                <td>{{ ct_photo.ctControleId }}</td>
+            </tr>
+            <tr>
+                <th>nom</th>
+                <td>{{ ct_photo.phtNom }}</td>
+            </tr>
+            <tr>
+                <th>dossier</th>
+                <td>{{ ct_photo.phtDossier }}</td>
+            </tr>
+        </tbody>
+    </table>
+	
+	<table class="table" style="width:450px;">
+        <tbody>
+            <tr>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_photo_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                </td>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_photo_edit', {'id': ct_photo.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td>
+                <td style="width:150px;">
+                    {{ include('ct_photo/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

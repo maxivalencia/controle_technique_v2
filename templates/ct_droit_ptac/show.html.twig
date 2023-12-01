@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Droit PTAC{% endblock %}
+
+{% block body %}
+    <h1>Droit PTAC</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_droit_p_t_a_c.id }}</td>
+            </tr>
+            <tr>
+                <th>prix minimum</th>
+                <td>{{ ct_droit_p_t_a_c.dpPrixMin }}</td>
+            </tr>
+            <tr>
+                <th>prix maximum</th>
+                <td>{{ ct_droit_p_t_a_c.dpPrixMax }}</td>
+            </tr>
+            <tr>
+                <th>droit</th>
+                <td>{{ ct_droit_p_t_a_c.dpDroit }}</td>
+            </tr>
+        </tbody>
+    </table>
+	
+	<table class="table" style="width:450px;">
+        <tbody>
+            <tr>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_droit_p_t_a_c_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                </td>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_droit_p_t_a_c_edit', {'id': ct_droit_p_t_a_c.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td>
+                <td style="width:150px;">
+                    {{ include('ct_droit_ptac/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}utilisateur{% endblock %}
+
+{% block body %}
+    <h1>Utilisateur</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_user.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom d'utilisateur</th>
+                <td>{{ ct_user.username }}</td>
+            </tr>
+            <tr>
+                <th>Rôles</th>
+                <td>{{ ct_user.roles ? ct_user.roles|json_encode : '' }}</td>
+            </tr>
+            <tr>
+                <th>Mot de passe</th>
+                <td>{{ ct_user.password }}</td>
+            </tr>
+            <tr>
+                <th>est-active</th>
+                <td>{{ ct_user.usrEnable ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Dernière connexion</th>
+                <td>{{ ct_user.usrLastLogin ? ct_user.usrLastLogin|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>mail</th>
+                <td>{{ ct_user.usrMail }}</td>
+            </tr>
+            <tr>
+                <th>nom</th>
+                <td>{{ ct_user.usrNom }}</td>
+            </tr>
+            <tr>
+                <th>adresse</th>
+                <td>{{ ct_user.usrAdresse }}</td>
+            </tr>
+            <tr>
+                <th>created_at</th>
+                <td>{{ ct_user.usrCreatedAt ? ct_user.usrCreatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>updated_at</th>
+                <td>{{ ct_user.usrUpdatedAt ? ct_user.usrUpdatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>téléphone</th>
+                <td>{{ ct_user.usrTelephone }}</td>
+            </tr>
+            <tr>
+                <th>nombre connexion</th>
+                <td>{{ ct_user.usrNbrConnexion }}</td>
+            </tr>
+        </tbody>
+    </table>
+	
+	<table class="table" style="width:450px;">
+        <tbody>
+            <tr>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_user_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                </td>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_user_edit', {'id': ct_user.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td>
+                <td style="width:150px;">
+                    {{ include('ct_user/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

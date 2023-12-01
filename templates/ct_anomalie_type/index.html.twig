@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Type Anomalie{% endblock %}
+
+{% block body %}
+    <h1>Liste Type Anomalie</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>libellé</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_anomalie_type in ct_anomalie_types %}
+            <tr>
+                <td>{{ ct_anomalie_type.id }}</td>
+                <td>{{ ct_anomalie_type.atpLibelle }}</td>
+                <td>
+                    <a href="{{ path('app_ct_anomalie_type_show', {'id': ct_anomalie_type.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_anomalie_type_edit', {'id': ct_anomalie_type.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_anomalie_types) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_anomalie_type_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

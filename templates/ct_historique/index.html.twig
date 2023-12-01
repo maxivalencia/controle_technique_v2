@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Historique{% endblock %}
+
+{% block body %}
+    <h1>Liste Historique</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>description</th>
+                <th>created_at</th>
+                <th>est view</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_historique in ct_historiques %}
+            <tr>
+                <td>{{ ct_historique.id }}</td>
+                <td>{{ ct_historique.hstDescription }}</td>
+                <td>{{ ct_historique.hstDateCreatedAt ? ct_historique.hstDateCreatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_historique.hstIsView }}</td>
+                <td>
+                    <a href="{{ path('app_ct_historique_show', {'id': ct_historique.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_historique_edit', {'id': ct_historique.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_historiques) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_historique_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

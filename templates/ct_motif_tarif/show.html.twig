@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tarif Motif{% endblock %}
+
+{% block body %}
+    <h1>Tarif Motif</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_motif_tarif.id }}</td>
+            </tr>
+            <tr>
+                <th>prix</th>
+                <td>{{ ct_motif_tarif.mtfTrfPrix }}</td>
+            </tr>
+            <tr>
+                <th>date</th>
+                <td>{{ ct_motif_tarif.mtfTrfDate ? ct_motif_tarif.mtfTrfDate|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+	<table class="table" style="width:450px;">
+        <tbody>
+            <tr>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_motif_tarif_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                </td>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_motif_tarif_edit', {'id': ct_motif_tarif.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td>
+                <td style="width:150px;">
+                    {{ include('ct_motif_tarif/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

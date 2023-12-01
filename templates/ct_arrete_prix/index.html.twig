@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Arrêté Prix{% endblock %}
+
+{% block body %}
+    <h1>Liste Arrêté Prix</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>numéro</th>
+                <th>date</th>
+                <th>date application</th>
+                <th>created_at</th>
+                <th>updated_at</th>
+                <th>observation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_arrete_prix in ct_arrete_prixes %}
+            <tr>
+                <td>{{ ct_arrete_prix.id }}</td>
+                <td>{{ ct_arrete_prix.artNumero }}</td>
+                <td>{{ ct_arrete_prix.artDate ? ct_arrete_prix.artDate|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_arrete_prix.artDateApplication ? ct_arrete_prix.artDateApplication|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_arrete_prix.artCreatedAt ? ct_arrete_prix.artCreatedAt|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_arrete_prix.artUpdatedAt ? ct_arrete_prix.artUpdatedAt|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_arrete_prix.artObservation }}</td>
+                <td>
+                    <a href="{{ path('app_ct_arrete_prix_show', {'id': ct_arrete_prix.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_arrete_prix_edit', {'id': ct_arrete_prix.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_arrete_prixes) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_arrete_prix_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

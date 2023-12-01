@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Tarif Visite Extra{% endblock %}
+
+{% block body %}
+    <h1>Liste Tarif Visite Extra</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>année</th>
+                <th>prix</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_visite_extra_tarif in ct_visite_extra_tarifs %}
+            <tr>
+                <td>{{ ct_visite_extra_tarif.id }}</td>
+                <td>{{ ct_visite_extra_tarif.vetAnnee }}</td>
+                <td>{{ ct_visite_extra_tarif.vetPrix }}</td>
+                <td>
+                    <a href="{{ path('app_ct_visite_extra_tarif_show', {'id': ct_visite_extra_tarif.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_visite_extra_tarif_edit', {'id': ct_visite_extra_tarif.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_visite_extra_tarifs) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_visite_extra_tarif_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

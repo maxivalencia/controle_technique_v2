@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Réception{% endblock %}
+
+{% block body %}
+    <h1>Liste Réception</h1>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>mise service</th>
+                <th>immatriculation</th>
+                <th>propriétaire</th>
+                <th>profession</th>
+                <th>adresse</th>
+                <th>nombre assis</th>
+                <th>nombre debout</th>
+                <th>numéro pv</th>
+                <th>numéro groupe</th>
+                <th>created</th>
+                <th>est active</th>
+                <th>généré</th>
+                <th>observation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_reception in ct_receptions %}
+            <tr>
+                <td>{{ ct_reception.id }}</td>
+                <td>{{ ct_reception.rcpMiseService ? ct_reception.rcpMiseService|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_reception.rcpImmatriculation }}</td>
+                <td>{{ ct_reception.rcpProprietaire }}</td>
+                <td>{{ ct_reception.rcpProfession }}</td>
+                <td>{{ ct_reception.rcpAdresse }}</td>
+                <td>{{ ct_reception.rcpNbrAssis }}</td>
+                <td>{{ ct_reception.rcpNgrDebout }}</td>
+                <td>{{ ct_reception.rcpNumPv }}</td>
+                <td>{{ ct_reception.rcpNumGroup }}</td>
+                <td>{{ ct_reception.rcpCreated ? ct_reception.rcpCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_reception.rcpIsActive ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_reception.rcpGenere }}</td>
+                <td>{{ ct_reception.rcpObservation }}</td>
+                <td>
+                    <a href="{{ path('app_ct_reception_show', {'id': ct_reception.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_reception_edit', {'id': ct_reception.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="15">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <div class="navigation">
+        {{ knp_pagination_render(ct_receptions) }}
+    </div> #}
+
+    <a href="{{ path('app_ct_reception_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout Véhicule{% endblock %}
+
+{% block body %}
+    <h1>Ajout Véhicule</h1>
+
+    {{ include('ct_vehicule/_form.html.twig') }}
+            </td>
+            <td style="width:150px;">
+    <a href="{{ path('app_ct_vehicule_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
