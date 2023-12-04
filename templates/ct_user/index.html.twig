@@ -29,7 +29,8 @@
             <tr>
                 <td>{{ ct_user.id }}</td>
                 <td>{{ ct_user.username }}</td>
-                <td>{{ ct_user.roles ? ct_user.roles|json_encode : '' }}</td>
+                <td>{{ ct_user.ctroleid }}</td>
+                {# <td>{{ ct_user.roles ? ct_user.roles|json_encode : '' }}</td> #}
                 <td>{{ ct_user.password }}</td>
                 <td>{{ ct_user.usrEnable ? 'Yes' : 'No' }}</td>
                 <td>{{ ct_user.usrLastLogin ? ct_user.usrLastLogin|date('Y-m-d H:i:s') : '' }}</td>

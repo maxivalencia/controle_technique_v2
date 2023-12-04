@@ -39,10 +39,13 @@ class CtUserType extends AbstractType
             ->add('username', null, [
                 'label' => 'Nom d\'utilisateur',
             ])
-            /* ->add('rolesimple', ChoiceType::class, [
+            /* ->add('rolesimple', null, [
                 'label' => 'Rôles',
                 'choices' => $roles,
             ]) */
+            ->add('ct_role_id', null, [
+                'label' => 'Rôles',
+            ])
             ->add('password', RepeatedType::class, [
                 'label' => 'Mot de passe',
                 'type' => PasswordType::class,

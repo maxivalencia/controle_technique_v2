@@ -142,6 +142,11 @@ class CtUser implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $usr_nbr_connexion;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CtRole::class, inversedBy="ctUsers")
+     */
+    private $ct_role_id;
+
     public function __construct()
     {
         $this->ctArretePrixes = new ArrayCollection();
@@ -698,5 +703,17 @@ class CtUser implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->getUsrNom();
+    }
+
+    public function getCtRoleId(): ?CtRole
+    {
+        return $this->ct_role_id;
+    }
+
+    public function setCtRoleId(?CtRole $ct_role_id): self
+    {
+        $this->ct_role_id = $ct_role_id;
+
+        return $this;
     }
 }
