@@ -26,7 +26,7 @@
                         <td>{{ ct_type_visite.tpvLibelle }}</td>
                         <td>
                             <a href="{{ path('app_ct_app_visite_voir_type', {'id': ct_type_visite.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
-                            <a href="{{ path('app_ct_type_visite_edit', {'id': ct_type_visite.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            <a href="{{ path('app_ct_app_visite_edit_type', {'id': ct_type_visite.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
                         </td>
                     </tr>
                 {% else %}

@@ -26,7 +26,7 @@ class CtAppVisiteController extends AbstractController
     }
     
     /**
-     * @Route("/liste_type", name="app_ct_app_visite_liste_type")
+     * @Route("/liste_type", name="app_ct_app_visite_liste_type", methods={"GET"})
      */
     public function ListeType(CtTypeVisiteRepository $ctTypeVisiteRepository): Response
     {
@@ -37,7 +37,7 @@ class CtAppVisiteController extends AbstractController
     }
     
     /**
-     * @Route("/creer_type", name="app_ct_app_visite_creer_type")
+     * @Route("/creer_type", name="app_ct_app_visite_creer_type", methods={"GET", "POST"})
      */
     public function CreerType(Request $request, CtTypeVisiteRepository $ctTypeVisiteRepository): Response
     {
@@ -58,7 +58,7 @@ class CtAppVisiteController extends AbstractController
     }
     
     /**
-     * @Route("/voir_type/{id}", name="app_ct_app_visite_voir_type")
+     * @Route("/voir_type/{id}", name="app_ct_app_visite_voir_type", methods={"GET"})
      */
     public function VoirType(CtTypeVisite $ctTypeVisite): Response
     {
@@ -68,11 +68,11 @@ class CtAppVisiteController extends AbstractController
     }
     
     /**
-     * @Route("/edit_type/{id}", name="app_ct_app_visite_edit_type")
+     * @Route("/edit_type/{id}", name="app_ct_app_visite_edit_type", methods={"GET", "POST"})
      */
-    public function EditType(Request $request, CtTypeVisiteRepository $ctTypeVisiteRepository): Response
+    public function EditType(Request $request, CtTypeVisite $ctTypeVisite, CtTypeVisiteRepository $ctTypeVisiteRepository): Response
     {
-        $ctTypeVisite = new CtTypeVisite();
+        //$ctTypeVisite = new CtTypeVisite();
         $form = $this->createForm(CtTypeVisiteType::class, $ctTypeVisite);
         $form->handleRequest($request);
 
@@ -82,9 +82,21 @@ class CtAppVisiteController extends AbstractController
             return $this->redirectToRoute('app_ct_app_visite_liste_type', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('ct_app_visite/creer_type.html.twig', [
+        return $this->renderForm('ct_app_visite/edit_type.html.twig', [
             'ct_type_visite' => $ctTypeVisite,
             'form' => $form,
         ]);
+    }
+
+    /**
+     * @Route("//del_type/{id}", name="app_ct_app_visite_del_type", methods={"GET", "POST"})
+     */
+    public function delete(Request $request, CtTypeVisite $ctTypeVisite, CtTypeVisiteRepository $ctTypeVisiteRepository): Response
+    {
+        //if ($this->isCsrfTokenValid('delete'.$ctTypeVisite->getId(), $request->request->get('_token'))) {
+            $ctTypeVisiteRepository->remove($ctTypeVisite, true);
+        //}
+
+        return $this->redirectToRoute('app_ct_app_visite_liste_type', [], Response::HTTP_SEE_OTHER);
     }
 }
