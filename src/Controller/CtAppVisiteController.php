@@ -72,7 +72,6 @@ class CtAppVisiteController extends AbstractController
      */
     public function EditType(Request $request, CtTypeVisite $ctTypeVisite, CtTypeVisiteRepository $ctTypeVisiteRepository): Response
     {
-        //$ctTypeVisite = new CtTypeVisite();
         $form = $this->createForm(CtTypeVisiteType::class, $ctTypeVisite);
         $form->handleRequest($request);
 
@@ -89,13 +88,11 @@ class CtAppVisiteController extends AbstractController
     }
 
     /**
-     * @Route("//del_type/{id}", name="app_ct_app_visite_del_type", methods={"GET", "POST"})
+     * @Route("/del_type/{id}", name="app_ct_app_visite_del_type", methods={"GET", "POST"})
      */
     public function delete(Request $request, CtTypeVisite $ctTypeVisite, CtTypeVisiteRepository $ctTypeVisiteRepository): Response
     {
-        //if ($this->isCsrfTokenValid('delete'.$ctTypeVisite->getId(), $request->request->get('_token'))) {
-            $ctTypeVisiteRepository->remove($ctTypeVisite, true);
-        //}
+        $ctTypeVisiteRepository->remove($ctTypeVisite, true);
 
         return $this->redirectToRoute('app_ct_app_visite_liste_type', [], Response::HTTP_SEE_OTHER);
     }
