@@ -47,12 +47,12 @@ class CtMarque
 
     public function getMrqLibelle(): ?string
     {
-        return $this->mrq_libelle;
+        return strtoupper($this->mrq_libelle);
     }
 
     public function setMrqLibelle(string $mrq_libelle): self
     {
-        $this->mrq_libelle = $mrq_libelle;
+        $this->mrq_libelle = strtoupper($mrq_libelle);
 
         return $this;
     }

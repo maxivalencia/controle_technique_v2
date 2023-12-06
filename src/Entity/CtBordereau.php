@@ -127,12 +127,12 @@ class CtBordereau
 
     public function getBlNumero(): ?string
     {
-        return $this->bl_numero;
+        return strtoupper($this->bl_numero);
     }
 
     public function setBlNumero(string $bl_numero): self
     {
-        $this->bl_numero = $bl_numero;
+        $this->bl_numero = strtoupper($bl_numero);
 
         return $this;
     }
@@ -187,12 +187,12 @@ class CtBordereau
 
     public function getRefExpr(): ?string
     {
-        return $this->ref_expr;
+        return strtoupper($this->ref_expr);
     }
 
     public function setRefExpr(?string $ref_expr): self
     {
-        $this->ref_expr = $ref_expr;
+        $this->ref_expr = strtoupper($ref_expr);
 
         return $this;
     }

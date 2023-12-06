@@ -41,12 +41,12 @@ class CtHistoriqueType
 
     public function getHstLibelle(): ?string
     {
-        return $this->hst_libelle;
+        return strtoupper($this->hst_libelle);
     }
 
     public function setHstLibelle(string $hst_libelle): self
     {
-        $this->hst_libelle = $hst_libelle;
+        $this->hst_libelle = strtoupper($hst_libelle);
 
         return $this;
     }

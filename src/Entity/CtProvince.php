@@ -56,24 +56,24 @@ class CtProvince
 
     public function getPrvNom(): ?string
     {
-        return $this->prv_nom;
+        return strtoupper($this->prv_nom);
     }
 
     public function setPrvNom(string $prv_nom): self
     {
-        $this->prv_nom = $prv_nom;
+        $this->prv_nom = strtoupper($prv_nom);
 
         return $this;
     }
 
     public function getPrvCode(): ?string
     {
-        return $this->prv_code;
+        return strtoupper($this->prv_code);
     }
 
     public function setPrvCode(string $prv_code): self
     {
-        $this->prv_code = $prv_code;
+        $this->prv_code = strtoupper($prv_code);
 
         return $this;
     }

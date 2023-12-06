@@ -47,12 +47,12 @@ class CtTypeVisite
 
     public function getTpvLibelle(): ?string
     {
-        return $this->tpv_libelle;
+        return strtoupper($this->tpv_libelle);
     }
 
     public function setTpvLibelle(string $tpv_libelle): self
     {
-        $this->tpv_libelle = $tpv_libelle;
+        $this->tpv_libelle = strtoupper($tpv_libelle);
 
         return $this;
     }

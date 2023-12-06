@@ -62,12 +62,12 @@ class CtUsage
 
     public function getUsgLibelle(): ?string
     {
-        return $this->usg_libelle;
+        return strtoupper($this->usg_libelle);
     }
 
     public function setUsgLibelle(string $usg_libelle): self
     {
-        $this->usg_libelle = $usg_libelle;
+        $this->usg_libelle = strtoupper($usg_libelle);
 
         return $this;
     }

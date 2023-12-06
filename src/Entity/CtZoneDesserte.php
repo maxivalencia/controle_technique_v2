@@ -41,12 +41,12 @@ class CtZoneDesserte
 
     public function getZdLibelle(): ?string
     {
-        return $this->zd_libelle;
+        return strtoupper($this->zd_libelle);
     }
 
     public function setZdLibelle(string $zd_libelle): self
     {
-        $this->zd_libelle = $zd_libelle;
+        $this->zd_libelle = strtoupper($zd_libelle);
 
         return $this;
     }

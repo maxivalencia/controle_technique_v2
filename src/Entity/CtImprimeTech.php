@@ -90,36 +90,36 @@ class CtImprimeTech
 
     public function getNomImprimeTech(): ?string
     {
-        return $this->nom_imprime_tech;
+        return strtoupper($this->nom_imprime_tech);
     }
 
     public function setNomImprimeTech(string $nom_imprime_tech): self
     {
-        $this->nom_imprime_tech = $nom_imprime_tech;
+        $this->nom_imprime_tech = strtoupper($nom_imprime_tech);
 
         return $this;
     }
 
     public function getUteImprimeTech(): ?string
     {
-        return $this->ute_imprime_tech;
+        return strtoupper($this->ute_imprime_tech);
     }
 
     public function setUteImprimeTech(string $ute_imprime_tech): self
     {
-        $this->ute_imprime_tech = $ute_imprime_tech;
+        $this->ute_imprime_tech = strtoupper($ute_imprime_tech);
 
         return $this;
     }
 
     public function getAbrevImprimeTech(): ?string
     {
-        return $this->abrev_imprime_tech;
+        return strtoupper($this->abrev_imprime_tech);
     }
 
     public function setAbrevImprimeTech(string $abrev_imprime_tech): self
     {
-        $this->abrev_imprime_tech = $abrev_imprime_tech;
+        $this->abrev_imprime_tech = strtoupper($abrev_imprime_tech);
 
         return $this;
     }

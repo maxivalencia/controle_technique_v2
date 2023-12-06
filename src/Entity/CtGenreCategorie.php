@@ -52,12 +52,12 @@ class CtGenreCategorie
 
     public function getGcLibelle(): ?string
     {
-        return $this->gc_libelle;
+        return strtoupper($this->gc_libelle);
     }
 
     public function setGcLibelle(string $gc_libelle): self
     {
-        $this->gc_libelle = $gc_libelle;
+        $this->gc_libelle = strtoupper($gc_libelle);
 
         return $this;
     }

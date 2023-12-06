@@ -53,12 +53,12 @@ class CtCarrosserie
 
     public function getCrsLibelle(): ?string
     {
-        return $this->crs_libelle;
+        return strtoupper($this->crs_libelle);
     }
 
     public function setCrsLibelle(string $crs_libelle): self
     {
-        $this->crs_libelle = $crs_libelle;
+        $this->crs_libelle = strtoupper($crs_libelle);
 
         return $this;
     }

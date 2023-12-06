@@ -235,12 +235,12 @@ class CtReception
 
     public function getRcpImmatriculation(): ?string
     {
-        return $this->rcp_immatriculation;
+        return strtoupper($this->rcp_immatriculation);
     }
 
     public function setRcpImmatriculation(?string $rcp_immatriculation): self
     {
-        $this->rcp_immatriculation = $rcp_immatriculation;
+        $this->rcp_immatriculation = strtoupper($rcp_immatriculation);
 
         return $this;
     }
@@ -307,12 +307,12 @@ class CtReception
 
     public function getRcpNumPv(): ?string
     {
-        return $this->rcp_num_pv;
+        return strtoupper($this->rcp_num_pv);
     }
 
     public function setRcpNumPv(?string $rcp_num_pv): self
     {
-        $this->rcp_num_pv = $rcp_num_pv;
+        $this->rcp_num_pv = strtoupper($rcp_num_pv);
 
         return $this;
     }
@@ -343,12 +343,12 @@ class CtReception
 
     public function getRcpNumGroup(): ?string
     {
-        return $this->rcp_num_group;
+        return strtoupper($this->rcp_num_group);
     }
 
     public function setRcpNumGroup(?string $rcp_num_group): self
     {
-        $this->rcp_num_group = $rcp_num_group;
+        $this->rcp_num_group = strtoupper($rcp_num_group);
 
         return $this;
     }

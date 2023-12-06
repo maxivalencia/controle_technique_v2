@@ -275,36 +275,36 @@ class CtConstAvDedCarac
 
     public function getCadNumSerieType(): ?string
     {
-        return $this->cad_num_serie_type;
+        return strtoupper($this->cad_num_serie_type);
     }
 
     public function setCadNumSerieType(?string $cad_num_serie_type): self
     {
-        $this->cad_num_serie_type = $cad_num_serie_type;
+        $this->cad_num_serie_type = strtoupper($cad_num_serie_type);
 
         return $this;
     }
 
     public function getCadNumMoteur(): ?string
     {
-        return $this->cad_num_moteur;
+        return strtoupper($this->cad_num_moteur);
     }
 
     public function setCadNumMoteur(?string $cad_num_moteur): self
     {
-        $this->cad_num_moteur = $cad_num_moteur;
+        $this->cad_num_moteur = strtoupper($cad_num_moteur);
 
         return $this;
     }
 
     public function getCadTypeCar(): ?string
     {
-        return $this->cad_type_car;
+        return strtoupper($this->cad_type_car);
     }
 
     public function setCadTypeCar(?string $cad_type_car): self
     {
-        $this->cad_type_car = $cad_type_car;
+        $this->cad_type_car = strtoupper($cad_type_car);
 
         return $this;
     }
@@ -335,12 +335,12 @@ class CtConstAvDedCarac
 
     public function getCadPremiereCircule(): ?string
     {
-        return $this->cad_premiere_circule;
+        return strtoupper($this->cad_premiere_circule);
     }
 
     public function setCadPremiereCircule(?string $cad_premiere_circule): self
     {
-        $this->cad_premiere_circule = $cad_premiere_circule;
+        $this->cad_premiere_circule = strtoupper($cad_premiere_circule);
 
         return $this;
     }

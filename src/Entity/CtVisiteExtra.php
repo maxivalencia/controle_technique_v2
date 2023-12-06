@@ -47,12 +47,12 @@ class CtVisiteExtra
 
     public function getVsteLibelle(): ?string
     {
-        return $this->vste_libelle;
+        return strtoupper($this->vste_libelle);
     }
 
     public function setVsteLibelle(string $vste_libelle): self
     {
-        $this->vste_libelle = $vste_libelle;
+        $this->vste_libelle = strtoupper($vste_libelle);
 
         return $this;
     }

@@ -41,12 +41,12 @@ class CtTypeDroitPTAC
 
     public function getTpDpLibelle(): ?string
     {
-        return $this->tp_dp_libelle;
+        return strtoupper($this->tp_dp_libelle);
     }
 
     public function setTpDpLibelle(string $tp_dp_libelle): self
     {
-        $this->tp_dp_libelle = $tp_dp_libelle;
+        $this->tp_dp_libelle = strtoupper($tp_dp_libelle);
 
         return $this;
     }

@@ -41,12 +41,12 @@ class CtConstAvDedType
 
     public function getCadTpLibelle(): ?string
     {
-        return $this->cad_tp_libelle;
+        return strtoupper($this->cad_tp_libelle);
     }
 
     public function setCadTpLibelle(string $cad_tp_libelle): self
     {
-        $this->cad_tp_libelle = $cad_tp_libelle;
+        $this->cad_tp_libelle = strtoupper($cad_tp_libelle);
 
         return $this;
     }

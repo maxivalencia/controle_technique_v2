@@ -69,24 +69,24 @@ class CtAnomalie
 
     public function getAnmlLibelle(): ?string
     {
-        return $this->anml_libelle;
+        return strtoupper($this->anml_libelle);
     }
 
     public function setAnmlLibelle(string $anml_libelle): self
     {
-        $this->anml_libelle = $anml_libelle;
+        $this->anml_libelle = strtoupper($anml_libelle);
 
         return $this;
     }
 
     public function getAnmlCode(): ?string
     {
-        return $this->anml_code;
+        return strtoupper($this->anml_code);
     }
 
     public function setAnmlCode(string $anml_code): self
     {
-        $this->anml_code = $anml_code;
+        $this->anml_code = strtoupper($anml_code);
 
         return $this;
     }

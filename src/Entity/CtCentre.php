@@ -133,24 +133,24 @@ class CtCentre
 
     public function getCtrNom(): ?string
     {
-        return $this->ctr_nom;
+        return strtoupper($this->ctr_nom);
     }
 
     public function setCtrNom(string $ctr_nom): self
     {
-        $this->ctr_nom = $ctr_nom;
+        $this->ctr_nom = strtoupper($ctr_nom);
 
         return $this;
     }
 
     public function getCtrCode(): ?string
     {
-        return $this->ctr_code;
+        return strtoupper($this->ctr_code);
     }
 
     public function setCtrCode(string $ctr_code): self
     {
-        $this->ctr_code = $ctr_code;
+        $this->ctr_code = strtoupper($ctr_code);
 
         return $this;
     }

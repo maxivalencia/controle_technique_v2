@@ -41,12 +41,12 @@ class CtAnomalieType
 
     public function getAtpLibelle(): ?string
     {
-        return $this->atp_libelle;
+        return strtoupper($this->atp_libelle);
     }
 
     public function setAtpLibelle(string $atp_libelle): self
     {
-        $this->atp_libelle = $atp_libelle;
+        $this->atp_libelle = strtoupper($atp_libelle);
 
         return $this;
     }

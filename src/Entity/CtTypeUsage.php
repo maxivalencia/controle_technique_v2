@@ -41,12 +41,12 @@ class CtTypeUsage
 
     public function getTpuLibelle(): ?string
     {
-        return $this->tpu_libelle;
+        return strtoupper($this->tpu_libelle);
     }
 
     public function setTpuLibelle(string $tpu_libelle): self
     {
-        $this->tpu_libelle = $tpu_libelle;
+        $this->tpu_libelle = strtoupper($tpu_libelle);
 
         return $this;
     }

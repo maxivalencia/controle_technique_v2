@@ -39,12 +39,12 @@ class CtProcesVerbal
 
     public function getPvType(): ?string
     {
-        return $this->pv_type;
+        return strtoupper($this->pv_type);
     }
 
     public function setPvType(string $pv_type): self
     {
-        $this->pv_type = $pv_type;
+        $this->pv_type = strtoupper($pv_type);
 
         return $this;
     }

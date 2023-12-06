@@ -47,12 +47,12 @@ class CtUtilisation
 
     public function getUtLibelle(): ?string
     {
-        return $this->ut_libelle;
+        return strtoupper($this->ut_libelle);
     }
 
     public function setUtLibelle(string $ut_libelle): self
     {
-        $this->ut_libelle = $ut_libelle;
+        $this->ut_libelle = strtoupper($ut_libelle);
 
         return $this;
     }

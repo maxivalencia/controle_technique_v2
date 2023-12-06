@@ -210,24 +210,24 @@ class CtVisite
 
     public function getVstNumPv(): ?string
     {
-        return $this->vst_num_pv;
+        return strtoupper($this->vst_num_pv);
     }
 
     public function setVstNumPv(?string $vst_num_pv): self
     {
-        $this->vst_num_pv = $vst_num_pv;
+        $this->vst_num_pv = strtoupper($vst_num_pv);
 
         return $this;
     }
 
     public function getVstNumFeuilleCaisse(): ?string
     {
-        return $this->vst_num_feuille_caisse;
+        return strtoupper($this->vst_num_feuille_caisse);
     }
 
     public function setVstNumFeuilleCaisse(?string $vst_num_feuille_caisse): self
     {
-        $this->vst_num_feuille_caisse = $vst_num_feuille_caisse;
+        $this->vst_num_feuille_caisse = strtoupper($vst_num_feuille_caisse);
 
         return $this;
     }
@@ -306,12 +306,12 @@ class CtVisite
 
     public function getVstDureeReparation(): ?string
     {
-        return $this->vst_duree_reparation;
+        return strtoupper($this->vst_duree_reparation);
     }
 
     public function setVstDureeReparation(?string $vst_duree_reparation): self
     {
-        $this->vst_duree_reparation = $vst_duree_reparation;
+        $this->vst_duree_reparation = strtoupper($vst_duree_reparation);
 
         return $this;
     }

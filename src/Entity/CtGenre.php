@@ -69,24 +69,24 @@ class CtGenre
 
     public function getGrLibelle(): ?string
     {
-        return $this->gr_libelle;
+        return strtoupper($this->gr_libelle);
     }
 
     public function setGrLibelle(string $gr_libelle): self
     {
-        $this->gr_libelle = $gr_libelle;
+        $this->gr_libelle = strtoupper($gr_libelle);
 
         return $this;
     }
 
     public function getGrCode(): ?string
     {
-        return $this->gr_code;
+        return strtoupper($this->gr_code);
     }
 
     public function setGrCode(string $gr_code): self
     {
-        $this->gr_code = $gr_code;
+        $this->gr_code = strtoupper($gr_code);
 
         return $this;
     }

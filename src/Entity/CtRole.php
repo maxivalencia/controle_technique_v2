@@ -41,12 +41,12 @@ class CtRole
 
     public function getRoleName(): ?string
     {
-        return $this->role_name;
+        return strtoupper($this->role_name);
     }
 
     public function setRoleName(string $role_name): self
     {
-        $this->role_name = $role_name;
+        $this->role_name = strtoupper($role_name);
 
         return $this;
     }

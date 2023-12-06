@@ -160,12 +160,12 @@ class CtConstAvDed
 
     public function getCadProvenance(): ?string
     {
-        return $this->cad_provenance;
+        return strtoupper($this->cad_provenance);
     }
 
     public function setCadProvenance(?string $cad_provenance): self
     {
-        $this->cad_provenance = $cad_provenance;
+        $this->cad_provenance = strtoupper($cad_provenance);
 
         return $this;
     }
@@ -256,24 +256,24 @@ class CtConstAvDed
 
     public function getCadNumero(): ?string
     {
-        return $this->cad_numero;
+        return strtoupper($this->cad_numero);
     }
 
     public function setCadNumero(?string $cad_numero): self
     {
-        $this->cad_numero = $cad_numero;
+        $this->cad_numero = strtoupper($cad_numero);
 
         return $this;
     }
 
     public function getCadImmatriculation(): ?string
     {
-        return $this->cad_immatriculation;
+        return strtoupper($this->cad_immatriculation);
     }
 
     public function setCadImmatriculation(?string $cad_immatriculation): self
     {
-        $this->cad_immatriculation = $cad_immatriculation;
+        $this->cad_immatriculation = strtoupper($cad_immatriculation);
 
         return $this;
     }
@@ -292,12 +292,12 @@ class CtConstAvDed
 
     public function getCadLieuEmbarquement(): ?string
     {
-        return $this->cad_lieu_embarquement;
+        return strtoupper($this->cad_lieu_embarquement);
     }
 
     public function setCadLieuEmbarquement(?string $cad_lieu_embarquement): self
     {
-        $this->cad_lieu_embarquement = $cad_lieu_embarquement;
+        $this->cad_lieu_embarquement = strtoupper($cad_lieu_embarquement);
 
         return $this;
     }

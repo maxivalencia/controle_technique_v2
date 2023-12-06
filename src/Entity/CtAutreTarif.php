@@ -81,12 +81,12 @@ class CtAutreTarif
 
     public function getAutArrete(): ?string
     {
-        return $this->aut_arrete;
+        return strtoupper($this->aut_arrete);
     }
 
     public function setAutArrete(string $aut_arrete): self
     {
-        $this->aut_arrete = $aut_arrete;
+        $this->aut_arrete = strtoupper($aut_arrete);
 
         return $this;
     }

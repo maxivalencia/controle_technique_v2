@@ -41,12 +41,12 @@ class CtTypeReception
 
     public function getTprcpLibelle(): ?string
     {
-        return $this->tprcp_libelle;
+        return strtoupper($this->tprcp_libelle);
     }
 
     public function setTprcpLibelle(string $tprcp_libelle): self
     {
-        $this->tprcp_libelle = $tprcp_libelle;
+        $this->tprcp_libelle = strtoupper($tprcp_libelle);
 
         return $this;
     }

@@ -52,12 +52,12 @@ class CtMotif
 
     public function getMtfLibelle(): ?string
     {
-        return $this->mtf_libelle;
+        return strtoupper($this->mtf_libelle);
     }
 
     public function setMtfLibelle(string $mtf_libelle): self
     {
-        $this->mtf_libelle = $mtf_libelle;
+        $this->mtf_libelle = strtoupper($mtf_libelle);
 
         return $this;
     }

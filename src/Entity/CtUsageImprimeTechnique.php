@@ -59,12 +59,12 @@ class CtUsageImprimeTechnique
 
     public function getUitLibelle(): ?string
     {
-        return $this->uit_libelle;
+        return strtoupper($this->uit_libelle);
     }
 
     public function setUitLibelle(string $uit_libelle): self
     {
-        $this->uit_libelle = $uit_libelle;
+        $this->uit_libelle = strtoupper($uit_libelle);
 
         return $this;
     }

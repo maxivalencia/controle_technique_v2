@@ -53,12 +53,12 @@ class CtSourceEnergie
 
     public function getSreLibelle(): ?string
     {
-        return $this->sre_libelle;
+        return strtoupper($this->sre_libelle);
     }
 
     public function setSreLibelle(string $sre_libelle): self
     {
-        $this->sre_libelle = $sre_libelle;
+        $this->sre_libelle = strtoupper($sre_libelle);
 
         return $this;
     }

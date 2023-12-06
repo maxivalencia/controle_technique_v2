@@ -56,12 +56,12 @@ class CtPhoto
 
     public function getPhtNom(): ?string
     {
-        return $this->pht_nom;
+        return strtoupper($this->pht_nom);
     }
 
     public function setPhtNom(?string $pht_nom): self
     {
-        $this->pht_nom = $pht_nom;
+        $this->pht_nom = strtoupper($pht_nom);
 
         return $this;
     }

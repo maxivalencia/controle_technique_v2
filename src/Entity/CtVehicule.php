@@ -225,24 +225,24 @@ class CtVehicule
 
     public function getVhcNumSerie(): ?string
     {
-        return $this->vhc_num_serie;
+        return strtoupper($this->vhc_num_serie);
     }
 
     public function setVhcNumSerie(?string $vhc_num_serie): self
     {
-        $this->vhc_num_serie = $vhc_num_serie;
+        $this->vhc_num_serie = strtoupper($vhc_num_serie);
 
         return $this;
     }
 
     public function getVhcNumMoteur(): ?string
     {
-        return $this->vhc_num_moteur;
+        return strtoupper($this->vhc_num_moteur);
     }
 
     public function setVhcNumMoteur(?string $vhc_num_moteur): self
     {
-        $this->vhc_num_moteur = $vhc_num_moteur;
+        $this->vhc_num_moteur = strtoupper($vhc_num_moteur);
 
         return $this;
     }
@@ -261,24 +261,24 @@ class CtVehicule
 
     public function getVhcProvenance(): ?string
     {
-        return $this->vhc_provenance;
+        return strtoupper($this->vhc_provenance);
     }
 
     public function setVhcProvenance(?string $vhc_provenance): self
     {
-        $this->vhc_provenance = $vhc_provenance;
+        $this->vhc_provenance = strtoupper($vhc_provenance);
 
         return $this;
     }
 
     public function getVhcType(): ?string
     {
-        return $this->vhc_type;
+        return strtoupper($this->vhc_type);
     }
 
     public function setVhcType(?string $vhc_type): self
     {
-        $this->vhc_type = $vhc_type;
+        $this->vhc_type = strtoupper($vhc_type);
 
         return $this;
     }

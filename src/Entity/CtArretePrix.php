@@ -107,12 +107,12 @@ class CtArretePrix
 
     public function getArtNumero(): ?string
     {
-        return $this->art_numero;
+        return strtoupper($this->art_numero);
     }
 
     public function setArtNumero(string $art_numero): self
     {
-        $this->art_numero = $art_numero;
+        $this->art_numero = strtoupper($art_numero);
 
         return $this;
     }

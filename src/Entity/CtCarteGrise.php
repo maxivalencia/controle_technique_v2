@@ -343,12 +343,12 @@ class CtCarteGrise
 
     public function getCgPhone(): ?string
     {
-        return $this->cg_phone;
+        return strtoupper($this->cg_phone);
     }
 
     public function setCgPhone(?string $cg_phone): self
     {
-        $this->cg_phone = $cg_phone;
+        $this->cg_phone = strtoupper($cg_phone);
 
         return $this;
     }
@@ -403,12 +403,12 @@ class CtCarteGrise
 
     public function getCgPatente(): ?string
     {
-        return $this->cg_patente;
+        return strtoupper($this->cg_patente);
     }
 
     public function setCgPatente(?string $cg_patente): self
     {
-        $this->cg_patente = $cg_patente;
+        $this->cg_patente = strtoupper($cg_patente);
 
         return $this;
     }
@@ -439,12 +439,12 @@ class CtCarteGrise
 
     public function getCgNumCarteViolette(): ?string
     {
-        return $this->cg_num_carte_violette;
+        return strtoupper($this->cg_num_carte_violette);
     }
 
     public function setCgNumCarteViolette(?string $cg_num_carte_violette): self
     {
-        $this->cg_num_carte_violette = $cg_num_carte_violette;
+        $this->cg_num_carte_violette = strtoupper($cg_num_carte_violette);
 
         return $this;
     }
@@ -463,24 +463,24 @@ class CtCarteGrise
 
     public function getCgLieuCarteViolette(): ?string
     {
-        return $this->cg_lieu_carte_violette;
+        return strtoupper($this->cg_lieu_carte_violette);
     }
 
     public function setCgLieuCarteViolette(?string $cg_lieu_carte_violette): self
     {
-        $this->cg_lieu_carte_violette = $cg_lieu_carte_violette;
+        $this->cg_lieu_carte_violette = strtoupper($cg_lieu_carte_violette);
 
         return $this;
     }
 
     public function getCgNumVignette(): ?string
     {
-        return $this->cg_num_vignette;
+        return strtoupper($this->cg_num_vignette);
     }
 
     public function setCgNumVignette(?string $cg_num_vignette): self
     {
-        $this->cg_num_vignette = $cg_num_vignette;
+        $this->cg_num_vignette = strtoupper($cg_num_vignette);
 
         return $this;
     }
@@ -499,24 +499,24 @@ class CtCarteGrise
 
     public function getCgLieuVignette(): ?string
     {
-        return $this->cg_lieu_vignette;
+        return strtoupper($this->cg_lieu_vignette);
     }
 
     public function setCgLieuVignette(?string $cg_lieu_vignette): self
     {
-        $this->cg_lieu_vignette = $cg_lieu_vignette;
+        $this->cg_lieu_vignette = strtoupper($cg_lieu_vignette);
 
         return $this;
     }
 
     public function getCgImmatriculation(): ?string
     {
-        return $this->cg_immatriculation;
+        return strtoupper($this->cg_immatriculation);
     }
 
     public function setCgImmatriculation(string $cg_immatriculation): self
     {
-        $this->cg_immatriculation = $cg_immatriculation;
+        $this->cg_immatriculation = strtoupper($cg_immatriculation);
 
         return $this;
     }
@@ -535,24 +535,24 @@ class CtCarteGrise
 
     public function getCgNomCooperative(): ?string
     {
-        return $this->cg_nom_cooperative;
+        return strtoupper($this->cg_nom_cooperative);
     }
 
     public function setCgNomCooperative(?string $cg_nom_cooperative): self
     {
-        $this->cg_nom_cooperative = $cg_nom_cooperative;
+        $this->cg_nom_cooperative = strtoupper($cg_nom_cooperative);
 
         return $this;
     }
 
     public function getCgItineraire(): ?string
     {
-        return $this->cg_itineraire;
+        return strtoupper($this->cg_itineraire);
     }
 
     public function setCgItineraire(?string $cg_itineraire): self
     {
-        $this->cg_itineraire = $cg_itineraire;
+        $this->cg_itineraire = strtoupper($cg_itineraire);
 
         return $this;
     }
@@ -571,12 +571,12 @@ class CtCarteGrise
 
     public function getCgNumIdentification(): ?string
     {
-        return $this->cg_num_identification;
+        return strtoupper($this->cg_num_identification);
     }
 
     public function setCgNumIdentification(?string $cg_num_identification): self
     {
-        $this->cg_num_identification = $cg_num_identification;
+        $this->cg_num_identification = strtoupper($cg_num_identification);
 
         return $this;
     }
@@ -661,12 +661,12 @@ class CtCarteGrise
 
     public function getCgCommune(): ?string
     {
-        return $this->cg_commune;
+        return strtoupper($this->cg_commune);
     }
 
     public function setCgCommune(?string $cg_commune): self
     {
-        $this->cg_commune = $cg_commune;
+        $this->cg_commune = strtoupper($cg_commune);
 
         return $this;
     }
