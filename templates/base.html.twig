@@ -40,7 +40,8 @@
         <link rel="stylesheet" href="/../plugins/summernote/summernote-bs4.min.css">
         <!-- style personnalisé -->
         <link rel="stylesheet" href="/../css/style.css">
-        <link rel="stylesheet" href="/../css/select2.css">
+        <link rel="stylesheet" href="/../css/select2.css">        
+        <link rel="stylesheet" href="/../css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
@@ -154,9 +155,15 @@
                                     </a>
                                     <ul class="nav nav-treeview" style="padding-left:5px;">
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">
+                                            <a href="{{ path('app_ct_app_administration_liste_verificateur') }}" class="nav-link">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>Liste</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_ct_app_administration_creer_verificateur') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Créer</p>
                                             </a>
                                         </li>
                                     </ul>
@@ -165,19 +172,65 @@
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>
-                                            Utilisateur
+                                            Secrétaire
                                             <i class="fas fa-angle-left right"></i>
                                         </p>
                                     </a>
                                     <ul class="nav nav-treeview" style="padding-left:5px;">
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">
+                                            <a href="{{ path('app_ct_app_administration_liste_secretaire') }}" class="nav-link">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>Liste</p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">
+                                            <a href="{{ path('app_ct_app_administration_creer_secretaire') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Créer</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>
+                                            Régisseur
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview" style="padding-left:5px;">
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_ct_app_administration_liste_regisseur') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Liste</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_ct_app_administration_creer_regisseur') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Créer</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>
+                                            Chef de centre
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview" style="padding-left:5px;">
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_ct_app_administration_liste_chef_de_centre') }}" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Liste</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="{{ path('app_ct_app_administration_creer_chef_de_centre') }}" class="nav-link">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>Créer</p>
                                             </a>
@@ -952,6 +1005,9 @@
         <!-- Script personnalisé-->
         <script src="/../js/script.js"></script>
         <script src="/../js/select2.js"></script>
+        <script src="/../js/up.js"></script>
+        <script src="/../js/bootstrap.min.js"></script>
+        <script src="/../js/jquery.uploadfile.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
         <script>
@@ -967,7 +1023,7 @@
             $(document).ready(function() {
                 //$("#controles_anomalies_collections").multiSelect();
                 $(".multi").select2();
-                {# $("select").select2(); #}
+                $("select").select2();
             });
         </script>
 

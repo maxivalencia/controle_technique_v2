@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste Secrétaire{% endblock %}
+{% block title %}Liste Chef de Centre{% endblock %}
 
 {% block app_ct %}
 
 <div class="box">
-    <div class="box-header">Liste Secrétaire</div>
+    <div class="box-header">Liste Chef de Centre</div>
     <div>
         <div>
-            <a href="{{ path('app_ct_app_administration_creer_secretaire') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Créer un secrétaire</a>
+            <a href="{{ path('app_ct_app_administration_creer_chef_de_centre') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Créer un chef de centre</a>
         </div>
         <div class="marge-elts">
             <table class="table liste">
@@ -43,8 +43,8 @@
                         <td>{{ ct_user.usrTelephone }}</td>
                         <td>{{ ct_user.usrNbrConnexion }}</td>
                         <td>
-                            <a href="{{ path('app_ct_app_administration_voir_secretaire', {'id': ct_user.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
-                            <a href="{{ path('app_ct_app_administration_edit_secretaire', {'id': ct_user.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            <a href="{{ path('app_ct_app_administration_voir_chef_de_centre', {'id': ct_user.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                            <a href="{{ path('app_ct_app_administration_edit_chef_de_centre', {'id': ct_user.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
                         </td>
                     </tr>
                 {% else %}
@@ -56,7 +56,7 @@
             </table>
         </div>
         <div>
-            <a href="{{ path('app_ct_app_administration_creer_secretaire') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Créer un secrétaire</a>
+            <a href="{{ path('app_ct_app_administration_creer_chef_de_centre') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Créer un chef de centre</a>
         </div>  
     </div>
 </div>

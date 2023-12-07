@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}chef de centre{% endblock %}
+
+{% block app_ct %}
+<div class="box">
+    <div class="box-header">CHEF DE CENTRE</div>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ ct_user.id }}</td>
+                </tr>
+                <tr>
+                    <th>Nom d'utilisateur</th>
+                    <td>{{ ct_user.username }}</td>
+                </tr>
+                <tr>
+                    <th>Rôles</th>
+                    <td>{{ ct_user.ctroleid }}</td>
+                </tr>
+                <tr>
+                    <th>est-active</th>
+                    <td>{{ ct_user.usrEnable ? 'Oui' : 'Non' }}</td>
+                </tr>
+                <tr>
+                    <th>Dernière connexion</th>
+                    <td>{{ ct_user.usrLastLogin ? ct_user.usrLastLogin|date('d/m/Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>mail</th>
+                    <td>{{ ct_user.usrMail }}</td>
+                </tr>
+                <tr>
+                    <th>nom</th>
+                    <td>{{ ct_user.usrNom }}</td>
+                </tr>
+                <tr>
+                    <th>adresse</th>
+                    <td>{{ ct_user.usrAdresse }}</td>
+                </tr>
+                <tr>
+                    <th>created_at</th>
+                    <td>{{ ct_user.usrCreatedAt ? ct_user.usrCreatedAt|date('d/m/Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>updated_at</th>
+                    <td>{{ ct_user.usrUpdatedAt ? ct_user.usrUpdatedAt|date('d/m/Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>téléphone</th>
+                    <td>{{ ct_user.usrTelephone }}</td>
+                </tr>
+                <tr>
+                    <th>nombre connexion</th>
+                    <td>{{ ct_user.usrNbrConnexion }}</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <table class="table" style="width:450px;">
+            <tbody>
+                <tr>
+                    <td style="width:150px;">
+                        <a href="{{ path('app_ct_app_administration_liste_chef_de_centre') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                    </td>
+                    <td style="width:150px;">
+                        <a href="{{ path('app_ct_app_administration_edit_chef_de_centre', {'id': ct_user.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                    </td>
+                    <td style="width:150px;">
+                        <a href="{{ path('app_ct_app_administration_del_chef_de_centre', {'id': ct_user.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Supprimer</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
