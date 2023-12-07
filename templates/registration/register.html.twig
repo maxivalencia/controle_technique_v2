@@ -1,19 +1,29 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_2.html.twig' %}
 
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
 
-    {{ form_errors(registrationForm) }}
+    <div class="login_center filigrane">
+        <table style="width:800px;background-color:#1E90FF;">
+            <tr style="width:800px;">
+                <td style="width:100px;height:100px;"><img src="/../image/logo_gn.png" alt="AdminLTE Logo" style="max-width: 100%"></td>
+                <td style="width:600px;text-align:center;color:white;font-size:28px;"><p>DIRECTION GENERALE DE LA SECURITE ROUTIERE</p></td>
+                <td style="width:100px;height:100px;"><img src="/../image/logo_dgsr.png" alt="AdminLTE Logo" style="max-width: 100%"></td>
+            </tr>
+        </table>
+        <h1 class="h3 mb-3 font-weight-normal" style="text-align:center">Inscription Contrôle technique V2.0</h1>
+        {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.username) }}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Password'
+            }) }}
+            <strong>{{ form_row(registrationForm.agreeTerms) }}</strong>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+            <button type="submit" class="btn btn-lg btn-primary" style="float:right">Inscrire</button>
+        {{ form_end(registrationForm) }}
+
+    </div>
 {% endblock %}
