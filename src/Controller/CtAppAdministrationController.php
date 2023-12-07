@@ -360,4 +360,76 @@ class CtAppAdministrationController extends AbstractController
 
         return $this->redirectToRoute('app_ct_user_index', [], Response::HTTP_SEE_OTHER);
     }
+    
+    /**
+     * @Route("/liste_role", name="app_ct_app_administration_liste_role", methods={"GET"})
+     */
+    public function ListeRole(CtRoleRepository $ctRoleRepository): Response
+    {
+        $liste = $ctRoleRepository->findAll();
+        return $this->render('ct_app_administration/liste_role.html.twig', [
+            'ct_roles' => $liste,
+        ]);
+    }
+    
+    /**
+     * @Route("/creer_role", name="app_ct_app_administration_creer_role", methods={"GET", "POST"})
+     */
+    public function CreerRole(Request $request, CtRoleRepository $ctRoleRepository): Response
+    {
+        $ctRole = new CtRole();
+        $form = $this->createForm(CtRoleType::class, $ctRole);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ctRoleRepository->add($ctRole, true);
+
+            return $this->redirectToRoute('app_ct_app_administration_liste_role', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('ct_app_administration/creer_role.html.twig', [
+            'ct_role' => $ctRole,
+            'form' => $form,
+        ]);
+    }
+    
+    /**
+     * @Route("/voir_role/{id}", name="app_ct_app_administration_voir_role", methods={"GET"})
+     */
+    public function VoirRole(CtRole $ctRole): Response
+    {
+        return $this->render('ct_app_administration/voir_role.html.twig', [
+            'ct_role' => $ctRole,
+        ]);
+    }
+    
+    /**
+     * @Route("/edit_role/{id}", name="app_ct_app_administration_edit_role", methods={"GET", "POST"})
+     */
+    public function EditRole(Request $request, CtRole $ctRole, CtRoleRepository $ctRoleRepository): Response
+    {
+        $form = $this->createForm(CtUserType::class, $ctRole);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ctRoleRepository->add($ctRole, true);
+
+            return $this->redirectToRoute('app_ct_app_administration_liste_role', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('ct_app_administration/edit_role.html.twig', [
+            'ct_role' => $ctRole,
+            'form' => $form,
+        ]);
+    }
+    
+    /**
+     * @Route("/del_role/{id}", name="app_ct_app_administration_del_role", methods={"GET", "POST"})
+     */
+    public function DelRole(Request $request, CtRole $ctRole, CtRoleRepository $ctRoleRepository): Response
+    {
+        $ctRoleRepository->remove($ctRole, true);
+
+        return $this->redirectToRoute('app_ct_app_administration_liste_role', [], Response::HTTP_SEE_OTHER);
+    }
 }
