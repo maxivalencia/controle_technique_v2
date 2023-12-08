@@ -96,4 +96,14 @@ class CtAppVisiteController extends AbstractController
 
         return $this->redirectToRoute('app_ct_app_visite_liste_type', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/renseignement_vehicule", name="app_ct_app_visite_renseignement_vehicule")
+     */
+    public function RenseignementVehicule(): Response
+    {
+        return $this->render('ct_app_visite/renseignement_vehicule.html.twig', [
+            'controller_name' => 'CtAppVisiteController',
+        ]);
+    }
 }

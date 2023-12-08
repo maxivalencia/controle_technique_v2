@@ -87,3 +87,17 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+.entete-formulaire{
+    text-align: left;    
+    margin: auto; 
+    padding: auto;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.bordure{
+    border-width: 0px;    
+    margin: 0px; 
+    padding: 0px;
+}

@@ -72,10 +72,10 @@ class CtCarteGriseType extends AbstractType
                 'label' => 'Patente',
             ])
             ->add('cg_ani', null, [
-                'label' => 'Ani',
+                'label' => 'ANI',
             ])
             ->add('cg_rta', null, [
-                'label' => 'Rta',
+                'label' => 'RTA',
             ])
             ->add('cg_num_carte_violette', null, [
                 'label' => 'Numéro carte violette',

@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Renseignement véhicule{% endblock %}
+
+{% block app_ct %}
+
+<div class="box">
+    <div class="box-header">RENSEIGNEMENT VEHICULE</div>
+</div>
+
+<div class="box">
+    <div class="entete-formulaire">Recherche</div>
+    <div>
+        <table class="table" style="width:100%;">
+            <tbody>
+                <tr>
+                    <td style="width:30%;">
+                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_visite_renseignement_vehicule') }}">
+                            <div class="">
+                                <strong>Par numéro d'immatriculation :</strong><br>
+                                <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
+                                <input type="text" name="search-immatriculation" id="search-immatriculation" class="form-control" placeholder="numéro d'immatriculation...">
+                                <button class="btn btn-lg btn-primary" type="submit" style="float:right">
+                                    Rechercher
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                    <td style="width:30%;">
+                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_visite_renseignement_vehicule') }}">
+                            <div class="">
+                                <strong>Par numéro dans la série du type :</strong><br>
+                                <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
+                                <input type="text" name="search-immatriculation" id="search-immatriculation" class="form-control" placeholder="numéro de série...">
+                                <button class="btn btn-lg btn-primary" type="submit" style="float:right">
+                                    Rechercher
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                    <td style="width:30%;">
+                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_visite_renseignement_vehicule') }}">
+                            <div class="">
+                                <strong>Par numéro d'identification :</strong><br>
+                                <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
+                                <input type="text" name="search-immatriculation" id="search-immatriculation" class="form-control" placeholder="numéro d'identification...">
+                                <button class="btn btn-lg btn-primary" type="submit" style="float:right">
+                                    Rechercher
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{# à mettre ici un message flash quand l'information véhicule n'existe pas #}
+
+<table class="table bordure" style="width:100%;">
+    <tbody>
+        <tr>
+            <td style="width:50%;">
+                <div class="box">
+                    <div class="entete-formulaire">Information carte grise</div>
+                </div>
+            </td>
+            
+            <td style="width:50%;">
+                <div class="box">
+                    <div class="entete-formulaire">Information véhicule</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
