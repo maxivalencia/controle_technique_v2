@@ -29,13 +29,13 @@
                 <td>{{ ct_visite.id }}</td>
                 <td>{{ ct_visite.vstNumPv }}</td>
                 <td>{{ ct_visite.vstNumFeuilleCaisse }}</td>
-                <td>{{ ct_visite.vstDateExpiration ? ct_visite.vstDateExpiration|date('Y-m-d') : '' }}</td>
-                <td>{{ ct_visite.vstCreated ? ct_visite.vstCreated|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ ct_visite.vstUpdated ? ct_visite.vstUpdated|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ ct_visite.vstIsApte ? 'Yes' : 'No' }}</td>
-                <td>{{ ct_visite.vstIsContreVisite ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_visite.vstDateExpiration ? ct_visite.vstDateExpiration|date('d/m/Y') : '' }}</td>
+                <td>{{ ct_visite.vstCreated ? ct_visite.vstCreated|date('d/m/Y H:i:s') : '' }}</td>
+                <td>{{ ct_visite.vstUpdated ? ct_visite.vstUpdated|date('d/m/Y H:i:s') : '' }}</td>
+                <td>{{ ct_visite.vstIsApte ? 'Oui' : 'Non' }}</td>
+                <td>{{ ct_visite.vstIsContreVisite ? 'Oui' : 'Non' }}</td>
                 <td>{{ ct_visite.vstDureeReparation }}</td>
-                <td>{{ ct_visite.vstIsActive ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_visite.vstIsActive ? 'Oui' : 'Non' }}</td>
                 <td>{{ ct_visite.vstGenere }}</td>
                 <td>{{ ct_visite.vstObservation }}</td>
                 <td>

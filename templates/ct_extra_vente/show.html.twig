@@ -13,11 +13,11 @@
             </tr>
             <tr>
                 <th>created_at</th>
-                <td>{{ ct_extra_vente.exvCreatedAt ? ct_extra_vente.exvCreatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_extra_vente.exvCreatedAt ? ct_extra_vente.exvCreatedAt|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>est-active</th>
-                <td>{{ ct_extra_vente.exvIsActive ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_extra_vente.exvIsActive ? 'Oui' : 'Non' }}</td>
             </tr>
         </tbody>
     </table>

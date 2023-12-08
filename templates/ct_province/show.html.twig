@@ -21,11 +21,11 @@
             </tr>
             <tr>
                 <th>created_at</th>
-                <td>{{ ct_province.prvCreatedAt ? ct_province.prvCreatedAt|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_province.prvCreatedAt ? ct_province.prvCreatedAt|date('d/m/Y') : '' }}</td>
             </tr>
             <tr>
                 <th>updated_at</th>
-                <td>{{ ct_province.prvUpdatedAt ? ct_province.prvUpdatedAt|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_province.prvUpdatedAt ? ct_province.prvUpdatedAt|date('d/m/Y') : '' }}</td>
             </tr>
         </tbody>
     </table>

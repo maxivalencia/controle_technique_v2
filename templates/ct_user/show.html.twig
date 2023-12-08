@@ -25,11 +25,12 @@
             </tr>
             <tr>
                 <th>est-active</th>
-                <td>{{ ct_user.usrEnable ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_user.usrEnable ? 'Oui' : 'Non
+                ' }}</td>
             </tr>
             <tr>
                 <th>Dernière connexion</th>
-                <td>{{ ct_user.usrLastLogin ? ct_user.usrLastLogin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_user.usrLastLogin ? ct_user.usrLastLogin|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>mail</th>
@@ -45,11 +46,11 @@
             </tr>
             <tr>
                 <th>created_at</th>
-                <td>{{ ct_user.usrCreatedAt ? ct_user.usrCreatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_user.usrCreatedAt ? ct_user.usrCreatedAt|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>updated_at</th>
-                <td>{{ ct_user.usrUpdatedAt ? ct_user.usrUpdatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_user.usrUpdatedAt ? ct_user.usrUpdatedAt|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>téléphone</th>

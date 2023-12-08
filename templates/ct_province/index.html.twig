@@ -22,8 +22,8 @@
                 <td>{{ ct_province.id }}</td>
                 <td>{{ ct_province.prvNom }}</td>
                 <td>{{ ct_province.prvCode }}</td>
-                <td>{{ ct_province.prvCreatedAt ? ct_province.prvCreatedAt|date('Y-m-d') : '' }}</td>
-                <td>{{ ct_province.prvUpdatedAt ? ct_province.prvUpdatedAt|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_province.prvCreatedAt ? ct_province.prvCreatedAt|date('d/m/Y') : '' }}</td>
+                <td>{{ ct_province.prvUpdatedAt ? ct_province.prvUpdatedAt|date('d/m/Y') : '' }}</td>
                 <td>
                     <a href="{{ path('app_ct_province_show', {'id': ct_province.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
                     <a href="{{ path('app_ct_province_edit', {'id': ct_province.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>

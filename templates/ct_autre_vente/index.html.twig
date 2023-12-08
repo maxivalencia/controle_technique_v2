@@ -19,8 +19,8 @@
         {% for ct_autre_vente in ct_autre_ventes %}
             <tr>
                 <td>{{ ct_autre_vente.id }}</td>
-                <td>{{ ct_autre_vente.auvIsVisible ? 'Yes' : 'No' }}</td>
-                <td>{{ ct_autre_vente.auvCreatedAt ? ct_autre_vente.auvCreatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_autre_vente.auvIsVisible ? 'Oui' : 'Non' }}</td>
+                <td>{{ ct_autre_vente.auvCreatedAt ? ct_autre_vente.auvCreatedAt|date('d/m/Y H:i:s') : '' }}</td>
                 <td>{{ ct_autre_vente.controleId }}</td>
                 <td>
                     <a href="{{ path('app_ct_autre_vente_show', {'id': ct_autre_vente.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>

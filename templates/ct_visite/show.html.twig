@@ -21,23 +21,23 @@
             </tr>
             <tr>
                 <th>date expiration</th>
-                <td>{{ ct_visite.vstDateExpiration ? ct_visite.vstDateExpiration|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_visite.vstDateExpiration ? ct_visite.vstDateExpiration|date('d/m/Y') : '' }}</td>
             </tr>
             <tr>
                 <th>created</th>
-                <td>{{ ct_visite.vstCreated ? ct_visite.vstCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_visite.vstCreated ? ct_visite.vstCreated|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>updated</th>
-                <td>{{ ct_visite.vstUpdated ? ct_visite.vstUpdated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_visite.vstUpdated ? ct_visite.vstUpdated|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>est-apte</th>
-                <td>{{ ct_visite.vstIsApte ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_visite.vstIsApte ? 'Oui' : 'Non' }}</td>
             </tr>
             <tr>
                 <th>est-contre visite</th>
-                <td>{{ ct_visite.vstIsContreVisite ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_visite.vstIsContreVisite ? 'Oui' : 'Non' }}</td>
             </tr>
             <tr>
                 <th>durée réparation</th>
@@ -45,7 +45,7 @@
             </tr>
             <tr>
                 <th>est-active</th>
-                <td>{{ ct_visite.vstIsActive ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_visite.vstIsActive ? 'Oui' : 'Non' }}</td>
             </tr>
             <tr>
                 <th>généré</th>

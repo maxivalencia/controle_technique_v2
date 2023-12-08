@@ -37,18 +37,18 @@
                 <td>{{ ct_const_av_ded.cadDivers }}</td>
                 <td>{{ ct_const_av_ded.cadProprietaireNom }}</td>
                 <td>{{ ct_const_av_ded.cadProprietaireAdresse }}</td>
-                <td>{{ ct_const_av_ded.cadBonEtat ? 'Yes' : 'No' }}</td>
-                <td>{{ ct_const_av_ded.cadSecPers ? 'Yes' : 'No' }}</td>
-                <td>{{ ct_const_av_ded.cadSecMarch ? 'Yes' : 'No' }}</td>
-                <td>{{ ct_const_av_ded.cadProtecEnv ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_const_av_ded.cadBonEtat ? 'Bon' : 'Mauvais' }}</td>
+                <td>{{ ct_const_av_ded.cadSecPers ? 'Oui' : 'Non' }}</td>
+                <td>{{ ct_const_av_ded.cadSecMarch ? 'Oui' : 'Non' }}</td>
+                <td>{{ ct_const_av_ded.cadProtecEnv ? 'Oui' : 'Non' }}</td>
                 <td>{{ ct_const_av_ded.cadNumero }}</td>
                 <td>{{ ct_const_av_ded.cadImmatriculation }}</td>
-                <td>{{ ct_const_av_ded.cadDateEmbarquement ? ct_const_av_ded.cadDateEmbarquement|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_const_av_ded.cadDateEmbarquement ? ct_const_av_ded.cadDateEmbarquement|date('d/m/Y') : '' }}</td>
                 <td>{{ ct_const_av_ded.cadLieuEmbarquement }}</td>
-                <td>{{ ct_const_av_ded.cadCreated ? ct_const_av_ded.cadCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_const_av_ded.cadCreated ? ct_const_av_ded.cadCreated|date('d/m/Y H:i:s') : '' }}</td>
                 <td>{{ ct_const_av_ded.cadObservation }}</td>
-                <td>{{ ct_const_av_ded.cadConforme ? 'Yes' : 'No' }}</td>
-                <td>{{ ct_const_av_ded.cadIsActive ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_const_av_ded.cadConforme ? 'Oui' : 'Non' }}</td>
+                <td>{{ ct_const_av_ded.cadIsActive ? 'Oui' : 'Non' }}</td>
                 <td>{{ ct_const_av_ded.cadGenere }}</td>
                 <td>
                     <a href="{{ path('app_ct_const_av_ded_show', {'id': ct_const_av_ded.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>

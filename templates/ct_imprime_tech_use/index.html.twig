@@ -26,12 +26,12 @@
                 <td>{{ ct_imprime_tech_use.id }}</td>
                 <td>{{ ct_imprime_tech_use.ctControleId }}</td>
                 <td>{{ ct_imprime_tech_use.ituNumero }}</td>
-                <td>{{ ct_imprime_tech_use.ituUsed ? 'Yes' : 'No' }}</td>
-                <td>{{ ct_imprime_tech_use.activedAt ? ct_imprime_tech_use.activedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ ct_imprime_tech_use.createdAt ? ct_imprime_tech_use.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ ct_imprime_tech_use.updatedAt ? ct_imprime_tech_use.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_imprime_tech_use.ituUsed ? 'Oui' : 'Non' }}</td>
+                <td>{{ ct_imprime_tech_use.activedAt ? ct_imprime_tech_use.activedAt|date('d/m/Y H:i:s') : '' }}</td>
+                <td>{{ ct_imprime_tech_use.createdAt ? ct_imprime_tech_use.createdAt|date('d/m/Y H:i:s') : '' }}</td>
+                <td>{{ ct_imprime_tech_use.updatedAt ? ct_imprime_tech_use.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
                 <td>{{ ct_imprime_tech_use.ituObservation }}</td>
-                <td>{{ ct_imprime_tech_use.ituIsVisible ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_imprime_tech_use.ituIsVisible ? 'Oui' : 'Non' }}</td>
                 <td>
                     <a href="{{ path('app_ct_imprime_tech_use_show', {'id': ct_imprime_tech_use.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
                     <a href="{{ path('app_ct_imprime_tech_use_edit', {'id': ct_imprime_tech_use.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>

@@ -19,7 +19,7 @@
             <tr>
                 <td>{{ ct_genre_tarif.id }}</td>
                 <td>{{ ct_genre_tarif.grtPrix }}</td>
-                <td>{{ ct_genre_tarif.grtAnnee ? ct_genre_tarif.grtAnnee|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_genre_tarif.grtAnnee ? ct_genre_tarif.grtAnnee|date('d/m/Y') : '' }}</td>
                 <td>
                     <a href="{{ path('app_ct_genre_tarif_show', {'id': ct_genre_tarif.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
                     <a href="{{ path('app_ct_genre_tarif_edit', {'id': ct_genre_tarif.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>

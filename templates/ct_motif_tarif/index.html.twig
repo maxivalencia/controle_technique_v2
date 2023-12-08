@@ -19,7 +19,7 @@
             <tr>
                 <td>{{ ct_motif_tarif.id }}</td>
                 <td>{{ ct_motif_tarif.mtfTrfPrix }}</td>
-                <td>{{ ct_motif_tarif.mtfTrfDate ? ct_motif_tarif.mtfTrfDate|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_motif_tarif.mtfTrfDate ? ct_motif_tarif.mtfTrfDate|date('d/m/Y') : '' }}</td>
                 <td>
                     <a href="{{ path('app_ct_motif_tarif_show', {'id': ct_motif_tarif.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
                     <a href="{{ path('app_ct_motif_tarif_edit', {'id': ct_motif_tarif.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>

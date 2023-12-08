@@ -21,7 +21,7 @@
                 <td>{{ ct_usage.id }}</td>
                 <td>{{ ct_usage.usgLibelle }}</td>
                 <td>{{ ct_usage.usgValidite }}</td>
-                <td>{{ ct_usage.usgCreated ? ct_usage.usgCreated|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_usage.usgCreated ? ct_usage.usgCreated|date('d/m/Y') : '' }}</td>
                 <td>
                     <a href="{{ path('app_ct_usage_show', {'id': ct_usage.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
                     <a href="{{ path('app_ct_usage_edit', {'id': ct_usage.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>

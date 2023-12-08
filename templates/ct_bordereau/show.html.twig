@@ -25,11 +25,11 @@
             </tr>
             <tr>
                 <th>created_at</th>
-                <td>{{ ct_bordereau.blCreatedAt ? ct_bordereau.blCreatedAt|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_bordereau.blCreatedAt ? ct_bordereau.blCreatedAt|date('d/m/Y') : '' }}</td>
             </tr>
             <tr>
                 <th>updated_at</th>
-                <td>{{ ct_bordereau.blUpdatedAt ? ct_bordereau.blUpdatedAt|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_bordereau.blUpdatedAt ? ct_bordereau.blUpdatedAt|date('d/m/Y') : '' }}</td>
             </tr>
             <tr>
                 <th>Reférence expression</th>
@@ -37,7 +37,7 @@
             </tr>
             <tr>
                 <th>Date reférence expression</th>
-                <td>{{ ct_bordereau.dateRefExpr ? ct_bordereau.dateRefExpr|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_bordereau.dateRefExpr ? ct_bordereau.dateRefExpr|date('d/m/Y') : '' }}</td>
             </tr>
             <tr>
                 <th>observation</th>

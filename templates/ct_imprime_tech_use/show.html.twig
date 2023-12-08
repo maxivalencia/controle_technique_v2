@@ -21,19 +21,19 @@
             </tr>
             <tr>
                 <th>Utilisé</th>
-                <td>{{ ct_imprime_tech_use.ituUsed ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_imprime_tech_use.ituUsed ? 'Oui' : 'Non' }}</td>
             </tr>
             <tr>
                 <th>Actived_at</th>
-                <td>{{ ct_imprime_tech_use.activedAt ? ct_imprime_tech_use.activedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_imprime_tech_use.activedAt ? ct_imprime_tech_use.activedAt|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Created_at</th>
-                <td>{{ ct_imprime_tech_use.createdAt ? ct_imprime_tech_use.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_imprime_tech_use.createdAt ? ct_imprime_tech_use.createdAt|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>Updated_at</th>
-                <td>{{ ct_imprime_tech_use.updatedAt ? ct_imprime_tech_use.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_imprime_tech_use.updatedAt ? ct_imprime_tech_use.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>observation</th>
@@ -41,7 +41,7 @@
             </tr>
             <tr>
                 <th>est-visible</th>
-                <td>{{ ct_imprime_tech_use.ituIsVisible ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_imprime_tech_use.ituIsVisible ? 'Oui' : 'Non' }}</td>
             </tr>
         </tbody>
     </table>

@@ -23,8 +23,8 @@
                 <td>{{ ct_centre.id }}</td>
                 <td>{{ ct_centre.ctrNom }}</td>
                 <td>{{ ct_centre.ctrCode }}</td>
-                <td>{{ ct_centre.ctrCreatedAt ? ct_centre.ctrCreatedAt|date('Y-m-d') : '' }}</td>
-                <td>{{ ct_centre.ctrUpdatedAt ? ct_centre.ctrUpdatedAt|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_centre.ctrCreatedAt ? ct_centre.ctrCreatedAt|date('d/m/Y') : '' }}</td>
+                <td>{{ ct_centre.ctrUpdatedAt ? ct_centre.ctrUpdatedAt|date('d/m/Y') : '' }}</td>
                 <td>{{ ct_centre.centreMere }}</td>
                 <td>
                     <a href="{{ path('app_ct_centre_show', {'id': ct_centre.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>

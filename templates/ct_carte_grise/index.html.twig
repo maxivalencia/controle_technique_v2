@@ -44,7 +44,7 @@
         {% for ct_carte_grise in ct_carte_grises %}
             <tr>
                 <td>{{ ct_carte_grise.id }}</td>
-                <td>{{ ct_carte_grise.cgDateEmission ? ct_carte_grise.cgDateEmission|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_carte_grise.cgDateEmission ? ct_carte_grise.cgDateEmission|date('d/m/Y') : '' }}</td>
                 <td>{{ ct_carte_grise.cgNom }}</td>
                 <td>{{ ct_carte_grise.cgPrenom }}</td>
                 <td>{{ ct_carte_grise.cgProfession }}</td>
@@ -54,23 +54,23 @@
                 <td>{{ ct_carte_grise.cgNbrAssis }}</td>
                 <td>{{ ct_carte_grise.cgNbrDebout }}</td>
                 <td>{{ ct_carte_grise.cgPuissanceAdmin }}</td>
-                <td>{{ ct_carte_grise.cgMiseEnService ? ct_carte_grise.cgMiseEnService|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_carte_grise.cgMiseEnService ? ct_carte_grise.cgMiseEnService|date('d/m/Y') : '' }}</td>
                 <td>{{ ct_carte_grise.cgPatente }}</td>
                 <td>{{ ct_carte_grise.cgAni }}</td>
                 <td>{{ ct_carte_grise.cgRta }}</td>
                 <td>{{ ct_carte_grise.cgNumCarteViolette }}</td>
-                <td>{{ ct_carte_grise.cgDateCarteViolette ? ct_carte_grise.cgDateCarteViolette|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_carte_grise.cgDateCarteViolette ? ct_carte_grise.cgDateCarteViolette|date('d/m/Y') : '' }}</td>
                 <td>{{ ct_carte_grise.cgLieuCarteViolette }}</td>
                 <td>{{ ct_carte_grise.cgNumVignette }}</td>
-                <td>{{ ct_carte_grise.cgDateVignette ? ct_carte_grise.cgDateVignette|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_carte_grise.cgDateVignette ? ct_carte_grise.cgDateVignette|date('d/m/Y') : '' }}</td>
                 <td>{{ ct_carte_grise.cgLieuVignette }}</td>
                 <td>{{ ct_carte_grise.cgImmatriculation }}</td>
-                <td>{{ ct_carte_grise.cgCreated ? ct_carte_grise.cgCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_carte_grise.cgCreated ? ct_carte_grise.cgCreated|date('d/m/Y H:i:s') : '' }}</td>
                 <td>{{ ct_carte_grise.cgNomCooperative }}</td>
                 <td>{{ ct_carte_grise.cgItineraire }}</td>
-                <td>{{ ct_carte_grise.cgIsTransport ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_carte_grise.cgIsTransport ? 'Oui' : 'Non' }}</td>
                 <td>{{ ct_carte_grise.cgNumIdentification }}</td>
-                <td>{{ ct_carte_grise.cgIsActive ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_carte_grise.cgIsActive ? 'Oui' : 'Non' }}</td>
                 <td>{{ ct_carte_grise.cgObservation }}</td>
                 <td>
                     <a href="{{ path('app_ct_carte_grise_show', {'id': ct_carte_grise.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>

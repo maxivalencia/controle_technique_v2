@@ -29,7 +29,7 @@
         {% for ct_reception in ct_receptions %}
             <tr>
                 <td>{{ ct_reception.id }}</td>
-                <td>{{ ct_reception.rcpMiseService ? ct_reception.rcpMiseService|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_reception.rcpMiseService ? ct_reception.rcpMiseService|date('d/m/Y') : '' }}</td>
                 <td>{{ ct_reception.rcpImmatriculation }}</td>
                 <td>{{ ct_reception.rcpProprietaire }}</td>
                 <td>{{ ct_reception.rcpProfession }}</td>
@@ -38,8 +38,8 @@
                 <td>{{ ct_reception.rcpNgrDebout }}</td>
                 <td>{{ ct_reception.rcpNumPv }}</td>
                 <td>{{ ct_reception.rcpNumGroup }}</td>
-                <td>{{ ct_reception.rcpCreated ? ct_reception.rcpCreated|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ ct_reception.rcpIsActive ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_reception.rcpCreated ? ct_reception.rcpCreated|date('d/m/Y H:i:s') : '' }}</td>
+                <td>{{ ct_reception.rcpIsActive ? 'Oui' : 'Non' }}</td>
                 <td>{{ ct_reception.rcpGenere }}</td>
                 <td>{{ ct_reception.rcpObservation }}</td>
                 <td>

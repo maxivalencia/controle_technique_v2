@@ -27,10 +27,10 @@
                 <td>{{ ct_bordereau.blNumero }}</td>
                 <td>{{ ct_bordereau.blDebutNumero }}</td>
                 <td>{{ ct_bordereau.blFinNumero }}</td>
-                <td>{{ ct_bordereau.blCreatedAt ? ct_bordereau.blCreatedAt|date('Y-m-d') : '' }}</td>
-                <td>{{ ct_bordereau.blUpdatedAt ? ct_bordereau.blUpdatedAt|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_bordereau.blCreatedAt ? ct_bordereau.blCreatedAt|date('d/m/Y') : '' }}</td>
+                <td>{{ ct_bordereau.blUpdatedAt ? ct_bordereau.blUpdatedAt|date('d/m/Y') : '' }}</td>
                 <td>{{ ct_bordereau.refExpr }}</td>
-                <td>{{ ct_bordereau.dateRefExpr ? ct_bordereau.dateRefExpr|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_bordereau.dateRefExpr ? ct_bordereau.dateRefExpr|date('d/m/Y') : '' }}</td>
                 <td>{{ ct_bordereau.blObservation }}</td>
                 <td>
                     <a href="{{ path('app_ct_bordereau_show', {'id': ct_bordereau.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>

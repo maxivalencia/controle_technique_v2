@@ -32,13 +32,13 @@
                 <td>{{ ct_user.ctroleid }}</td>
                 {# <td>{{ ct_user.roles ? ct_user.roles|json_encode : '' }}</td> #}
                 <td>{{ ct_user.password }}</td>
-                <td>{{ ct_user.usrEnable ? 'Yes' : 'No' }}</td>
-                <td>{{ ct_user.usrLastLogin ? ct_user.usrLastLogin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_user.usrEnable ? 'Oui' : 'Non' }}</td>
+                <td>{{ ct_user.usrLastLogin ? ct_user.usrLastLogin|date('d/m/Y H:i:s') : '' }}</td>
                 <td>{{ ct_user.usrMail }}</td>
                 <td>{{ ct_user.usrNom }}</td>
                 <td>{{ ct_user.usrAdresse }}</td>
-                <td>{{ ct_user.usrCreatedAt ? ct_user.usrCreatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ ct_user.usrUpdatedAt ? ct_user.usrUpdatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_user.usrCreatedAt ? ct_user.usrCreatedAt|date('d/m/Y H:i:s') : '' }}</td>
+                <td>{{ ct_user.usrUpdatedAt ? ct_user.usrUpdatedAt|date('d/m/Y H:i:s') : '' }}</td>
                 <td>{{ ct_user.usrTelephone }}</td>
                 <td>{{ ct_user.usrNbrConnexion }}</td>
                 <td>

@@ -13,7 +13,7 @@
             </tr>
             <tr>
                 <th>mise en service</th>
-                <td>{{ ct_reception.rcpMiseService ? ct_reception.rcpMiseService|date('Y-m-d') : '' }}</td>
+                <td>{{ ct_reception.rcpMiseService ? ct_reception.rcpMiseService|date('d/m/Y') : '' }}</td>
             </tr>
             <tr>
                 <th>immatriculation</th>
@@ -49,11 +49,11 @@
             </tr>
             <tr>
                 <th>created</th>
-                <td>{{ ct_reception.rcpCreated ? ct_reception.rcpCreated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ct_reception.rcpCreated ? ct_reception.rcpCreated|date('d/m/Y H:i:s') : '' }}</td>
             </tr>
             <tr>
                 <th>est-active</th>
-                <td>{{ ct_reception.rcpIsActive ? 'Yes' : 'No' }}</td>
+                <td>{{ ct_reception.rcpIsActive ? 'Oui' : 'Non' }}</td>
             </tr>
             <tr>
                 <th>généré</th>
