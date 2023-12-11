@@ -9,7 +9,7 @@
 } */
 
 .arriere{
-    background-image:url('../image/logo_dgsr.png');
+    /* background-image:url('../image/logo_dgsr.png'); */
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -75,12 +75,31 @@
     padding: 10px;
 }
 
+.box-verificateur{
+    background-color: white;
+    border-top: 5px solid rgb(78, 11, 17);
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.box-anomalie{
+    background-color: white;
+    border-top: 5px solid rgb(11, 102, 41);
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+}
+
 .box-header{
     text-align: center;    
     margin: auto; 
     padding: auto;
     font-weight: bold;
     font-size: 30px;
+    background-color: rgb(212, 210, 210);
+    margin: -10px;
+    padding: 10px;
 }
 
 .marge-elts{
@@ -94,6 +113,31 @@
     padding: auto;
     font-weight: bold;
     font-size: 16px;
+    background-color: rgb(212, 210, 210);
+    margin: -10px;
+    padding: 10px;
+}
+
+.entete-formulaire-verificateur{
+    text-align: left;    
+    margin: auto; 
+    padding: auto;
+    font-weight: bold;
+    font-size: 16px;
+    background-color: rgb(80, 16, 16);
+    margin: -10px;
+    padding: 10px;
+}
+
+.entete-formulaire-anomalie{
+    text-align: left;    
+    margin: auto; 
+    padding: auto;
+    font-weight: bold;
+    font-size: 16px;
+    background-color: rgb(92, 177, 99);
+    margin: -10px;
+    padding: 10px;
 }
 
 .bordure{
