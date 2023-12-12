@@ -19,13 +19,44 @@
 }
 
 .avant{
-    /* background-image:url('/image/logo_dgsr_2.png'); */
+    background-image:url('/image/fond_image.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-    filter:alpha(opacity=50);
+    filter:alpha(opacity=25);
     opacity: 1;
     -moz-opacity:1;
+}
+
+.image-login{
+    position: absolute;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: auto;
+    padding-right: auto;
+    position: absolute;
+    margin-top: -75px;
+    padding-top: -75px;
+    align-items: center;
+    align-content: center;
+    text-align: center;    
+    justify-content: center;
+    transform: translate(115%, 0%);
+}
+
+.button-login{
+    /* position: absolute; */
+    /* display: block; */
+    width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: auto;
+    padding-right: auto;
+    margin: auto;
+    padding: auto;
+    transform: translate(100%, 100%);
+    border: 1px solid rgb(128, 128, 128);
 }
 
 .filigrane{
@@ -33,16 +64,16 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-    /* filter:alpha(opacity=50);
+    filter:alpha(opacity=50);
     opacity: 0.9;
-    -moz-opacity:1 */;
+    -moz-opacity:1;
 }
 
 .login_center{
     margin: 0;
-    width: 800px;
-    height: 385px;
-    /*border: 3px solid green;*/
+    width: 500px;
+    /* height: 385px; */
+    border: 1px solid rgb(128, 128, 128);
     padding: auto;
     position: absolute;
     top: 50%;
@@ -51,10 +82,14 @@
     bottom: auto;
     background: silver;
     vertical-align: middle;
+    /* margin-top: -75px;
+    padding-left: -75px; */
     /* -ms-transform: translateY(-50%);
     transform: translateY(-50%); */
     transform: translate(-50%, -50%);
-    border-radius: 5px;
+    border-radius: 20px;
+    /* border-color: black;
+    border:3px; */
 }
 
 .fond_bar_entete{
@@ -70,7 +105,8 @@
 
 .box{
     background-color: white;
-    border-top: 5px solid dodgerblue;
+    /* border-top: 5px solid dodgerblue; */
+    border-top: 5px solid rgb(128, 128, 128);
     border-radius: 5px;
     margin: 10px;
     padding: 10px;
