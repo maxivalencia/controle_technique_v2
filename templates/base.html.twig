@@ -92,7 +92,7 @@
                         <a class="nav-link" data-toggle="dropdown" href="#" style="padding:0px;margin:0px">
                             <span style="align:center;">
                                 <span style="align:center;color:white;"><strong>Bienvenue Utilisateur</strong></span>
-                                <img class="animation__shake" src="../../image/logo_dgsr.png" alt="Photo utilisateur" height="35" width="35">
+                                <img class="animation__shake" src="/avatar/avatar_neutre_cercle.png" alt="Photo utilisateur" height="35" width="35">
                                 <!-- <i class="fas fa-angle-left right"></i> -->
                             </span>
                         </a>
@@ -112,8 +112,8 @@
                 <a href="#" class="brand-link">
                 {# <img src="../image/banniere_dgsr_v2.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> #}
                 <!-- <img src="../image/banniere_dgsr_v2.png" style="max-width: 100%"> -->
-                <img src="../../image/banniere_dgsr_v2.png" style="max-width: 100%">
-                <span class="brand-text font-weight-light"></span>
+                {# <img src="../../image/banniere_dgsr_v2.png" style="max-width: 100%"> #}
+                <span class="brand-text font-weight-light">Contrôle technique v2</span>
                 </a>
 
                 <!-- Sidebar -->
@@ -443,7 +443,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">
+                                            <a href="{{ path('app_ct_app_visite_recherche_visite') }}" class="nav-link">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>Rechercher</p>
                                             </a>
@@ -460,7 +460,7 @@
                                     </a>
                                     <ul class="nav nav-treeview" style="padding-left:5px;">
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">
+                                            <a href="{{ path('app_ct_app_visite_contre_visite') }}" class="nav-link">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>Créer</p>
                                             </a>

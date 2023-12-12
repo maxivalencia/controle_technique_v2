@@ -36,6 +36,7 @@ class CtRensVehiculeType extends AbstractType
             ])
             ->add('vhc_poids_total_charge', null, [
                 'label' => 'Poids total à charge',
+                'disabled' => true,
             ])
             ->add('vhc_puissance', null, [
                 'label' => 'Puissance administré',

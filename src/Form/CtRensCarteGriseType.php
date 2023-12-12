@@ -95,6 +95,9 @@ class CtRensCarteGriseType extends AbstractType
                 ],
                 'data' => new \DateTime('now'),
             ])
+            ->add('ct_vehicule_id', CtRensVehiculeType::class, [
+                'label' => 'Véhicule',
+            ])
             /* ->add('cg_puissance_admin', null, [
                 'label' => 'Puissance administré',
                 'data' => 0,

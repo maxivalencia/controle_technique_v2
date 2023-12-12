@@ -4,21 +4,23 @@
 
 {% block app_ct %}
 <div class="box">
+    {# <div class="box-header-right"></div>
+    <div class="box-header-left"></div> #}
     <div class="box-header">CREATION VISITE</div>
 </div>
 <table class="table" style="width:100%;">
     <tbody>
         <tr>
-            <td style="width:30%;">
+            <td style="width:33%;">
                 <div class="box">
                     <div class="entete-formulaire">Feuille de caisse</div><br>
-                    {{ form_start(form_feuille_de_caise) }}
-                        {{ form_widget(form_feuille_de_caise) }}
+                    {{ form_start(form_feuille_de_caisse) }}
+                        {{ form_widget(form_feuille_de_caisse) }}
                         <button class="btn btn-primary">Générer</button> <button class="btn btn-success">Télécharger</button>
-                    {{ form_end(form_feuille_de_caise) }}
+                    {{ form_end(form_feuille_de_caisse) }}
                 </div>
             </td>
-            <td style="width:30%;">
+            <td style="width:33%;">
                 <div class="box-verificateur">
                     <div class="entete-formulaire">Fiche vérificateur</div><br>
                     {{ form_start(form_fiche_verificateur) }}
@@ -27,7 +29,7 @@
                     {{ form_end(form_fiche_verificateur) }}
                 </div>
             </td>
-            <td style="width:30%;">
+            <td style="width:33%;">
                 <div class="box-anomalie">
                     <div class="entete-formulaire">Liste anomalies</div><br>
                     {{ form_start(form_liste_anomalies) }}
@@ -75,4 +77,70 @@
         </table>
     </div>
 </div>
+
+{{ form_start(form_visite) }}
+    {# {{ form_widget(form_carte_grise.ct_vehicule_id) }} #}
+    <table class="table bordure" style="width:100%;">
+        <tbody>
+            <tr>
+                <td style="width:50%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Information carte grise</div><hr>
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_centre_id) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_date_emission) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_immatriculation) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_num_identification) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_nom) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_prenom) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_profession) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_adresse) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_phone) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_commune) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_is_transport) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_num_carte_violette) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_lieu_carte_violette) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_date_carte_violette) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_patente) }}                            
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_ani) }}
+                    </div>
+                    <div class="box">
+                        <div class="entete-formulaire">Information véhicule</div><hr>
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.ct_genre_id) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_type) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.ct_marque_id) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_num_serie) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_carrosserie_id) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_num_moteur) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_source_energie_id) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_puissance) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_nbr_assis) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_poids_vide) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_charge_utile) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_poids_total_charge) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_mise_en_service) }}
+                    </div>
+                </td>
+                
+                <td style="width:50%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Information véhicule</div><hr>
+                            {{ form_row(form_visite.ct_centre_id) }}
+                            {{ form_row(form_visite.ct_type_visite_id) }}
+                            {{ form_row(form_visite.ct_usage_id) }}
+                            {{ form_row(form_visite.ct_utilisation_id) }}
+                            {{ form_row(form_visite.vst_anomalie_id) }}
+                            {{ form_row(form_visite.vst_date_expiration) }}
+                            {{ form_row(form_visite.ct_verificateur_id) }}
+                            {{ form_row(form_visite.vst_extra) }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+            </tr>
+        </tbody>
+    </table>
+    <div class="box">
+        <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+    </div>
+{{ form_end(form_visite) }}
 {% endblock %}

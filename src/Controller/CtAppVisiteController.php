@@ -16,6 +16,7 @@ use App\Repository\CtVehiculeRepository;
 use App\Form\CtRensCarteGriseType;
 use App\Form\CtRensVehiculeType;
 use App\Form\CtVehiculeType;
+use App\Form\CtVisiteVisiteType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\DataTransformer\IssueToNumberTransformer;
 use Exception;
@@ -123,19 +124,15 @@ class CtAppVisiteController extends AbstractController
     public function RenseignementVehicule(Request $request, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
     {
         // fonction mbola ampidirina eto : maka résultat recherche dia mampiditra ao anaty form
-        // message erreur na  tsy mahita valin'ny recherche
         // raha misy résultat ny recherche dia mampiditra azy ao anatin'ny form
         // mameno ny information sasany amin'ilay entity ireny alohan'ny persistance
         $ctCarteGrise = new CtCarteGrise();
         $form_carte_grise = $this->createForm(CtRensCarteGriseType::class, $ctCarteGrise);
         $form_carte_grise->handleRequest($request);
-        $ctVehicule = new CtVehicule();
-        $form_vehicule = $this->createForm(CtVehiculeType::class, $ctVehicule);
-        $form_vehicule->handleRequest($request);
         $message = "";
         $enregistrement_ok = False;
         
-        if ($form_vehicule->isSubmitted() && $form_vehicule->isValid() && $form_carte_grise->isSubmitted() && $form_carte_grise->isValid()) {
+        /* if ($form_vehicule->isSubmitted() && $form_vehicule->isValid() && $form_carte_grise->isSubmitted() && $form_carte_grise->isValid()) {
             try{ 
                 $ctVehiculeRepository->add($ctVehicule, true);
                 $ctCarteGrise->setCtVehiculeId($ctVehicule);
@@ -147,11 +144,10 @@ class CtAppVisiteController extends AbstractController
                 $message = "Echec de l'enregistrement du véhicule";
                 $enregistrement_ok = False;
             }
-        }
+        } */
         return $this->render('ct_app_visite/renseignement_vehicule.html.twig', [
             'ct_carte_grise' => $ctCarteGrise,
-            'form_carte_grise' => $form_carte_grise->createView(),            
-            'form_vehicule' => $form_vehicule->createView(),
+            'form_carte_grise' => $form_carte_grise->createView(),  
             'message' => $message,
             'enregistrement_ok' => $enregistrement_ok,
         ]);
@@ -162,8 +158,11 @@ class CtAppVisiteController extends AbstractController
      */
     public function CreerVisite(Request $request): Response
     {
+        $ctVisite = new CtVisite();
+        $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
+        $form_visite->handleRequest($request);
         // eto mbola mila manao liste misy création des vérificateur izay vao ampidirina ao anatin'ilay form fiche vérificateur
-        $form_feuille_de_caise = $this->createFormBuilder()
+        $form_feuille_de_caisse = $this->createFormBuilder()
             ->add('date', DateType::class, [
                 'label' => 'Séléctionner la date',
                 'widget' => 'single_text',
@@ -233,13 +232,14 @@ class CtAppVisiteController extends AbstractController
                 ],
             ])
             ->getForm();
-        $form_feuille_de_caise->handleRequest($request);
+        $form_feuille_de_caisse->handleRequest($request);
         $form_fiche_verificateur->handleRequest($request);
         $form_liste_anomalies->handleRequest($request);
         return $this->render('ct_app_visite/creer_visite.html.twig', [
-            'form_feuille_de_caise' => $form_feuille_de_caise->createView(),
+            'form_feuille_de_caisse' => $form_feuille_de_caisse->createView(),
             'form_fiche_verificateur' => $form_fiche_verificateur->createView(),
             'form_liste_anomalies' => $form_liste_anomalies->createView(),
+            'form_visite' => $form_visite->createView(),
         ]);
     }
 
@@ -270,6 +270,29 @@ class CtAppVisiteController extends AbstractController
     {
         return $this->render('ct_app_visite/creer_visite.html.twig', [
             'controller_name' => 'CtAppVisiteController',
+        ]);
+    }
+
+    /**
+     * @Route("/recherche_visite", name="app_ct_app_visite_recherche_visite", methods={"GET", "POST"})
+     */
+    public function RechercheVisite(Request $request): Response
+    {
+        return $this->render('ct_app_visite/recherche_visite.html.twig', [
+            'controller_name' => 'CtAppVisiteController',
+        ]);
+    }
+
+    /**
+     * @Route("/contre_visite", name="app_ct_app_visite_contre_visite", methods={"GET", "POST"})
+     */
+    public function ContreVisite(Request $request): Response
+    {
+        $ctVisite = new CtVisite();
+        $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
+        $form_visite->handleRequest($request);
+        return $this->render('ct_app_visite/contre_visite.html.twig', [
+            'form_visite' => $form_visite->createView(),
         ]);
     }
 }

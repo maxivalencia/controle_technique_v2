@@ -70,7 +70,7 @@
     {% endif %}
 {% endif %}
 
-{{ form_start(form_carte_grise) }}
+{# {{ form_start(form_carte_grise) }}
     {{ form_start(form_vehicule) }}
         <table class="table bordure" style="width:100%;">
             <tbody>
@@ -86,7 +86,6 @@
                         <div class="box">
                             <div class="entete-formulaire">Information véhicule</div><hr>
                                 {{ form_widget(form_vehicule) }}
-                                {# <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button> #}
                         </div>
                     </td>
                 </tr>
@@ -98,5 +97,60 @@
             <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
         </div>
     {{ form_end(form_vehicule) }}
+{{ form_end(form_carte_grise) }} #}
+
+{{ form_start(form_carte_grise) }}
+    {# {{ form_widget(form_carte_grise.ct_vehicule_id) }} #}
+    <table class="table bordure" style="width:100%;">
+        <tbody>
+            <tr>
+                <td style="width:50%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Information carte grise</div><hr>
+                            {{ form_row(form_carte_grise.ct_centre_id) }}
+                            {{ form_row(form_carte_grise.cg_date_emission) }}
+                            {{ form_row(form_carte_grise.cg_immatriculation) }}
+                            {{ form_row(form_carte_grise.cg_num_identification) }}
+                            {{ form_row(form_carte_grise.cg_nom) }}
+                            {{ form_row(form_carte_grise.cg_prenom) }}
+                            {{ form_row(form_carte_grise.cg_profession) }}
+                            {{ form_row(form_carte_grise.cg_adresse) }}
+                            {{ form_row(form_carte_grise.cg_phone) }}
+                            {{ form_row(form_carte_grise.cg_commune) }}
+                            {{ form_row(form_carte_grise.cg_is_transport) }}
+                            {{ form_row(form_carte_grise.cg_num_carte_violette) }}
+                            {{ form_row(form_carte_grise.cg_lieu_carte_violette) }}
+                            {{ form_row(form_carte_grise.cg_date_carte_violette) }}
+                            {{ form_row(form_carte_grise.cg_patente) }}                            
+                            {{ form_row(form_carte_grise.cg_ani) }}
+                    </div>
+                </td>
+                
+                <td style="width:50%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Information véhicule</div><hr>
+                            {{ form_row(form_carte_grise.ct_vehicule_id.ct_genre_id) }}
+                            {{ form_row(form_carte_grise.ct_vehicule_id.vhc_type) }}
+                            {{ form_row(form_carte_grise.ct_vehicule_id.ct_marque_id) }}
+                            {{ form_row(form_carte_grise.ct_vehicule_id.vhc_num_serie) }}
+                            {{ form_row(form_carte_grise.ct_carrosserie_id) }}
+                            {{ form_row(form_carte_grise.ct_vehicule_id.vhc_num_moteur) }}
+                            {{ form_row(form_carte_grise.ct_source_energie_id) }}
+                            {{ form_row(form_carte_grise.ct_vehicule_id.vhc_puissance) }}
+                            {{ form_row(form_carte_grise.cg_nbr_assis) }}
+                            {{ form_row(form_carte_grise.ct_vehicule_id.vhc_poids_vide) }}
+                            {{ form_row(form_carte_grise.ct_vehicule_id.vhc_charge_utile) }}
+                            {{ form_row(form_carte_grise.ct_vehicule_id.vhc_poids_total_charge) }}
+                            {{ form_row(form_carte_grise.cg_mise_en_service) }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+            </tr>
+        </tbody>
+    </table>
+    <div class="box">
+        <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+    </div>
 {{ form_end(form_carte_grise) }}
 {% endblock %}
