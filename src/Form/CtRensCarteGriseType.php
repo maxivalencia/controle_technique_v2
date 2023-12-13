@@ -6,6 +6,7 @@ use App\Entity\CtCarteGrise;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class CtRensCarteGriseType extends AbstractType
@@ -71,6 +72,20 @@ class CtRensCarteGriseType extends AbstractType
                 ],
                 'data' => new \DateTime('now'),
             ])
+            ->add('cg_num_vignette', null, [
+                'label' => 'Numéro licence',
+            ])
+            ->add('cg_lieu_vignette', null, [
+                'label' => 'Lieu numéro licence',
+            ])
+            ->add('cg_date_vignette', null, [
+                'label' => 'Date numéro licence',
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'datetimepicker',
+                ],
+                'data' => new \DateTime('now'),
+            ])
             ->add('cg_patente', null, [
                 'label' => 'Patente',
             ])
@@ -97,6 +112,15 @@ class CtRensCarteGriseType extends AbstractType
             ])
             ->add('ct_vehicule_id', CtRensVehiculeType::class, [
                 'label' => 'Véhicule',
+            ])            
+            ->add('cg_nom_cooperative', null, [
+                'label' => 'Nom coopérative',
+            ])
+            ->add('cg_itineraire', null, [
+                'label' => 'Itinéraire',
+            ])
+            ->add('ct_zone_desserte_id', null, [
+                'label' => 'Zone desservie',
             ])
             /* ->add('cg_puissance_admin', null, [
                 'label' => 'Puissance administré',
@@ -105,17 +129,11 @@ class CtRensCarteGriseType extends AbstractType
             
             /* ->add('cg_nbr_debout')
             ->add('cg_rta')
-            ->add('cg_num_vignette')
-            ->add('cg_date_vignette')
-            ->add('cg_lieu_vignette')
-            ->add('cg_created')
-            ->add('cg_nom_cooperative')
-            ->add('cg_itineraire')
+            ->add('cg_created'))
             ->add('cg_is_active')
             ->add('cg_observation')
             ->add('ct_vehicule_id')
             ->add('ct_user_id')
-            ->add('ct_zone_desserte_id')
             ->add('cg_antecedant_id') */
         ;
     }

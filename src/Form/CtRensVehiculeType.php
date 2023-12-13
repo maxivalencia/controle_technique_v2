@@ -42,9 +42,12 @@ class CtRensVehiculeType extends AbstractType
                 'label' => 'Puissance administré',
                 'data' => 0,
             ])
+            ->add('vhc_cylindre', null, [
+                'label' => 'Cylindrée',
+                'data' => 0,
+            ])
 
-            /* ->add('vhc_cylindre')
-            ->add('vhc_hauteur')
+            /* ->add('vhc_hauteur')
             ->add('vhc_largeur')
             ->add('vhc_longueur')
             ->add('vhc_created')

@@ -66,6 +66,9 @@ class CtVisiteVisiteType extends AbstractType
                 'label' => 'Carte Grise',
                 'disabled' => true,
             ])
+            ->add('vst_duree_reparation', null, [
+                'label' => 'Durée de reparation accordée',
+            ])
 
             /* ->add('vst_num_pv')
             ->add('vst_num_feuille_caisse')
@@ -73,7 +76,6 @@ class CtVisiteVisiteType extends AbstractType
             ->add('vst_updated')
             ->add('vst_is_apte')
             ->add('vst_is_contre_visite')
-            ->add('vst_duree_reparation')
             ->add('vst_is_active')
             ->add('vst_genere')
             ->add('vst_observation')

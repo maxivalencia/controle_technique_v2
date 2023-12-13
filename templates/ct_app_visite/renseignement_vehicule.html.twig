@@ -31,7 +31,7 @@
                             <div class="">
                                 <strong>Par numéro dans la série du type :</strong><br>
                                 <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
-                                <input type="text" name="search-immatriculation" id="search-immatriculation" class="form-control" placeholder="numéro de série...">
+                                <input type="text" name="search-numero-serie" id="search-numero-serie" class="form-control" placeholder="numéro de série...">
                                 <button class="btn btn-primary" type="submit" style="float:right">
                                     Rechercher
                                 </button>
@@ -43,7 +43,7 @@
                             <div class="">
                                 <strong>Par numéro d'identification :</strong><br>
                                 <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
-                                <input type="text" name="search-immatriculation" id="search-immatriculation" class="form-control" placeholder="numéro d'identification...">
+                                <input type="text" name="search-identification" id="search-identification" class="form-control" placeholder="numéro d'identification...">
                                 <button class="btn btn-primary" type="submit" style="float:right">
                                     Rechercher
                                 </button>
@@ -70,35 +70,6 @@
     {% endif %}
 {% endif %}
 
-{# {{ form_start(form_carte_grise) }}
-    {{ form_start(form_vehicule) }}
-        <table class="table bordure" style="width:100%;">
-            <tbody>
-                <tr>
-                    <td style="width:50%;">
-                        <div class="box">
-                            <div class="entete-formulaire">Information carte grise</div><hr>
-                                {{ form_widget(form_carte_grise) }}
-                        </div>
-                    </td>
-                    
-                    <td style="width:50%;">
-                        <div class="box">
-                            <div class="entete-formulaire">Information véhicule</div><hr>
-                                {{ form_widget(form_vehicule) }}
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                </tr>
-            </tbody>
-        </table>
-        <div class="box">
-            <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
-        </div>
-    {{ form_end(form_vehicule) }}
-{{ form_end(form_carte_grise) }} #}
-
 {{ form_start(form_carte_grise) }}
     {# {{ form_widget(form_carte_grise.ct_vehicule_id) }} #}
     <table class="table bordure" style="width:100%;">
@@ -118,6 +89,12 @@
                             {{ form_row(form_carte_grise.cg_phone) }}
                             {{ form_row(form_carte_grise.cg_commune) }}
                             {{ form_row(form_carte_grise.cg_is_transport) }}
+                            {{ form_row(form_carte_grise.cg_nom_cooperative) }}  
+                            {{ form_row(form_carte_grise.cg_itineraire) }}   
+                            {{ form_row(form_carte_grise.cg_num_vignette) }}
+                            {{ form_row(form_carte_grise.cg_lieu_vignette) }}
+                            {{ form_row(form_carte_grise.cg_date_vignette) }} 
+                            {{ form_row(form_carte_grise.ct_zone_desserte_id) }}
                             {{ form_row(form_carte_grise.cg_num_carte_violette) }}
                             {{ form_row(form_carte_grise.cg_lieu_carte_violette) }}
                             {{ form_row(form_carte_grise.cg_date_carte_violette) }}
@@ -136,6 +113,7 @@
                             {{ form_row(form_carte_grise.ct_carrosserie_id) }}
                             {{ form_row(form_carte_grise.ct_vehicule_id.vhc_num_moteur) }}
                             {{ form_row(form_carte_grise.ct_source_energie_id) }}
+                            {{ form_row(form_carte_grise.ct_vehicule_id.vhc_cylindre) }}
                             {{ form_row(form_carte_grise.ct_vehicule_id.vhc_puissance) }}
                             {{ form_row(form_carte_grise.cg_nbr_assis) }}
                             {{ form_row(form_carte_grise.ct_vehicule_id.vhc_poids_vide) }}

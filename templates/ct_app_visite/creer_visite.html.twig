@@ -49,7 +49,7 @@
             <tbody>
                 <tr>
                     <td style="width:50%;">
-                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_visite_renseignement_vehicule') }}">
+                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_visite_creer_visite') }}">
                             <div class="">
                                 <strong>Par numéro d'immatriculation :</strong><br>
                                 <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
@@ -61,11 +61,11 @@
                         </form>
                     </td>
                     <td style="width:50%;">
-                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_visite_renseignement_vehicule') }}">
+                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_visite_creer_visite') }}">
                             <div class="">
                                 <strong>Par numéro dans la série du type :</strong><br>
                                 <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
-                                <input type="text" name="search-immatriculation" id="search-immatriculation" class="form-control" placeholder="numéro de série...">
+                                <input type="text" name="search-numero-serie" id="search-numero-serie" class="form-control" placeholder="numéro de série...">
                                 <button class="btn btn-primary" type="submit" style="float:right">
                                     Rechercher
                                 </button>
@@ -97,6 +97,12 @@
                             {{ form_row(form_visite.ct_carte_grise_id.cg_phone) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_commune) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_is_transport) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_nom_cooperative) }}  
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_itineraire) }}   
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_num_vignette) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_lieu_vignette) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_date_vignette) }} 
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_zone_desserte_id) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_num_carte_violette) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_lieu_carte_violette) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_date_carte_violette) }}
@@ -112,6 +118,7 @@
                             {{ form_row(form_visite.ct_carte_grise_id.ct_carrosserie_id) }}
                             {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_num_moteur) }}
                             {{ form_row(form_visite.ct_carte_grise_id.ct_source_energie_id) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_cylindre) }}
                             {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_puissance) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_nbr_assis) }}
                             {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_poids_vide) }}
@@ -129,6 +136,7 @@
                             {{ form_row(form_visite.ct_usage_id) }}
                             {{ form_row(form_visite.ct_utilisation_id) }}
                             {{ form_row(form_visite.vst_anomalie_id) }}
+                            {{ form_row(form_visite.vst_duree_reparation) }}
                             {{ form_row(form_visite.vst_date_expiration) }}
                             {{ form_row(form_visite.ct_verificateur_id) }}
                             {{ form_row(form_visite.vst_extra) }}

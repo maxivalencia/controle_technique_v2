@@ -84,6 +84,23 @@ class CtVisiteCarteGriseType extends AbstractType
                 'data' => new \DateTime('now'),
                 'disabled' => true,
             ])
+            ->add('cg_num_vignette', null, [
+                'label' => 'Numéro licence',
+                'disabled' => true,
+            ])
+            ->add('cg_lieu_vignette', null, [
+                'label' => 'Lieu numéro licence',
+                'disabled' => true,
+            ])
+            ->add('cg_date_vignette', null, [
+                'label' => 'Date numéro licence',
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'datetimepicker',
+                ],
+                'data' => new \DateTime('now'),
+                'disabled' => true,
+            ])
             ->add('cg_patente', null, [
                 'label' => 'Patente',
                 'disabled' => true,
@@ -117,6 +134,18 @@ class CtVisiteCarteGriseType extends AbstractType
             ->add('ct_vehicule_id', CtVisiteVehiculeType::class, [
                 'label' => 'Véhicule',
                 'disabled' => true,
+            ])            
+            ->add('cg_nom_cooperative', null, [
+                'label' => 'Nom coopérative',
+                'disabled' => true,
+            ])
+            ->add('cg_itineraire', null, [
+                'label' => 'Itinéraire',
+                'disabled' => true,
+            ])
+            ->add('ct_zone_desserte_id', null, [
+                'label' => 'Zone desservie',
+                'disabled' => true,
             ])
             /* ->add('cg_puissance_admin', null, [
                 'label' => 'Puissance administré',
@@ -125,17 +154,11 @@ class CtVisiteCarteGriseType extends AbstractType
             
             /* ->add('cg_nbr_debout')
             ->add('cg_rta')
-            ->add('cg_num_vignette')
-            ->add('cg_date_vignette')
-            ->add('cg_lieu_vignette')
             ->add('cg_created')
-            ->add('cg_nom_cooperative')
-            ->add('cg_itineraire')
             ->add('cg_is_active')
             ->add('cg_observation')
             ->add('ct_vehicule_id')
             ->add('ct_user_id')
-            ->add('ct_zone_desserte_id')
             ->add('cg_antecedant_id') */
         ;
     }

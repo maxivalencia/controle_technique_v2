@@ -49,9 +49,13 @@ class CtVisiteVehiculeType extends AbstractType
                 'data' => 0,
                 'disabled' => true,
             ])
+            ->add('vhc_cylindre', null, [
+                'label' => 'Cylindrée',
+                'data' => 0,
+                'disabled' => true,
+            ])
 
-            /* ->add('vhc_cylindre')
-            ->add('vhc_hauteur')
+            /* ->add('vhc_hauteur')
             ->add('vhc_largeur')
             ->add('vhc_longueur')
             ->add('vhc_created')
