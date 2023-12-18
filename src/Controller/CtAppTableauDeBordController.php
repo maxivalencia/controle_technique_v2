@@ -17,6 +17,7 @@ class CtAppTableauDeBordController extends AbstractController
      */
     public function index(): Response
     {
+        /* ct_app_tableau_de_bord */
         return $this->render('ct_app_tableau_de_bord/index.html.twig', [
             'controller_name' => 'CtAppTableauDeBordController',
         ]);

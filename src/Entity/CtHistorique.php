@@ -23,7 +23,7 @@ class CtHistorique
     private $hst_description;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
     private $hst_date_created_at;
 
@@ -65,12 +65,12 @@ class CtHistorique
         return $this;
     }
 
-    public function getHstDateCreatedAt(): ?\DateTimeImmutable
+    public function getHstDateCreatedAt(): ?\DateTime
     {
         return $this->hst_date_created_at;
     }
 
-    public function setHstDateCreatedAt(\DateTimeImmutable $hst_date_created_at): self
+    public function setHstDateCreatedAt(\DateTime $hst_date_created_at): self
     {
         $this->hst_date_created_at = $hst_date_created_at;
 

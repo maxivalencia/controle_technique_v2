@@ -56,6 +56,9 @@ class CtRensCarteGriseType extends AbstractType
             ->add('cg_is_transport', ChoiceType::class, [
                 'label' => 'Transport',
                 'choices' => $transport,
+                'attr' => [
+                    'class' => 'istransport',
+                ],
                 'data' => false,
             ])
             ->add('cg_num_carte_violette', null, [
@@ -74,15 +77,21 @@ class CtRensCarteGriseType extends AbstractType
             ])
             ->add('cg_num_vignette', null, [
                 'label' => 'Numéro licence',
+                'attr' => [
+                    'class' => 'transport',
+                ],
             ])
             ->add('cg_lieu_vignette', null, [
                 'label' => 'Lieu numéro licence',
+                'attr' => [
+                    'class' => 'transport',
+                ],
             ])
             ->add('cg_date_vignette', null, [
                 'label' => 'Date numéro licence',
                 'widget' => 'single_text',
                 'attr' => [
-                    'class' => 'datetimepicker',
+                    'class' => 'datetimepicker transport',
                 ],
                 'data' => new \DateTime('now'),
             ])
@@ -115,12 +124,21 @@ class CtRensCarteGriseType extends AbstractType
             ])            
             ->add('cg_nom_cooperative', null, [
                 'label' => 'Nom coopérative',
+                'attr' => [
+                    'class' => 'transport',
+                ],
             ])
             ->add('cg_itineraire', null, [
                 'label' => 'Itinéraire',
+                'attr' => [
+                    'class' => 'transport',
+                ],
             ])
             ->add('ct_zone_desserte_id', null, [
                 'label' => 'Zone desservie',
+                'attr' => [
+                    'class' => 'transport',
+                ],
             ])
             /* ->add('cg_puissance_admin', null, [
                 'label' => 'Puissance administré',

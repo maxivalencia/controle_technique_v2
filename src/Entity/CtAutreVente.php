@@ -53,7 +53,7 @@ class CtAutreVente
     private $ct_centre_id;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $auv_created_at;
 
@@ -151,12 +151,12 @@ class CtAutreVente
         return $this;
     }
 
-    public function getAuvCreatedAt(): ?\DateTimeImmutable
+    public function getAuvCreatedAt(): ?\DateTime
     {
         return $this->auv_created_at;
     }
 
-    public function setAuvCreatedAt(?\DateTimeImmutable $auv_created_at): self
+    public function setAuvCreatedAt(?\DateTime $auv_created_at): self
     {
         $this->auv_created_at = $auv_created_at;
 

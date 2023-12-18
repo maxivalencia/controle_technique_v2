@@ -5,6 +5,12 @@ namespace App\Form;
 use App\Entity\CtAnomalie;
 use App\Entity\CtVisite;
 use App\Entity\CtVisiteExtra;
+use App\Entity\CtUser;
+use App\Form\CtUserType;
+use App\Entity\CtRole;
+use App\Form\CtRoleType;
+use App\Repository\CtRoleRepository;
+use App\Repository\CtUserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,6 +22,7 @@ class CtVisiteVisiteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /* $user = $this->getUser(); */
         $builder            
             ->add('ct_centre_id', null, [
                 'label' => 'Centre',
@@ -34,7 +41,7 @@ class CtVisiteVisiteType extends AbstractType
                 'class' => CtAnomalie::class,
                 'multiple' => true,
                 'attr' => [
-                    'class' => 'multi',
+                    'class' => 'multi is_anomalie',
                     'multiple' => true,
                     'data-live-search' => true,
                     'data-select' => true,
@@ -48,8 +55,18 @@ class CtVisiteVisiteType extends AbstractType
                 ],
                 'data' => new \DateTime('now'),
             ])
-            ->add('ct_verificateur_id', null, [
+            ->add('ct_verificateur_id', EntityType::class, [
                 'label' => 'Vérificateur',
+                'class' => CtUser::class,
+                /* 'query_builder' => function(CtUserRepository $ctUserRepository){
+                    $qb = $ctUserRepository->createQueryBuilder('u');
+                    return $qb
+                        ->Where('u.ct_role_id = :val1')
+                        ->andWhere('u.ct_centre_id = :val2')
+                        ->setParameter('val1', 14)
+                        ->setParameter('val2', $this->getUser()->getCtCentreId())
+                    ;
+                } */
             ])
             ->add('vst_extra', EntityType::class, [
                 'label' => 'Extra',

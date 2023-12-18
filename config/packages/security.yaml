@@ -1,17 +1,18 @@
 security:
     role_hierarchy:
-        ROLE_VISITE : ROLE_USER
-        ROLE_RECEPTION : ROLE_USER
-        ROLE_CONSTATATION : ROLE_USER
-        ROLE_VERIFICATEUR : ROLE_USER
-        ROLE_APPROVISIONNEMENT : ROLE_USER
-        ROLE_REGISSEUR : ROLE_USER
-        ROLE_STAFF : ROLE_USER
+        ROLE_CONTROLE_TECHNIQUE : ROLE_USER
+        ROLE_VISITE : ROLE_CONTROLE_TECHNIQUE
+        ROLE_RECEPTION : ROLE_CONTROLE_TECHNIQUE
+        ROLE_CONSTATATION : ROLE_CONTROLE_TECHNIQUE
+        ROLE_VERIFICATEUR : ROLE_CONTROLE_TECHNIQUE
+        ROLE_APPROVISIONNEMENT : ROLE_CONTROLE_TECHNIQUE
+        ROLE_REGISSEUR : ROLE_CONTROLE_TECHNIQUE
+        ROLE_STAFF : ROLE_CONTROLE_TECHNIQUE
         ROLE_CONSTATATION_RECEPTION : [ROLE_CONSTATATION, ROLE_RECEPTION]
         ROLE_CONSTATATION_VISITE : [ROLE_CONSTATATION, ROLE_VISITE]
         ROLE_RECEPTION_VISITE : [ROLE_RECEPTION, ROLE_VISITE]
         ROLE_CONSTATATION_RECEPTION_VISITE : [ROLE_CONSTATATION, ROLE_RECEPTION, ROLE_VISITE]
-        ROLE_CHEF_DE_CENTRE : [ROLE_CONSTATATION, ROLE_RECEPTION, ROLE_VISITE, ROLE_REGISSEUR, ROLE_VERIFICATEUR]
+        ROLE_CHEF_DE_CENTRE : [ROLE_CONSTATATION_RECEPTION_VISITE, ROLE_REGISSEUR, ROLE_VERIFICATEUR]
         ROLE_ADMIN : [ROLE_CHEF_DE_CENTRE, ROLE_APPROVISIONNEMENT, ROLE_STAFF]
         ROLE_SUPER_ADMIN : [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
     enable_authenticator_manager: true
@@ -49,6 +50,59 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/ct_anomalie, roles: ROLE_ADMIN }
+        - { path: ^/ct_anomalie_type, roles: ROLE_ADMIN }
+        - { path: ^/ct_arrete_prix, roles: ROLE_ADMIN }
+        - { path: ^/ct_autre_tarif, roles: ROLE_ADMIN }
+        - { path: ^/ct_autre_vente, roles: ROLE_ADMIN }
+        - { path: ^/ct_bordereau, roles: ROLE_ADMIN }
+        - { path: ^/ct_carrosserie, roles: ROLE_ADMIN }
+        - { path: ^/ct_carte_grise, roles: ROLE_ADMIN }
+        - { path: ^/ct_centre, roles: ROLE_ADMIN }
+        - { path: ^/ct_const_av_ded_carac, roles: ROLE_ADMIN }
+        - { path: ^/ct_const_av_ded, roles: ROLE_ADMIN }
+        - { path: ^/ct_const_av_ded_type, roles: ROLE_ADMIN }
+        - { path: ^/ct_droit_ptac, roles: ROLE_ADMIN }
+        - { path: ^/ct_extra_vente, roles: ROLE_ADMIN }
+        - { path: ^/ct_genre_categorie, roles: ROLE_ADMIN }
+        - { path: ^/ct_genre, roles: ROLE_ADMIN }
+        - { path: ^/ct_genre_tarif, roles: ROLE_ADMIN }
+        - { path: ^/ct_historique, roles: ROLE_ADMIN }
+        - { path: ^/ct_historique_type, roles: ROLE_ADMIN }
+        - { path: ^/ct_imprime_tech, roles: ROLE_ADMIN }
+        - { path: ^/ct_imprime_tech_use, roles: ROLE_ADMIN }
+        - { path: ^/ct_marque, roles: ROLE_ADMIN }
+        - { path: ^/ct_motif, roles: ROLE_ADMIN }
+        - { path: ^/ct_motif_tarif, roles: ROLE_ADMIN }
+        - { path: ^/ct_photo, roles: ROLE_ADMIN }
+        - { path: ^/ct_proces_verbal, roles: ROLE_ADMIN }
+        - { path: ^/ct_province, roles: ROLE_ADMIN }
+        - { path: ^/ct_reception, roles: ROLE_ADMIN }
+        - { path: ^/ct_role, roles: ROLE_ADMIN }
+        - { path: ^/ct_source_energie, roles: ROLE_ADMIN }
+        - { path: ^/ct_type_droit_ptac, roles: ROLE_ADMIN }
+        - { path: ^/ct_type_usage, roles: ROLE_ADMIN }
+        - { path: ^/ct_type_visite, roles: ROLE_ADMIN }
+        - { path: ^/ct_type_reception, roles: ROLE_ADMIN }
+        - { path: ^/ct_usage, roles: ROLE_ADMIN }
+        - { path: ^/ct_usage_imprime_technique, roles: ROLE_ADMIN }
+        - { path: ^/ct_usage_tarif, roles: ROLE_ADMIN }
+        - { path: ^/ct_user, roles: ROLE_ADMIN }
+        - { path: ^/ct_utilisation, roles: ROLE_ADMIN }
+        - { path: ^/ct_vehicule, roles: ROLE_ADMIN }
+        - { path: ^/ct_visite, roles: ROLE_ADMIN }
+        - { path: ^/ct_visite_extra, roles: ROLE_ADMIN }
+        - { path: ^/ct_visite_extra_tarif, roles: ROLE_ADMIN }
+        - { path: ^/ct_zone_desserte, roles: ROLE_ADMIN }
+        - { path: ^/ct_app_administration, roles: ROLE_CONTROLE_TECHNIQUE }
+        - { path: ^/ct_app_constatation, roles: ROLE_CONTROLE_TECHNIQUE }
+        - { path: ^/ct_app_historique, roles: ROLE_CONTROLE_TECHNIQUE }
+        - { path: ^/ct_app_visite, roles: ROLE_CONTROLE_TECHNIQUE }
+        - { path: ^/ct_app_imprime_technique, roles: ROLE_CONTROLE_TECHNIQUE }
+        - { path: ^/ct_app_reception, roles: ROLE_CONTROLE_TECHNIQUE }
+        - { path: ^/ct_app_imprimable, roles: ROLE_CONTROLE_TECHNIQUE }
+        - { path: ^/ct_app_tableau_de_bord, roles: ROLE_CONTROLE_TECHNIQUE }
+        - { path: ^/ct_app_imprimable, roles: ROLE_CONTROLE_TECHNIQUE }
 
 when@test:
     security:

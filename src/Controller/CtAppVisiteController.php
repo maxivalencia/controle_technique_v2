@@ -7,14 +7,21 @@ use App\Entity\CtVisite;
 use App\Entity\CtCarteGrise;
 use App\Entity\CtCentre;
 use App\Entity\CtVehicule;
+use App\Entity\CtAnomalie;
+use App\Entity\CtUsage;
+use App\Entity\CtVisiteExtra;
 use App\Form\CtTypeVisiteType;
 use App\Entity\CtUser;
+use App\Entity\CtUtilisation;
 use App\Form\CtCarteGriseType;
+use App\Form\CtAnomalieType;
 use App\Form\CtCarteGriseType as FormCtCarteGriseType;
 use App\Repository\CtTypeVisiteRepository;
 use App\Repository\CtCarteGriseRepository;
 use App\Repository\CtVehiculeRepository;
+use App\Repository\CtUserRepository;
 use App\Form\CtRensCarteGriseType;
+use App\Form\CtVisiteCarteGriseType;
 use App\Form\CtRensVehiculeType;
 use App\Form\CtVehiculeType;
 use App\Form\CtVisiteVisiteType;
@@ -200,7 +207,7 @@ class CtAppVisiteController extends AbstractController
                 
                 $ctCarteGriseRepository->add($ctCarteGrise_new, true);
 
-                if($ctCarteGrise->getId() != null && $ctCarteGrise->getId() < $ctCarteGrise->getId()){
+                if($ctCarteGrise->getId() != null && $ctCarteGrise->getId() < $ctCarteGrise_new->getId()){
                     $ctCarteGrise->setCgIsActive(false);
 
                     $ctCarteGriseRepository->add($ctCarteGrise, true);
@@ -227,6 +234,7 @@ class CtAppVisiteController extends AbstractController
     public function CreerVisite(Request $request, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
     {
         $ctVisite = new CtVisite();
+        $ctVisite_new = new CtVisite();
         $ctCarteGrise = new CtCarteGrise();
         $message = "";
         $enregistrement_ok = False;
@@ -237,14 +245,89 @@ class CtAppVisiteController extends AbstractController
         if($request->request->get('search-numero-serie')){
             $recherche = $request->request->get('search-numero-serie');
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"], ["cg_is_active" => true]);
+            if($vehicule_id != null){
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"], ["cg_is_active" => true]);
+            }
         }
         if($request->request->get('ssearch-identification')){
             $recherche = $request->request->get('search-identification');
             $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"], ["cg_is_active" => true]);
         }
-        $ctVisite->setCtCarteGriseId($ctCarteGrise);
-        $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
+        
+        if($ctCarteGrise != null){
+            $ctVisite->setCtCarteGriseId($ctCarteGrise);
+        }
+        //$ctVisite->setCtCarteGriseId($ctCarteGrise);
+        // $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
+        $form_visite = $this->createFormBuilder()            
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Centre',
+                'class' => CtCentre::class,
+            ])
+            ->add('ct_type_visite_id', EntityType::class, [
+                'label' => 'Type de visite',
+                'class' => CtTypeVisite::class,
+            ])
+            ->add('ct_usage_id', EntityType::class, [
+                'label' => 'Usage',
+                'class' => CtUsage::class,
+            ])
+            ->add('ct_utilisation_id', EntityType::class, [
+                'label' => 'Utilisation',
+                'class' => CtUtilisation::class,
+            ])
+            ->add('vst_anomalie_id', EntityType::class, [
+                'label' => 'Anomalies',
+                'class' => CtAnomalie::class,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'multi is_anomalie',
+                    'multiple' => true,
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->add('vst_date_expiration', DateType::class, [
+                'label' => 'Date d\'expiration',
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'datetimepicker',
+                ],
+                'data' => new \DateTime('now'),
+            ])
+            ->add('ct_verificateur_id', EntityType::class, [
+                'label' => 'Vérificateur',
+                'class' => CtUser::class,
+                'query_builder' => function(CtUserRepository $ctUserRepository){
+                    $qb = $ctUserRepository->createQueryBuilder('u');
+                    return $qb
+                        ->Where('u.ct_role_id = :val1')
+                        ->andWhere('u.ct_centre_id = :val2')
+                        ->setParameter('val1', 14)
+                        ->setParameter('val2', $this->getUser()->getCtCentreId())
+                    ;
+                }
+            ])
+            ->add('vst_extra', EntityType::class, [
+                'label' => 'Extra',
+                'class' => CtVisiteExtra::class,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => true,
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->add('ct_carte_grise_id', CtVisiteCarteGriseType::class, [
+                'label' => 'Carte Grise',
+                'disabled' => true,
+            ])
+            ->add('vst_duree_reparation', TextType::class, [
+                'label' => 'Durée de reparation accordée',
+            ])
+            ->getForm();
+
         $form_visite->handleRequest($request);
         // eto mbola mila manao liste misy création des vérificateur izay vao ampidirina ao anatin'ilay form fiche vérificateur
         $form_feuille_de_caisse = $this->createFormBuilder()
@@ -260,8 +343,10 @@ class CtAppVisiteController extends AbstractController
             ->add('ct_type_visite_id', EntityType::class, [
                 'label' => 'Séléctionner le type de visite',
                 'class' => CtTypeVisite::class,
+                'multiple' => false,
                 'attr' => [
                     'class' => 'multi',
+                    'multiple' => false,
                     'style' => 'width:100%;',
                     'data-live-search' => true,
                     'data-select' => true,
@@ -270,8 +355,10 @@ class CtAppVisiteController extends AbstractController
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
                 'class' => CtCentre::class,
+                'multiple' => false,
                 'attr' => [
                     'class' => 'multi',
+                    'multiple' => false,
                     'style' => 'width:100%;',
                     'data-live-search' => true,
                     'data-select' => true,
@@ -292,8 +379,10 @@ class CtAppVisiteController extends AbstractController
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
                 'class' => CtCentre::class,
+                'multiple' => false,
                 'attr' => [
                     'class' => 'multi',
+                    'multiple' => false,
                     'style' => 'width:100%;',
                     'data-live-search' => true,
                     'data-select' => true,
@@ -301,9 +390,20 @@ class CtAppVisiteController extends AbstractController
             ])
             ->add('ct_type_visite_id', EntityType::class, [
                 'label' => 'Séléctionner verificateur',
-                'class' => CtTypeVisite::class,
+                'class' => CtUser::class,
+                'query_builder' => function(CtUserRepository $ctUserRepository){
+                    $qb = $ctUserRepository->createQueryBuilder('u');
+                    return $qb
+                        ->Where('u.ct_role_id = :val1')
+                        ->andWhere('u.ct_centre_id = :val2')
+                        ->setParameter('val1', 14)
+                        ->setParameter('val2', $this->getUser()->getCtCentreId())
+                    ;
+                },
+                'multiple' => false,
                 'attr' => [
                     'class' => 'multi',
+                    'multiple' => false,
                     'style' => 'width:100%;',
                     'data-live-search' => true,
                     'data-select' => true,
@@ -324,9 +424,11 @@ class CtAppVisiteController extends AbstractController
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
                 'class' => CtCentre::class,
+                'multiple' => false,
                 'attr' => [
                     'class' => 'multi',
                     'style' => 'width:100%;',
+                    'multiple' => false,
                     'data-live-search' => true,
                     'data-select' => true,
                 ],
@@ -337,31 +439,42 @@ class CtAppVisiteController extends AbstractController
         $form_liste_anomalies->handleRequest($request);
 
         if ($form_visite->isSubmitted() && $form_visite->isValid()) {
-            //$ctVisite->setCtCarteGriseId($ctVisite->);
-            $ctVisite->setCtCentreId($this->getUser()->getCtCentreId());
-            //$ctVisite->setCtTypeVisiteId$ctVisite->();
-            //$ctVisite->setCtUsageId($ctVisite->);
-            
-            $ctVisite->setCtUserId($this->getUser());
-            //$ctVisite->setCtVerificateurId($ctVisite->);
-            $ctVisite->setVstNumPv($ctVisite->getId().'/'.$ctVisite->getCtCentreId()->getCtProvinceId()->getPrvNom().'/'.$ctVisite->getCtTypeVisiteId().'/'.date("Y"));
-            $date = new \DateTime();
-            $date->modify('+'.$ctVisite->getCtUsageId()->getUsgValidite().' month');
-            $date = $date->format('Y-m-d');
-            $ctVisite->setVstDateExpiration($date);
-            $ctVisite->setVstNumFeuilleCaisse($date->format('d').'/'.$ctVisite->getCtCentreId()->getCtrNom().'/'.$ctVisite->getCtTypeVisiteId().'/'.date("Y"));
-            $ctVisite->setVstCreated(new \DateTime());
-            //$ctVisite->setVstUpdated($ctVisite->);
-            //$ctVisite->setCtUtilisationId($ctVisite->);
-            $anml = $ctVisite->getVstAnomalieId();
-            $ctVisite->setVstIsApte($anml->count()>0?true:false);
-            $ctVisite->setVstIsContreVisite(false);
-            //$ctVisite->setVstDureeReparation($ctVisite->);
-            $ctVisite->setVstIsActive(true);
-            $ctVisite->setVstGenere($ctVisite->getVstGenere() +1);
-            $ctVisite->setVstObservation($ctVisite->getVstObservation());
+            //$ctVisite_new = $ctVisite;
 
-            $ctVisiteRepository->add($ctVisite, true);
+            $ctVisite_new->setCtCarteGriseId($ctVisite->getCtCarteGriseId());
+            $ctVisite_new->setCtCentreId($this->getUser()->getCtCentreId());
+            $ctVisite_new->setCtTypeVisiteId($ctVisite->getCtCentreId());
+            $ctVisite_new->setCtUsageId($ctVisite->getCtUsageId());            
+            $ctVisite_new->setCtUserId($this->getUser());
+            $ctVisite_new->setCtVerificateurId($ctVisite->getCtVerificateurId());
+            //$ctVisite_new->setVstNumPv($ctVisite_new->getId().'/'.$ctVisite_new->getCtCentreId()->getCtProvinceId()->getPrvNom().'/'.$ctVisite_new->getCtTypeVisiteId().'/'.date("Y"));
+            $date = new \DateTime();
+            $date->modify('+'.$ctVisite_new->getCtUsageId()->getUsgValidite().' month');
+            $date = $date->format('Y-m-d');
+            $ctVisite_new->setVstDateExpiration($date);
+            $ctVisite_new->setVstNumFeuilleCaisse($date->format('d').'/'.$ctVisite_new->getCtCentreId()->getCtrNom().'/'.$ctVisite_new->getCtTypeVisiteId().'/'.date("Y"));
+            $ctVisite_new->setVstCreated($ctVisite->getVstCreated());
+            $ctVisite_new->setVstUpdated(new \DateTime());
+            $ctVisite_new->setCtUtilisationId($ctVisite->getCtUtilisationId());
+            $anml = $ctVisite_new->getVstAnomalieId();
+            $ctVisite_new->setVstIsApte($anml->count()>0?true:false);
+            $ctVisite_new->setVstIsContreVisite(false);
+            $ctVisite_new->setVstDureeReparation($ctVisite->getVstDureeReparation());
+            $ctVisite_new->setVstIsActive(true);
+            $ctVisite_new->setVstGenere($ctVisite->getVstGenere() + 1);
+            $ctVisite_new->setVstObservation($ctVisite->getVstObservation()." ");
+
+            $ctVisiteRepository->add($ctVisite_new, true);            
+            $ctVisite_new->setVstNumPv($ctVisite_new->getId().'/'.$ctVisite_new->getCtCentreId()->getCtProvinceId()->getPrvNom().'/'.$ctVisite_new->getCtTypeVisiteId().'/'.date("Y"));
+            $ctVisiteRepository->add($ctVisite_new, true);
+
+            if($ctVisite->getId() != null && $ctVisite->getId() < $ctVisite_new->getId()){
+                $ctVisite->setVstIsActive(false);
+                $ctVisite->setVstUpdated(new \DateTime());
+
+                $ctVisiteRepository->add($ctVisite, true);
+            }
+
             $message = "Visite ajouter avec succes";
             $enregistrement_ok = true;
         }
@@ -419,13 +532,104 @@ class CtAppVisiteController extends AbstractController
     /**
      * @Route("/contre_visite", name="app_ct_app_visite_contre_visite", methods={"GET", "POST"})
      */
-    public function ContreVisite(Request $request): Response
+    public function ContreVisite(Request $request, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
     {
+        $ctCarteGrise = new CtCarteGrise();
         $ctVisite = new CtVisite();
+        $ctVisite_contre = new CtVisite();
+        $message = "";
+        $message_indisponible_contre = "Pas de contre disponible pour ce véhicule";
+        $enregistrement_ok = False;
+        $contre = false;
+        $recherche_ok = false;
+        $is_transport = false;
+        if($request->request->get('search-immatriculation')){
+            $recherche = $request->request->get('search-immatriculation');
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"], ["cg_is_active" => true]);
+            $recherche_ok = true;
+        }
+        if($request->request->get('search-numero-serie')){
+            $recherche = $request->request->get('search-numero-serie');
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            if($vehicule_id != null){
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"], ["cg_is_active" => true]);
+            }
+            $recherche_ok = true;
+        }
+        if($request->request->get('ssearch-identification')){
+            $recherche = $request->request->get('search-identification');
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"], ["cg_is_active" => true]);
+            $recherche_ok = true;
+        }
+
+        if($ctCarteGrise != null){
+            $ctVisite_old = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"], ["cg_is_active" => true]);
+            if($ctVisite_old != null && $ctVisite_old->isVstIsActive() == true && $ctVisite_old->isVstIsContreVisite() == false){
+                $date = $ctVisite_old->getVstCreated();
+                $date->modify('+2 month');
+                //$date = $date->format('Y-m-d H:i:s');
+                if($ctVisite_old->getVstCreated() <= $date){
+                    $ctVisite = $ctVisite_old;
+                    $contre = true;
+                }else {
+                    $contre = false;
+                } 
+            }
+            $is_transport = $ctCarteGrise->isCgIsTransport();
+            $ctVisite->setCtCarteGriseId($ctCarteGrise);
+        }
         $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
         $form_visite->handleRequest($request);
+
+        if ($form_visite->isSubmitted() && $form_visite->isValid()) {
+            //$ctVisite_contre = $ctVisite;
+
+            $ctVisite_contre->setCtCarteGriseId($ctVisite->getCtCarteGriseId());
+            $ctVisite_contre->setCtCentreId($this->getUser()->getCtCentreId());
+            $ctVisite_contre->setCtTypeVisiteId($ctVisite->getCtCentreId());
+            $ctVisite_contre->setCtUsageId($ctVisite->getCtUsageId());            
+            $ctVisite_contre->setCtUserId($this->getUser());
+            $ctVisite_contre->setCtVerificateurId($ctVisite->getCtVerificateurId());
+            //$ctVisite_contre->setVstNumPv($ctVisite_contre->getId().'/'.$ctVisite_contre->getCtCentreId()->getCtProvinceId()->getPrvNom().'/'.$ctVisite_contre->getCtTypeVisiteId().'/'.date("Y"));
+            $date = new \DateTime();
+            $date->modify('+'.$ctVisite_contre->getCtUsageId()->getUsgValidite().' month');
+            $date = $date->format('Y-m-d');
+            $ctVisite_contre->setVstDateExpiration($date);
+            $ctVisite_contre->setVstNumFeuilleCaisse($date->format('d').'/'.$ctVisite_contre->getCtCentreId()->getCtrNom().'/'.$ctVisite_contre->getCtTypeVisiteId().'/'.date("Y"));
+            $ctVisite_contre->setVstCreated($ctVisite->getVstCreated());
+            $ctVisite_contre->setVstUpdated(new \DateTime());
+            $ctVisite_contre->setCtUtilisationId($ctVisite->getCtUtilisationId());
+            $anml = $ctVisite_contre->getVstAnomalieId();
+            $ctVisite_contre->setVstIsApte($anml->count()>0?true:false);
+            $ctVisite_contre->setVstIsContreVisite(true);
+            $ctVisite_contre->setVstDureeReparation($ctVisite->getVstDureeReparation());
+            $ctVisite_contre->setVstIsActive(true);
+            $ctVisite_contre->setVstGenere($ctVisite->getVstGenere() + 1);
+            $ctVisite_contre->setVstObservation($ctVisite->getVstObservation()." CONTRE DU ID : ".$ctVisite->getId());
+
+            $ctVisiteRepository->add($ctVisite_contre, true);
+            $ctVisite_contre->setVstNumPv($ctVisite_contre->getId().'/'.$ctVisite_contre->getCtCentreId()->getCtProvinceId()->getPrvNom().'/'.$ctVisite_contre->getCtTypeVisiteId().'/'.date("Y"));        
+            $ctVisiteRepository->add($ctVisite_contre, true);
+            
+            /* if($ctVisite->getId() != null && $ctVisite->getId() < $ctVisite_contre->getId()){
+                $ctVisite->setVstIsActive(false);
+                $ctVisite->setVstUpdated(new \DateTime());
+
+                $ctVisiteRepository->add($ctVisite, true);
+            } */
+            $message = "Contre ajouter avec succes";
+            $enregistrement_ok = true;
+        }
+
         return $this->render('ct_app_visite/contre_visite.html.twig', [
             'form_visite' => $form_visite->createView(),
+            'message' => $message,
+            'enregistrement_ok' => $enregistrement_ok,
+            'contre_ok' => $contre,
+            'recherche_ok' => $recherche_ok,
+            'message_indisponible_contre' => $message_indisponible_contre,
+            'carte_grise' => $ctCarteGrise,
+            'is_transport' => $is_transport,
         ]);
     }
 }

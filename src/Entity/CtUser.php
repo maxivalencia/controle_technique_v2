@@ -120,12 +120,12 @@ class CtUser implements UserInterface, PasswordAuthenticatedUserInterface
     private $usr_adresse;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $usr_created_at;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $usr_updated_at;
 
@@ -638,24 +638,24 @@ class CtUser implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getUsrCreatedAt(): ?\DateTimeImmutable
+    public function getUsrCreatedAt(): ?\DateTime
     {
         return $this->usr_created_at;
     }
 
-    public function setUsrCreatedAt(?\DateTimeImmutable $usr_created_at): self
+    public function setUsrCreatedAt(?\DateTime $usr_created_at): self
     {
         $this->usr_created_at = $usr_created_at;
 
         return $this;
     }
 
-    public function getUsrUpdatedAt(): ?\DateTimeImmutable
+    public function getUsrUpdatedAt(): ?\DateTime
     {
         return $this->usr_updated_at;
     }
 
-    public function setUsrUpdatedAt(?\DateTimeImmutable $usr_updated_at): self
+    public function setUsrUpdatedAt(?\DateTime $usr_updated_at): self
     {
         $this->usr_updated_at = $usr_updated_at;
 

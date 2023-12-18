@@ -66,7 +66,7 @@
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item">
-                        <span style="align:center;color:white;margin-top:20px;padding-top:20px;margin-left:50px;"><strong>Centre DGSR</strong></span>
+                        <span style="align:center;color:white;margin-top:20px;padding-top:20px;margin-left:50px;"><strong>Centre {{ app.user.ctCentreId.ctrNom }}</strong></span>
                     </li>
                 </ul>
 
@@ -91,7 +91,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#" style="padding:0px;margin:0px">
                             <span style="align:center;">
-                                <span style="align:center;color:white;"><strong>Bienvenue Utilisateur</strong></span>
+                                <span style="align:center;color:white;"><strong>Bienvenue {{ app.user.username }}</strong></span>
                                 <img class="animation__shake" src="/avatar/avatar_neutre_cercle.png" alt="Photo utilisateur" height="35" width="35">
                                 <!-- <i class="fas fa-angle-left right"></i> -->
                             </span>

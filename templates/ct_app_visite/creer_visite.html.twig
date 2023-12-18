@@ -78,6 +78,20 @@
     </div>
 </div>
 
+{# à mettre ici un message flash quand l'information véhicule n'existe pas #}
+{% if enregistrement_ok is not empty or enregistrement_ok is not null %}
+    {% if enregistrement_ok == true %}
+        <div style="text-align:center;align:center;color:white;background-color:green">
+            {{ message }}
+        </div>
+    {% endif %}
+    {% if enregistrement_ok == false %}
+        <div style="text-align:center;align:center;color:white;background-color:red">
+            {{ message }}
+        </div>
+    {% endif %}
+{% endif %}
+
 {{ form_start(form_visite) }}
     {# {{ form_widget(form_carte_grise.ct_vehicule_id) }} #}
     <table class="table bordure" style="width:100%;">
@@ -96,13 +110,17 @@
                             {{ form_row(form_visite.ct_carte_grise_id.cg_adresse) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_phone) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_commune) }}
+                            <hr>
                             {{ form_row(form_visite.ct_carte_grise_id.cg_is_transport) }}
+                            <div class="sitransport">
                             {{ form_row(form_visite.ct_carte_grise_id.cg_nom_cooperative) }}  
                             {{ form_row(form_visite.ct_carte_grise_id.cg_itineraire) }}   
                             {{ form_row(form_visite.ct_carte_grise_id.cg_num_vignette) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_lieu_vignette) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_date_vignette) }} 
                             {{ form_row(form_visite.ct_carte_grise_id.ct_zone_desserte_id) }}
+                            </div>
+                            <hr>
                             {{ form_row(form_visite.ct_carte_grise_id.cg_num_carte_violette) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_lieu_carte_violette) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_date_carte_violette) }}
@@ -130,13 +148,15 @@
                 
                 <td style="width:50%;">
                     <div class="box">
-                        <div class="entete-formulaire">Information véhicule</div><hr>
+                        <div class="entete-formulaire">Information visite technique</div><hr>
                             {{ form_row(form_visite.ct_centre_id) }}
                             {{ form_row(form_visite.ct_type_visite_id) }}
                             {{ form_row(form_visite.ct_usage_id) }}
                             {{ form_row(form_visite.ct_utilisation_id) }}
                             {{ form_row(form_visite.vst_anomalie_id) }}
+                            <div class="duree">
                             {{ form_row(form_visite.vst_duree_reparation) }}
+                            </div>
                             {{ form_row(form_visite.vst_date_expiration) }}
                             {{ form_row(form_visite.ct_verificateur_id) }}
                             {{ form_row(form_visite.vst_extra) }}
