@@ -3,12 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\CtConstAvDedType;
+use App\Entity\CtCentre;
+use App\Entity\CtUser;
 use App\Form\CtConstAvDedTypeType;
 use App\Repository\CtConstAvDedTypeRepository;
+use App\Repository\CtUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 /**
  * @Route("/ct_app_constatation")
@@ -24,7 +32,7 @@ class CtAppConstatationController extends AbstractController
             'controller_name' => 'CtAppConstatationController',
         ]);
     }
-    
+
     /**
      * @Route("/liste_type", name="app_ct_app_constatation_liste_type", methods={"GET"})
      */
@@ -35,7 +43,7 @@ class CtAppConstatationController extends AbstractController
             'total' => count($ctConstAvDedTypeRepository->findAll()),
         ]);
     }
-    
+
     /**
      * @Route("/creer_type", name="app_ct_app_constatation_creer_type", methods={"GET", "POST"})
      */
@@ -56,7 +64,7 @@ class CtAppConstatationController extends AbstractController
             'form' => $form,
         ]);
     }
-    
+
     /**
      * @Route("/voir_type/{id}", name="app_ct_app_constatation_voir_type", methods={"GET"})
      */
@@ -66,7 +74,7 @@ class CtAppConstatationController extends AbstractController
             'ct_const_av_ded_type' => $ctConstAvDedType,
         ]);
     }
-    
+
     /**
      * @Route("/edit_type/{id}", name="app_ct_app_constatation_edit_type", methods={"GET", "POST"})
      */
@@ -95,5 +103,88 @@ class CtAppConstatationController extends AbstractController
         $ctConstAvDedTypeRepository->remove($ctConstAvDedType, true);
 
         return $this->redirectToRoute('app_ct_app_constatation_liste_type', [], Response::HTTP_SEE_OTHER);
+    }
+
+    /**
+     * @Route("/creer_constatation_avant_dedouanement", name="app_ct_app_constatation_creer_constatation_avant_dedouanement", methods={"GET", "POST"})
+     */
+    public function creerConstataionAvantDedouanement(Request $request): Response
+    {
+        
+        $form_feuille_de_caisse = $this->createFormBuilder()
+            ->add('date', DateType::class, [
+                'label' => 'Séléctionner la date',
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'datetimepicker',
+                    'style' => 'width:100%;',
+                ],
+                'data' => new \DateTime('now'),
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_feuille_de_caisse->handleRequest($request);
+
+        $form_fiche_controle = $this->createFormBuilder()
+            ->add('date', DateType::class, [
+                'label' => 'Séléctionner la date',
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'datetimepicker',
+                    'style' => 'width:100%;',
+                ],
+                'data' => new \DateTime('now'),
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->add('ct_user_id', EntityType::class, [
+                'label' => 'Séléctionner verificateur',
+                'class' => CtUser::class,
+                'query_builder' => function(CtUserRepository $ctUserRepository){
+                    $qb = $ctUserRepository->createQueryBuilder('u');
+                    return $qb
+                        ->Where('u.ct_role_id = :val1')
+                        ->andWhere('u.ct_centre_id = :val2')
+                        ->setParameter('val1', 14)
+                        ->setParameter('val2', $this->getUser()->getCtCentreId())
+                    ;
+                },
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_fiche_controle->handleRequest($request);
+
+        return $this->render('ct_app_constatation/creer_constatation.html.twig', [
+            'form_feuille_de_caisse' => $form_feuille_de_caisse->createView(),
+            'form_fiche_controle' => $form_fiche_controle->createView(),
+        ]);
     }
 }

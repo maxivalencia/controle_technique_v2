@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Création réception isolé{% endblock %}
+{% block title %}Création réception par type{% endblock %}
 
 {% block app_ct %}
 <div class="box">
-    <div class="box-header">CREATION RECEPTION ISOLE</div><br>
+    <div class="box-header">CREATION RECEPTION PAR TYPE : VEHICULE {{ vehicule_encours }} SUR {{ total_vehicule }}</div><br>
 </div>
 {{ form_start(form_reception) }}
     <table class="table bordure" style="width:100%;">
@@ -40,6 +40,8 @@
                         {{ form_row(form_reception.rcp_ngr_debout) }}
                         {{ form_row(form_reception.rcp_mise_service) }}
                         {{ form_row(form_reception.ct_verificateur_id) }}
+                        <input type="hidden" id="total_vehicule" name="total_vehicule" value="{{ total_vehicule }}">
+                        <input type="hidden" id="vehicule_encours" name="vehicule_encours" value="{{ vehicule_encours }}">
                     </div>
                 </td>
             </tr>

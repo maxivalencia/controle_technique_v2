@@ -11,7 +11,7 @@
         <tr>
             <td style="width:50%;">
                 <div class="box">
-                    <div class="entete-formulaire">Nouvelle réception</div><hr>                     
+                    <div class="entete-formulaire">Nouvelle réception</div><hr>
                     {{ form_start(form_nouvelle_reception) }}
                         {{ form_row(form_nouvelle_reception.ct_type_reception_id) }}
                     {{ form_end(form_nouvelle_reception) }}
@@ -19,10 +19,10 @@
                         <a href="{{ path('app_ct_app_reception_creer_reception_isole') }}" class="btn btn-success">Créer</a>
                     </div>
                     <div class="par_type">
-                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="#">
+                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_reception_creer_reception_par_type') }}">
                             <strong>Nombre de véhicule :</strong><br>
                             <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
-                            <input type="number" min="1" name="nombre_vehicule" id="nombre_vehicule" class="form-control" placeholder="nombre de véhicule..."><br>
+                            <input type="number" min="1" name="nombre_vehicule" id="nombre_vehicule" class="form-control" value="1" placeholder="nombre de véhicule..." required><br>
                             <button class="btn btn-success" type="submit">
                                 Créer
                             </button>
@@ -32,7 +32,7 @@
             </td>
             <td style="width:50%;">
                 <div class="box">
-                    <div class="entete-formulaire">Bilan</div><hr>                        
+                    <div class="entete-formulaire">Bilan</div><hr>
                     {{ form_start(form_bilan) }}
                         {{ form_row(form_bilan.ct_type_reception_id) }}
                         {{ form_row(form_bilan.date) }}
@@ -55,5 +55,5 @@
             </td>
         </tr>
     </tbody>
-</table> 
+</table>
 {% endblock %}

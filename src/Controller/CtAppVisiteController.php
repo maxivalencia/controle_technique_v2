@@ -54,7 +54,7 @@ class CtAppVisiteController extends AbstractController
             'controller_name' => 'CtAppVisiteController',
         ]);
     }
-    
+
     /**
      * @Route("/liste_type", name="app_ct_app_visite_liste_type", methods={"GET"})
      */
@@ -65,7 +65,7 @@ class CtAppVisiteController extends AbstractController
             'total' => count($ctTypeVisiteRepository->findAll()),
         ]);
     }
-    
+
     /**
      * @Route("/creer_type", name="app_ct_app_visite_creer_type", methods={"GET", "POST"})
      */
@@ -86,7 +86,7 @@ class CtAppVisiteController extends AbstractController
             'form' => $form,
         ]);
     }
-    
+
     /**
      * @Route("/voir_type/{id}", name="app_ct_app_visite_voir_type", methods={"GET"})
      */
@@ -96,7 +96,7 @@ class CtAppVisiteController extends AbstractController
             'ct_type_visite' => $ctTypeVisite,
         ]);
     }
-    
+
     /**
      * @Route("/edit_type/{id}", name="app_ct_app_visite_edit_type", methods={"GET", "POST"})
      */
@@ -152,7 +152,7 @@ class CtAppVisiteController extends AbstractController
         $form_carte_grise->handleRequest($request);
         $message = "";
         $enregistrement_ok = False;
-        
+
         if ($form_carte_grise->isSubmitted() && $form_carte_grise->isValid()) {
             try{
                 $ctVehicule->setCtGenreId($ctCarteGrise->getCtVehiculeId()->getCtGenreId());
@@ -166,7 +166,7 @@ class CtAppVisiteController extends AbstractController
                 $ctVehicule->setVhcCreated(new \DateTime());
                 $ctVehicule->setVhcType($ctCarteGrise->getCtVehiculeId()->getVhcType());
                 $ctVehicule->setVhcPoidsTotalCharge($ctCarteGrise->getCtVehiculeId()->getVhcPoidsVide() + $ctCarteGrise->getCtVehiculeId()->getVhcChargeUtile());
-                
+
                 $ctVehiculeRepository->add($ctVehicule, true);
 
                 $ctCarteGrise_new->setCtCarrosserieId($ctCarteGrise->getCtCarrosserieId());
@@ -204,7 +204,7 @@ class CtAppVisiteController extends AbstractController
                 $ctCarteGrise_new->setCgObservation($ctCarteGrise->getCgObservation());
                 $ctCarteGrise_new->setCgCommune($ctCarteGrise->getCgCommune());
                 $ctCarteGrise_new->setCtVehiculeId($ctVehicule);
-                
+
                 $ctCarteGriseRepository->add($ctCarteGrise_new, true);
 
                 if($ctCarteGrise->getId() != null && $ctCarteGrise->getId() < $ctCarteGrise_new->getId()){
@@ -222,7 +222,7 @@ class CtAppVisiteController extends AbstractController
         }
         return $this->render('ct_app_visite/renseignement_vehicule.html.twig', [
             'ct_carte_grise' => $ctCarteGrise,
-            'form_carte_grise' => $form_carte_grise->createView(),  
+            'form_carte_grise' => $form_carte_grise->createView(),
             'message' => $message,
             'enregistrement_ok' => $enregistrement_ok,
         ]);
@@ -253,13 +253,13 @@ class CtAppVisiteController extends AbstractController
             $recherche = $request->request->get('search-identification');
             $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"], ["cg_is_active" => true]);
         }
-        
+
         if($ctCarteGrise != null){
             $ctVisite->setCtCarteGriseId($ctCarteGrise);
         }
         //$ctVisite->setCtCarteGriseId($ctCarteGrise);
         // $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
-        $form_visite = $this->createFormBuilder($ctVisite)            
+        $form_visite = $this->createFormBuilder($ctVisite)
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Centre',
                 'class' => CtCentre::class,
@@ -365,7 +365,7 @@ class CtAppVisiteController extends AbstractController
                 ],
             ])
             ->getForm();
-            
+
         $form_fiche_verificateur = $this->createFormBuilder()
             ->add('date', DateType::class, [
                 'label' => 'Séléctionner la date',
@@ -410,7 +410,7 @@ class CtAppVisiteController extends AbstractController
                 ],
             ])
             ->getForm();
-            
+
         $form_liste_anomalies = $this->createFormBuilder()
             ->add('date', DateType::class, [
                 'label' => 'Séléctionner la date',
@@ -444,15 +444,16 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_new->setCtCarteGriseId($ctVisite->getCtCarteGriseId());
             $ctVisite_new->setCtCentreId($this->getUser()->getCtCentreId());
             $ctVisite_new->setCtTypeVisiteId($ctVisite->getCtCentreId());
-            $ctVisite_new->setCtUsageId($ctVisite->getCtUsageId());            
+            $ctVisite_new->setCtUsageId($ctVisite->getCtUsageId());
             $ctVisite_new->setCtUserId($this->getUser());
             $ctVisite_new->setCtVerificateurId($ctVisite->getCtVerificateurId());
             //$ctVisite_new->setVstNumPv($ctVisite_new->getId().'/'.$ctVisite_new->getCtCentreId()->getCtProvinceId()->getPrvNom().'/'.$ctVisite_new->getCtTypeVisiteId().'/'.date("Y"));
+            $date_expiration = new \DateTime();
+            $date_expiration->modify('+'.$ctVisite->getCtUsageId()->getUsgValidite().' month');
+            //$date_expiration = $date_expiration->format('Y-m-d');
+            $ctVisite_new->setVstDateExpiration($date_expiration);
             $date = new \DateTime();
-            $date->modify('+'.$ctVisite_new->getCtUsageId()->getUsgValidite().' month');
-            $date = $date->format('Y-m-d');
-            $ctVisite_new->setVstDateExpiration($date);
-            $ctVisite_new->setVstNumFeuilleCaisse($date->format('d').'/'.$ctVisite_new->getCtCentreId()->getCtrNom().'/'.$ctVisite_new->getCtTypeVisiteId().'/'.date("Y"));
+            $ctVisite_new->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$ctVisite->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.date("Y"));
             $ctVisite_new->setVstCreated($ctVisite->getVstCreated());
             $ctVisite_new->setVstUpdated(new \DateTime());
             $ctVisite_new->setCtUtilisationId($ctVisite->getCtUtilisationId());
@@ -461,11 +462,11 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_new->setVstIsContreVisite(false);
             $ctVisite_new->setVstDureeReparation($ctVisite->getVstDureeReparation());
             $ctVisite_new->setVstIsActive(true);
-            $ctVisite_new->setVstGenere($ctVisite->getVstGenere() + 1);
+            $ctVisite_new->setVstGenere($ctVisite->getVstGenere());
             $ctVisite_new->setVstObservation($ctVisite->getVstObservation()." ");
 
-            $ctVisiteRepository->add($ctVisite_new, true);            
-            $ctVisite_new->setVstNumPv($ctVisite_new->getId().'/'.$ctVisite_new->getCtCentreId()->getCtProvinceId()->getPrvNom().'/'.$ctVisite_new->getCtTypeVisiteId().'/'.date("Y"));
+            $ctVisiteRepository->add($ctVisite_new, true);
+            $ctVisite_new->setVstNumPv($ctVisite_new->getId().'/'.$ctVisite->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId().'/'.$ctVisite->getCtTypeVisiteId().'/'.date("Y"));
             $ctVisiteRepository->add($ctVisite_new, true);
 
             if($ctVisite->getId() != null && $ctVisite->getId() < $ctVisite_new->getId()){
@@ -477,13 +478,15 @@ class CtAppVisiteController extends AbstractController
 
             $message = "Visite ajouter avec succes";
             $enregistrement_ok = true;
+
+            // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
         }
 
         return $this->render('ct_app_visite/creer_visite.html.twig', [
             'form_feuille_de_caisse' => $form_feuille_de_caisse->createView(),
             'form_fiche_verificateur' => $form_fiche_verificateur->createView(),
             'form_liste_anomalies' => $form_liste_anomalies->createView(),
-            'form_visite' => $form_visite->createView(), 
+            'form_visite' => $form_visite->createView(),
             'message' => $message,
             'enregistrement_ok' => $enregistrement_ok,
         ]);
@@ -579,7 +582,7 @@ class CtAppVisiteController extends AbstractController
             $ctVisite->setCtCarteGriseId($ctCarteGrise);
         }
         //$form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
-        $form_visite = $this->createFormBuilder($ctVisite)            
+        $form_visite = $this->createFormBuilder($ctVisite)
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Centre',
                 'class' => CtCentre::class,
@@ -660,11 +663,12 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_contre->setCtUserId($this->getUser());
             $ctVisite_contre->setCtVerificateurId($ctVisite->getCtVerificateurId());
             //$ctVisite_contre->setVstNumPv($ctVisite_contre->getId().'/'.$ctVisite_contre->getCtCentreId()->getCtProvinceId()->getPrvNom().'/'.$ctVisite_contre->getCtTypeVisiteId().'/'.date("Y"));
+            $date_expiration = new \DateTime();
+            $date_expiration->modify('+'.$ctVisite->getCtUsageId()->getUsgValidite().' month');
+            //$date_expiration = $date_expiration->format('Y-m-d');
+            $ctVisite_contre->setVstDateExpiration($date_expiration);
             $date = new \DateTime();
-            $date->modify('+'.$ctVisite_contre->getCtUsageId()->getUsgValidite().' month');
-            $date = $date->format('Y-m-d');
-            $ctVisite_contre->setVstDateExpiration($date);
-            $ctVisite_contre->setVstNumFeuilleCaisse($date->format('d').'/'.$ctVisite_contre->getCtCentreId()->getCtrNom().'/'.$ctVisite_contre->getCtTypeVisiteId().'/'.date("Y"));
+            $ctVisite_contre->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$ctVisite->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.date("Y"));
             $ctVisite_contre->setVstCreated($ctVisite->getVstCreated());
             $ctVisite_contre->setVstUpdated(new \DateTime());
             $ctVisite_contre->setCtUtilisationId($ctVisite->getCtUtilisationId());
@@ -677,9 +681,9 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_contre->setVstObservation($ctVisite->getVstObservation()." CONTRE DU ID : ".$ctVisite->getId());
 
             $ctVisiteRepository->add($ctVisite_contre, true);
-            $ctVisite_contre->setVstNumPv($ctVisite_contre->getId().'/'.$ctVisite_contre->getCtCentreId()->getCtProvinceId()->getPrvNom().'/'.$ctVisite_contre->getCtTypeVisiteId().'/'.date("Y"));        
+            $ctVisite_contre->setVstNumPv($ctVisite_contre->getId().'/'.$ctVisite->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId().'/'.$ctVisite->getCtTypeVisiteId().'/'.date("Y"));        
             $ctVisiteRepository->add($ctVisite_contre, true);
-            
+
             /* if($ctVisite->getId() != null && $ctVisite->getId() < $ctVisite_contre->getId()){
                 $ctVisite->setVstIsActive(false);
                 $ctVisite->setVstUpdated(new \DateTime());
@@ -688,6 +692,8 @@ class CtAppVisiteController extends AbstractController
             } */
             $message = "Contre ajouter avec succes";
             $enregistrement_ok = true;
+
+            // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
         }
 
         return $this->render('ct_app_visite/contre_visite.html.twig', [

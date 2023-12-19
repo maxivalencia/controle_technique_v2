@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création constatation avant dédouanement{% endblock %}
+
+{% block app_ct %}
+<div class="box">
+    <div class="box-header">CREATION CONSTATATION AVANT DEDOUANEMENT</div><br>
+</div>
+<table class="table bordure" style="width:100%;">
+    <tbody>
+        <tr>
+            <td style="width:50%;">
+                <div class="box">
+                    <div class="entete-formulaire">Feuille de caisse</div><hr>
+                    {{ form_start(form_feuille_de_caisse) }}
+                        {{ form_row(form_feuille_de_caisse.date) }}
+                        {{ form_row(form_feuille_de_caisse.ct_centre_id) }}
+                        <br><br>
+                        <button class="btn btn-success" type="submit">
+                            Générer
+                        </button>
+                    {{ form_end(form_feuille_de_caisse) }}
+                </div>
+            </td>
+            <td style="width:50%;">
+                <div class="box">
+                    <div class="entete-formulaire">Fiche de contrôle</div><hr>
+                    {{ form_start(form_fiche_controle) }}
+                        {{ form_row(form_fiche_controle.date) }}
+                        {{ form_row(form_fiche_controle.ct_centre_id) }}
+                        {{ form_row(form_fiche_controle.ct_user_id) }}
+                        <button class="btn btn-success" type="submit">
+                            Générer
+                        </button>
+                    {{ form_end(form_fiche_controle) }}
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="box">
+    <div style="text-align:center;font-size:28px;"><strong>Caractéristique du véhicule</strong></div><br>
+</div>
+{{ form_start(form_fiche_controle) }}
+    <table class="table bordure" style="width:100%;">
+        <tbody>
+            <tr>
+                <td style="width:33%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Note descriptive</div>
+                    </div>
+                </td>
+                <td style="width:33%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Carte grise</div>
+                    </div>
+                </td>
+                <td style="width:33%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Corps du véhicule</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3" style="width:100%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Information constatation</div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="box">
+        <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+    </div>
+{{ form_end(form_fiche_controle) }}
+{% endblock %}
