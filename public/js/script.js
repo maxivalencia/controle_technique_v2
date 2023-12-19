@@ -18,6 +18,18 @@ $( ".is_anomalie" ).on( "change", function() {
     }
 } );
 
+// pour modifier l'option de recéption après sélection du type de réception
+$( ".reception_type" ).on( "change", function() {
+    if( $('.reception_type option:selected').text() == "PAR TYPE" ){
+        $(".par_type").attr("style","display: block;");
+        $(".isole").attr("style","display: none;");
+    }
+    if( $('.reception_type option:selected').text() == "ISOLE" ){
+        $(".isole").attr("style","display: block;");
+        $(".par_type").attr("style","display: none;");
+    }
+} );
+
 // pour cacher et afficher les options après chargement de la page
 $( document ).ready(function() {
     if( $('.istransport option:selected').text() == "Oui" ){
@@ -32,5 +44,14 @@ $( document ).ready(function() {
     }
     else{
         $(".duree").attr("style","display: none;");
+    }
+    
+    if( $('.reception_type option:selected').text() == "PAR TYPE" ){
+        $(".par_type").attr("style","display: block;");
+        $(".isole").attr("style","display: none;");
+    }
+    if( $('.reception_type option:selected').text() == "ISOLE" ){
+        $(".isole").attr("style","display: block;");
+        $(".par_type").attr("style","display: none;");
     }
 });
