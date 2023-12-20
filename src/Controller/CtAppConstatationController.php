@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\CtConstAvDedType;
 use App\Entity\CtCentre;
 use App\Entity\CtConstAvDed;
+use App\Entity\CtConstAvDedCarac;
 use App\Entity\CtUser;
 use App\Form\CtConstAvDedTypeType;
 use App\Form\CtConstatationCaracType;
@@ -283,15 +284,18 @@ class CtAppConstatationController extends AbstractController
                 'choices' => $environnement,
                 'data' => false,
             ])
-            ->add('ct_const_av_ded_carac_note_descriptive', CtConstatationCaracType::class, [
+            /* ->add('ct_const_av_ded_carac', CtConstatationCaracType::class, [
                 'label' => 'Note descriptive',
-            ])
-            ->add('ct_const_av_ded_carac_carte_grise', CtConstatationCaracType::class, [
+                'class' => CtConstAvDedCarac::class,
+            ]) */
+            /* ->add('ct_const_av_ded_carac', CtConstatationCaracType::class, [
                 'label' => 'Carte grise',
+                'class' => CtConstAvDedCarac::class,
             ])
-            ->add('ct_const_av_ded_carac_corps_vehicule', CtConstatationCaracType::class, [
+            ->add('ct_const_av_ded_carac', CtConstatationCaracType::class, [
                 'label' => 'Corp du véhicule',
-            ])
+                'class' => CtConstAvDedCarac::class,
+            ]) */
             ->getForm();
 
             if ($form_constatation->isSubmitted() && $form_constatation->isValid()) {
