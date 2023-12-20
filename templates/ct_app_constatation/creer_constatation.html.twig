@@ -41,23 +41,74 @@
 <div class="box">
     <div style="text-align:center;font-size:28px;"><strong>Caractéristique du véhicule</strong></div><br>
 </div>
-{{ form_start(form_fiche_controle) }}
+{{ form_start(form_constatation) }}
     <table class="table bordure" style="width:100%;">
         <tbody>
             <tr>
                 <td style="width:33%;">
                     <div class="box">
                         <div class="entete-formulaire">Note descriptive</div>
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_premiere_circule) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.ct_genre_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.ct_marque_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_type_car) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_num_serie_type) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_num_moteur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.ct_source_energie_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_cylindre) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_puissance) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.ct_carrosserie_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_nbr_assis) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_largeur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_hauteur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_longueur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_charge_utile) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_poids_vide) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_note_descriptive.cad_poids_total_charge) }}
                     </div>
                 </td>
                 <td style="width:33%;">
                     <div class="box">
                         <div class="entete-formulaire">Carte grise</div>
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_premiere_circule) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.ct_genre_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.ct_marque_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_type_car) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_num_serie_type) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_num_moteur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.ct_source_energie_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_cylindre) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_puissance) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.ct_carrosserie_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_nbr_assis) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_largeur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_hauteur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_longueur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_charge_utile) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_poids_vide) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_carte_grise.cad_poids_total_charge) }}
                     </div>
                 </td>
                 <td style="width:33%;">
                     <div class="box">
                         <div class="entete-formulaire">Corps du véhicule</div>
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_premiere_circule) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.ct_genre_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.ct_marque_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_type_car) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_num_serie_type) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_num_moteur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.ct_source_energie_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_cylindre) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_puissance) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.ct_carrosserie_id) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_nbr_assis) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_largeur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_hauteur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_longueur) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_charge_utile) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_poids_vide) }}
+                        {{ form_row(form_constatation.ct_const_av_ded_carac_corps_vehicule.cad_poids_total_charge) }}
                     </div>
                 </td>
             </tr>
@@ -65,6 +116,20 @@
                 <td colspan="3" style="width:100%;">
                     <div class="box">
                         <div class="entete-formulaire">Information constatation</div>
+                        {{ form_row(form_constatation.ct_verificateur_id) }}
+                        {{ form_row(form_constatation.cad_immatriculation) }}
+                        {{ form_row(form_constatation.cad_provenance) }}
+                        {{ form_row(form_constatation.cad_date_embarquement) }}
+                        {{ form_row(form_constatation.cad_lieu_embarquement) }}
+                        {{ form_row(form_constatation.cad_proprietaire_nom) }}
+                        {{ form_row(form_constatation.cad_proprietaire_adresse) }}
+                        {{ form_row(form_constatation.cad_divers) }}
+                        {{ form_row(form_constatation.cad_observation) }}
+                        {{ form_row(form_constatation.cad_conforme) }}
+                        {{ form_row(form_constatation.cad_bon_etat) }}
+                        {{ form_row(form_constatation.cad_sec_pers) }}
+                        {{ form_row(form_constatation.cad_sec_march) }}
+                        {{ form_row(form_constatation.cad_protec_env) }}
                     </div>
                 </td>
             </tr>
@@ -73,5 +138,5 @@
     <div class="box">
         <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
     </div>
-{{ form_end(form_fiche_controle) }}
+{{ form_end(form_constatation) }}
 {% endblock %}

@@ -13,7 +13,7 @@ class CtConstAvDedCaracType extends AbstractType
     {
         $builder
             ->add('cad_cylindre', null, [
-                'label' => 'Cylindre',
+                'label' => 'Cylindrée',
             ])
             ->add('cad_puissance', null, [
                 'label' => 'Puissance administré',
