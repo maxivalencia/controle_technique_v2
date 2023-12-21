@@ -454,7 +454,7 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setRcpObservation($ctReception->getRcpObservation()." ");
 
             $ctReceptionRepository->add($ctReception_new, true);
-            $ctReception_new->setRcpNumPv($ctReception->getId().'CENSERO/'.$ctReception->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ctReception->getId().'RECEP/'.date("Y"));
+            $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$ctReception->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ctReception->getId().'RECEP/'.date("Y"));
             $ctReceptionRepository->add($ctReception_new, true);
 
             $message = "Visite ajouter avec succes";
