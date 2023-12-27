@@ -116,7 +116,7 @@ class CtAppConstatationController extends AbstractController
     /**
      * @Route("/creer_constatation_avant_dedouanement", name="app_ct_app_constatation_creer_constatation_avant_dedouanement", methods={"GET", "POST"})
      */
-    public function creerConstataionAvantDedouanement(Request $request, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository): Response
+    public function CreerConstataionAvantDedouanement(Request $request, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository): Response
     {
         $etat = [
             'Oui' => true,
@@ -391,15 +391,24 @@ class CtAppConstatationController extends AbstractController
                 $ctConstatation_new->setCadLieuEmbarquement($ctConstatation->getCadLieuEmbarquement());
                 $ctConstatation_new->setCadObservation($ctConstatation->getCadObservation());
                 $ctConstatation_new->setCadConforme($ctConstatation->isCadConforme());
+                $ctConstatation_new->addCtConstAvDedCarac($ctConstAvDedCarac_noteDescriptive);
+                $ctConstatation_new->addCtConstAvDedCarac($ctConstAvDedCarac_carteGrise);
+                $ctConstatation_new->addCtConstAvDedCarac($ctConstAvDedCarac_corpsDuVehicule);
                 //$ctConstatation_new->addCtConstAvDedCarac();
 
                 $ctConstAvDedRepository->add($ctConstatation_new, true);
                 $ctConstatation_new->setCadNumero($ctConstatation_new->getId().'/'.'CENSERO/'.$ctReception->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ctReception->getId().'CONST/'.date("Y"));
                 $ctConstAvDedRepository->add($ctConstatation_new, true);
 
-                $message = "Visite ajouter avec succes";
+                if($ctConstatation->getId() != null && $ctConstatation->getId() < $ctConstatation_new->getId()){
+                    $ctConstatation->setCadIsActive(false);
+
+                    $ctConstAvDedRepository->add($ctRctConstatationeception, true);
+                }
+
+                $message = "Constatation ajouter avec succes";
                 $enregistrement_ok = true;
-    
+
                 // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
             }
 
@@ -407,6 +416,20 @@ class CtAppConstatationController extends AbstractController
             'form_feuille_de_caisse' => $form_feuille_de_caisse->createView(),
             'form_fiche_controle' => $form_fiche_controle->createView(),
             'form_constatation' => $form_constatation->createView(),
+            'message' => $message,
+            'enregistrement_ok' => $enregistrement_ok,
+        ]);
+    }
+
+    /**
+     * @Route("/liste_constatation_avant_dedouanement", name="app_ct_app_constatation_liste_constatation_avant_dedouanement", methods={"GET", "POST"})
+     */
+    public function ListeConstatationAvantDedouanement(CtConstAvDedRepository $ctConstAvDedRepository): Response
+    {
+        $ctConstatations = $ctConstAvDedRepository->findBy(["ct_centre_id" => $this->getUser()->getCtCentreId()], ["id" => "DESC"]);
+        return $this->render('ct_app_constatation/liste_constatation.html.twig', [
+            'ct_const_av_deds' => $ctConstatations,
+            'total' => count($ctConstatations),
         ]);
     }
 }

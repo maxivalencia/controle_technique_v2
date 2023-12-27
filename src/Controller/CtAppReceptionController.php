@@ -287,7 +287,7 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setRcpNumPv($ctReception->getId().'CENSERO/'.$ctReception->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ctReception->getId().'RECEP/'.date("Y"));
             $ctReceptionRepository->add($ctReception_new, true);
 
-            $message = "Visite ajouter avec succes";
+            $message = "Réception ajouter avec succes";
             $enregistrement_ok = true;
 
             // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
@@ -457,7 +457,13 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$ctReception->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ctReception->getId().'RECEP/'.date("Y"));
             $ctReceptionRepository->add($ctReception_new, true);
 
-            $message = "Visite ajouter avec succes";
+            if($ctReception->getId() != null && $ctReception->getId() < $ctReception_new->getId()){
+                $ctReception->setRcpIsActive(false);
+
+                $ctReceptionRepository->add($ctReception, true);
+            }
+
+            $message = "Réception ajouter avec succes";
             $enregistrement_ok = true;
 
             // assiana redirection mandeha amin'ny générer rehefa vita ilay izy

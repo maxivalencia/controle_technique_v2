@@ -1,3 +1,6 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+#app_ct_app_constatation_liste_constatation_avant_dedouanement:
+#    path: /ct_app_constatation/liste_constatation_avant_dedouanement
+#    controller: App\Controller\CtAppConstatationController::ListeConstatationAvantDedouanement

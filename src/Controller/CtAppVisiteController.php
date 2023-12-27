@@ -684,12 +684,12 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_contre->setVstNumPv($ctVisite_contre->getId().'/'.$ctVisite->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId().'/'.$ctVisite->getCtTypeVisiteId().'/'.date("Y"));        
             $ctVisiteRepository->add($ctVisite_contre, true);
 
-            /* if($ctVisite->getId() != null && $ctVisite->getId() < $ctVisite_contre->getId()){
+            if($ctVisite->getId() != null && $ctVisite->getId() < $ctVisite_contre->getId()){
                 $ctVisite->setVstIsActive(false);
                 $ctVisite->setVstUpdated(new \DateTime());
 
                 $ctVisiteRepository->add($ctVisite, true);
-            } */
+            }
             $message = "Contre ajouter avec succes";
             $enregistrement_ok = true;
 
