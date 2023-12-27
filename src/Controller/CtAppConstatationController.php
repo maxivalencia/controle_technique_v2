@@ -143,6 +143,8 @@ class CtAppConstatationController extends AbstractController
         $ctConstAvDedCarac_noteDescriptive = new CtConstAvDedCarac();
         $ctConstAvDedCarac_carteGrise = new CtConstAvDedCarac();
         $ctConstAvDedCarac_corpsDuVehicule = new CtConstAvDedCarac();
+        $message = "";
+        $enregistrement_ok = False;
         $form_feuille_de_caisse = $this->createFormBuilder()
             ->add('date', DateType::class, [
                 'label' => 'Séléctionner la date',

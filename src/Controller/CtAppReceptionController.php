@@ -43,7 +43,7 @@ class CtAppReceptionController extends AbstractController
             'controller_name' => 'CtAppReceptionController',
         ]);
     }
-    
+
     /**
      * @Route("/liste_type", name="app_ct_app_reception_liste_type", methods={"GET"})
      */
@@ -54,7 +54,7 @@ class CtAppReceptionController extends AbstractController
             'total' => count($ctTypeReceptionRepository->findAll()),
         ]);
     }
-    
+
     /**
      * @Route("/creer_type", name="app_ct_app_reception_creer_type", methods={"GET", "POST"})
      */
@@ -75,7 +75,7 @@ class CtAppReceptionController extends AbstractController
             'form' => $form,
         ]);
     }
-    
+
     /**
      * @Route("/voir_type/{id}", name="app_ct_app_reception_voir_type", methods={"GET"})
      */
@@ -85,7 +85,7 @@ class CtAppReceptionController extends AbstractController
             'ct_type_reception' => $ctTypeReception,
         ]);
     }
-    
+
     /**
      * @Route("/edit_type/{id}", name="app_ct_app_reception_edit_type", methods={"GET", "POST"})
      */
@@ -121,7 +121,7 @@ class CtAppReceptionController extends AbstractController
      */
     public function CreerReception(Request $request): Response
     {
-            
+
         $form_bilan = $this->createFormBuilder()
             ->add('ct_type_reception_id', EntityType::class, [
                 'label' => 'Séléctionner le type de réception',
@@ -144,7 +144,7 @@ class CtAppReceptionController extends AbstractController
                 ],
                 'data' => new \DateTime('now'),
             ])
-            ->getForm();   
+            ->getForm();
         $form_bilan->handleRequest($request);
 
         $form_nouvelle_reception = $this->createFormBuilder()
@@ -162,7 +162,7 @@ class CtAppReceptionController extends AbstractController
             ])
             ->getForm();
         $form_nouvelle_reception->handleRequest($request);
-        
+
         return $this->render('ct_app_reception/creer_reception.html.twig', [
             'form_bilan' => $form_bilan->createView(),
             'form_nouvelle_reception' => $form_nouvelle_reception->createView(),
@@ -174,13 +174,13 @@ class CtAppReceptionController extends AbstractController
     public function CreerReceptionIsole(Request $request, CtReceptionRepository $ctReceptionRepository, CtVehiculeRepository $ctVehiculeRepository): Response
     {
         $ctReception = new CtReception();
-        $ctVehicule = new CtVehicule();        
+        $ctVehicule = new CtVehicule();
         $ctReception_new = new CtReception();
         $message = "";
         $enregistrement_ok = False;
 
         //$form_reception = $this->createForm(CtReceptionReceptionType::class, $ct_reception);
-        $form_reception = $this->createFormBuilder($ctReception)  
+        $form_reception = $this->createFormBuilder($ctReception)
             ->add('ct_utilisation_id', EntityType::class, [
                 'label' => 'Utilisation',
                 'class' => CtUtilisation::class,
@@ -334,7 +334,7 @@ class CtAppReceptionController extends AbstractController
             $total_vehicule = (int)$request->request->get('total_vehicule');
         }
         if($request->query->get('nombre_vehicule')){
-            $total_vehicule = (int)$request->query->get('nombre_vehicule');
+            $vehicule_encours = (int)$request->query->get('nombre_vehicule') + 1;
         }
         if($request->request->get('vehicule_encours')){
             $vehicule_encours = (int)$request->request->get('vehicule_encours') + 1;
@@ -474,6 +474,26 @@ class CtAppReceptionController extends AbstractController
             'enregistrement_ok' => $enregistrement_ok,
             'total_vehicule' => $total_vehicule,
             'vehicule_encours' => $vehicule_encours,
+        ]);
+    }
+
+    /**
+     * @Route("/recherche_reception_duplicata", name="app_ct_app_reception_recherche_reception_duplicata", methods={"GET", "POST"})
+     */
+    public function RechercheReceptionDuplicata(): Response
+    {
+        return $this->render('ct_app_reception/index.html.twig', [
+            'controller_name' => 'CtAppReceptionController',
+        ]);
+    }
+
+    /**
+     * @Route("/recherche_reception_modification", name="app_ct_app_reception_recherche_reception_modification", methods={"GET", "POST"})
+     */
+    public function RechercheReceptionModification(): Response
+    {
+        return $this->render('ct_app_reception/index.html.twig', [
+            'controller_name' => 'CtAppReceptionController',
         ]);
     }
 }
