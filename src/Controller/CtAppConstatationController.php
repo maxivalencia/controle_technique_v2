@@ -719,12 +719,15 @@ class CtAppConstatationController extends AbstractController
                     'data-live-search' => true,
                     'data-select' => true,
                 ],
+                'disabled' => true,
             ])
             ->add('cad_immatriculation', TextType::class, [
                 'label' => 'Immatriculation',
+                'disabled' => true,
             ])
             ->add('cad_provenance', TextType::class, [
                 'label' => 'Provenance',
+                'disabled' => true,
             ])
             ->add('cad_date_embarquement', DateType::class, [
                 'label' => 'Data d\'embarquement',
@@ -733,59 +736,73 @@ class CtAppConstatationController extends AbstractController
                     'class' => 'datetimepicker',
                 ],
                 'data' => new \DateTime('now'),
+                'disabled' => true,
             ])
             ->add('cad_lieu_embarquement', TextType::class, [
                 'label' => 'Lieu d\'embarquement',
+                'disabled' => true,
             ])
             ->add('cad_proprietaire_nom', TextType::class, [
                 'label' => 'Propriétaire',
+                'disabled' => true,
             ])
             ->add('cad_proprietaire_adresse', TextType::class, [
                 'label' => 'Adresse',
+                'disabled' => true,
             ])
             ->add('cad_divers', TextType::class, [
                 'label' => 'Divers',
+                'disabled' => true,
             ])
             ->add('cad_observation', TextType::class, [
                 'label' => 'Observation',
+                'disabled' => true,
             ])
             ->add('cad_conforme', ChoiceType::class, [
                 'label' => 'Est-conforme',
                 'choices' => $conforme,
                 'data' => false,
+                'disabled' => true,
             ])
             ->add('cad_bon_etat', ChoiceType::class, [
                 'label' => 'Bon état',
                 'choices' => $etat,
                 'data' => false,
+                'disabled' => true,
             ])
             ->add('cad_sec_pers', ChoiceType::class, [
                 'label' => 'Sécurité des personnes',
                 'choices' => $personne,
                 'data' => false,
+                'disabled' => true,
             ])
             ->add('cad_sec_march', ChoiceType::class, [
                 'label' => 'Sécurité des marchandises',
                 'choices' => $marchandise,
                 'data' => false,
+                'disabled' => true,
             ])
             ->add('cad_protec_env', ChoiceType::class, [
                 'label' => 'Protection de l\'environnement',
                 'choices' => $environnement,
                 'data' => false,
+                'disabled' => true,
             ])
             /* ->add('ct_const_av_ded_carac_note_descriptive', new CtConstatationCaracType()) */
             ->add('ct_const_av_ded_carac_note_descriptive', CtConstatationCaracType::class, [
                 'label' => 'Note descriptive',
                 'mapped' => false,
+                'disabled' => true,
             ])
             ->add('ct_const_av_ded_carac_carte_grise', CtConstatationCaracType::class, [
                 'label' => 'Carte grise',
                 'mapped' => false,
+                'disabled' => true,
             ])
             ->add('ct_const_av_ded_carac_corps_vehicule', CtConstatationCaracType::class, [
                 'label' => 'Corp du véhicule',
                 'mapped' => false,
+                'disabled' => true,
             ])
             ->getForm();
 
