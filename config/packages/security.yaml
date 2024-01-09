@@ -119,9 +119,12 @@ when@test:
             # are not important, waste resources and increase test times. The following
             # reduces the work factor to the lowest possible values.
             Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
-                #algorithm: auto
-                algorithm: bcrypt
-                #cost: 4 # Lowest possible value for bcrypt
-                cost: 13 # Lowest possible value for bcrypt
+                algorithm: auto
+                #algorithm: sodium
+                cost: 4 # Lowest possible value for bcrypt
+                #cost: 13 # Lowest possible value for bcrypt
                 time_cost: 3 # Lowest possible value for argon
                 memory_cost: 10 # Lowest possible value for argon
+                migrate_from:
+                    - bcrypt # uses the "bcrypt" encoder with the default options
+                    - legacy # uses the "legacy" encoder configured above
