@@ -127,4 +127,4 @@ when@test:
                 memory_cost: 10 # Lowest possible value for argon
                 migrate_from:
                     - bcrypt # uses the "bcrypt" encoder with the default options
-                    - legacy # uses the "legacy" encoder configured above
+                    #- legacy # uses the "legacy" encoder configured above

@@ -727,18 +727,25 @@ def RecuperationTableCtUser():
                 lst_row[10] = datetime.datetime.now().strftime("%Y-%d-%m %H:%M:%S")
             if("ROLE_SUPERADMIN" in lst_row[6]):
                 lst_row[6] = '["ROLE_ADMIN"]'
+                lst_row[13] = 2
             if("ROLE_ADMIN" in lst_row[6]):
                 lst_row[6] = '["ROLE_CHEF_DE_CENTRE"]'
+                lst_row[13] = 22
             if("ROLE_VERIFICATEUR" in lst_row[6]):
                 lst_row[6] = '["ROLE_VERIFICATEUR"]'
+                lst_row[13] = 3
             if("ROLE_APPROVISIONNEMENT" in lst_row[6]):
                 lst_row[6] = '["ROLE_APPROVISIONNEMENT"]'
+                lst_row[13] = 7
             if("ROLE_STAFF" in lst_row[6]):
                 lst_row[6] = '["ROLE_STAFF"]'
+                lst_row[13] = 6
             if("ROLE_RECEPTION" in lst_row[6]):
                 lst_row[6] = '["ROLE_CONSTATATION_RECEPTION"]'
+                lst_row[13] = 11
             if("ROLE_VISITE" in lst_row[6]):
                 lst_row[6] = '["ROLE_VISITE"]'
+                lst_row[13] = 5
             row = tuple(lst_row)
             if(i > 0):
                 f.write(",") 
@@ -1218,7 +1225,7 @@ def RecuperationTableCtRole():
         f.write('/*!40000 ALTER TABLE ' + table_name + ' DISABLE KEYS */;\n')
         f.write("INSERT IGNORE INTO " + table_name + " (`id`, `role_name`) VALUES")
         i = 0
-        rows = [(1, "SUPER_ADMIN"), (2, "ADMIN"), (3, "VERIFICATEUR"), (4, "RECEPTION"), (5, "VISITE"), (6, "STAFF"), (7, "APPROVISIONNEMENT"), (8, "REGISSEUR"), (9, "CONTROLE_TECHNIQUE"), (10, "CONSTATATION"), (11, "CONSTATATION_RECEPTION"), (12, "CONSTATATION_VISITE"), (13, "RECEPTION_VISITE"), (14, "CONSTATATION_RECEPTION_VISITE"), (15, "REGISSEUR_CONSTATATION"), (16, "REGISSEUR_RECEPTION"), (17, "REGISSEUR_VISITE"), (18, "REGISSEUR_CONSTATATION_RECEPTION"), (19, "REGISSEUR_CONSTATATION_VISITE"), (20, "REGISSEUR_RECEPTION_VISITE"), (21, "REGISSEUR_CONSTATATION_RECEPTION_VISITE"), (22, "CHEF_DE_CENTREf"), (23, "USER")]
+        rows = [(1, "SUPER_ADMIN"), (2, "ADMIN"), (3, "VERIFICATEUR"), (4, "RECEPTION"), (5, "VISITE"), (6, "STAFF"), (7, "APPROVISIONNEMENT"), (8, "REGISSEUR"), (9, "CONTROLE_TECHNIQUE"), (10, "CONSTATATION"), (11, "CONSTATATION_RECEPTION"), (12, "CONSTATATION_VISITE"), (13, "RECEPTION_VISITE"), (14, "CONSTATATION_RECEPTION_VISITE"), (15, "REGISSEUR_CONSTATATION"), (16, "REGISSEUR_RECEPTION"), (17, "REGISSEUR_VISITE"), (18, "REGISSEUR_CONSTATATION_RECEPTION"), (19, "REGISSEUR_CONSTATATION_VISITE"), (20, "REGISSEUR_RECEPTION_VISITE"), (21, "REGISSEUR_CONSTATATION_RECEPTION_VISITE"), (22, "CHEF_DE_CENTRE"), (23, "USER")]
         for row in rows:
             #lst_row = list(row)
             #lst_row[0] = 1

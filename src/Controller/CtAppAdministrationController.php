@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Route("/ct_app_administration")
@@ -34,8 +35,9 @@ class CtAppAdministrationController extends AbstractController
      */
     public function ListeVerificateur(CtUserRepository $ctUserRepository, CtRoleRepository $ctRoleRepository): Response
     {
-        $role = $ctRoleRepository->findOneBy(['role_name' => 'VERIFICATEUR']);
-        $liste = $ctUserRepository->findBy(['ct_role_id' => $role]);
+        /* $role = $ctRoleRepository->findOneBy(['role_name' => 'VERIFICATEUR']);
+        $liste = $ctUserRepository->findBy(['ct_role_id' => $role]); */
+        $liste = $ctUserRepository->findByVerificateur();
         return $this->render('ct_app_administration/liste_verificateur.html.twig', [
             'ct_users' => $liste,
         ]);
@@ -46,8 +48,12 @@ class CtAppAdministrationController extends AbstractController
      */
     public function ListeSecretaire(CtUserRepository $ctUserRepository, CtRoleRepository $ctRoleRepository): Response
     {
-        $roles = $ctRoleRepository->findOneBy(['role_name' => ['CONSTATATION', 'RECEPTION', 'VISITE']]);
-        $liste = $ctUserRepository->findBy(['ct_role_id' => $roles]);
+        //$roles = $ctRoleRepository->findOneBy(['role_name' => ['CONSTATATION', 'RECEPTION', 'VISITE']]);
+        //$secretaire = new ArrayCollection();
+        //$roles = $ctRoleRepository->findOneBy(['role_name' => 'VISITE']);
+        //$liste = $ctUserRepository->findBy(['ct_role_id' => $roles]);
+        $liste = $ctUserRepository->findBySecretaire();
+        //$secretaire->add($liste);
         return $this->render('ct_app_administration/liste_secretaire.html.twig', [
             'ct_users' => $liste,
         ]);
@@ -58,8 +64,9 @@ class CtAppAdministrationController extends AbstractController
      */
     public function ListeChefDeCentre(CtUserRepository $ctUserRepository, CtRoleRepository $ctRoleRepository): Response
     {
-        $role = $ctRoleRepository->findOneBy(['role_name' => 'CHEF_DE_CENTRE']);
-        $liste = $ctUserRepository->findBy(['ct_role_id' => $role]);
+        /* $role = $ctRoleRepository->findOneBy(['role_name' => 'CHEF_DE_CENTRE']);
+        $liste = $ctUserRepository->findBy(['ct_role_id' => $role]); */
+        $liste = $ctUserRepository->findByChefDeCentre();
         return $this->render('ct_app_administration/liste_chef_de_centre.html.twig', [
             'ct_users' => $liste,
         ]);
@@ -70,8 +77,9 @@ class CtAppAdministrationController extends AbstractController
      */
     public function ListeRegisseur(CtUserRepository $ctUserRepository, CtRoleRepository $ctRoleRepository): Response
     {
-        $role = $ctRoleRepository->findOneBy(['role_name' => 'REGISSEUR']);
-        $liste = $ctUserRepository->findBy(['ct_role_id' => $role]);
+        /* $role = $ctRoleRepository->findOneBy(['role_name' => 'REGISSEUR']);
+        $liste = $ctUserRepository->findBy(['ct_role_id' => $role]); */
+        $liste = $ctUserRepository->findByRegisseur();
         return $this->render('ct_app_administration/liste_regisseur.html.twig', [
             'ct_users' => $liste,
         ]);

@@ -80,4 +80,92 @@ class CtUserRepository extends ServiceEntityRepository implements PasswordUpgrad
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * @return CtUser[] Returns an array of CtUser objects
+     */
+    public function findBySecretaire(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.ct_role_id = :val1')
+            ->orWhere('c.ct_role_id = :val2')
+            ->orWhere('c.ct_role_id = :val3')
+            ->orWhere('c.ct_role_id = :val4')
+            ->orWhere('c.ct_role_id = :val5')
+            ->orWhere('c.ct_role_id = :val6')
+            ->orWhere('c.ct_role_id = :val7')
+            ->setParameter('val1', 4)
+            ->setParameter('val2', 5)
+            ->setParameter('val3', 10)
+            ->setParameter('val4', 11)
+            ->setParameter('val5', 12)
+            ->setParameter('val6', 13)
+            ->setParameter('val7', 14)
+            ->orderBy('c.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return CtUser[] Returns an array of CtUser objects
+     */
+    public function findByRegisseur(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.ct_role_id = :val1')
+            ->orWhere('c.ct_role_id = :val2')
+            ->orWhere('c.ct_role_id = :val3')
+            ->orWhere('c.ct_role_id = :val4')
+            ->orWhere('c.ct_role_id = :val5')
+            ->orWhere('c.ct_role_id = :val6')
+            ->orWhere('c.ct_role_id = :val7')
+            ->orWhere('c.ct_role_id = :val8')
+            ->setParameter('val1', 8)
+            ->setParameter('val2', 15)
+            ->setParameter('val3', 16)
+            ->setParameter('val4', 17)
+            ->setParameter('val5', 18)
+            ->setParameter('val6', 19)
+            ->setParameter('val7', 20)
+            ->setParameter('val8', 21)
+            ->orderBy('c.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return CtUser[] Returns an array of CtUser objects
+     */
+    public function findByVerificateur(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.ct_role_id = :val1')
+            ->orWhere('c.ct_role_id = :val2')
+            ->setParameter('val1', 3)
+            ->setParameter('val2', 22)
+            ->orderBy('c.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return CtUser[] Returns an array of CtUser objects
+     */
+    public function findByChefDeCentre(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.ct_role_id = :val1')
+            ->setParameter('val2', 22)
+            ->orderBy('c.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
