@@ -34,17 +34,17 @@
                 <div class="box">
                     <div class="entete-formulaire">Bilan</div><hr>
                     {{ form_start(form_bilan) }}
-                        {{ form_row(form_bilan.ct_type_reception_id) }}
+                        {{ form_row(form_bilan.ct_type_reception_id, {'name' : 'type'}) }}
                         {{ form_row(form_bilan.date) }}
                         <table>
                             <tr>
                                 <td>
-                                    <button class="btn btn-success" type="button" style="float:right">
+                                    <button class="btn btn-success" type="submit" formaction="{{ path('app_ct_app_reception_creer_reception_par_type') }}" style="float:right">
                                         Feuille de caisse
                                     </button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-danger" type="button" style="float:right">
+                                    <button class="btn btn-danger" type="submit" formaction="{{ path('app_ct_app_imprimable_fiche_de_controle_reception') }}" style="float:right">
                                         Fiche de Contrôle
                                     </button>
                                 </td>

@@ -133,6 +133,7 @@ class CtAppReceptionController extends AbstractController
                     'multiple' => false,
                     'data-live-search' => true,
                     'data-select' => true,
+                    'data' => 2,
                 ],
             ])
             ->add('date', DateType::class, [
@@ -158,6 +159,7 @@ class CtAppReceptionController extends AbstractController
                     'multiple' => false,
                     'data-live-search' => true,
                     'data-select' => true,
+                    'data' => 2,
                 ],
             ])
             ->getForm();

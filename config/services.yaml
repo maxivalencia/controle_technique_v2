@@ -11,15 +11,14 @@ parameters:
     dossier_reception_isole: '%kernel.project_dir%/public/generated/reception/isole/'
     dossier_reception_par_type: '%kernel.project_dir%/public/generated/reception/par_type/'
     dossier_constatation: '%kernel.project_dir%/public/generated/constatation/'
-    dossier_feuille_de_caisse_visite: '%kernel.project_dir%/public/generated/feuilledecaisse/visite/'
-    dossier_feuille_de_caisse_reception: '%kernel.project_dir%/public/generated/feuilledecaisse/reception/'
-    dossier_feuille_de_caisse_constatation: '%kernel.project_dir%/public/generated/feuilledecaisse/constatation/'
-    dossier_fiche_de_controle_isole: '%kernel.project_dir%/public/generated/feuilledecaisse/isole/'
-    dossier_fiche_de_controle_par_type: '%kernel.project_dir%/public/generated/feuilledecaisse/partype/'
-    dossier_fiche_de_controle_constatation: '%kernel.project_dir%/public/generated/feuilledecaisse/constatation/'
-    dossier_fiche_verificateur: '%kernel.project_dir%/public/generated/feuilleverificateur/'
-    dossier_liste_anomalie: '%kernel.project_dir%/public/generated/listeanomalie/'
-    dossier_fiche_utilisation_imprime_technique: '%kernel.project_dir%/public/generated/ficheutilisationimprimetechnique/'
+    dossier_feuille_de_caisse_visite: '%kernel.project_dir%/public/generated/feuille_de_caisse/visite/'
+    dossier_feuille_de_caisse_reception: '%kernel.project_dir%/public/generated/feuille_de_caisse/reception/'
+    dossier_feuille_de_caisse_constatation: '%kernel.project_dir%/public/generated/feuille_de_caisse/constatation/'
+    dossier_fiche_de_controle_reception: '%kernel.project_dir%/public/generated/fiche_de_controle/reception'
+    dossier_fiche_de_controle_constatation: '%kernel.project_dir%/public/generated/fiche_de_controle/constatation/'
+    dossier_fiche_verificateur: '%kernel.project_dir%/public/generated/fiche_verificateur/'
+    dossier_liste_anomalie: '%kernel.project_dir%/public/generated/liste_anomalie/'
+    dossier_fiche_utilisation_imprime_technique: '%kernel.project_dir%/public/generated/fiche_utilisation_imprime_technique/'
 
 services:
     # default configuration for services in *this* file

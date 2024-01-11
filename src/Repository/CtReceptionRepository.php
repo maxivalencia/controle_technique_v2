@@ -63,4 +63,26 @@ class CtReceptionRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * @return CtHistoriqueType[] Returns an array of CtHistoriqueType objects
+     */
+    public function findByFicheDeControle($value1, $value2, $value3): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.ct_type_reception_id = :val1')
+            ->andWhere('c.ct_centre_id = :val2')
+            //->andWhere('c.rcp_created BETWEEN :val3 AND :val4')
+            ->andWhere('c.rcp_created LIKE :val3')
+            ->setParameter('val1', $value1)
+            ->setParameter('val2', $value2)
+            ->setParameter('val3', '%'.$value3->format('Y-d-m').'%')
+            //->setParameter('val3', $value3->format('Y-d-m').' 00:00:00')
+            //->setParameter('val4', $value3->format('Y-d-m').' 23:59:59')
+            ->orderBy('c.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
