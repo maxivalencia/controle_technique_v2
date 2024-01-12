@@ -49,6 +49,7 @@ class CtAppImprimableController extends AbstractController
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
         $pdfOptions->setIsRemoteEnabled(true);
+        $pdfOptions->setIsPhpEnabled(true);
         $pdfOptions->set('defaultFont', 'Arial');
         $dompdf = new Dompdf($pdfOptions);
 
@@ -64,8 +65,8 @@ class CtAppImprimableController extends AbstractController
         }
 
         //$liste_receptions = $ctReceptionRepository->findBy(["ct_type_reception_id" => $type_reception_id, "ct_centre_id" => $this->getUser()->getCtCentreId(), "rcp_created" => $date_of_reception], ["id" => "DESC"]);
-        $liste_receptions = $ctReceptionRepository->findBy(["rcp_created" => $date_of_reception], ["id" => "DESC"]);
-        //$liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $this->getUser()->getCtCentreId(), $date_of_reception);
+        //$liste_receptions = $ctReceptionRepository->findBy(["rcp_created" => $date_of_reception], ["id" => "DESC"]);
+        $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $this->getUser()->getCtCentreId(), $date_of_reception);
 
         $html = $this->renderView('ct_app_imprimable/fiche_de_controle_reception.html.twig', [
             'logo' => $logo,
@@ -80,7 +81,7 @@ class CtAppImprimableController extends AbstractController
         $dompdf->loadHtml($html);
         /* $dompdf->setPaper('A4', 'portrait'); */
         $dompdf->setPaper('A4', 'landscape');
-        $dompdf->set_option("isPhpEnabled", true);
+        //$dompdf->set_option("isPhpEnabled", true);
         //$dompdf->setOptions("isPhpEnabled", true);
         $dompdf->render();
         $output = $dompdf->output();
