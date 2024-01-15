@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CtReceptionRepository;
+use App\Repository\CtAutreRepository;
 use App\Repository\CtTypeReceptionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,6 +59,7 @@ class CtAppImprimableController extends AbstractController
         //$logo_data = base64_encode(file_get_contents($logo));
         //$logo_src = 'data:image/png;base64,'.$logo_data;
         $logo = file_get_contents($this->getParameter('logo').'logo.txt');
+        // teste date, comparaison avant utilisation rcp_num_group
 
         $dossier = $this->getParameter('dossier_fiche_de_controle_reception')."/".$type_reception."/".$this->getUser()->getCtCentreId()->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
         if (!file_exists($dossier)) {
@@ -88,7 +90,7 @@ class CtAppImprimableController extends AbstractController
         $filename = "Fiche_De_Controle_".$type_reception."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
         $dompdf->stream("Fiche_De_Controle_".$type_reception."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
-            "Attachment" => false,
+            "Attachment" => true,
         ]);
     }
 }

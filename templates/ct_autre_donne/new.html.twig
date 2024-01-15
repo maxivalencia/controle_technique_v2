@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter Autre Donnée{% endblock %}
+
+{% block body %}
+    <div class="box-header">Ajouter Autre Donnée</div><br>
+
+    {{ include('ct_autre_donne/_form.html.twig') }}
+            </td>
+            <td style="width:150px;">
+    <a href="{{ path('app_ct_autre_donne_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+</td>
+</tr>
+</tbody>
+</table>
+{% endblock %}

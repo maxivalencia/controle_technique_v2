@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Autre Donnée{% endblock %}
+
+{% block body %}
+    <div class="box-header">Autre Donnée</div><br>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_autre.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ ct_autre.nom }}</td>
+            </tr>
+            <tr>
+                <th>Attribut</th>
+                <td>{{ ct_autre.attribut }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+	<table class="table" style="width:450px;">
+        <tbody>
+            <tr>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_autre_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+                </td>
+                <td style="width:150px;">
+                    <a href="{{ path('app_ct_autre_edit', {'id': ct_autre.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td>
+                <td style="width:150px;">
+                    {{ include('ct_autre/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

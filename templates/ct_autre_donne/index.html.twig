@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Autres Données{% endblock %}
+
+{% block body %}
+    <div class="box-header">Liste des Autres Données</div><br>
+
+    <table class="table liste">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Attribut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_autre_donne in ct_autre_donnes %}
+            <tr>
+                <td>{{ ct_autre_donne.id }}</td>
+                <td>{{ ct_autre_donne.nom }}</td>
+                <td>{{ ct_autre_donne.attribut }}</td>
+                <td>
+                    <a href="{{ path('app_ct_autre_donne_show', {'id': ct_autre_donne.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                    <a href="{{ path('app_ct_autre_donne_edit', {'id': ct_autre_donne.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ct_autre_donne_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+{% endblock %}
