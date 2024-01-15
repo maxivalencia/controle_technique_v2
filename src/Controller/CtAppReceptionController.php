@@ -454,7 +454,7 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setCtCarrosserieId($ctReception->getCtCarrosserieId());
             $date = new \DateTime();
             //$date = $date->format('Y-m-d');
-            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$ctReception->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.date("Y"));
+            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$ctReception->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.$date->format("Y"));
             $ctReception_new->setRcpCreated(new \DateTime());
             $ctReception_new->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
             $ctReception_new->setRcpIsActive(true);
@@ -627,7 +627,7 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setCtCarrosserieId($ctReception->getCtCarrosserieId());
             $date = new \DateTime();
             //$date = $date->format('Y-m-d');
-            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$ctReception->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.date("Y"));
+            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$ctReception->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.$date->format("Y"));
             $ctReception_new->setRcpCreated(new \DateTime());
             $ctReception_new->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
             $ctReception_new->setRcpIsActive(true);
@@ -770,7 +770,7 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setCtCarrosserieId($ctReception->getCtCarrosserieId());
             $date = new \DateTime();
             //$date = $date->format('Y-m-d');
-            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$ctReception->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.date("Y"));
+            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$ctReception->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.$date->format("Y"));
             $ctReception_new->setRcpCreated(new \DateTime());
             $ctReception_new->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
             $ctReception_new->setRcpIsActive(true);

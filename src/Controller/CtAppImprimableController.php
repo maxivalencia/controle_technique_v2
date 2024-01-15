@@ -59,13 +59,22 @@ class CtAppImprimableController extends AbstractController
         //$logo_data = base64_encode(file_get_contents($logo));
         //$logo_src = 'data:image/png;base64,'.$logo_data;
         $logo = file_get_contents($this->getParameter('logo').'logo.txt');
-        // teste date, comparaison avant utilisation rcp_num_group
 
         $dossier = $this->getParameter('dossier_fiche_de_controle_reception')."/".$type_reception."/".$this->getUser()->getCtCentreId()->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
         if (!file_exists($dossier)) {
             mkdir($dossier, 0777, true);
         }
 
+        // teste date, comparaison avant utilisation rcp_num_group
+        /* $ctAutreRepository = new CtAutreRepository();
+        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        $dateDeploiement = $deploiement->getAttribut();
+        if(new \DateTime($dateDeploiement) <= $date_of_reception){
+
+        }else{
+            $nomGroup = $date_of_reception->format('d').'/'.$date_of_reception->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$type_reception.'/'.$date->format("Y");
+            $liste_receptions = $ctReceptionRepository->findBy(["rcp_num_group" => $nomGroup,"rcp_is_active" => true]);
+        } */
         //$liste_receptions = $ctReceptionRepository->findBy(["ct_type_reception_id" => $type_reception_id, "ct_centre_id" => $this->getUser()->getCtCentreId(), "rcp_created" => $date_of_reception], ["id" => "DESC"]);
         //$liste_receptions = $ctReceptionRepository->findBy(["rcp_created" => $date_of_reception], ["id" => "DESC"]);
         $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $this->getUser()->getCtCentreId(), $date_of_reception);
