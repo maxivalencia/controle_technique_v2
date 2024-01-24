@@ -301,6 +301,7 @@ class CtAppImprimableController extends AbstractController
         $type_reception_id = $ctTypeReceptionRepository->findOneBy(["id" => $reception->getCtTypeReceptionId()]);
         $type_reception = $type_reception_id->getTprcpLibelle();
         $centre = $ctCentreRepository->findOneBy(["id" => $reception->getCtCentreId()]);
+        $date_of_reception = $reception->getRcpCreated();
         
         $reception_data = ["id" => $identification,
             "ct_genre_id" => $vehicule->getCtGenreId()->getGrLibelle(),
@@ -365,19 +366,17 @@ class CtAppImprimableController extends AbstractController
         $totalDesTVA = 0;
         $totalDesTimbres = 0;
         $montantTotal = 0;
-        if(new \DateTime($dateDeploiement) > $date_of_reception){
+        /* if(new \DateTime($dateDeploiement) > $date_of_reception){
             $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
         }else{
             $nomGroup = $date_of_reception->format('d').'/'.$date_of_reception->format('m').'/'.$centre->getCtrCode().'/'.$type_reception.'/'.$date->format("Y");
             $liste_receptions = $ctReceptionRepository->findBy(["rcp_num_group" => $nomGroup, "rcp_is_active" => true]);
-        }
-        //$liste_receptions = $ctReceptionRepository->findBy(["ct_type_reception_id" => $type_reception_id, "ct_centre_id" => $this->getUser()->getCtCentreId(), "rcp_created" => $date_of_reception], ["id" => "DESC"]);
-        //$liste_receptions = $ctReceptionRepository->findBy(["rcp_created" => $date_of_reception], ["id" => "DESC"]);
-        //$liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $this->getUser()->getCtCentreId(), $date_of_reception);
+        } */
         $liste_des_receptions = new ArrayCollection();
         $tarif = 0;
-        if($liste_receptions != null){
-            foreach($liste_receptions as $liste){
+        $liste = $reception;
+        //if($liste_receptions != null){
+            //foreach($liste_receptions as $liste){
                 $genre = $liste->getCtGenreId();
                 $motif = $liste->getCtMotifId();
                 $calculable = $motif->isMtfIsCalculable();
@@ -443,11 +442,12 @@ class CtAppImprimableController extends AbstractController
                 $nombreReceptions = $nombreReceptions + 1;
                 $totalDesDroits = $totalDesDroits + $tarif;
                 $totalDesPrixPv = $totalDesPrixPv + $prixPv;
+                $totalDesTHT = $totalDesDroits + $totalDesPrixPv;
                 $totalDesTVA = $totalDesTVA + $tva;
                 $totalDesTimbres = $totalDesTimbres + $timbre;
                 $montantTotal = $montantTotal + $montant;
-            }
-        }
+            //}
+        //}
 
         $html = $this->renderView('ct_app_imprimable/proces_verbal_reception_isole.html.twig', [
             'logo' => $logo,
@@ -460,19 +460,21 @@ class CtAppImprimableController extends AbstractController
             'nombre_reception' => $nombreReceptions,
             'total_des_droits' => $totalDesDroits,
             'total_des_prix_pv' => $totalDesPrixPv,
+            'total_des_tht' => $totalDesTHT,
             'total_des_tva' => $totalDesTVA,
             'total_des_timbres' => $totalDesTimbres,
             'montant_total' => $montantTotal,
-            'ct_receptions' => $liste_des_receptions,
+            //'ct_receptions' => $liste_des_receptions,
+            'reception' => $reception_data,
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         /* $dompdf->setPaper('A4', 'landscape'); */
         $dompdf->render();
         $output = $dompdf->output();
-        $filename = "Feuille_De_Caisse_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        $filename = "Proces_vebal_".$id."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("Feuille_De_Caisse_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+        $dompdf->stream("Proces_vebal_".$id."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
     }
