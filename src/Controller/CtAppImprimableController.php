@@ -473,7 +473,7 @@ class CtAppImprimableController extends AbstractController
         $dompdf->render();
         $output = $dompdf->output();
         $filename = "Proces_vebal_".$id."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
-        file_put_contents($dossier.$filename, $output);
+        //file_put_contents($dossier.$filename, $output);
         $dompdf->stream("Proces_vebal_".$id."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
