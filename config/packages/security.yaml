@@ -102,11 +102,11 @@ security:
         - { path: ^/ct_visite_extra_tarif, roles: ROLE_ADMIN }
         - { path: ^/ct_zone_desserte, roles: ROLE_ADMIN }
         - { path: ^/ct_app_administration, roles: ROLE_CONTROLE_TECHNIQUE }
-        - { path: ^/ct_app_constatation, roles: ROLE_CONTROLE_TECHNIQUE }
+        - { path: ^/ct_app_constatation, roles: ROLE_CONSTATATION }
         - { path: ^/ct_app_historique, roles: ROLE_CONTROLE_TECHNIQUE }
-        - { path: ^/ct_app_visite, roles: ROLE_CONTROLE_TECHNIQUE }
+        - { path: ^/ct_app_visite, roles: ROLE_VISITE }
         - { path: ^/ct_app_imprime_technique, roles: ROLE_CONTROLE_TECHNIQUE }
-        - { path: ^/ct_app_reception, roles: ROLE_CONTROLE_TECHNIQUE }
+        - { path: ^/ct_app_reception, roles: ROLE_RECEPTION }
         - { path: ^/ct_app_imprimable, roles: ROLE_CONTROLE_TECHNIQUE }
         - { path: ^/ct_app_tableau_de_bord, roles: ROLE_CONTROLE_TECHNIQUE }
         - { path: ^/ct_app_imprimable, roles: ROLE_CONTROLE_TECHNIQUE }

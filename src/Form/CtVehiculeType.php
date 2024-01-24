@@ -20,9 +20,15 @@ class CtVehiculeType extends AbstractType
             ])
             ->add('vhc_poids_vide', null, [
                 'label' => 'Poids à vide',
+                'attr' => [
+                    'class' => 'vhc_pav',
+                ],
             ])
             ->add('vhc_charge_utile', null, [
                 'label' => 'Charge utile',
+                'attr' => [
+                    'class' => 'vhc_cu',
+                ],
             ])
             ->add('vhc_hauteur', null, [
                 'label' => 'Hauteur',
@@ -55,6 +61,9 @@ class CtVehiculeType extends AbstractType
             ])
             ->add('vhc_poids_total_charge', null, [
                 'label' => 'Poids total à charge',
+                'attr' => [
+                    'class' => 'vhc_ptac',
+                ],
             ])
             ->add('ct_genre_id', null, [
                 'label' => 'Genre',

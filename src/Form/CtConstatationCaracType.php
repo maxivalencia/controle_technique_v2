@@ -56,12 +56,21 @@ class CtConstatationCaracType extends AbstractType
             ])
             ->add('cad_charge_utile', null, [
                 'label' => 'Charge utile',
+                'attr' => [
+                    'class' => 'vhc_cu',
+                ],
             ])
             ->add('cad_poids_vide', null, [
                 'label' => 'Poids à vide',
+                'attr' => [
+                    'class' => 'vhc_pav',
+                ],
             ])
             ->add('cad_poids_total_charge', null, [
                 'label' => 'Poids total en charge',
+                'attr' => [
+                    'class' => 'vhc_ptac',
+                ],
                 'disabled' => true,
             ])
             /* ->add('cad_poids_maxima')

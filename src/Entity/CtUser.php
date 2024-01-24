@@ -718,4 +718,25 @@ class CtUser implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    
+    public function isEqualTo(UserInterface $user): bool
+    {
+        // if (!$user instanceof WebserviceUser) {
+        //     return false;
+        // }
+
+        if ($this->username !== $user->getUsername()) {
+            return false;
+        }
+
+        /* if ($this->email !== $user->getEmail()) {
+            return false;
+        } */
+
+        if ($this->password !== $user->getPassword()) {
+            return false;
+        }
+
+        return true;
+    }
 }

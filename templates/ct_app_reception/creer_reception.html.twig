@@ -36,6 +36,11 @@
                     {{ form_start(form_bilan) }}
                         {{ form_row(form_bilan.ct_type_reception_id, {'name' : 'type'}) }}
                         {{ form_row(form_bilan.date) }}
+                        {% if is_granted("ROLE_ADMIN") %}
+                            {{ form_row(form_bilan.ct_centre_id) }}
+                        {% else %}
+                            {% do form_bilan.ct_centre_id.setRendered() %}
+                        {% endif %}
                         <table>
                             <tr>
                                 <td>
