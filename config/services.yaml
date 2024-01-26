@@ -6,11 +6,11 @@
 parameters:
     locale: fr
     logo: '%kernel.project_dir%/public/image/'
-    dossier_visite_premiere: '%kernel.project_dir%/public/generated/visite/premiere/'
-    dossier_visite_contre: '%kernel.project_dir%/public/generated/visite/contre/'
-    dossier_reception_isole: '%kernel.project_dir%/public/generated/reception/isole/'
-    dossier_reception_par_type: '%kernel.project_dir%/public/generated/reception/par_type/'
-    dossier_constatation: '%kernel.project_dir%/public/generated/constatation/'
+    dossier_visite_premiere: '%kernel.project_dir%/public/generated/pv/visite/premiere/'
+    dossier_visite_contre: '%kernel.project_dir%/public/generated/pv/visite/contre/'
+    dossier_reception_isole: '%kernel.project_dir%/public/generated/pv/reception/isole/'
+    dossier_reception_par_type: '%kernel.project_dir%/public/generated/pv/reception/par_type/'
+    dossier_constatation: '%kernel.project_dir%/public/generated/pv/constatation/'
     dossier_feuille_de_caisse_visite: '%kernel.project_dir%/public/generated/feuille_de_caisse/visite/'
     dossier_feuille_de_caisse_reception: '%kernel.project_dir%/public/generated/feuille_de_caisse/reception/'
     dossier_feuille_de_caisse_constatation: '%kernel.project_dir%/public/generated/feuille_de_caisse/constatation/'

@@ -26,24 +26,27 @@
     <body style="font-size:10px;">
         <table style="font-size:10px">
             <tr>
-                <td width="200" align="center">
+                <td width="200" align="center" style="line-height:1em;">
                     <strong>DIRECTION GENERALE DE LA SECURITE ROUTIERE</strong>
                     <br>-----------------------------<br>
                     <strong>DIRECTION DES OPERATIONS ROUTIERE</strong>
                     <br>-----------------------------<br>
-                    <strong>CENTRE DE SECURITE ROUTIERE</strong>
+                    <strong>{{ centre }}</strong><br>
+                    <strong>{{ province }}</strong>
                     <br>-----------------------------<br>
                     {# <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png"> #}
-                    <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png">
+                    <img src="{{ logo }}" alt="logo" width="25px" height="25px" type="images/png">
                     <br>« LAHITOKANA NY AINA » 
                 </td>
-                <td width="250" align="center" valign="bottom">
+                <td width="150" align="center" valign="bottom" style="font-size:12px;">
                     <div align="center">
-                        ANNEXE IV<br>
-                        ----------
+                        <strong>
+                            ANNEXE IV<br>
+                            ----------------
+                        </strong>
                     </div>
                 </td>
-                <td width="200" align="center" valign="top">
+                <td width="200" align="center" valign="top" style="font-size:12px;">
                     {% set trans_day_hash = { 
                             "January": "Janvier", 
                             "February": "Février", 
@@ -59,15 +62,202 @@
                             "December": "Decembre" 
                         } 
                     %}
-                    REPOBLIKAN’I MADAGASIKARA<br>
-                    Fitiavana-Tanindrazana-Fandrosoana
-                    <br><br>--------------------------<br><br>
+                    <strong>REPOBLIKAN’I MADAGASIKARA</strong><br>
+                    <i>Fitiavana - Tanindrazana - Fandrosoana</i>
+                    <br>--------------------------<br><br>
+                    Enregistrer sous<br>
+                    N° : <strong>{{ reception.rcp_num_pv }}</strong><br>
+                    --------------------------
                     {# {{ province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
                     <br><br>--------------------------<br><br> #}
                 </td>
             </tr>
         </table>
-        <div align="center"><u><H3>PROCES-VERBAL DE RECEPTION<br>TECHNIQUE A TITRE {{ type }}</H3></u></div>
+        <div align="center">
+            <table width="225" style="font-size:14px;border:1px solid black;" align="center">
+                <tr align="center">
+                    <td align="center">
+                        <strong>
+                            PROCES-VERBAL DE RECEPTION<br>
+                            TECHNIQUE A TITRE {{ type }}
+                        </strong>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="font-size:16px;margin:20px;">
+            <div style="margin-left:20px;">
+                <i>
+                    Il résulte des constatations effectuées le {{ reception.rcp_created|date('d') }} {{ trans_day_hash[reception.rcp_created|date('F')] }} {{ reception.rcp_created|date('Y') }} <br>
+                    À la demande de Mr ou Mme :  {{ reception.rcp_proprietaire }} <br>
+                    Adresse :  {{ reception.rcp_adresse }} <br>
+                    Que le véhicule ci-dessous décrit
+                </i>
+            </div>
+            <div style="margin-left:40px;">
+                <table style="font-size:14px;border:0px solid black;line-height:1em;">
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Genre</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.ct_genre_id }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Marque</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.ct_marque_id }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Type</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_type }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Numéro dans la série du type</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_num_serie }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Numéro du moteur</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_num_moteur }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Source d'énergie</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.ct_source_energie_id }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Cylindre (en Cm3)</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_cylindre }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Puissance administrative (en CV)</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_puissance }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Carrosserie</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.ct_carrosserie_id }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Nombre de place assises</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.rcp_nbr_assis }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Charge utile</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_charge_utile }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Poids à vide</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_poids_vide }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Poids total autorisé en charge</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_poids_total_charge }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Année de première mise en circulation</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.rcp_mise_service|date('d') }} {{ trans_day_hash[reception.rcp_mise_service|date('F')] }} {{ reception.rcp_mise_service|date('Y') }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Précédent numéro d'immatriculation</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.rcp_immatriculation }} </strong></td>
+                    </tr>
+                    <tr style="margin-top:0px;margin-bottom:0px;">
+                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Motif de la présente réception</td>
+                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
+                        <td width="300" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.ct_motif_id }} </strong></td>
+                    </tr>
+                </table>
+            </div>
+            <div align="center" style="font-size:13px;">
+                <i>
+                    Satisfait aux articles R66 à R71 ; R76 à R103 ; R109 et R110 du décret N° 71 138 du 23 mars 1971<br>
+                    Portant sur la réglementation générale sur la police de circulation routière (code de la route)<br><br>
+                </i>
+            </div>
+            <strong><hr></strong>
+            <div align="center" style="font-size:14px;">
+                <strong>{{ centre }}</strong><br>
+                <strong>{{ province }}</strong><br>
+                <strong>----------------</strong>
+            </div>
+            <div align="right" style="font-size:13px;">
+                <strong>L’EXPERT CHARGE DE LA RECEPTION TECHNIQUE</strong>
+            </div>
+            <div style="margin-top:150px;margin-left:20px;">
+                <table style="font-size:13px;border:0px solid black;line-height:1em;">
+                    <tr>
+                        <td width="100">Enregistrer sous</td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>N° {{ reception.rcp_num_pv }}</strong> du <strong>{{ reception.rcp_mise_service|date('d') }} {{ trans_day_hash[reception.rcp_mise_service|date('F')] }} {{ reception.rcp_mise_service|date('Y') }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td width="100">Doit</td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>{{ reception.rcp_proprietaire }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td width="100">Adresse</td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>{{ reception.rcp_adresse }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td width="100">Motif de réception</td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>{{ reception.ct_motif_id }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td width="100">Genre de véhicule</td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>{{ reception.ct_genre_id }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td width="100">Immatriculation</td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>{{ reception.rcp_immatriculation }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td width="100">Droit de réception</td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>{{ total_des_droits }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td width="100">Prix du procès-verbal</td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>{{ total_des_prix_pv }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td width="100">THT</td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>{{ total_des_tht }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td width="100">TVA</td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>{{ total_des_tva }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td width="100">Timbre</td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>{{ total_des_timbres }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td width="100"><strong>Montant</strong></td>
+                        <td width="10"> : </td>
+                        <td width="400"><strong>{{ montant_total }}</strong></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <div class="footer">
             <span>Direction Générale de la Sécurité Routière BP 784 Alarobia Antananarivo NIF : 4001 089525 STAT : 71102 11 2006 0 043 19</span>
             {# <script type="text/php">

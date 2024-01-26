@@ -25,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Route("/ct_app_constatation")
@@ -429,8 +430,19 @@ class CtAppConstatationController extends AbstractController
     public function ListeConstatationAvantDedouanement(CtConstAvDedRepository $ctConstAvDedRepository): Response
     {
         $ctConstatations = $ctConstAvDedRepository->findBy(["ct_centre_id" => $this->getUser()->getCtCentreId()], ["id" => "DESC"]);
+        $liste_des_constatations = new ArrayCollection();
+        foreach($ctConstatations as $ctConstatation){
+            $ctConst = [
+                "id" => $ctConstatation->getId(),
+                "cad_numero" => $ctConstatation->getCadNumero(),
+                "cad_provenance" => $ctConstatation->getCadProvenance(),
+                "cad_proprietaire_nom" => $ctConstatation->getCadProprietaireNom(),
+                "cad_immatriculation" => $ctConstatation->getCadImmatriculation(),
+            ];
+            $liste_des_constatations->add($ctConst);
+        }
         return $this->render('ct_app_constatation/liste_constatation.html.twig', [
-            'ct_const_av_deds' => $ctConstatations,
+            'ct_const_av_deds' => $liste_des_constatations,
             'total' => count($ctConstatations),
         ]);
     }
