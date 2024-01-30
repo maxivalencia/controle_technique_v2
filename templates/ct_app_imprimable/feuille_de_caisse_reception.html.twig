@@ -22,7 +22,10 @@
                     <br>-----------------------------<br>
                     <strong>DIRECTION DES OPERATIONS ROUTIERE</strong>
                     <br>-----------------------------<br>
-                    <strong>CENTRE DE SECURITE ROUTIERE</strong>
+                    <strong>
+                        CENTRE DE SECURITE ROUTIERE<br>
+                        {{ province }} - {{ centre }}
+                    </strong>
                     <br>-----------------------------<br>
                     {# <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png"> #}
                     <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png">
@@ -46,11 +49,11 @@
                             "September": "Septembre",
                             "October": "Octobre",
                             "November": "Novembre",
-                            "December": "Decembre" 
+                            "December": "Décembre" 
                         } 
                     %}
                     REPOBLIKAN’I MADAGASIKARA<br>
-                    Fitiavana-Tanindrazana-Fandrosoana
+                    <i>Fitiavana-Tanindrazana-Fandrosoana</i>
                     <br><br>--------------------------<br><br>
                     {{ province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
                     <br><br>--------------------------<br><br>
@@ -61,7 +64,7 @@
         <div style="margin-left:10px;">
             <table>
                 <tr>
-                    <td align="left"><span style="font-size:14px;"><u>Centre</u> : <strong>{{ centre }}</strong></span></td>
+                    <td width="300" align="left"><span style="font-size:14px;"><u>Centre</u> : <strong>{{ centre }}</strong></span></td>
                 </tr>
                 <tr>
                     <td align="left"><span style="font-size:14px;"><u>Date</u> : <strong>{{ date_reception|date('d') }} {{ trans_day_hash[date_reception|date('F')] }} {{ date_reception|date('Y') }}</strong></td>
@@ -70,7 +73,7 @@
         </div>
         <table align="center" style="border: 2px solid black;border-collapse: collapse;">
             <tr align="center">
-                <td width="170" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Num du PV</i></strong></td>
+                <td width="170" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Num PV</i></strong></td>
                 <td width="170" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Motif de la réception</i></strong></td>
                 <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Genre</i></strong></td>
                 <td width="60" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Imm</i></strong></td>
@@ -130,6 +133,11 @@
                     $char_space = 0.0;  //  default
                     $angle = 0.0;   //  default
                     $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+                    
+                    $x2 = 40;
+                    $y2 = 575;
+                    $text2 = "Editée le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }} à {{ "now"|date('H') }}:{{ "now"|date('m') }}:{{ "now"|date('s') }} par {{ user.usrNom }}"; 
+                    $pdf->page_text($x2, $y2, $text2, $font, $size, $color, $word_space, $char_space, $angle);
                 }
             </script>
         </div>

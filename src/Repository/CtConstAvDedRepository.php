@@ -63,4 +63,27 @@ class CtConstAvDedRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * @return CtConstAvDed[] Returns an array of CtConstAvDed objects
+     */
+    public function findByFicheDeControle($value1, $value2): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.ct_centre_id = :val1')
+            ->andWhere('c.cad_created LIKE :val2')
+            ->andWhere('c.cad_created LIKE :val3')
+            ->andWhere('c.cad_created LIKE :val4')
+            ->setParameter('val1', $value1)
+            ->setParameter('val2', '%'.$value2->format('Y-').'%')
+            ->setParameter('val3', '%'.$value2->format('-d-').'%')
+            ->setParameter('val4', '%'.$value2->format('-m').'%')
+            //->setParameter('val', $value)
+            ->orderBy('c.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

@@ -453,7 +453,7 @@ class CtAppVisiteController extends AbstractController
             //$date_expiration = $date_expiration->format('Y-m-d');
             $ctVisite_new->setVstDateExpiration($date_expiration);
             $date = new \DateTime();
-            $ctVisite_new->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$ctVisite->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.date("Y"));
+            $ctVisite_new->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$ctVisite->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.$date->format("Y"));
             $ctVisite_new->setVstCreated($ctVisite->getVstCreated());
             $ctVisite_new->setVstUpdated(new \DateTime());
             $ctVisite_new->setCtUtilisationId($ctVisite->getCtUtilisationId());
@@ -466,7 +466,7 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_new->setVstObservation($ctVisite->getVstObservation()." ");
 
             $ctVisiteRepository->add($ctVisite_new, true);
-            $ctVisite_new->setVstNumPv($ctVisite_new->getId().'/'.$ctVisite->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId().'/'.$ctVisite->getCtTypeVisiteId().'/'.date("Y"));
+            $ctVisite_new->setVstNumPv($ctVisite_new->getId().'/'.$ctVisite->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId().'/'.$ctVisite->getCtTypeVisiteId().'/'.$date->format("Y"));
             $ctVisiteRepository->add($ctVisite_new, true);
 
             if($ctVisite->getId() != null && $ctVisite->getId() < $ctVisite_new->getId()){
@@ -668,7 +668,7 @@ class CtAppVisiteController extends AbstractController
             //$date_expiration = $date_expiration->format('Y-m-d');
             $ctVisite_contre->setVstDateExpiration($date_expiration);
             $date = new \DateTime();
-            $ctVisite_contre->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$ctVisite->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.date("Y"));
+            $ctVisite_contre->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$ctVisite->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.$date->format("Y"));
             $ctVisite_contre->setVstCreated($ctVisite->getVstCreated());
             $ctVisite_contre->setVstUpdated(new \DateTime());
             $ctVisite_contre->setCtUtilisationId($ctVisite->getCtUtilisationId());
@@ -681,7 +681,7 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_contre->setVstObservation($ctVisite->getVstObservation()." CONTRE DU ID : ".$ctVisite->getId());
 
             $ctVisiteRepository->add($ctVisite_contre, true);
-            $ctVisite_contre->setVstNumPv($ctVisite_contre->getId().'/'.$ctVisite->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId().'/'.$ctVisite->getCtTypeVisiteId().'/'.date("Y"));        
+            $ctVisite_contre->setVstNumPv($ctVisite_contre->getId().'/'.$ctVisite->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId().'/'.$ctVisite->getCtTypeVisiteId().'/'.$date->format("Y"));        
             $ctVisiteRepository->add($ctVisite_contre, true);
 
             if($ctVisite->getId() != null && $ctVisite->getId() < $ctVisite_contre->getId()){

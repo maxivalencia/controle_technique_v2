@@ -28,7 +28,7 @@ newhost = 'localhost'
 newuser = 'root'
 newpass = 'root'
 
-max_line_number = 1000
+max_line_number = 10000
 
 def RecuperationTableCtZoneDesserte():
     # The connect() constructor creates a connection to the MySQL server and returns a MySQLConnection object.
@@ -92,12 +92,12 @@ def RecuperationTableCtVisiteExtraTarif():
         user=olduser,
         password=oldpass
     )
-    cursor = cnx.cursor()
-    query = "SELECT * FROM `ct_visite_extra_tarif`"
-    cursor.execute(query)
-    header = [row[0] for row in cursor.description]
-    rows = cursor.fetchall()
-    cnx.close()
+    # cursor = cnx.cursor()
+    # query = "SELECT * FROM `ct_visite_extra_tarif`"
+    # cursor.execute(query)
+    # header = [row[0] for row in cursor.description]
+    # rows = cursor.fetchall()
+    # cnx.close()
     with open(filename, 'a') as f:
         # f.write('-- \n')
         # f.write('-- Structure de la table ' + table_name + '\n')
@@ -122,6 +122,7 @@ def RecuperationTableCtVisiteExtraTarif():
         f.write('/*!40000 ALTER TABLE ' + table_name + ' DISABLE KEYS */;\n')
         f.write("INSERT IGNORE INTO " + table_name + " (`id`, `ct_imprime_tech_id_id`, `vet_annee`, `vet_prix`, `ct_arrete_prix_id_id`) VALUES")
         i = 0
+        rows = [(1, 1, "2017", 2000, 1), (2, 2, "2017", 2000, 1), (3, 3, "2017", 2000, 1), (4, 4, "2017", 2000, 1), (5, 5, "2017", 2000, 1), (6, 6, "2017", 2000, 1), (7, 7, "2017", 2000, 1), (8, 8, "2017", 2000, 1), (9, 9, "2017", 2000, 1), (10, 10, "2017", 2000, 1), (11, 11, "2017", 2000, 1), (12, 12, "2017", 6000, 1), (13, 13, "2017", 6000, 1), (14, 14, "2017", 6000, 1), (15, 15, "2017", 6000, 1), (16, 1, "2023", 5000, 3), (17, 2, "2023", 5000, 3), (18, 3, "2023", 5000, 3), (19, 4, "2023", 5000, 3), (20, 5, "2023", 5000, 3), (21, 6, "2023", 5000, 3), (22, 7, "2023", 5000, 3), (23, 8, "2023", 5000, 3), (24, 9, "2023", 5000, 3), (25, 10, "2023", 5000, 3), (26, 11, "2023", 5000, 3), (27, 12, "2023", 12000, 3), (28, 13, "2023", 12000, 3), (29, 14, "2023", 12000, 3), (30, 15, "2023", 12000, 3)]
         for row in rows:
             #lst_row = list(row)
             #lst_row[2] = 1
@@ -147,7 +148,9 @@ def RecuperationTableCtVisiteExtra():
     )
     cursor = cnx.cursor()
     
-    query = "SELECT  COUNT(ALL `id`) FROM `ct_visite_extra`"
+    # query = "SELECT COUNT(ALL `id`) FROM `ct_visite_extra`"
+    # query = "SELECT `id`, `nom_imprime_tech` as `vste_libelle` FROM `ct_imprime_tech`"
+    query = "SELECT * FROM `ct_imprime_tech`"
     cursor.execute(query)
     result = cursor.fetchone()
     line_count  = result[0]
@@ -194,7 +197,8 @@ def RecuperationTableCtVisiteExtra():
             else:
                 min = (max * j) - 1
                 max = max_line_number
-            query = "SELECT * FROM `ct_visite_extra` LIMIT " + str(min) + " ," + str(max)
+            # query = "SELECT * FROM `ct_visite_extra` LIMIT " + str(min) + " ," + str(max)
+            query = "SELECT `id`, `nom_imprime_tech` as `vste_libelle` FROM `ct_imprime_tech` ORDER BY `id` ASC LIMIT 11"
             cursor.execute(query)
             header = [row[0] for row in cursor.description]
             rows = cursor.fetchall()
@@ -1225,7 +1229,7 @@ def RecuperationTableCtAutre():
         f.write('/*!40000 ALTER TABLE ' + table_name + ' DISABLE KEYS */;\n')
         f.write("INSERT IGNORE INTO " + table_name + " (`id`, `nom`, `attribut`) VALUES")
         i = 0
-        rows = [(1, "DEPLOIEMENT", "10/01/2024")]
+        rows = [(1, "DEPLOIEMENT", "16/01/2024"), (2, "TVA", "20"), (3, "TIMBRE", "0")]
         for row in rows:
             #lst_row = list(row)
             #lst_row[0] = 1
@@ -1279,7 +1283,7 @@ def RecuperationTableCtAutreDonne():
         f.write('/*!40000 ALTER TABLE ' + table_name + ' DISABLE KEYS */;\n')
         f.write("INSERT IGNORE INTO " + table_name + " (`id`, `nom`, `attribut`) VALUES")
         i = 0
-        rows = [(1, "DEPLOIEMENT", "10/01/2024")]
+        rows = [(1, "DEPLOIEMENT", "16/01/2024"), (2, "TVA", "20"), (3, "TIMBRE", "0")]
         for row in rows:
             #lst_row = list(row)
             #lst_row[0] = 1
@@ -3636,46 +3640,48 @@ def Recuperation():
     #RecuperationTableCtExtraVente()
     #RecuperationTableCtPhoto()
     
-    RecuperationTableCtZoneDesserte()
-    RecuperationTableCtProvince()
-    RecuperationTableCtArretePrix()
-    RecuperationTableCtTypeVisite()
-    RecuperationTableCtTypeUsage()
-    RecuperationTableCtTypeReception()
-    RecuperationTableCtTypeDroitPTAC()
-    RecuperationTableCtMotif()
+    # RecuperationTableCtAutre()
+    # RecuperationTableCtAutreDonne()
+    # RecuperationTableCtZoneDesserte()
+    # RecuperationTableCtProvince()
+    # RecuperationTableCtArretePrix()
+    # RecuperationTableCtTypeVisite()
+    # RecuperationTableCtTypeUsage()
+    # RecuperationTableCtTypeReception()
+    # RecuperationTableCtTypeDroitPTAC()
+    # RecuperationTableCtMotif()
     RecuperationTableCtVisiteExtra()
-    RecuperationTableCtVisiteExtraTarif()
-    RecuperationTableCtAnomalieType()
-    RecuperationTableCtUtilisation()
-    RecuperationTableCtSourceEnergie()
-    RecuperationTableCtConstAvDedType()
-    RecuperationTableCtUsageTarif()
-    RecuperationTableCtUsage()
-    RecuperationTableCtRole()
-    RecuperationTableCtProcesVerbal()
-    RecuperationTableCtMotifTarif()
-    RecuperationTableCtMarque()
-    RecuperationTableCtImprimeTech()
-    RecuperationTableCtGenreCategorie()
-    RecuperationTableCtGenre()
-    RecuperationTableCtDroitPTAC()
-    RecuperationTableCtCentre()
-    RecuperationTableCtCarrosserie()
-    RecuperationTableCtUser()
-    RecuperationTableCtBordereau()
-    RecuperationTableCtAnomalie()
-    RecuperationTableCtVehicule()
-    RecuperationTableCtReception()
-    RecuperationTableCtCarteGrise()
-    RecuperationTableCtVisite()
-    RecuperationTableCtVisiteCtAnomalie()
-    RecuperationTableCtVisiteCtVisiteExtra()
-    RecuperationTableCtConstAvDedCtConstAvDedCarac()
-    RecuperationTableCtConstAvDedCarac()
-    RecuperationTableCtConstAvDed()
-    RecuperationTableCtHistorique()
-    RecuperationTableCtImprimeTechUse()
+    # RecuperationTableCtVisiteExtraTarif()
+    # RecuperationTableCtAnomalieType()
+    # RecuperationTableCtUtilisation()
+    # RecuperationTableCtSourceEnergie()
+    # RecuperationTableCtConstAvDedType()
+    # RecuperationTableCtUsageTarif()
+    # RecuperationTableCtUsage()
+    # RecuperationTableCtRole()
+    # RecuperationTableCtProcesVerbal()
+    # RecuperationTableCtMotifTarif()
+    # RecuperationTableCtMarque()
+    # RecuperationTableCtImprimeTech()
+    # RecuperationTableCtGenreCategorie()
+    # RecuperationTableCtGenre()
+    # RecuperationTableCtDroitPTAC()
+    # RecuperationTableCtCentre()
+    # RecuperationTableCtCarrosserie()
+    # RecuperationTableCtUser()
+    # RecuperationTableCtBordereau()
+    # RecuperationTableCtAnomalie()
+    # RecuperationTableCtVehicule()
+    # RecuperationTableCtReception()
+    # RecuperationTableCtCarteGrise()
+    # RecuperationTableCtVisite()
+    # RecuperationTableCtVisiteCtAnomalie()
+    # RecuperationTableCtVisiteCtVisiteExtra()
+    # RecuperationTableCtConstAvDedCtConstAvDedCarac()
+    # RecuperationTableCtConstAvDedCarac()
+    # RecuperationTableCtConstAvDed()
+    # RecuperationTableCtHistorique()
+    # RecuperationTableCtImprimeTechUse()
     with open(filename, 'a') as f:
         f.write(' \n')
         f.write('COMMIT;\n')

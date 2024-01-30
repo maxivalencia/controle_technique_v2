@@ -40,8 +40,9 @@
         <link rel="stylesheet" href="/../plugins/summernote/summernote-bs4.min.css">
         <!-- style personnalisé -->
         <link rel="stylesheet" href="/../css/style.css">
-        <link rel="stylesheet" href="/../css/select2.css">        
+        <link rel="stylesheet" href="/../css/select2.css">
         <link rel="stylesheet" href="/../css/bootstrap.min.css">
+        <link rel="stylesheet" href="/../css/jquery.dataTables.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
@@ -124,434 +125,435 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                             with font-awesome or any other icon font library -->
-                        <li class="nav-item menu-open">
-                            <a href="{{ path('app_ct_app_tableau_de_bord') }}" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Tableau de bord
-                                    {# <i class="right fas fa-angle-left"></i> #}
-                                </p>
-                            </a>
-                        </li>                         
+                        {% if is_granted("ROLE_CONTROLE_TECHNIQUE") %}
+                            <li class="nav-item menu-open">
+                                <a href="{{ path('app_ct_app_tableau_de_bord') }}" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Tableau de bord
+                                        {# <i class="right fas fa-angle-left"></i> #}
+                                    </p>
+                                </a>
+                            </li>   
+                        {% endif %}                      
 
                         <!-- Début administrateur -->
-                    
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-users"></i>
-                                <p>
-                                    Administrateur
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Vérificateur
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_administration_liste_verificateur') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_administration_creer_verificateur') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Secrétaire
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_administration_liste_secretaire') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_administration_creer_secretaire') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Régisseur
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_administration_liste_regisseur') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_administration_creer_regisseur') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Chef de centre
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_administration_liste_chef_de_centre') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_administration_creer_chef_de_centre') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Rôles
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_administration_liste_role') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_administration_creer_role') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>                         
-
+                        {% if is_granted("ROLE_ADMIN") %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-users"></i>
+                                    <p>
+                                        Administrateur
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Vérificateur
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_administration_liste_verificateur') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_administration_creer_verificateur') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Secrétaire
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_administration_liste_secretaire') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_administration_creer_secretaire') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Régisseur
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_administration_liste_regisseur') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_administration_creer_regisseur') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Chef de centre
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_administration_liste_chef_de_centre') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_administration_creer_chef_de_centre') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Rôles
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_administration_liste_role') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_administration_creer_role') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>                         
+                        {% endif %}
                         <!-- Début Historique -->
-                    
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-archive"></i>
-                                <p>
-                                    Historique
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Voir</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Consultation CT</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>                         
-
+                        {% if is_granted("ROLE_CONTROLE_TECHNIQUE") %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-archive"></i>
+                                    <p>
+                                        Historique
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Voir</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Consultation CT</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>                         
+                        {% endif %}
                         <!-- Début Réception -->
-                    
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-download"></i>
-                                <p>
-                                    Réception
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Type
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_reception_liste_type') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_reception_creer_type') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Réception
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_reception_creer_reception') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_reception_recherche_reception_duplicata') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Duplicata</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_reception_recherche_reception_modification') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Rechercher</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-
+                        {% if is_granted("ROLE_RECEPTION") %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-download"></i>
+                                    <p>
+                                        Réception
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Type
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_reception_liste_type') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_reception_creer_type') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Réception
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_reception_creer_reception') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_reception_recherche_reception_duplicata') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Duplicata</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_reception_recherche_reception_modification') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Rechercher</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
                         <!-- Début Statistique réception -->
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-chart-bar"></i>
-                                <p>
-                                    Statistique réception
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Voir</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
+                        {% if is_granted("ROLE_STAFF") %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <p>
+                                        Statistique réception
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Voir</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
                         <!-- Début visite technique -->
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-stethoscope"></i>
-                                <p>
-                                    Visite technique
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Type
-                                            <i class="fas fa-angle-left right"></i>
-
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_visite_liste_type') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_visite_creer_type') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Renseignement véhicule
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_visite_renseignement_vehicule') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Visite
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_visite_creer_visite') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_visite_recherche_visite') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Rechercher</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Contre visite
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_visite_contre_visite') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-
+                        {% if is_granted("ROLE_VISITE") %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-stethoscope"></i>
+                                    <p>
+                                        Visite technique
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Type
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_visite_liste_type') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_visite_creer_type') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Renseignement véhicule
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_visite_renseignement_vehicule') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Visite
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_visite_creer_visite') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_visite_recherche_visite') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Rechercher</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Contre visite
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_visite_contre_visite') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
                         <!-- Début Statistique visite -->
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-chart-bar"></i>
-                                <p>
-                                    Statistique visite
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Voir</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
+                        {% if is_granted("ROLE_STAFF") %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <p>
+                                        Statistique visite
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Voir</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
                         <!-- Début constatation -->
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-credit-card"></i>
-                                <p>
-                                    Constatation
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Type
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_constatation_liste_type') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_constatation_creer_type') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Constatation
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_constatation_liste_constatation_avant_dedouanement') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="{{ path('app_ct_app_constatation_creer_constatation_avant_dedouanement') }}" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-
+                        {% if is_granted("ROLE_CONSTATATION") %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-credit-card"></i>
+                                    <p>
+                                        Constatation
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Type
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_constatation_liste_type') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_constatation_creer_type') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Constatation
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_constatation_liste_constatation_avant_dedouanement') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_constatation_creer_constatation_avant_dedouanement') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
                         <!-- Début statistique constatation -->
-
+                        {% if is_granted("ROLE_STAFF") %}
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="fas fa-chart-bar"></i>
@@ -569,374 +571,375 @@
                                 </li>
                             </ul>
                         </li>
-
+                        {% endif %}
                         <!-- Début imprimés techniques -->
-
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-shopping-basket"></i>
-                                <p>
-                                    Imprimés techniques
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Activer des imprimés</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Utilisation IT
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste des utilisés</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste des non utilisés</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Mise à jour utilisation</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Mise à jour multiple</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Statistique d'utilisation</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            Imprimés techniques
-                                            <i class="fas fa-angle-left right"></i>
-                                        </p>
-                                    </a>
-                                    <ul class="nav nav-treeview" style="padding-left:5px;">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Liste</p>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
-                                                <p>Créer</p>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>                         
-
+                        {% if is_granted("ROLE_CONTROLE_TECHNIQUE") %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-shopping-basket"></i>
+                                    <p>
+                                        Imprimés techniques
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Activer des imprimés</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Utilisation IT
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste des utilisés</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste des non utilisés</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Mise à jour utilisation</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Mise à jour multiple</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Statistique d'utilisation</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>
+                                                Imprimés techniques
+                                                <i class="fas fa-angle-left right"></i>
+                                            </p>
+                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>                         
+                        {% endif %}
                         <!-- Début data -->
-                    
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fa fa-database"></i>
-                                <p>
-                                    Données de base
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_anomalie_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Anomalie</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_arrete_prix_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Arrêté Prix</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_autre_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Autre Donnée</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_autre_tarif_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Autre tarifs</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_autre_vente_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Autre vente</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_bordereau_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Bordereau</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_carrosserie_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Carrosserie</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_carte_grise_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Carte grise</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_genre_categorie_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Catégorie du genre</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_centre_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Centre</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_const_av_ded_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>CAD</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_const_av_ded_carac_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Caractéristique CAD</p>
-                                    </a>
-                                </li>                                
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_droit_p_t_a_c_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Droit PTAC</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_extra_vente_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Extra vente</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_genre_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Genre</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_historique_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Historique</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_imprime_tech_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Imprimé technique</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_imprime_tech_use_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>IT utilisé</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_marque_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Marque</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_motif_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Motif</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_motif_tarif_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Motif tarif</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_photo_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Photo</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_proces_verbal_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Procès-Verbal</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_province_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Province</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_reception_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Réception</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_role_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Rôle</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_source_energie_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Source d'energie</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_genre_tarif_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Tarif par genre</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_anomalie_type_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Type anomalie</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_const_av_ded_type_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Type CAD</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_type_droit_p_t_a_c_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Type droit PTAC</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_historique_type_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Type historique</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_type_reception_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Type réception</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_type_usage_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Type usage</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_type_visite_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Type visite</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_usage_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Usage</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_usage_tarif_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Usage tarifs</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_usage_imprime_technique_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Utilisation IT</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_user_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Utilisateur</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_utilisation_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Utilisation véhicule</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_vehicule_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Véhicule</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_visite_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Visite</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_visite_extra_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Visite extra</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_visite_extra_tarif_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Visite extra tarifs</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ path('app_ct_zone_desserte_index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Zone desserte</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>               
+                        {% if is_granted("ROLE_ADMIN") %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-database"></i>
+                                    <p>
+                                        Données de base
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_anomalie_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Anomalie</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_arrete_prix_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Arrêté Prix</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_autre_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Autre Donnée</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_autre_tarif_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Autre tarifs</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_autre_vente_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Autre vente</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_bordereau_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Bordereau</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_carrosserie_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Carrosserie</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_carte_grise_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Carte grise</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_genre_categorie_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Catégorie du genre</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_centre_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Centre</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_const_av_ded_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>CAD</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_const_av_ded_carac_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Caractéristique CAD</p>
+                                        </a>
+                                    </li>                                
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_droit_p_t_a_c_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Droit PTAC</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_extra_vente_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Extra vente</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_genre_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Genre</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_historique_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Historique</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_imprime_tech_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Imprimé technique</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_imprime_tech_use_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>IT utilisé</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_marque_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Marque</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_motif_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Motif</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_motif_tarif_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Motif tarif</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_photo_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Photo</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_proces_verbal_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Procès-Verbal</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_province_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Province</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_reception_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Réception</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_role_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Rôle</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_source_energie_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Source d'energie</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_genre_tarif_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Tarif par genre</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_anomalie_type_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Type anomalie</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_const_av_ded_type_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Type CAD</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_type_droit_p_t_a_c_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Type droit PTAC</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_historique_type_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Type historique</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_type_reception_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Type réception</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_type_usage_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Type usage</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_type_visite_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Type visite</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_usage_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Usage</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_usage_tarif_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Usage tarifs</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_usage_imprime_technique_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Utilisation IT</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_user_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Utilisateur</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_utilisation_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Utilisation véhicule</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_vehicule_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Véhicule</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_visite_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Visite</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_visite_extra_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Visite extra</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_visite_extra_tarif_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Visite extra tarifs</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ path('app_ct_zone_desserte_index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Zone desserte</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>  
+                        {% endif %}          
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -1014,6 +1017,7 @@
         <script src="/../js/up.js"></script>
         <script src="/../js/bootstrap.min.js"></script>
         <script src="/../js/jquery.uploadfile.js"></script>
+        <script src="/../js/jquery.dataTables.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
         <script>
@@ -1027,9 +1031,10 @@
         </script>
         <script type="text/javascript">
             $(document).ready(function() {
-                //$("#controles_anomalies_collections").multiSelect();
-                $(".multi").select2();
+                $("#controles_anomalies_collections").multiSelect();
                 $("select").select2();
+                $(".multi").select2();
+                $(".form-control").select2();
             });
         </script>
 

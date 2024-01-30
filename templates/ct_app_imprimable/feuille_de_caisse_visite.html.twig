@@ -1,0 +1,151 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Fiche de controle isole</title>
+        <style>
+            html{margin:20px 20px 20px 20px;}
+            #footer{
+                position:fixed;
+                bottom:0px;
+                left:0px;
+                right:0px;
+                height:10px;
+            }
+            #footer .page-number:after { content: counter(page); }
+        </style>
+    </head>
+    <body style="font-size:12px">
+        <table style="font-size:12px">
+            <tr>
+                <td width="300" align="center">
+                    <strong>DIRECTION GENERALE DE LA SECURITE ROUTIERE</strong>
+                    <br>-----------------------------<br>
+                    <strong>DIRECTION DES OPERATIONS ROUTIERE</strong>
+                    <br>-----------------------------<br>
+                    <strong>
+                        CENTRE DE SECURITE ROUTIERE<br>
+                        {{ province }} - {{ centre }}
+                    </strong>
+                    <br>-----------------------------<br>
+                    {# <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png"> #}
+                    <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png">
+                    <br>« LAHITOKANA NY AINA » 
+                </td>
+                <td width="250">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+                <td width="200" align="center" valign="top">
+                    {% set trans_day_hash = { 
+                            "January": "Janvier", 
+                            "February": "Février", 
+                            "March": "Mars", 
+                            "April": "Avril", 
+                            "May": "Mai", 
+                            "June": "Juin", 
+                            "July": "Juillet",
+                            "August": "Août",
+                            "September": "Septembre",
+                            "October": "Octobre",
+                            "November": "Novembre",
+                            "December": "Décembre" 
+                        } 
+                    %}
+                    REPOBLIKAN’I MADAGASIKARA<br>
+                    <i>Fitiavana-Tanindrazana-Fandrosoana</i>
+                    <br><br>--------------------------<br><br>
+                    {{ province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
+                    <br><br>--------------------------<br><br>
+                </td>
+            </tr>
+        </table>
+        <div align="center" style="font-size:14px;"><u><H3>FEUILLE DE CAISSE VISITE TECHNIQUE</H3></u></div>
+        <div style="margin-left:10px;">
+            <table>
+                <tr>
+                    <td width="300" align="left"><span style="font-size:14px;"><u>Centre</u> : <strong>{{ centre }}</strong></span></td>
+                </tr>
+                <tr>
+                    <td align="left"><span style="font-size:14px;"><u>Date</u> : <strong>{{ date_visite|date('d') }} {{ trans_day_hash[date_visite|date('F')] }} {{ date_visite|date('Y') }}</strong></td>
+                </tr>
+            </table>
+        </div>
+        <table align="center" style="border: 2px solid black;border-collapse: collapse;">
+            <tr align="center">
+                <td width="100" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Num PV</i></strong></td>
+                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Num imm</i></strong></td>
+                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Usage</i></strong></td>
+                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Aptitude</i></strong></td>
+                <td width="100" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Vérificateur</i></strong></td>
+                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Nom coopérative</i></strong></td>
+                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Droit</i></strong></td>
+                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PV</i></strong></td>
+                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Carnet</i></strong></td>
+                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Carte</i></strong></td>
+                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Taxe</i></strong></td>
+                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>VTB</i></strong></td>
+                <td width="100" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Montant</i></strong></td>
+            </tr>
+            {% for ct_visite in ct_visites %}
+                <tr>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.controle_pv }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.immatriculation }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.usage }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.aptitude }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.verificateur }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.cooperative }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.droit|number_format(0, ',', ' ') }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.prix_pv|number_format(0, ',', ' ') }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.carnet|number_format(0, ',', ' ') }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.carte|number_format(0, ',', ' ') }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.tva|number_format(0, ',', ' ') }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.timbre|number_format(0, ',', ' ') }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.montant|number_format(0, ',', ' ') }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="15">Aucun enregistrement trouvé</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div style="font-size:14px;margin-left:600px">
+            <div align="center"><u><strong>RECAPITULATION</strong></u></div>
+            <div>
+                <strong>
+                    Nombre : {{ nombre_visite|number_format(0, ',', ' ') }}<br>
+                    Total des Droits : Ar {{ total_des_droits|number_format(0, ',', ' ') }}<br>
+                    Total des Prix PV : Ar {{ total_des_prix_pv|number_format(0, ',', ' ') }}<br>
+                    Total TVA : Ar {{ total_des_tva|number_format(0, ',', ' ') }}<br>
+                    MONTANT TOTAL : Ar {{ montant_total|number_format(0, ',', ' ') }}<br>
+                </strong>
+            </div>
+        </div>
+        <div id="footer">
+            {# <span><p class="page-number">Page </p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> #}
+            <script type="text/php">
+                if ( isset($pdf) ) {
+                    // OLD 
+                    // $font = Font_Metrics::get_font("helvetica", "bold");
+                    // $pdf->page_text(72, 18, "{PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(255,0,0));
+                    // v.0.7.0 and greater
+                    $x = 750;
+                    $y = 575;
+                    $text = "page : {PAGE_NUM} sur {PAGE_COUNT}";
+                    $font = $fontMetrics->get_font("helvetica", "bold");
+                    $size = 8;
+                    $color = array(0, 0, 0);
+                    $word_space = 0.0;  //  default
+                    $char_space = 0.0;  //  default
+                    $angle = 0.0;   //  default
+                    $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+                    
+                    $x2 = 40;
+                    $y2 = 575;
+                    $text2 = "Editée le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }} à {{ "now"|date('H') }}:{{ "now"|date('m') }}:{{ "now"|date('s') }} par {{ user.usrNom }}"; 
+                    $pdf->page_text($x2, $y2, $text2, $font, $size, $color, $word_space, $char_space, $angle);
+                }
+            </script>
+        </div>
+    </body>
+</html>

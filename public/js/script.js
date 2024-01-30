@@ -68,7 +68,9 @@ $( document ).ready(function() {
     else{
         $(".duree").attr("style","display: none;");
     }
-    
+
+    // $('.reception_type option:selected').val(2);
+    //$('.reception_type option:selected').text() = 2;
     if( $('.reception_type option:selected').text() == "PAR TYPE" ){
         $(".par_type").attr("style","display: block;");
         $(".isole").attr("style","display: none;");
@@ -82,4 +84,12 @@ $( document ).ready(function() {
         $(".isole").attr("style","display: none;");
         $(".par_type").attr("style","display: none;");
     }
+
+    $("select").select2();
+    $(".multi").select2();
+    $(".select").select2();
+    $(".form-control").select2();
+    $("#form_ct_centre_id").select2();
+    $(".form_ct_centre_id").select2();
+    $("option").select2();
 });

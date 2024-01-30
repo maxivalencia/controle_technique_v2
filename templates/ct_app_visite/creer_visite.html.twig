@@ -15,8 +15,15 @@
                 <div class="box">
                     <div class="entete-formulaire">Feuille de caisse</div><br>
                     {{ form_start(form_feuille_de_caisse) }}
-                        {{ form_widget(form_feuille_de_caisse) }}
-                        <button class="btn btn-primary">Générer</button> <button class="btn btn-success">Télécharger</button>
+                        {# {{ form_widget(form_feuille_de_caisse) }} #}
+                        {{ form_row(form_feuille_de_caisse.date) }}
+                        {{ form_row(form_feuille_de_caisse.ct_type_visite_id) }}
+                        {% if is_granted("ROLE_ADMIN") %}
+                            {{ form_row(form_feuille_de_caisse.ct_centre_id) }}
+                        {% else %}
+                            {% do form_feuille_de_caisse.ct_centre_id.setRendered() %}
+                        {% endif %}
+                        <button class="btn btn-primary" type="submit" formaction="{{ path('app_ct_app_imprimable_feuille_de_caisse_visite') }}">Générer</button>
                     {{ form_end(form_feuille_de_caisse) }}
                 </div>
             </td>
@@ -24,8 +31,15 @@
                 <div class="box-verificateur">
                     <div class="entete-formulaire">Fiche vérificateur</div><br>
                     {{ form_start(form_fiche_verificateur) }}
-                        {{ form_widget(form_fiche_verificateur) }}
-                        <button class="btn btn-primary">Générer</button> <button class="btn btn-success">Télécharger</button>
+                        {# {{ form_widget(form_fiche_verificateur) }} #}
+                        {{ form_row(form_fiche_verificateur.date) }}
+                        {% if is_granted("ROLE_ADMIN") %}
+                            {{ form_row(form_fiche_verificateur.ct_centre_id) }}
+                        {% else %}
+                            {% do form_fiche_verificateur.ct_centre_id.setRendered() %}
+                        {% endif %}
+                        {{ form_row(form_fiche_verificateur.ct_user_id) }}
+                        <button class="btn btn-primary" type="submit" formaction="{{ path('app_ct_app_imprimable_feuille_de_caisse_constatation') }}">Générer</button>
                     {{ form_end(form_fiche_verificateur) }}
                 </div>
             </td>
@@ -33,8 +47,15 @@
                 <div class="box-anomalie">
                     <div class="entete-formulaire">Liste anomalies</div><br>
                     {{ form_start(form_liste_anomalies) }}
-                        {{ form_widget(form_liste_anomalies) }}<br><br><br><br>
-                        <button class="btn btn-primary">Générer</button> <button class="btn btn-success">Télécharger</button>
+                        {# {{ form_widget(form_liste_anomalies) }} #}
+                        {{ form_row(form_liste_anomalies.date) }}
+                        {% if is_granted("ROLE_ADMIN") %}
+                            {{ form_row(form_liste_anomalies.ct_centre_id) }}
+                        {% else %}
+                            {% do form_liste_anomalies.ct_centre_id.setRendered() %}
+                        {% endif %}
+                        <br><br><br><br>
+                        <button class="btn btn-primary" type="submit" formaction="{{ path('app_ct_app_imprimable_feuille_de_caisse_constatation') }}">Générer</button>
                     {{ form_end(form_liste_anomalies) }}
                 </div>
             </td>
