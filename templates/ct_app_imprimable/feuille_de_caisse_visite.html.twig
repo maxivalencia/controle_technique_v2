@@ -75,33 +75,33 @@
             <tr align="center">
                 <td width="100" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Num PV</i></strong></td>
                 <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Num imm</i></strong></td>
-                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Usage</i></strong></td>
+                <td width="100" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Usage</i></strong></td>
                 <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Aptitude</i></strong></td>
                 <td width="100" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Vérificateur</i></strong></td>
-                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Nom coopérative</i></strong></td>
-                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Droit</i></strong></td>
-                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PV</i></strong></td>
-                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Carnet</i></strong></td>
-                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Carte</i></strong></td>
-                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Taxe</i></strong></td>
-                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>VTB</i></strong></td>
-                <td width="100" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Montant</i></strong></td>
+                <td width="55" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Nom coopérative</i></strong></td>
+                <td width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Droit</i></strong></td>
+                <td width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PV</i></strong></td>
+                <td width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Carnet</i></strong></td>
+                <td width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Carte</i></strong></td>
+                <td width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Taxe</i></strong></td>
+                <td width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>VTB</i></strong></td>
+                <td width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Montant</i></strong></td>
             </tr>
             {% for ct_visite in ct_visites %}
-                <tr>
+                <tr style="font-size:10px;">
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.controle_pv }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.immatriculation }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.usage }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.aptitude }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.verificateur }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.cooperative }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.droit|number_format(0, ',', ' ') }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.prix_pv|number_format(0, ',', ' ') }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.carnet|number_format(0, ',', ' ') }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.carte|number_format(0, ',', ' ') }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.tva|number_format(0, ',', ' ') }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.timbre|number_format(0, ',', ' ') }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.montant|number_format(0, ',', ' ') }}</td>
+                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.droit|number_format(0, ',', ' ') }}</td>
+                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.prix_pv|number_format(0, ',', ' ') }}</td>
+                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.carnet|number_format(0, ',', ' ') }}</td>
+                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.carte|number_format(0, ',', ' ') }}</td>
+                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.tva|number_format(0, ',', ' ') }}</td>
+                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.timbre|number_format(0, ',', ' ') }}</td>
+                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.montant|number_format(0, ',', ' ') }}</td>
                 </tr>
             {% else %}
                 <tr>
@@ -109,16 +109,41 @@
                 </tr>
             {% endfor %}
         </table>
-        <div style="font-size:14px;margin-left:600px">
+        <br>
+        <div style="font-size:14px;margin-left:600px;">
             <div align="center"><u><strong>RECAPITULATION</strong></u></div>
             <div>
                 <strong>
                     Nombre : {{ nombre_visite|number_format(0, ',', ' ') }}<br>
                     Total des Droits : Ar {{ total_des_droits|number_format(0, ',', ' ') }}<br>
                     Total des Prix PV : Ar {{ total_des_prix_pv|number_format(0, ',', ' ') }}<br>
+                    Total des Prix Carnets : Ar {{ total_des_carnets|number_format(0, ',', ' ') }}<br>
+                    Total des Prix Cartes : Ar {{ total_des_cartes|number_format(0, ',', ' ') }}<br>
                     Total TVA : Ar {{ total_des_tva|number_format(0, ',', ' ') }}<br>
                     MONTANT TOTAL : Ar {{ montant_total|number_format(0, ',', ' ') }}<br>
                 </strong>
+            </div>
+        </div>
+        <br>
+        <div align="center" style="font-size:14px;">
+            <div align="center"><u><strong>RECAPITULATION PAR USAGE EFFECTIF</strong></u></div>
+            <div style="font-size:10px;">
+                {% set colonne = 5 %}
+                {% set colonne_encours = 0 %}
+                <table>
+                {% for usage in liste_usage %}
+                    {% if colonne_encours == 0 %}
+                        <tr>
+                    {% endif %}
+                    <td align="right" style="border: 0px solid black;" width="125"> {{ usage.usage }} : </td>
+                    <td align="left" style="border: 0px solid black;" width="10"><strong> {{ usage.nombre }} </strong></td>
+                    {% set colonne_encours = colonne_encours + 1 %}
+                    {% if colonne_encours == colonne %}
+                        </tr>
+                        {% set colonne_encours = 0 %}
+                    {% endif %}
+                {% endfor %}
+                </table>
             </div>
         </div>
         <div id="footer">

@@ -20,6 +20,7 @@ use App\Repository\CtUtilisationRepository;
 use App\Repository\CtVehiculeRepository;
 use App\Repository\CtTypeVisiteRepository;
 use App\Repository\CtUsageTarifRepository;
+use App\Repository\CtUsageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -412,13 +413,26 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/feuille_de_caisse_visite", name="app_ct_app_imprimable_feuille_de_caisse_visite", methods={"GET", "POST"})
      */
-    public function FeuilleDeCaisseVisite(Request $request, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageTarifRepository $ctUsageTarifRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    public function FeuilleDeCaisseVisite(Request $request, CtUsageRepository $ctUsageRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageTarifRepository $ctUsageTarifRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
     {
         $type_visite = "";
         $date_visite = new \DateTime();
         $date_of_visite = new \DateTime();
         $type_visite_id = new CtTypeReception();
         $centre = new CtCentre();
+
+        $liste_usage = $ctUsageRepository->findAll();
+        $liste_des_usages = new ArrayCollection();
+        //$array_usages = [];
+        foreach($liste_usage as $lstu){
+            $usg = [
+                "usage" => $lstu->getUsgLibelle(),
+                "nombre" => 0,
+            ];
+            $liste_des_usages->add($usg);
+            //$array_usages[$lstu->getUsgLibelle()] = 0;
+        }
+
         if($request->request->get('form')){
             $rechercheform = $request->request->get('form');
             $recherche = $rechercheform['ct_type_visite_id'];
@@ -459,6 +473,8 @@ class CtAppImprimableController extends AbstractController
         $totalDesPrixPv = 0;
         $totalDesTVA = 0;
         $totalDesTimbres = 0;
+        $totalDesPrixCartes = 0;
+        $totalDesPrixCarnets = 0;
         $montantTotal = 0;
         if(new \DateTime($dateDeploiement) > $date_of_visite){
             $liste_visites = $ctVisiteRepository->findByFicheDeControle($type_visite_id->getId(), $centre->getId(), $date_of_visite);
@@ -470,6 +486,9 @@ class CtAppImprimableController extends AbstractController
         $tarif = 0;
         if($liste_visites != null){
             foreach($liste_visites as $liste){
+                if($liste->isVstIsContreVisite() == true){
+                    continue;
+                }
                 $usage = $liste->getCtUsageId();
                 //$motif = $liste->getCtMotifId();
                 //$calculable = $motif->isMtfIsCalculable();
@@ -501,6 +520,8 @@ class CtAppImprimableController extends AbstractController
                                 }
                                 break;
                             }
+                        } else {
+                            continue;
                         }
                     }
                 }
@@ -512,7 +533,15 @@ class CtAppImprimableController extends AbstractController
                         $carte = $carte + $vet->getVetPrix();
                     }
                 }
-                $droit = $tarif + $prixPv;
+                foreach($liste_des_usages as $ldu){
+                    //if($liste_des_usages["usage"] == $liste->getCtUsageId()->getUsgLibelle()){
+                    if($ldu["usage"] == $liste->getCtUsageId()->getUsgLibelle()){
+                        $ldu["nombre"]++;
+                    }
+                }
+                //$array_usages[$liste->getCtUsageId()->getUsgLibelle()] += 1;
+
+                $droit = $tarif + $prixPv + $carnet + $carte;
                 $tva = ($droit * floatval($prixTva)) / 100;
                 $montant = $droit + $tva + $timbre;
                 $vst = [
@@ -538,6 +567,8 @@ class CtAppImprimableController extends AbstractController
                 $totalDesTVA = $totalDesTVA + $tva;
                 $totalDesTimbres = $totalDesTimbres + $timbre;
                 $montantTotal = $montantTotal + $montant;
+                $totalDesPrixCartes = $totalDesPrixCartes + $carte;
+                $totalDesPrixCarnets = $totalDesPrixCarnets + $carnet;
             }
         }
 
@@ -554,8 +585,11 @@ class CtAppImprimableController extends AbstractController
             'total_des_prix_pv' => $totalDesPrixPv,
             'total_des_tva' => $totalDesTVA,
             'total_des_timbres' => $totalDesTimbres,
+            'total_des_carnets' => $totalDesPrixCarnets,
+            'total_des_cartes' => $totalDesPrixCartes,
             'montant_total' => $montantTotal,
             'ct_visites' => $liste_des_visites,
+            'liste_usage' => $liste_des_usages,
         ]);
         $dompdf->loadHtml($html);
         /* $dompdf->setPaper('A4', 'portrait'); */
@@ -583,7 +617,7 @@ class CtAppImprimableController extends AbstractController
         $type_reception = $type_reception_id->getTprcpLibelle();
         $centre = $ctCentreRepository->findOneBy(["id" => $reception->getCtCentreId()]);
         $date_of_reception = $reception->getRcpCreated();
-        
+
         $reception_data = ["id" => $identification,
             "ct_genre_id" => $vehicule->getCtGenreId()->getGrLibelle(),
             "ct_marque_id" => $vehicule->getCtMarqueId()->getMrqLibelle(),
