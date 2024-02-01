@@ -533,11 +533,14 @@ class CtAppImprimableController extends AbstractController
                         $carte = $carte + $vet->getVetPrix();
                     }
                 }
+                $compteur_usage = 0;
                 foreach($liste_des_usages as $ldu){
-                    //if($liste_des_usages["usage"] == $liste->getCtUsageId()->getUsgLibelle()){
-                    if($ldu["usage"] == $liste->getCtUsageId()->getUsgLibelle()){
-                        $ldu["nombre"]++;
+                    if($liste_des_usages[$compteur_usage]["usage"] == $liste->getCtUsageId()->getUsgLibelle()){
+                    //if($ldu["usage"] == $liste->getCtUsageId()->getUsgLibelle()){
+                        $liste_des_usages[$compteur_usage]["nombre"]++;
+                        //$ldu["nombre"]++;
                     }
+                    $compteur_usage++;
                 }
                 //$array_usages[$liste->getCtUsageId()->getUsgLibelle()] += 1;
 
