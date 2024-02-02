@@ -21,18 +21,21 @@
                 line-height: 20px;
             }
             .footer .page-number:after { content: counter(page); }
+            .page_break { page-break-before: always; }
         </style>
     </head>
     <body style="font-size:10px;">
         <table style="font-size:10px">
             <tr>
-                <td width="200" align="center" style="line-height:1em;">
+                <td width="200" align="center" style="font-size:12px;line-height:1em;">
                     <strong>DIRECTION GENERALE DE LA SECURITE ROUTIERE</strong>
                     <br>-----------------------------<br>
                     <strong>DIRECTION DES OPERATIONS ROUTIERE</strong>
                     <br>-----------------------------<br>
-                    <strong>{{ centre }}</strong><br>
-                    <strong>{{ province }}</strong>
+                    <strong>
+                        CENTRE DE SECURITE ROUTIERE<br>
+                        {{ constatation.centre }} - {{ constatation.province }}                        
+                    </strong>
                     <br>-----------------------------<br>
                     {# <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png"> #}
                     <img src="{{ logo }}" alt="logo" width="25px" height="25px" type="images/png">
@@ -68,11 +71,12 @@
                     {# Enregistrer sous<br>
                     N° : <strong>{{ reception.rcp_num_pv }}</strong><br> #}
                     {# -------------------------- #}
-                    {{ province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
+                    {{ constatation.province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
                     <br><br>--------------------------<br><br>
                 </td>
             </tr>
         </table>
+        <br>
         <div align="center">
             <table width="400" style="font-size:14px;border:1px solid black;" align="center">
                 <tr align="center">
@@ -84,199 +88,210 @@
                 </tr>
             </table>
         </div>
-        <div style="font-size:16px;margin:20px;">
-            <div style="margin-left:20px;">
+        <div align="right" style="font-size:14px;margin-left:20px;margin-right:20px;">
+            <br><br>
+            <strong>
+                N° <u>{{ constatation.pv }}</u> du {{ constatation.date|date('d') }} {{ trans_day_hash[constatation.date|date('F')] }} {{ constatation.date|date('Y') }}
+            </strong>
+        </div>
+        <div style="font-size:14px;margin-left:20px;margin-right:20px;margin-top:10px;">
+            <div><strong><u>REFERENCES</u> :     - DECRET N° 2012-1019 du 08 janvier 2013</strong></div>
+            <div style="font-size:14px;margin-left:20px;margin-top:10px;">
+                Je soussigné Monsieur <strong>{{ constatation.verificateur }}</strong>, vérificateur chargé des constatations, certifie que le véhicule immatriculé <strong>{{ constatation.immatriculation }}</strong>. En provenance de (1) <strong>{{ constatation.provenance }}</strong><br>
+                Date et Port d'embarquement : (2) <strong>{{ constatation.date_embarquement|date('d') }} {{ trans_day_hash[constatation.date_embarquement|date('F')] }} {{ constatation.date_embarquement|date('Y') }}</strong> à <strong>{{ constatation.port_embarquement }}</strong> décrit ci-après :
+            </div>
+        </div>
+        <div align="center" style="font-size:12px;margin-top:10px;">
+            <table style="border:1px solid black;border-collapse: collapse;">
+                <tr>
+                    <th colspan="2" width="150px" style="border:1px solid black;border-collapse: collapse;">CARACTERISTIQUES DU VEHICULE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">NOTICE <br>DESCRIPTIVE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">CARTE GRISE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">CORPS DU VEHICULE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">OBSERVATIONS</th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">1 - DATE DE PREMIERE MISE EN CIRCULATION</th>                    
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.date_premiere_mise_en_circulation }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.date_premiere_mise_en_circulation }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.date_premiere_mise_en_circulation }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">2 - GENRE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.genre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.genre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.genre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">3 - MARQUE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.marque }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.marque }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.marque }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">4 - TYPE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.type }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.type }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.type }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">5 - NUMERO DANS LA SERIE DU TYPE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.numero_de_serie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.numero_de_serie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.numero_de_serie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">6 - NUMERO DU MOTEUR</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.numero_moteur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.numero_moteur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.numero_moteur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">7 - SOURCE D'ENERGIE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.source_energie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.source_energie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.source_energie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">8 - CYLINDRE (en Cm3)</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.cylindre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.cylindre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.cylindre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">9 - PUISSANCE ADMINISTRATIVE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.puissance }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.puissance }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.puissance }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">10 - CARROSSERIE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.carrosserie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.carrosserie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.carrosserie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">11 - NOMBRE DE PLACE ASSISE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.nbr_assise }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.nbr_assise }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.nbr_assise }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">12 - CHARGE UTILE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.charge_utile }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.charge_utile }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.charge_utile }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">13 - POIDS A VIDE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.poids_a_vide }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.poids_a_vide }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.poids_a_vide }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">14 - POIDS TOTAL A CHARGE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.poids_total_a_charge }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.poids_total_a_charge }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.poids_total_a_charge }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th rowspan="3" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">15 - DIMENSIONS</th>
+                    <th align="left" width="150px" style="border:1px solid black;border-collapse: collapse;">LONGUEUR</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.longueur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.longueur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.longueur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">LARGEUR</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.largeur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.largeur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.largeur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">HAUTEUR</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.hauteur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.hauteur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.hauteur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <td colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:10px;">
+                        <span>
+                            <strong>16 - POIDS MAXIMA :</strong><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;161 Poids maxima par essieu <strong>(3)</strong> :<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Par essieu tandem à roues jumelées <strong>(4)</strong><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Par essieu Tridem <strong>(4)</strong><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;162 Poids total en charge d'un véhicule isolé <strong>(3)</strong><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- à deux essieu<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- à trois essieu<br>
+                        </span>
+                    </td>
+                    <td width="110px" style="border:1px solid black;border-collapse: collapse;"></td>
+                    <td width="110px" style="border:1px solid black;border-collapse: collapse;"></td>
+                    <td width="110px" style="border:1px solid black;border-collapse: collapse;"></td>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation.observation }}</th>
+                </tr>
+                <tr>
+                    <th colspan="6" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;"><u>DIVERS</u> : {{ constatation.divers }}</th>
+                </tr>
+            </table>
+            <br>
+            <div align="right" style="margin-right:20px"><strong><u>LE CHEF DE CENTRE</u></strong></div>
+            <div align="left" style="font-size:12px;margin-left:20px;">
+                Présenté par Monsieur/Madama : <strong>{{ constatation.proprietaire }}</strong><br>
+                Adresse <strong>{{ constatation.adresse }}</strong><br>
+                se disant propriétaire dudit véhicule<br>
+                est entiérement &laquo; <strong>{{ constatation.conforme }}</strong> &raquo; (5) au Type décrit plus haut,<br>
+                <strong>
+                    encore en bon état de fonctionnement, {{ constatation.etat }}
+                    <table> 
+                        <tr>
+                            <td valign="top";>
+                                et répond aux conditions de
+                            </td>
+                            <td>
+                                - Sécurité des personnes,<br>
+                                - Sécurité des marchandises,<br>
+                                - Protection de l'environnement
+                            </td>
+                            <td>
+                                {{ constatation.securite_personne }}<br>
+                                {{ constatation.securite_marchandise }}<br>
+                                {{ constatation.protection_environnement }}
+                            </td>
+                        </tr>
+                    </table>
+                </strong>
+            </div>
+            <div align="left" style="font-size:10px;margin-left:10px;">
                 <i>
-                    Il résulte des constatations effectuées le {{ reception.rcp_created|date('d') }} {{ trans_day_hash[reception.rcp_created|date('F')] }} {{ reception.rcp_created|date('Y') }} <br>
-                    À la demande de Mr ou Mme :  {{ reception.rcp_proprietaire }} <br>
-                    Adresse :  {{ reception.rcp_adresse }} <br>
-                    Que le véhicule ci-dessous décrit
+                    (1) - Mettre le pays d'origine (et éventuellement la ville ou le département)<br>
+                    (2) - Mettre la date de mise à quai et ville où se trouve le port d'embarquement<br>
+                    (3) - Ne pas recopier ni reproduire les rubriques inutiles<br>
+                    (4) - Entraxe compris entre 1,35 à 1,80m à condition que la charge transmise par les roues de même essieu de la combinaison ne dépasse pas 11,50 tonnes.<br>
+                    (5) - Rayer la mention inutile
                 </i>
-            </div>
-            <div style="margin-left:40px;">
-                <table style="font-size:14px;border:0px solid black;line-height:1em;">
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Genre</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.ct_genre_id }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Marque</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.ct_marque_id }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Type</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_type }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Numéro dans la série du type</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_num_serie }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Numéro du moteur</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_num_moteur }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Source d'énergie</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.ct_source_energie_id }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Cylindre (en Cm3)</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_cylindre }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Puissance administrative (en CV)</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_puissance }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Carrosserie</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.ct_carrosserie_id }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Nombre de place assises</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.rcp_nbr_assis }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Charge utile</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_charge_utile }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Poids à vide</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_poids_vide }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Poids total autorisé en charge</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_poids_total_charge }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Année de première mise en circulation</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.rcp_mise_service|date('d') }} {{ trans_day_hash[reception.rcp_mise_service|date('F')] }} {{ reception.rcp_mise_service|date('Y') }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Précédent numéro d'immatriculation</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.rcp_immatriculation }} </strong></td>
-                    </tr>
-                    <tr style="margin-top:0px;margin-bottom:0px;">
-                        <td width="200" style="margin-top:0px;margin-bottom:0px;">Motif de la présente réception</td>
-                        <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="300" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.ct_motif_id }} </strong></td>
-                    </tr>
-                </table>
-            </div>
-            <div align="center" style="font-size:13px;">
-                <i>
-                    Satisfait aux articles R66 à R71 ; R76 à R103 ; R109 et R110 du décret N° 71 138 du 23 mars 1971<br>
-                    Portant sur la réglementation générale sur la police de circulation routière (code de la route)<br><br>
-                </i>
-            </div>
-            <strong><hr></strong>
-            <div align="center" style="font-size:14px;">
-                <strong>{{ centre }}</strong><br>
-                <strong>{{ province }}</strong><br>
-                <strong>----------------</strong>
-            </div>
-            <div align="right" style="font-size:13px;">
-                <strong>L’EXPERT CHARGE DE LA RECEPTION TECHNIQUE</strong>
-            </div>
-            <div style="margin-top:150px;margin-left:20px;">
-                <table style="font-size:13px;border:0px solid black;line-height:1em;">
-                    <tr>
-                        <td width="100">Enregistrer sous</td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>N° {{ reception.rcp_num_pv }}</strong> du <strong>{{ reception.rcp_mise_service|date('d') }} {{ trans_day_hash[reception.rcp_mise_service|date('F')] }} {{ reception.rcp_mise_service|date('Y') }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="100">Doit</td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>{{ reception.rcp_proprietaire }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="100">Adresse</td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>{{ reception.rcp_adresse }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="100">Motif de réception</td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>{{ reception.ct_motif_id }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="100">Genre de véhicule</td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>{{ reception.ct_genre_id }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="100">Immatriculation</td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>{{ reception.rcp_immatriculation }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="100">Droit de réception</td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>{{ total_des_droits }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="100">Prix du procès-verbal</td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>{{ total_des_prix_pv }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="100">THT</td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>{{ total_des_tht }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="100">TVA</td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>{{ total_des_tva }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="100">Timbre</td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>{{ total_des_timbres }}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="100"><strong>Montant</strong></td>
-                        <td width="10"> : </td>
-                        <td width="400"><strong>{{ montant_total }}</strong></td>
-                    </tr>
-                </table>
             </div>
         </div>
         <div class="footer">
             <span>Direction Générale de la Sécurité Routière BP 784 Alarobia Antananarivo NIF : 4001 089525 STAT : 71102 11 2006 0 043 19</span>
-            {# <script type="text/php">
-                if ( isset($pdf) ) {
-                    // OLD 
-                    // $font = Font_Metrics::get_font("helvetica", "bold");
-                    // $pdf->page_text(72, 18, "{PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(255,0,0));
-                    // v.0.7.0 and greater
-                    $x = 750;
-                    $y = 575;
-                    $text = "page : {PAGE_NUM} sur {PAGE_COUNT}";
-                    $font = $fontMetrics->get_font("helvetica", "bold");
-                    $size = 8;
-                    $color = array(0, 0, 0);
-                    $word_space = 0.0;  //  default
-                    $char_space = 0.0;  //  default
-                    $angle = 0.0;   //  default
-                    $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
-                }
-            </script> #}
         </div>
+        <div class="page_break"></div>
     </body>
 </html>

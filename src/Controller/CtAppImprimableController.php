@@ -110,9 +110,9 @@ class CtAppImprimableController extends AbstractController
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $output = $dompdf->output();
-        $filename = "Fiche_De_Controle_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        $filename = "FICHE_DE_CONTROLE_RECEP".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("Fiche_De_Controle_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+        $dompdf->stream("FICHE_DE_CONTROLE_RECEP".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
     }
@@ -266,9 +266,9 @@ class CtAppImprimableController extends AbstractController
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $output = $dompdf->output();
-        $filename = "Feuille_De_Caisse_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        $filename = "FEUILLE_DE_CAISSE_RECEP_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("Feuille_De_Caisse_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+        $dompdf->stream("FEUILLE_DE_CAISSE_RECEP_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
     }
@@ -403,9 +403,9 @@ class CtAppImprimableController extends AbstractController
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $output = $dompdf->output();
-        $filename = "Feuille_De_Caisse_Constatation_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        $filename = "FEUILLE_DE_CAISSE_CONST_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("Feuille_De_Caisse_Constatation_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+        $dompdf->stream("FEUILLE_DE_CAISSE_CONST_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
     }
@@ -615,9 +615,9 @@ class CtAppImprimableController extends AbstractController
         //$dompdf->setOptions("isPhpEnabled", true);
         $dompdf->render();
         $output = $dompdf->output();
-        $filename = "Feuille_De_Caisse_".$type_visite."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        $filename = "FEUILLE_DE_CAISSE_VISITE_".$type_visite."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("Feuille_De_Caisse_".$type_visite."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+        $dompdf->stream("FEUILLE_DE_CAISSE_VISITE_".$type_visite."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
     }
@@ -799,9 +799,9 @@ class CtAppImprimableController extends AbstractController
         /* $dompdf->setPaper('A4', 'landscape'); */
         $dompdf->render();
         $output = $dompdf->output();
-        $filename = "Proces_vebal_".$id."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        $filename = "PROCES_VERBAL_".$id."_RECEP_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("Proces_vebal_".$id."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+        $dompdf->stream("PROCES_VERBAL_".$id."_RECEP_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
     }
@@ -834,88 +834,153 @@ class CtAppImprimableController extends AbstractController
         //$type_constatation = $type_reception_id->getTprcpLibelle();
         //$centre = $ctCentreRepository->findOneBy(["id" => $reception->getCtCentreId()]);
         //$date_of_reception = $reception->getRcpCreated();
-        
-        $constatation_carte_grise_data = [
-            //"id" => $constatation_caracteristique_carte_grise->getId(),
-            "date_premiere_mise_en_circulation" => $constatation_caracteristique_carte_grise->getCadPremiereCircule(),
-            "genre" => $constatation_caracteristique_carte_grise->getCtGenreId()->getGrLibelle(),
-            "marque" => $constatation_caracteristique_carte_grise->getCtMarqueId()->getMrqLibelle(),
-            "type" => $constatation_caracteristique_carte_grise->getCadTypeCar(),
-            "numero_de_serie" => $constatation_caracteristique_carte_grise->getCadNumSerieType(),
-            "numero_moteur" => $constatation_caracteristique_carte_grise->getCadNumMoteur(),
-            "source_energie" => $constatation_caracteristique_carte_grise->getCtSourceEnergieId()->getSreLibelle(),
-            "cylindre" => $constatation_caracteristique_carte_grise->getCadCylindre(),
-            "puissance" => $constatation_caracteristique_carte_grise->getCadPuissance(),
-            "carrosserie" => $constatation_caracteristique_carte_grise->getCtCarrosserieId()->getCrsLibelle(),
-            "nbr_assise" => $constatation_caracteristique_carte_grise->getCadNbrAssis(),
-            "charge_utile" =>$constatation_caracteristique_carte_grise->getCadChargeUtile(),
-            "poids_a_vide" => $constatation_caracteristique_carte_grise->getCadPoidsVide(),
-            "poids_total_a_charge" => $constatation_caracteristique_carte_grise->getCadPoidsTotalCharge(),
-            "longueur" => $constatation_caracteristique_carte_grise->getCadLongueur(),
-            "largeur" => $constatation_caracteristique_carte_grise->getCadLargeur(),
-            "hauteur" => $constatation_caracteristique_carte_grise->getCadHauteur(),
-        ];
-        return $this->redirectToRoute('app_ct_app_historique', [], Response::HTTP_SEE_OTHER);
-        $constatation_corps_du_vehicule_data = [
-            //"id" => $constatation_caracteristique_corps_du_vehicule->getId(),
-            "date_premiere_mise_en_circulation" => $constatation_caracteristique_corps_du_vehicule->getCadPremiereCircule(),
-            "genre" => $constatation_caracteristique_corps_du_vehicule->getCtGenreId()->getGrLibelle(),
-            "marque" => $constatation_caracteristique_corps_du_vehicule->getCtMarqueId()->getMrqLibelle(),
-            "type" => $constatation_caracteristique_corps_du_vehicule->getCadTypeCar(),
-            "numero_de_serie" => $constatation_caracteristique_corps_du_vehicule->getCadNumSerieType(),
-            "numero_moteur" => $constatation_caracteristique_corps_du_vehicule->getCadNumMoteur(),
-            "source_energie" => $constatation_caracteristique_corps_du_vehicule->getCtSourceEnergieId()->getSreLibelle(),
-            "cylindre" => $constatation_caracteristique_corps_du_vehicule->getCadCylindre(),
-            "puissance" => $constatation_caracteristique_corps_du_vehicule->getCadPuissance(),
-            "carrosserie" => $constatation_caracteristique_corps_du_vehicule->getCtCarrosserieId()->getCrsLibelle(),
-            "nbr_assise" => $constatation_caracteristique_corps_du_vehicule->getCadNbrAssis(),
-            "charge_utile" =>$constatation_caracteristique_corps_du_vehicule->getCadChargeUtile(),
-            "poids_a_vide" => $constatation_caracteristique_corps_du_vehicule->getCadPoidsVide(),
-            "poids_total_a_charge" => $constatation_caracteristique_corps_du_vehicule->getCadPoidsTotalCharge(),
-            "longueur" => $constatation_caracteristique_corps_du_vehicule->getCadLongueur(),
-            "largeur" => $constatation_caracteristique_corps_du_vehicule->getCadLargeur(),
-            "hauteur" => $constatation_caracteristique_corps_du_vehicule->getCadHauteur(),
-        ];
+        //var_dump($constatation_caracteristique_carte_grise);
+        if($constatation_caracteristique_carte_grise != null){
+            $constatation_carte_grise_data = [
+                "date_premiere_mise_en_circulation" => $constatation_caracteristique_carte_grise->getCadPremiereCircule(),
+                "genre" => $constatation_caracteristique_carte_grise->getCtGenreId()->getGrLibelle(),
+                "marque" => $constatation_caracteristique_carte_grise->getCtMarqueId()->getMrqLibelle(),
+                "type" => $constatation_caracteristique_carte_grise->getCadTypeCar(),
+                "numero_de_serie" => $constatation_caracteristique_carte_grise->getCadNumSerieType(),
+                "numero_moteur" => $constatation_caracteristique_carte_grise->getCadNumMoteur(),
+                "source_energie" => $constatation_caracteristique_carte_grise->getCtSourceEnergieId()->getSreLibelle(),
+                "cylindre" => $constatation_caracteristique_carte_grise->getCadCylindre(),
+                "puissance" => $constatation_caracteristique_carte_grise->getCadPuissance(),
+                "carrosserie" => $constatation_caracteristique_carte_grise->getCtCarrosserieId()->getCrsLibelle(),
+                "nbr_assise" => $constatation_caracteristique_carte_grise->getCadNbrAssis(),
+                "charge_utile" =>$constatation_caracteristique_carte_grise->getCadChargeUtile(),
+                "poids_a_vide" => $constatation_caracteristique_carte_grise->getCadPoidsVide(),
+                "poids_total_a_charge" => $constatation_caracteristique_carte_grise->getCadPoidsTotalCharge(),
+                "longueur" => $constatation_caracteristique_carte_grise->getCadLongueur(),
+                "largeur" => $constatation_caracteristique_carte_grise->getCadLargeur(),
+                "hauteur" => $constatation_caracteristique_carte_grise->getCadHauteur(),
+            ];
+        } else {
+            $constatation_carte_grise_data = [
+                "date_premiere_mise_en_circulation" => "",
+                "genre" => "",
+                "marque" => "",
+                "type" => "",
+                "numero_de_serie" => "",
+                "numero_moteur" => "",
+                "source_energie" => "",
+                "cylindre" => "",
+                "puissance" => "",
+                "carrosserie" => "",
+                "nbr_assise" => "",
+                "charge_utile" => "",
+                "poids_a_vide" => "",
+                "poids_total_a_charge" => "",
+                "longueur" => "",
+                "largeur" => "",
+                "hauteur" => "",
+            ];
+        }
+        //return $this->redirectToRoute('app_ct_app_historique', [], Response::HTTP_SEE_OTHER);
+        if($constatation_caracteristique_carte_grise != null){
+            $constatation_corps_du_vehicule_data = [
+                "date_premiere_mise_en_circulation" => $constatation_caracteristique_corps_du_vehicule->getCadPremiereCircule(),
+                "genre" => $constatation_caracteristique_corps_du_vehicule->getCtGenreId()->getGrLibelle(),
+                "marque" => $constatation_caracteristique_corps_du_vehicule->getCtMarqueId()->getMrqLibelle(),
+                "type" => $constatation_caracteristique_corps_du_vehicule->getCadTypeCar(),
+                "numero_de_serie" => $constatation_caracteristique_corps_du_vehicule->getCadNumSerieType(),
+                "numero_moteur" => $constatation_caracteristique_corps_du_vehicule->getCadNumMoteur(),
+                "source_energie" => $constatation_caracteristique_corps_du_vehicule->getCtSourceEnergieId()->getSreLibelle(),
+                "cylindre" => $constatation_caracteristique_corps_du_vehicule->getCadCylindre(),
+                "puissance" => $constatation_caracteristique_corps_du_vehicule->getCadPuissance(),
+                "carrosserie" => $constatation_caracteristique_corps_du_vehicule->getCtCarrosserieId()->getCrsLibelle(),
+                "nbr_assise" => $constatation_caracteristique_corps_du_vehicule->getCadNbrAssis(),
+                "charge_utile" =>$constatation_caracteristique_corps_du_vehicule->getCadChargeUtile(),
+                "poids_a_vide" => $constatation_caracteristique_corps_du_vehicule->getCadPoidsVide(),
+                "poids_total_a_charge" => $constatation_caracteristique_corps_du_vehicule->getCadPoidsTotalCharge(),
+                "longueur" => $constatation_caracteristique_corps_du_vehicule->getCadLongueur(),
+                "largeur" => $constatation_caracteristique_corps_du_vehicule->getCadLargeur(),
+                "hauteur" => $constatation_caracteristique_corps_du_vehicule->getCadHauteur(),
+            ];
+        } else {
+            $constatation_corps_du_vehicule_data = [
+                "date_premiere_mise_en_circulation" => "",
+                "genre" => "",
+                "marque" => "",
+                "type" => "",
+                "numero_de_serie" => "",
+                "numero_moteur" => "",
+                "source_energie" => "",
+                "cylindre" => "",
+                "puissance" => "",
+                "carrosserie" => "",
+                "nbr_assise" => "",
+                "charge_utile" => "",
+                "poids_a_vide" => "",
+                "poids_total_a_charge" => "",
+                "longueur" => "",
+                "largeur" => "",
+                "hauteur" => "",
+            ];
+        }
 
-        $constatation_note_descriptive_data = [
-            //"id" => $constatation_caracteristique_note_descriptive->getId(),
-            "date_premiere_mise_en_circulation" => $constatation_caracteristique_note_descriptive->getCadPremiereCircule(),
-            "genre" => $constatation_caracteristique_note_descriptive->getCtGenreId()->getGrLibelle(),
-            "marque" => $constatation_caracteristique_note_descriptive->getCtMarqueId()->getMrqLibelle(),
-            "type" => $constatation_caracteristique_note_descriptive->getCadTypeCar(),
-            "numero_de_serie" => $constatation_caracteristique_note_descriptive->getCadNumSerieType(),
-            "numero_moteur" => $constatation_caracteristique_note_descriptive->getCadNumMoteur(),
-            "source_energie" => $constatation_caracteristique_note_descriptive->getCtSourceEnergieId()->getSreLibelle(),
-            "cylindre" => $constatation_caracteristique_note_descriptive->getCadCylindre(),
-            "puissance" => $constatation_caracteristique_note_descriptive->getCadPuissance(),
-            "carrosserie" => $constatation_caracteristique_note_descriptive->getCtCarrosserieId()->getCrsLibelle(),
-            "nbr_assise" => $constatation_caracteristique_note_descriptive->getCadNbrAssis(),
-            "charge_utile" =>$constatation_caracteristique_note_descriptive->getCadChargeUtile(),
-            "poids_a_vide" => $constatation_caracteristique_note_descriptive->getCadPoidsVide(),
-            "poids_total_a_charge" => $constatation_caracteristique_note_descriptive->getCadPoidsTotalCharge(),
-            "longueur" => $constatation_caracteristique_note_descriptive->getCadLongueur(),
-            "largeur" => $constatation_caracteristique_note_descriptive->getCadLargeur(),
-            "hauteur" => $constatation_caracteristique_note_descriptive->getCadHauteur(),
-        ];
+        if($constatation_caracteristique_carte_grise != null){
+            $constatation_note_descriptive_data = [
+                "date_premiere_mise_en_circulation" => $constatation_caracteristique_note_descriptive->getCadPremiereCircule(),
+                "genre" => $constatation_caracteristique_note_descriptive->getCtGenreId()->getGrLibelle(),
+                "marque" => $constatation_caracteristique_note_descriptive->getCtMarqueId()->getMrqLibelle(),
+                "type" => $constatation_caracteristique_note_descriptive->getCadTypeCar(),
+                "numero_de_serie" => $constatation_caracteristique_note_descriptive->getCadNumSerieType(),
+                "numero_moteur" => $constatation_caracteristique_note_descriptive->getCadNumMoteur(),
+                "source_energie" => $constatation_caracteristique_note_descriptive->getCtSourceEnergieId()->getSreLibelle(),
+                "cylindre" => $constatation_caracteristique_note_descriptive->getCadCylindre(),
+                "puissance" => $constatation_caracteristique_note_descriptive->getCadPuissance(),
+                "carrosserie" => $constatation_caracteristique_note_descriptive->getCtCarrosserieId()->getCrsLibelle(),
+                "nbr_assise" => $constatation_caracteristique_note_descriptive->getCadNbrAssis(),
+                "charge_utile" =>$constatation_caracteristique_note_descriptive->getCadChargeUtile(),
+                "poids_a_vide" => $constatation_caracteristique_note_descriptive->getCadPoidsVide(),
+                "poids_total_a_charge" => $constatation_caracteristique_note_descriptive->getCadPoidsTotalCharge(),
+                "longueur" => $constatation_caracteristique_note_descriptive->getCadLongueur(),
+                "largeur" => $constatation_caracteristique_note_descriptive->getCadLargeur(),
+                "hauteur" => $constatation_caracteristique_note_descriptive->getCadHauteur(),
+            ];
+        } else {
+            $constatation_note_descriptive_data = [
+                "date_premiere_mise_en_circulation" => "",
+                "genre" => "",
+                "marque" => "",
+                "type" => "",
+                "numero_de_serie" => "",
+                "numero_moteur" => "",
+                "source_energie" => "",
+                "cylindre" => "",
+                "puissance" => "",
+                "carrosserie" => "",
+                "nbr_assise" => "",
+                "charge_utile" => "",
+                "poids_a_vide" => "",
+                "poids_total_a_charge" => "",
+                "longueur" => "",
+                "largeur" => "",
+                "hauteur" => "",
+            ];
+        }
 
         $constatation_data = [
             "id" => $constatation->getId(),
-            "centre" => $constatation->getId(),
-            "province" => $constatation->getId(),
-            "pv" => $constatation->getId(),
-            "date" => $constatation->getId(),
-            "verificateur" => $constatation->getId(),
-            "immatriculation" => $constatation->getId(),
-            "provenance" => $constatation->getId(),
-            "date_embarquement" => $constatation->getId(),
-            "port_embarquement" => $constatation->getId(),
-            "observation" => $constatation->getId(),
-            "proprietaire" => $constatation->getId(),
-            "adresse" => $constatation->getId(),
-            "conforme" => $constatation->getId(),
-            "securite_personne" => $constatation->getId(),
-            "securite_marchandise" => $constatation->getId(),
-            "protection_environnement" => $constatation->getId(),
+            "centre" => $constatation->getCtCentreId()->getCtrNom(),
+            "province" => $constatation->getCtCentreId()->getCtProvinceId()->getPrvNom(),
+            "pv" => $constatation->getCadNumero(),
+            "date" => $constatation->getCadCreated(),
+            "verificateur" => $constatation->getCtVerificateurId(),
+            "immatriculation" => $constatation->getCadImmatriculation(),
+            "provenance" => $constatation->getCadProvenance(),
+            "date_embarquement" => $constatation->getCadDateEmbarquement(),
+            "port_embarquement" => $constatation->getCadLieuEmbarquement(),
+            "observation" => $constatation->getCadObservation(),
+            "proprietaire" => $constatation->getCadProprietaireNom(),
+            "adresse" => $constatation->getCadProprietaireAdresse(),
+            "conforme" => $constatation->isCadConforme() ? "CONFORME" : "NON CONFORME",
+            "etat" => $constatation->isCadBonEtat() ? "OUI" : "NON",
+            "securite_personne" => $constatation->isCadSecPers() ? "OUI" : "NON",
+            "securite_marchandise" => $constatation->isCadSecMarch() ? "OUI" : "NON",
+            "protection_environnement" => $constatation->isCadProtecEnv() ? "OUI" : "NON",
+            "divers" => $constatation->getCadDivers(),
         ];
         
         $pdfOptions = new Options();
@@ -928,7 +993,7 @@ class CtAppImprimableController extends AbstractController
         $date = new \DateTime();
         $logo = file_get_contents($this->getParameter('logo').'logo.txt');
 
-        $dossier = $this->getParameter('dossier_reception_isole')."/".$type_reception."/".$centre->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+        $dossier = $this->getParameter('dossier_constatation')."/".$this->getUser()->getCtCentreId()->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
         if (!file_exists($dossier)) {
             mkdir($dossier, 0777, true);
         }
@@ -940,7 +1005,7 @@ class CtAppImprimableController extends AbstractController
         $autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
         $prixTimbre = $autreTimbre->getAttribut();
         $timbre = floatval($prixTimbre);
-        $nombreReceptions = 0;
+        $nombreConstatations = 0;
         $totalDesDroits = 0;
         $totalDesPrixPv = 0;
         $totalDesTVA = 0;
@@ -1034,9 +1099,9 @@ class CtAppImprimableController extends AbstractController
         /* $dompdf->setPaper('A4', 'landscape'); */
         $dompdf->render();
         $output = $dompdf->output();
-        $filename = "Proces_vebal_".$id."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        $filename = "PROCES_VERBAL_".$id."_CONST_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("Proces_vebal_".$id."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+        $dompdf->stream("PROCES_VERBAL_".$id."_CONST_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
     }

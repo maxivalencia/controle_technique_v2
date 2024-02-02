@@ -17,9 +17,9 @@ class CtAppHistoriqueController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->redirectToRoute('app_ct_app_historique', [], Response::HTTP_SEE_OTHER);
-        /* return $this->render('ct_app_historique/index.html.twig', [
+        /* return $this->redirectToRoute('app_ct_app_historique', [], Response::HTTP_SEE_OTHER); */
+        return $this->render('ct_app_historique/index.html.twig', [
             'controller_name' => 'CtAppHistoriqueController',
-        ]); */
+        ]);
     }
 }
