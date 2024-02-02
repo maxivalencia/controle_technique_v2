@@ -262,7 +262,7 @@
                     encore en bon état de fonctionnement, {{ constatation.etat }}
                     <table> 
                         <tr>
-                            <td valign="top";>
+                            <td align="left"  valign="top";>
                                 et répond aux conditions de
                             </td>
                             <td>
@@ -279,6 +279,7 @@
                     </table>
                 </strong>
             </div>
+            <br>
             <div align="left" style="font-size:10px;margin-left:10px;">
                 <i>
                     (1) - Mettre le pays d'origine (et éventuellement la ville ou le département)<br>
@@ -293,5 +294,234 @@
             <span>Direction Générale de la Sécurité Routière BP 784 Alarobia Antananarivo NIF : 4001 089525 STAT : 71102 11 2006 0 043 19</span>
         </div>
         <div class="page_break"></div>
+        <br>
+        <table style="font-size:10px">
+            <tr>
+                <td width="200" align="center" style="font-size:12px;line-height:1em;">
+                    <strong>DIRECTION GENERALE DE LA SECURITE ROUTIERE</strong>
+                    <br>-----------------------------<br>
+                    <strong>DIRECTION DES OPERATIONS ROUTIERE</strong>
+                    <br>-----------------------------<br>
+                    <strong>
+                        CENTRE DE SECURITE ROUTIERE<br>
+                        {{ constatation.centre }} - {{ constatation.province }}                        
+                    </strong>
+                    <br>-----------------------------<br>
+                    {# <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png"> #}
+                    <img src="{{ logo }}" alt="logo" width="25px" height="25px" type="images/png">
+                    <br>« LAHITOKANA NY AINA » <br>
+                    NIF : 4001 089525 STAT : 71102 11 2006 0 043 19
+                </td>
+                <td width="150" align="center" valign="bottom" style="font-size:16px;">
+                    <div align="center">
+                        <strong>
+                            RECU<br>
+                            ----------------
+                        </strong>
+                    </div>
+                </td>
+                <td width="200" align="center" valign="top" style="font-size:12px;">
+                    {% set trans_day_hash = { 
+                            "January": "Janvier", 
+                            "February": "Février", 
+                            "March": "Mars", 
+                            "April": "Avril", 
+                            "May": "Mai", 
+                            "June": "Juin", 
+                            "July": "Juillet",
+                            "August": "Août",
+                            "September": "Septembre",
+                            "October": "Octobre",
+                            "November": "Novembre",
+                            "December": "Décembre" 
+                        } 
+                    %}
+                    <strong>REPOBLIKAN’I MADAGASIKARA</strong><br>
+                    <i>Fitiavana - Tanindrazana - Fandrosoana</i>
+                    <br>--------------------------<br><br>
+                    {# Enregistrer sous<br>
+                    N° : <strong>{{ reception.rcp_num_pv }}</strong><br> #}
+                    {# -------------------------- #}
+                    {# {{ constatation.province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
+                    <br><br>--------------------------<br><br> #}
+                </td>
+            </tr>
+        </table>
+        <div align="center" style="font-size:14px">
+            <strong>
+                Procès-Verbal de Constatation avant dédouanement d'un véhicule immatriculé {{ constatation.immatriculation }}
+            </strong>
+        </div>
+        <br>
+        <div align="left" style="font-size:16px;margin-left:40px;">
+            Enregistré sous <strong><u>N° {{ constatation.pv }}</u></strong><br>
+            du : {{ constatation.date|date('d') }} {{ trans_day_hash[constatation.date|date('F')] }} {{ constatation.date|date('Y') }}
+        </div>
+        <br>
+        <div style="font-size:14px;margin-left:40px;">
+            <table style="border:0px solid black;border-collapse: collapse;">
+                <tr>
+                    <td width="200px" align="left">DOIT</td>
+                    <td align="left"><strong>{{ constatation.proprietaire }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">ADRESSE</td>
+                    <td align="left"><strong>{{ constatation.adresse }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">MARQUE</td>
+                    <td align="left"><strong>{{ constatation_note_descriptive_data.marque }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">GENRE DE VEHICULE</td>
+                    <td align="left"><strong>{{ constatation_note_descriptive_data.genre }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">POIDS TOTAL A CHARGE</td>
+                    <td align="left"><strong>{{ constatation_note_descriptive_data.poids_total_a_charge }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">DROIT</td>
+                    <td align="left"><strong>{{ total_des_droits }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">PRIX DU PROCES-VERBAL</td>
+                    <td align="left"><strong>{{ total_des_prix_pv }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">TOTAL HORS TAXE</td>
+                    <td align="left"><strong>{{ total_des_tht }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">TVA</td>
+                    <td align="left"><strong>{{ total_des_tva }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">TIMBRE</td>
+                    <td align="left"><strong>{{ total_des_timbres }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left"><strong>MONTANT</strong></td>
+                    <td align="left"><strong>{{ montant_total }}</strong></td>
+                </tr>
+            </table>
+        </div>
+        <br><br><br><br><br><br>
+        <div align="center" style="font-size:10px;">Direction Générale de la Sécurité Routière BP 784 Alarobia Antananarivo NIF : 4001 089525 STAT : 71102 11 2006 0 043 19</div>
+        <br>
+        <hr>
+        <br>
+        <br>
+         <table style="font-size:10px">
+            <tr>
+                <td width="200" align="center" style="font-size:12px;line-height:1em;">
+                    <strong>DIRECTION GENERALE DE LA SECURITE ROUTIERE</strong>
+                    <br>-----------------------------<br>
+                    <strong>DIRECTION DES OPERATIONS ROUTIERE</strong>
+                    <br>-----------------------------<br>
+                    <strong>
+                        CENTRE DE SECURITE ROUTIERE<br>
+                        {{ constatation.centre }} - {{ constatation.province }}                        
+                    </strong>
+                    <br>-----------------------------<br>
+                    {# <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png"> #}
+                    <img src="{{ logo }}" alt="logo" width="25px" height="25px" type="images/png">
+                    <br>« LAHITOKANA NY AINA » <br>
+                    NIF : 4001 089525 STAT : 71102 11 2006 0 043 19
+                </td>
+                <td width="150" align="center" valign="bottom" style="font-size:16px;">
+                    <div align="center">
+                        <strong>
+                            RECU<br>
+                            ----------------
+                        </strong>
+                    </div>
+                </td>
+                <td width="200" align="center" valign="top" style="font-size:12px;">
+                    {% set trans_day_hash = { 
+                            "January": "Janvier", 
+                            "February": "Février", 
+                            "March": "Mars", 
+                            "April": "Avril", 
+                            "May": "Mai", 
+                            "June": "Juin", 
+                            "July": "Juillet",
+                            "August": "Août",
+                            "September": "Septembre",
+                            "October": "Octobre",
+                            "November": "Novembre",
+                            "December": "Décembre" 
+                        } 
+                    %}
+                    <strong>REPOBLIKAN’I MADAGASIKARA</strong><br>
+                    <i>Fitiavana - Tanindrazana - Fandrosoana</i>
+                    <br>--------------------------<br><br>
+                    {# Enregistrer sous<br>
+                    N° : <strong>{{ reception.rcp_num_pv }}</strong><br> #}
+                    {# -------------------------- #}
+                    {# {{ constatation.province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
+                    <br><br>--------------------------<br><br> #}
+                </td>
+            </tr>
+        </table>
+        <div align="center" style="font-size:14px">
+            <strong>
+                Procès-Verbal de Constatation avant dédouanement d'un véhicule immatriculé {{ constatation.immatriculation }}
+            </strong>
+        </div>
+        <br>
+        <div align="left" style="font-size:16px;margin-left:40px;">
+            Enregistré sous <strong><u>N° {{ constatation.pv }}</u></strong><br>
+            du : {{ constatation.date|date('d') }} {{ trans_day_hash[constatation.date|date('F')] }} {{ constatation.date|date('Y') }}
+        </div>
+        <br>
+        <div style="font-size:14px;margin-left:40px;">
+            <table style="border:0px solid black;border-collapse: collapse;">
+                <tr>
+                    <td width="200px" align="left">DOIT</td>
+                    <td align="left"><strong>{{ constatation.proprietaire }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">ADRESSE</td>
+                    <td align="left"><strong>{{ constatation.adresse }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">MARQUE</td>
+                    <td align="left"><strong>{{ constatation_note_descriptive_data.marque }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">GENRE DE VEHICULE</td>
+                    <td align="left"><strong>{{ constatation_note_descriptive_data.genre }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">POIDS TOTAL A CHARGE</td>
+                    <td align="left"><strong>{{ constatation_note_descriptive_data.poids_total_a_charge }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">DROIT</td>
+                    <td align="left"><strong>{{ total_des_droits }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">PRIX DU PROCES-VERBAL</td>
+                    <td align="left"><strong>{{ total_des_prix_pv }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">TOTAL HORS TAXE</td>
+                    <td align="left"><strong>{{ total_des_tht }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">TVA</td>
+                    <td align="left"><strong>{{ total_des_tva }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left">TIMBRE</td>
+                    <td align="left"><strong>{{ total_des_timbres }}</strong></td>
+                </tr>
+                <tr>
+                    <td align="left"><strong>MONTANT</strong></td>
+                    <td align="left"><strong>{{ montant_total }}</strong></td>
+                </tr>
+            </table>
+        </div>
     </body>
 </html>

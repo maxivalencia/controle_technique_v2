@@ -1083,7 +1083,7 @@ class CtAppImprimableController extends AbstractController
             'date' => $date,
             'user' => $this->getUser(),
             'total_des_droits' => $totalDesDroits,
-            'total_des_prix_pv' => $totalDesPrixPv,
+            'total_des_prix_pv' => $prixPv,
             'total_des_tht' => $totalDesTHT,
             'total_des_tva' => $totalDesTVA,
             'total_des_timbres' => $totalDesTimbres,
