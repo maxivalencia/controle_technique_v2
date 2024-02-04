@@ -262,7 +262,8 @@ class CtAppVisiteController extends AbstractController
         //$ctVisite->setCtCarteGriseId($ctCarteGrise);
         $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
         // $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
-        $form_visite = $this->createFormBuilder(CtVisiteType::class, $ctVisite)
+        $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
+        /* $form_visite = $this->createFormBuilder($ctVisite)
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Centre',
                 'class' => CtCentre::class,
@@ -290,14 +291,14 @@ class CtAppVisiteController extends AbstractController
                     'data-select' => true,
                 ],
             ])
-            /* ->add('vst_date_expiration', DateType::class, [
+            ->add('vst_date_expiration', DateType::class, [
                 'label' => 'Date d\'expiration',
                 'widget' => 'single_text',
                 'attr' => [
                     'class' => 'datetimepicker',
                 ],
                 'data' => new \DateTime('now'),
-            ]) */
+            ])
             ->add('ct_verificateur_id', EntityType::class, [
                 'label' => 'Vérificateur',
                 'class' => CtUser::class,
@@ -330,7 +331,7 @@ class CtAppVisiteController extends AbstractController
             ->add('vst_duree_reparation', TextType::class, [
                 'label' => 'Durée de reparation accordée',
             ])
-            ->getForm();
+            ->getForm(); */
 
         $form_visite->handleRequest($request);
         // eto mbola mila manao liste misy création des vérificateur izay vao ampidirina ao anatin'ilay form fiche vérificateur
