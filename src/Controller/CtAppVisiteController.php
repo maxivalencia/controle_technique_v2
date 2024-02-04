@@ -25,6 +25,7 @@ use App\Form\CtVisiteCarteGriseType;
 use App\Form\CtRensVehiculeType;
 use App\Form\CtVehiculeType;
 use App\Form\CtVisiteVisiteType;
+use App\Form\CtVisiteType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\DataTransformer\IssueToNumberTransformer;
 use App\Repository\CtVisiteRepository;
@@ -239,27 +240,29 @@ class CtAppVisiteController extends AbstractController
         $message = "";
         $enregistrement_ok = False;
         if($request->request->get('search-immatriculation')){
-            $recherche = $request->request->get('search-immatriculation');
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"], ["cg_is_active" => true]);
+            $recherche = strtoupper($request->request->get('search-immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            //var_dump($ctCarteGrise);
         }
         if($request->request->get('search-numero-serie')){
-            $recherche = $request->request->get('search-numero-serie');
+            $recherche = strtoupper($request->request->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"], ["cg_is_active" => true]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
             }
         }
         if($request->request->get('search-identification')){
-            $recherche = $request->request->get('search-identification');
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"], ["cg_is_active" => true]);
+            $recherche = strtoupper($request->request->get('search-identification'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
         }
 
-        if($ctCarteGrise != null){
+        /* if($ctCarteGrise != null){
             $ctVisite->setCtCarteGriseId($ctCarteGrise);
-        }
+        } */
         //$ctVisite->setCtCarteGriseId($ctCarteGrise);
+        $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
         // $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
-        $form_visite = $this->createFormBuilder($ctVisite)
+        $form_visite = $this->createFormBuilder(CtVisiteType::class, $ctVisite)
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Centre',
                 'class' => CtCentre::class,
@@ -322,6 +325,7 @@ class CtAppVisiteController extends AbstractController
             ->add('ct_carte_grise_id', CtVisiteCarteGriseType::class, [
                 'label' => 'Carte Grise',
                 'disabled' => true,
+                //'data' => $ctCarteGrise,
             ])
             ->add('vst_duree_reparation', TextType::class, [
                 'label' => 'Durée de reparation accordée',

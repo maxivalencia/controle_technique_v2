@@ -47,9 +47,9 @@ class CtAutreVenteType extends AbstractType
             ->add('verificateur_id', null, [
                 'label' => 'Vérificateur',
             ])
-            ->add('ct_carte_grise_id', null, [
+            /* ->add('ct_carte_grise_id', null, [
                 'label' => 'Carte grise',
-            ])
+            ]) */
             ->add('ct_centre_id', null, [
                 'label' => 'Centre',
             ])

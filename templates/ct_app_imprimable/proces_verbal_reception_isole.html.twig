@@ -131,12 +131,12 @@
                     <tr style="margin-top:0px;margin-bottom:0px;">
                         <td width="200" style="margin-top:0px;margin-bottom:0px;">Cylindre (en Cm3)</td>
                         <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_cylindre }} </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_cylindre|number_format(0, ',', ' ') }} </strong></td>
                     </tr>
                     <tr style="margin-top:0px;margin-bottom:0px;">
                         <td width="200" style="margin-top:0px;margin-bottom:0px;">Puissance administrative (en CV)</td>
                         <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_puissance }} </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_puissance|number_format(0, ',', ' ') }} </strong></td>
                     </tr>
                     <tr style="margin-top:0px;margin-bottom:0px;">
                         <td width="200" style="margin-top:0px;margin-bottom:0px;">Carrosserie</td>
@@ -146,22 +146,22 @@
                     <tr style="margin-top:0px;margin-bottom:0px;">
                         <td width="200" style="margin-top:0px;margin-bottom:0px;">Nombre de place assises</td>
                         <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.rcp_nbr_assis }} </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.rcp_nbr_assis|number_format(0, ',', ' ') }} </strong></td>
                     </tr>
                     <tr style="margin-top:0px;margin-bottom:0px;">
                         <td width="200" style="margin-top:0px;margin-bottom:0px;">Charge utile</td>
                         <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_charge_utile }} </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_charge_utile|number_format(0, ',', ' ') }} </strong></td>
                     </tr>
                     <tr style="margin-top:0px;margin-bottom:0px;">
                         <td width="200" style="margin-top:0px;margin-bottom:0px;">Poids à vide</td>
                         <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_poids_vide }} </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_poids_vide|number_format(0, ',', ' ') }} </strong></td>
                     </tr>
                     <tr style="margin-top:0px;margin-bottom:0px;">
                         <td width="200" style="margin-top:0px;margin-bottom:0px;">Poids total autorisé en charge</td>
                         <td width="10" style="margin-top:0px;margin-bottom:0px;"><strong> : </strong></td>
-                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_poids_total_charge }} </strong></td>
+                        <td width="225" style="margin-top:0px;margin-bottom:0px;"><strong> {{ reception.vhc_poids_total_charge|number_format(0, ',', ' ') }} </strong></td>
                     </tr>
                     <tr style="margin-top:0px;margin-bottom:0px;">
                         <td width="200" style="margin-top:0px;margin-bottom:0px;">Année de première mise en circulation</td>
@@ -230,32 +230,32 @@
                     <tr>
                         <td width="100">Droit de réception</td>
                         <td width="10"> : </td>
-                        <td width="400"><strong>{{ total_des_droits }}</strong></td>
+                        <td width="400"><strong>Ar {{ total_des_droits|number_format(0, ',', ' ') }}</strong></td>
                     </tr>
                     <tr>
                         <td width="100">Prix du procès-verbal</td>
                         <td width="10"> : </td>
-                        <td width="400"><strong>{{ total_des_prix_pv }}</strong></td>
+                        <td width="400"><strong>Ar {{ total_des_prix_pv|number_format(0, ',', ' ') }}</strong></td>
                     </tr>
                     <tr>
                         <td width="100">THT</td>
                         <td width="10"> : </td>
-                        <td width="400"><strong>{{ total_des_tht }}</strong></td>
+                        <td width="400"><strong>Ar {{ total_des_tht|number_format(0, ',', ' ') }}</strong></td>
                     </tr>
                     <tr>
                         <td width="100">TVA</td>
                         <td width="10"> : </td>
-                        <td width="400"><strong>{{ total_des_tva }}</strong></td>
+                        <td width="400"><strong>Ar {{ total_des_tva|number_format(0, ',', ' ') }}</strong></td>
                     </tr>
                     <tr>
                         <td width="100">Timbre</td>
                         <td width="10"> : </td>
-                        <td width="400"><strong>{{ total_des_timbres }}</strong></td>
+                        <td width="400"><strong>Ar {{ total_des_timbres|number_format(0, ',', ' ') }}</strong></td>
                     </tr>
                     <tr>
                         <td width="100"><strong>Montant</strong></td>
                         <td width="10"> : </td>
-                        <td width="400"><strong>{{ montant_total }}</strong></td>
+                        <td width="400"><strong>Ar {{ montant_total|number_format(0, ',', ' ') }}</strong></td>
                     </tr>
                 </table>
             </div>

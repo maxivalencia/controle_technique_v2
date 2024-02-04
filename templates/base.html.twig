@@ -290,7 +290,49 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>                         
+                            </li><li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fa fa-archive"></i>
+                                    <p>
+                                        Autre service
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Liste</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Créer</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>   
+                        {% endif %}
+                        <!-- Début Statistique autre service -->
+                        {% if is_granted("ROLE_STAFF") %}
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <p>
+                                        Statistique autre service
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="#" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Voir</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>                      
                         {% endif %}
                         <!-- Début Réception -->
                         {% if is_granted("ROLE_RECEPTION") %}
@@ -939,7 +981,14 @@
                                     </li>
                                 </ul>
                             </li>  
-                        {% endif %}          
+                        {% endif %}   
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <p>
+                                    &nbsp;
+                                </p>
+                            </a>
+                        </li>       
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
