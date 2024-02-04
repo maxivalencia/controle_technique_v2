@@ -24,10 +24,12 @@ use App\Form\CtRensCarteGriseType;
 use App\Form\CtVisiteCarteGriseType;
 use App\Form\CtRensVehiculeType;
 use App\Form\CtVehiculeType;
+use App\Form\CtVisiteVehiculeType;
 use App\Form\CtVisiteVisiteType;
 use App\Form\CtVisiteType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\DataTransformer\IssueToNumberTransformer;
+use App\Repository\CtUtilisationRepository;
 use App\Repository\CtVisiteRepository;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,6 +41,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 /**
@@ -232,7 +235,7 @@ class CtAppVisiteController extends AbstractController
     /**
      * @Route("/creer_visite", name="app_ct_app_visite_creer_visite", methods={"GET", "POST"})
      */
-    public function CreerVisite(Request $request, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
+    public function CreerVisite(Request $request, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
     {
         $ctVisite = new CtVisite();
         $ctVisite_new = new CtVisite();
@@ -242,7 +245,6 @@ class CtAppVisiteController extends AbstractController
         if($request->request->get('search-immatriculation')){
             $recherche = strtoupper($request->request->get('search-immatriculation'));
             $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
-            //var_dump($ctCarteGrise);
         }
         if($request->request->get('search-numero-serie')){
             $recherche = strtoupper($request->request->get('search-numero-serie'));
@@ -256,83 +258,12 @@ class CtAppVisiteController extends AbstractController
             $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
         }
 
-        /* if($ctCarteGrise != null){
+        if($ctCarteGrise != null){
             $ctVisite->setCtCarteGriseId($ctCarteGrise);
-        } */
-        //$ctVisite->setCtCarteGriseId($ctCarteGrise);
-        $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
-        // $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
-        $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
-        /* $form_visite = $this->createFormBuilder($ctVisite)
-            ->add('ct_centre_id', EntityType::class, [
-                'label' => 'Centre',
-                'class' => CtCentre::class,
-            ])
-            ->add('ct_type_visite_id', EntityType::class, [
-                'label' => 'Type de visite',
-                'class' => CtTypeVisite::class,
-            ])
-            ->add('ct_usage_id', EntityType::class, [
-                'label' => 'Usage',
-                'class' => CtUsage::class,
-            ])
-            ->add('ct_utilisation_id', EntityType::class, [
-                'label' => 'Utilisation',
-                'class' => CtUtilisation::class,
-            ])
-            ->add('vst_anomalie_id', EntityType::class, [
-                'label' => 'Anomalies',
-                'class' => CtAnomalie::class,
-                'multiple' => true,
-                'attr' => [
-                    'class' => 'multi is_anomalie',
-                    'multiple' => true,
-                    'data-live-search' => true,
-                    'data-select' => true,
-                ],
-            ])
-            ->add('vst_date_expiration', DateType::class, [
-                'label' => 'Date d\'expiration',
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker',
-                ],
-                'data' => new \DateTime('now'),
-            ])
-            ->add('ct_verificateur_id', EntityType::class, [
-                'label' => 'Vérificateur',
-                'class' => CtUser::class,
-                'query_builder' => function(CtUserRepository $ctUserRepository){
-                    $qb = $ctUserRepository->createQueryBuilder('u');
-                    return $qb
-                        ->Where('u.ct_role_id = :val1')
-                        ->andWhere('u.ct_centre_id = :val2')
-                        ->setParameter('val1', 14)
-                        ->setParameter('val2', $this->getUser()->getCtCentreId())
-                    ;
-                }
-            ])
-            ->add('vst_extra', EntityType::class, [
-                'label' => 'Extra',
-                'class' => CtVisiteExtra::class,
-                'multiple' => true,
-                'attr' => [
-                    'class' => 'multi',
-                    'multiple' => true,
-                    'data-live-search' => true,
-                    'data-select' => true,
-                ],
-            ])
-            ->add('ct_carte_grise_id', CtVisiteCarteGriseType::class, [
-                'label' => 'Carte Grise',
-                'disabled' => true,
-                //'data' => $ctCarteGrise,
-            ])
-            ->add('vst_duree_reparation', TextType::class, [
-                'label' => 'Durée de reparation accordée',
-            ])
-            ->getForm(); */
+        }
+        $ctVisite->setCtCentreId($this->getUser()->getCtCentreId());
 
+        $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
         $form_visite->handleRequest($request);
         // eto mbola mila manao liste misy création des vérificateur izay vao ampidirina ao anatin'ilay form fiche vérificateur
         $form_feuille_de_caisse = $this->createFormBuilder()
@@ -492,6 +423,7 @@ class CtAppVisiteController extends AbstractController
             'form_fiche_verificateur' => $form_fiche_verificateur->createView(),
             'form_liste_anomalies' => $form_liste_anomalies->createView(),
             'form_visite' => $form_visite->createView(),
+            //'form_carte_grise' => $form_carte_grise,
             'message' => $message,
             'enregistrement_ok' => $enregistrement_ok,
         ]);

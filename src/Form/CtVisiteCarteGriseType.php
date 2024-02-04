@@ -27,7 +27,7 @@ class CtVisiteCarteGriseType extends AbstractType
                 'attr' => [
                     'class' => 'datetimepicker',
                 ],
-                'data' => new \DateTime('now'),
+                //'data' => new \DateTime('now'),
                 'disabled' => true,
             ])
             ->add('cg_immatriculation', null, [
@@ -84,7 +84,7 @@ class CtVisiteCarteGriseType extends AbstractType
                 'attr' => [
                     'class' => 'datetimepicker',
                 ],
-                'data' => new \DateTime('now'),
+                //'data' => new \DateTime('now'),
                 'disabled' => true,
             ])
             ->add('cg_num_vignette', null, [
@@ -107,7 +107,7 @@ class CtVisiteCarteGriseType extends AbstractType
                 'attr' => [
                     'class' => 'datetimepicker transport',
                 ],
-                'data' => new \DateTime('now'),
+                //'data' => new \DateTime('now'),
                 'disabled' => true,
             ])
             ->add('cg_patente', null, [
@@ -137,13 +137,13 @@ class CtVisiteCarteGriseType extends AbstractType
                 'attr' => [
                     'class' => 'datetimepicker',
                 ],
-                'data' => new \DateTime('now'),
+                //'data' => new \DateTime('now'),
                 'disabled' => true,
             ])
             ->add('ct_vehicule_id', CtVisiteVehiculeType::class, [
                 'label' => 'Véhicule',
                 'disabled' => true,
-            ])            
+            ])
             ->add('cg_nom_cooperative', null, [
                 'label' => 'Nom coopérative',
                 'attr' => [
@@ -158,18 +158,18 @@ class CtVisiteCarteGriseType extends AbstractType
                 ],
                 'disabled' => true,
             ])
-            ->add('ct_zone_desserte_id', null, [
+            /* ->add('ct_zone_desserte_id', null, [
                 'label' => 'Zone desservie',
                 'attr' => [
                     'class' => 'transport',
                 ],
                 'disabled' => true,
-            ])
+            ]) */
             /* ->add('cg_puissance_admin', null, [
                 'label' => 'Puissance administré',
                 'data' => 0,
             ]) */
-            
+
             /* ->add('cg_nbr_debout')
             ->add('cg_rta')
             ->add('cg_created')

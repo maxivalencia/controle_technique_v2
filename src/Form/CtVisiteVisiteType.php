@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\CtAnomalie;
+use App\Entity\CtCarteGrise;
 use App\Entity\CtVisite;
 use App\Entity\CtVisiteExtra;
 use App\Entity\CtUser;
@@ -23,7 +24,7 @@ class CtVisiteVisiteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /* $user = $this->getUser(); */
-        $builder            
+        $builder
             ->add('ct_centre_id', null, [
                 'label' => 'Centre',
             ])
@@ -80,6 +81,7 @@ class CtVisiteVisiteType extends AbstractType
                 ],
             ])
             ->add('ct_carte_grise_id', CtVisiteCarteGriseType::class, [
+                //'class' => CtCarteGrise::class,
                 'label' => 'Carte Grise',
                 'disabled' => true,
             ])
