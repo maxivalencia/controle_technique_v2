@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class CtVisiteVisiteType extends AbstractType
@@ -24,6 +25,7 @@ class CtVisiteVisiteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /* $user = $this->getUser(); */
+        $immatriculation = $options["immatriculation"];
         $builder
             ->add('ct_centre_id', null, [
                 'label' => 'Centre',
@@ -47,6 +49,7 @@ class CtVisiteVisiteType extends AbstractType
                     'data-live-search' => true,
                     'data-select' => true,
                 ],
+                'required' => false,
             ])
             ->add('vst_date_expiration', null, [
                 'label' => 'Date d\'expiration',
@@ -79,6 +82,7 @@ class CtVisiteVisiteType extends AbstractType
                     'data-live-search' => true,
                     'data-select' => true,
                 ],
+                'required' => false,
             ])
             ->add('ct_carte_grise_id', CtVisiteCarteGriseType::class, [
                 //'class' => CtCarteGrise::class,
@@ -87,6 +91,10 @@ class CtVisiteVisiteType extends AbstractType
             ])
             ->add('vst_duree_reparation', null, [
                 'label' => 'Durée de reparation accordée',
+            ])
+            ->add('vst_observation', TextType::class, [
+                'label' => 'immatriculation',
+                'data' => $immatriculation,
             ])
 
             /* ->add('vst_num_pv')
@@ -106,6 +114,9 @@ class CtVisiteVisiteType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CtVisite::class,
+        ]);
+        $resolver->setRequired([
+            'immatriculation',
         ]);
     }
 }

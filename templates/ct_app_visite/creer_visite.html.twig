@@ -171,6 +171,9 @@
                 <td style="width:50%;">
                     <div class="box">
                         <div class="entete-formulaire">Information visite technique</div><hr>
+                            {# <input type="text" name="immatriculation" id="immatriculation" class="form-control" value="{{ immatriculation }}" placeholder="immatriculation..." required disabled><br> #}
+                            {# <div class="form-group"><label for="ct_visite_visite_ct_carte_grise_id">Carte Grise identification</label><input type="text" id="ct_visite_visite_ct_carte_grise_id" name="ct_visite_visite[ct_carte_grise_id]" maxlength="255" class="form-control" value="{{ immatriculation }}" /></div> #}
+                            {{ form_row(form_visite.vst_observation) }}
                             {{ form_row(form_visite.ct_centre_id) }}
                             {{ form_row(form_visite.ct_type_visite_id) }}
                             {{ form_row(form_visite.ct_usage_id) }}
@@ -183,6 +186,7 @@
                             {# {{ form_row(form_visite.vst_date_expiration) }} #}
                             {{ form_row(form_visite.ct_verificateur_id) }}
                             {{ form_row(form_visite.vst_extra) }}
+
                     </div>
                 </td>
             </tr>

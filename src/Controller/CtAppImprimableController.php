@@ -1204,6 +1204,8 @@ class CtAppImprimableController extends AbstractController
                 $prixPv = 0;
                 $carnet = 0;
                 $carte = 0;
+                $tva = 0;
+                $montant = 0;
                 $aptitude = "Inapte";
                 //$listes_cartes = $ctVisiteExtraRepository->findOneBy(["" => $liste->getId()]);
                 $listes_autre = $liste->getVstExtra();

@@ -242,6 +242,7 @@ class CtAppVisiteController extends AbstractController
         $ctCarteGrise = new CtCarteGrise();
         $message = "";
         $enregistrement_ok = False;
+        $immatriculation = "";
         if($request->request->get('search-immatriculation')){
             $recherche = strtoupper($request->request->get('search-immatriculation'));
             $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
@@ -260,10 +261,11 @@ class CtAppVisiteController extends AbstractController
 
         if($ctCarteGrise != null){
             $ctVisite->setCtCarteGriseId($ctCarteGrise);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
         $ctVisite->setCtCentreId($this->getUser()->getCtCentreId());
 
-        $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
+        $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite, ["immatriculation" => $immatriculation]);
         $form_visite->handleRequest($request);
         // eto mbola mila manao liste misy création des vérificateur izay vao ampidirina ao anatin'ilay form fiche vérificateur
         $form_feuille_de_caisse = $this->createFormBuilder()
@@ -373,13 +375,24 @@ class CtAppVisiteController extends AbstractController
         $form_feuille_de_caisse->handleRequest($request);
         $form_fiche_verificateur->handleRequest($request);
         $form_liste_anomalies->handleRequest($request);
+        /* if($request->request->get('immatriculation')){
+            $immatriculation = strtoupper($request->request->get('immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+        } */
 
         if ($form_visite->isSubmitted() && $form_visite->isValid()) {
             //$ctVisite_new = $ctVisite;
+            if($request->request->get('ct_visite_visite')){
+                //$recherche = $request->request->get('ct_visite_visite');
+                $recherche = $request->request->get('ct_visite_visite');
+                $rech = strtoupper($recherche['vst_observation']);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $rech], ["id" => "DESC"]);
 
-            $ctVisite_new->setCtCarteGriseId($ctVisite->getCtCarteGriseId());
+            }
+            //$ctVisite_new->setCtCarteGriseId($ctCarteGrise->getId());
+            $ctVisite_new->setCtCarteGriseId($ctCarteGrise);
             $ctVisite_new->setCtCentreId($this->getUser()->getCtCentreId());
-            $ctVisite_new->setCtTypeVisiteId($ctVisite->getCtCentreId());
+            $ctVisite_new->setCtTypeVisiteId($ctVisite->getCtTypeVisiteId());
             $ctVisite_new->setCtUsageId($ctVisite->getCtUsageId());
             $ctVisite_new->setCtUserId($this->getUser());
             $ctVisite_new->setCtVerificateurId($ctVisite->getCtVerificateurId());
@@ -390,11 +403,11 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_new->setVstDateExpiration($date_expiration);
             $date = new \DateTime();
             $ctVisite_new->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$ctVisite->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.$date->format("Y"));
-            $ctVisite_new->setVstCreated($ctVisite->getVstCreated());
-            $ctVisite_new->setVstUpdated(new \DateTime());
+            $ctVisite_new->setVstCreated(new \DateTime());
+            $ctVisite_new->setVstUpdated($ctVisite->getVstUpdated());
             $ctVisite_new->setCtUtilisationId($ctVisite->getCtUtilisationId());
             $anml = $ctVisite_new->getVstAnomalieId();
-            $ctVisite_new->setVstIsApte($anml->count()>0?true:false);
+            $ctVisite_new->setVstIsApte($anml->count()>0?false:true);
             $ctVisite_new->setVstIsContreVisite(false);
             $ctVisite_new->setVstDureeReparation($ctVisite->getVstDureeReparation());
             $ctVisite_new->setVstIsActive(true);
@@ -423,7 +436,7 @@ class CtAppVisiteController extends AbstractController
             'form_fiche_verificateur' => $form_fiche_verificateur->createView(),
             'form_liste_anomalies' => $form_liste_anomalies->createView(),
             'form_visite' => $form_visite->createView(),
-            //'form_carte_grise' => $form_carte_grise,
+            'immatriculation' => $immatriculation,
             'message' => $message,
             'enregistrement_ok' => $enregistrement_ok,
         ]);
