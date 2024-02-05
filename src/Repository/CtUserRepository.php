@@ -168,4 +168,22 @@ class CtUserRepository extends ServiceEntityRepository implements PasswordUpgrad
             ->getResult()
         ;
     }
+
+    /**
+     * @return CtUser[] Returns an array of CtUser objects
+     */
+    public function findByVerificateurCentre(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.ct_role_id = :val1 OR c.ct_role_id = :val2')
+            //->andWhere('c.ct_centre_id = :val3')
+            ->setParameter('val1', 3)
+            ->setParameter('val2', 22)
+            //->setParameter('val3', $user)
+            ->orderBy('c.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

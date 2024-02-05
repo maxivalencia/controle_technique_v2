@@ -18,6 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class CtVisiteVisiteType extends AbstractType
@@ -26,6 +27,7 @@ class CtVisiteVisiteType extends AbstractType
     {
         /* $user = $this->getUser(); */
         $immatriculation = $options["immatriculation"];
+        $this->centre = $options["centre"];
         $builder
             ->add('ct_centre_id', null, [
                 'label' => 'Centre',
@@ -62,15 +64,17 @@ class CtVisiteVisiteType extends AbstractType
             ->add('ct_verificateur_id', EntityType::class, [
                 'label' => 'Vérificateur',
                 'class' => CtUser::class,
-                /* 'query_builder' => function(CtUserRepository $ctUserRepository){
+                'query_builder' => function(CtUserRepository $ctUserRepository){
                     $qb = $ctUserRepository->createQueryBuilder('u');
+                    $centre = $this->centre;
                     return $qb
-                        ->Where('u.ct_role_id = :val1')
-                        ->andWhere('u.ct_centre_id = :val2')
-                        ->setParameter('val1', 14)
-                        ->setParameter('val2', $this->getUser()->getCtCentreId())
+                        ->Where('u.ct_role_id = :val1 OR u.ct_role_id = :val2')
+                        ->andWhere('u.ct_centre_id = :val3')
+                        ->setParameter('val1', 3)
+                        ->setParameter('val2', 22)
+                        ->setParameter('val3', $centre)
                     ;
-                } */
+                }
             ])
             ->add('vst_extra', EntityType::class, [
                 'label' => 'Extra',
@@ -92,9 +96,10 @@ class CtVisiteVisiteType extends AbstractType
             ->add('vst_duree_reparation', null, [
                 'label' => 'Durée de reparation accordée',
             ])
-            ->add('vst_observation', TextType::class, [
+            ->add('vst_observation', HiddenType::class, [
                 'label' => 'immatriculation',
                 'data' => $immatriculation,
+                //'disabled' => true,
             ])
 
             /* ->add('vst_num_pv')
@@ -117,6 +122,7 @@ class CtVisiteVisiteType extends AbstractType
         ]);
         $resolver->setRequired([
             'immatriculation',
+            'centre',
         ]);
     }
 }

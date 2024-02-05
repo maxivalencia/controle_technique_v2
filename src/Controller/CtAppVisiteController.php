@@ -243,6 +243,7 @@ class CtAppVisiteController extends AbstractController
         $message = "";
         $enregistrement_ok = False;
         $immatriculation = "";
+        $centre = $this->getUser()->getCtCentreId();
         if($request->request->get('search-immatriculation')){
             $recherche = strtoupper($request->request->get('search-immatriculation'));
             $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
@@ -265,7 +266,7 @@ class CtAppVisiteController extends AbstractController
         }
         $ctVisite->setCtCentreId($this->getUser()->getCtCentreId());
 
-        $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite, ["immatriculation" => $immatriculation]);
+        $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite, ["immatriculation" => $immatriculation, "centre" => $centre]);
         $form_visite->handleRequest($request);
         // eto mbola mila manao liste misy création des vérificateur izay vao ampidirina ao anatin'ilay form fiche vérificateur
         $form_feuille_de_caisse = $this->createFormBuilder()
@@ -429,6 +430,7 @@ class CtAppVisiteController extends AbstractController
             $enregistrement_ok = true;
 
             // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
+            return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite', ["id" => $ctVisite_new->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('ct_app_visite/creer_visite.html.twig', [
@@ -439,6 +441,16 @@ class CtAppVisiteController extends AbstractController
             'immatriculation' => $immatriculation,
             'message' => $message,
             'enregistrement_ok' => $enregistrement_ok,
+        ]);
+    }
+
+    /**
+     * @Route("/recapitulation_visite/{id}", name="app_ct_app_visite_recapitulation_visite", methods={"GET", "POST"})
+     */
+    public function RecapitulationVisite(Request $request, int $id, CtVisite $ctVisite): Response
+    {
+        return $this->render('ct_app_visite/resume_visite.html.twig', [
+            'ct_visite' => $ctVisite,
         ]);
     }
 
@@ -664,8 +676,9 @@ class CtAppVisiteController extends AbstractController
     public function RechercheVisiteImmatriculation(Request $request, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
     {
         if($request->request->get('search-immatriculation')){
-            $recherche = $request->request->get('search-immatriculation');
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"], ["cg_is_active" => true]);
+            var_dump($request);
+            $recherche = strtoupper($request->request->get('search-immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
             $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
             $form_visite = $this->createFormBuilder($ctVisite)
                 ->add('ct_centre_id', EntityType::class, [
@@ -735,13 +748,13 @@ class CtAppVisiteController extends AbstractController
                     'label' => 'Durée de reparation accordée',
                 ])
                 ->getForm();
-
             $form_visite->handleRequest($request);
+            return $this->render('ct_app_visite/creer_visite.html.twig', [
+                'form_visite' => $form_visite->createView(),
+            ]);
         }
+        return $this->redirectToRoute('app_ct_app_visite_recherche_visite');
 
-        return $this->render('ct_app_visite/creer_visite.html.twig', [
-            'form_visite' => $form_visite->createView(),
-        ]);
     }
 
     /**
