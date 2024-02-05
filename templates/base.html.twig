@@ -44,6 +44,7 @@
         <link rel="stylesheet" href="/../css/bootstrap.min.css">
         <link rel="stylesheet" href="/../css/jquery.dataTables.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -1068,6 +1069,7 @@
         <script src="/../js/jquery.uploadfile.js"></script>
         <script src="/../js/jquery.dataTables.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
         <script>
             $(document).ready( function () {
@@ -1078,14 +1080,14 @@
                 });
             } );
         </script>
-        <script type="text/javascript">
+        {# <script type="text/javascript">
             $(document).ready(function() {
                 $("#controles_anomalies_collections").multiSelect();
                 $("select").select2();
                 $(".multi").select2();
                 $(".form-control").select2();
             });
-        </script>
+        </script #}>
 
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}

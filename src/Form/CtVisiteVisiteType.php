@@ -68,11 +68,10 @@ class CtVisiteVisiteType extends AbstractType
                     $qb = $ctUserRepository->createQueryBuilder('u');
                     $centre = $this->centre;
                     return $qb
-                        ->Where('u.ct_role_id = :val1 OR u.ct_role_id = :val2')
-                        ->andWhere('u.ct_centre_id = :val3')
+                        ->Where('u.ct_role_id = :val1')
+                        ->andWhere('u.ct_centre_id = :val2')
                         ->setParameter('val1', 3)
-                        ->setParameter('val2', 22)
-                        ->setParameter('val3', $centre)
+                        ->setParameter('val2', $centre)
                     ;
                 }
             ])
@@ -81,7 +80,7 @@ class CtVisiteVisiteType extends AbstractType
                 'class' => CtVisiteExtra::class,
                 'multiple' => true,
                 'attr' => [
-                    'class' => 'multi',
+                    'class' => 'multi select',
                     'multiple' => true,
                     'data-live-search' => true,
                     'data-select' => true,

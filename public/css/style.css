@@ -229,3 +229,8 @@
     padding-right: auto;
     width: 100%;
 }
+
+.select2-selection {
+    height: 40px !important;
+    border-color: #ced4da !important;
+}

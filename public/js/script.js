@@ -85,11 +85,12 @@ $( document ).ready(function() {
         $(".par_type").attr("style","display: none;");
     }
 
-    $("select").select2();
     $(".multi").select2();
     $(".select").select2();
-    $(".form-control").select2();
-    $("#form_ct_centre_id").select2();
-    $(".form_ct_centre_id").select2();
-    $("option").select2();
+    $("#select").select2();
+    $("select").select2();
+    //$(".form-control").select2();
+    //$("#form_ct_centre_id").select2();
+    //$(".form_ct_centre_id").select2();
+    //$("option").select2();
 });

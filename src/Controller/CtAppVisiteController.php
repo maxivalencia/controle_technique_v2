@@ -321,8 +321,8 @@ class CtAppVisiteController extends AbstractController
                 'multiple' => false,
                 'attr' => [
                     'class' => 'multi',
-                    'multiple' => false,
                     'style' => 'width:100%;',
+                    'multiple' => false,
                     'data-live-search' => true,
                     'data-select' => true,
                 ],
@@ -335,7 +335,7 @@ class CtAppVisiteController extends AbstractController
                     return $qb
                         ->Where('u.ct_role_id = :val1')
                         ->andWhere('u.ct_centre_id = :val2')
-                        ->setParameter('val1', 14)
+                        ->setParameter('val1', 3)
                         ->setParameter('val2', $this->getUser()->getCtCentreId())
                     ;
                 },
@@ -412,8 +412,8 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_new->setVstIsContreVisite(false);
             $ctVisite_new->setVstDureeReparation($ctVisite->getVstDureeReparation());
             $ctVisite_new->setVstIsActive(true);
-            $ctVisite_new->setVstGenere($ctVisite->getVstGenere());
-            $ctVisite_new->setVstObservation($ctVisite->getVstObservation()." ");
+            $ctVisite_new->setVstGenere(0);
+            $ctVisite_new->setVstObservation(" - ");
 
             $ctVisiteRepository->add($ctVisite_new, true);
             $ctVisite_new->setVstNumPv($ctVisite_new->getId().'/'.$ctVisite->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId().'/'.$ctVisite->getCtTypeVisiteId().'/'.$date->format("Y"));
@@ -449,6 +449,7 @@ class CtAppVisiteController extends AbstractController
      */
     public function RecapitulationVisite(Request $request, int $id, CtVisite $ctVisite): Response
     {
+        // efa ok ito
         return $this->render('ct_app_visite/resume_visite.html.twig', [
             'ct_visite' => $ctVisite,
         ]);
@@ -459,6 +460,7 @@ class CtAppVisiteController extends AbstractController
      */
     public function FeuilleDeCaisse(Request $request): Response
     {
+        // efa ao amin'ny CtAppImprimable ny manao azy
         return $this->render('ct_app_visite/creer_visite.html.twig', [
             'controller_name' => 'CtAppVisiteController',
         ]);
@@ -489,6 +491,7 @@ class CtAppVisiteController extends AbstractController
      */
     public function RechercheVisite(Request $request): Response
     {
+        // efa ok ko ito
         return $this->render('ct_app_visite/recherche_visite.html.twig', [
             'controller_name' => 'CtAppVisiteController',
         ]);
@@ -508,28 +511,49 @@ class CtAppVisiteController extends AbstractController
         $contre = false;
         $recherche_ok = false;
         $is_transport = false;
+        $immatriculation = "";
         if($request->request->get('search-immatriculation')){
-            $recherche = $request->request->get('search-immatriculation');
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"], ["cg_is_active" => true]);
+            $recherche = strtoupper($request->request->get('search-immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
             $recherche_ok = true;
         }
         if($request->request->get('search-numero-serie')){
-            $recherche = $request->request->get('search-numero-serie');
+            $recherche = strtoupper($request->request->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"], ["cg_is_active" => true]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
             }
             $recherche_ok = true;
         }
         if($request->request->get('ssearch-identification')){
-            $recherche = $request->request->get('search-identification');
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"], ["cg_is_active" => true]);
+            $recherche = strtoupper($request->request->get('search-identification'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $recherche_ok = true;
+        }
+        if($request->query->get('search-immatriculation')){
+            $recherche = strtoupper($request->query->get('search-immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $recherche_ok = true;
+        }
+        if($request->query->get('search-numero-serie')){
+            $recherche = strtoupper($request->query->get('search-numero-serie'));
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            if($vehicule_id != null){
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            }
+            $recherche_ok = true;
+        }
+        if($request->query->get('ssearch-identification')){
+            $recherche = strtoupper($request->query->get('search-identification'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
             $recherche_ok = true;
         }
 
         if($ctCarteGrise != null){
-            $ctVisite_old = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"], ["cg_is_active" => true]);
-            if($ctVisite_old != null && $ctVisite_old->isVstIsActive() == true && $ctVisite_old->isVstIsContreVisite() == false){
+            $ctVisite_old = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
+            //if($ctVisite_old != null && $ctVisite_old->isVstIsActive() == true && $ctVisite_old->isVstIsContreVisite() == false){
+            //var_dump($ctCarteGrise);
+            if($ctVisite_old != null && $ctVisite_old->isVstIsContreVisite() == false){
                 $date = $ctVisite_old->getVstCreated();
                 $date->modify('+2 month');
                 //$date = $date->format('Y-m-d H:i:s');
@@ -542,85 +566,26 @@ class CtAppVisiteController extends AbstractController
             }
             $is_transport = $ctCarteGrise->isCgIsTransport();
             $ctVisite->setCtCarteGriseId($ctCarteGrise);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
-        //$form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite);
-        $form_visite = $this->createFormBuilder($ctVisite)
-            ->add('ct_centre_id', EntityType::class, [
-                'label' => 'Centre',
-                'class' => CtCentre::class,
-            ])
-            ->add('ct_type_visite_id', EntityType::class, [
-                'label' => 'Type de visite',
-                'class' => CtTypeVisite::class,
-            ])
-            ->add('ct_usage_id', EntityType::class, [
-                'label' => 'Usage',
-                'class' => CtUsage::class,
-            ])
-            ->add('ct_utilisation_id', EntityType::class, [
-                'label' => 'Utilisation',
-                'class' => CtUtilisation::class,
-            ])
-            ->add('vst_anomalie_id', EntityType::class, [
-                'label' => 'Anomalies',
-                'class' => CtAnomalie::class,
-                'multiple' => true,
-                'attr' => [
-                    'class' => 'multi is_anomalie',
-                    'multiple' => true,
-                    'data-live-search' => true,
-                    'data-select' => true,
-                ],
-            ])
-            /* ->add('vst_date_expiration', DateType::class, [
-                'label' => 'Date d\'expiration',
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker',
-                ],
-                'data' => new \DateTime('now'),
-            ]) */
-            ->add('ct_verificateur_id', EntityType::class, [
-                'label' => 'Vérificateur',
-                'class' => CtUser::class,
-                'query_builder' => function(CtUserRepository $ctUserRepository){
-                    $qb = $ctUserRepository->createQueryBuilder('u');
-                    return $qb
-                        ->Where('u.ct_role_id = :val1')
-                        ->andWhere('u.ct_centre_id = :val2')
-                        ->setParameter('val1', 14)
-                        ->setParameter('val2', $this->getUser()->getCtCentreId())
-                    ;
-                }
-            ])
-            ->add('vst_extra', EntityType::class, [
-                'label' => 'Extra',
-                'class' => CtVisiteExtra::class,
-                'multiple' => true,
-                'attr' => [
-                    'class' => 'multi',
-                    'multiple' => true,
-                    'data-live-search' => true,
-                    'data-select' => true,
-                ],
-            ])
-            ->add('ct_carte_grise_id', CtVisiteCarteGriseType::class, [
-                'label' => 'Carte Grise',
-                'disabled' => true,
-            ])
-            ->add('vst_duree_reparation', TextType::class, [
-                'label' => 'Durée de reparation accordée',
-                'disabled' => true,
-            ])
-            ->getForm();
+        $centre =  $this->getUser()->getCtCentreId();
+        $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite, ["immatriculation" => $immatriculation, "centre" => $centre]);
         $form_visite->handleRequest($request);
 
         if ($form_visite->isSubmitted() && $form_visite->isValid()) {
+            //$ctVisite_new = $ctVisite;
+            if($request->request->get('ct_visite_visite')){
+                //$recherche = $request->request->get('ct_visite_visite');
+                $recherche = $request->request->get('ct_visite_visite');
+                $rech = strtoupper($recherche['vst_observation']);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $rech], ["id" => "DESC"]);
+
+            }
             //$ctVisite_contre = $ctVisite;
 
-            $ctVisite_contre->setCtCarteGriseId($ctVisite->getCtCarteGriseId());
+            $ctVisite_contre->setCtCarteGriseId($ctCarteGrise);
             $ctVisite_contre->setCtCentreId($this->getUser()->getCtCentreId());
-            $ctVisite_contre->setCtTypeVisiteId($ctVisite->getCtCentreId());
+            $ctVisite_contre->setCtTypeVisiteId($ctVisite->getCtTypeVisiteId());
             $ctVisite_contre->setCtUsageId($ctVisite->getCtUsageId());
             $ctVisite_contre->setCtUserId($this->getUser());
             $ctVisite_contre->setCtVerificateurId($ctVisite->getCtVerificateurId());
@@ -628,18 +593,19 @@ class CtAppVisiteController extends AbstractController
             $date_expiration = new \DateTime();
             $date_expiration->modify('+'.$ctVisite->getCtUsageId()->getUsgValidite().' month');
             //$date_expiration = $date_expiration->format('Y-m-d');
-            $ctVisite_contre->setVstDateExpiration($date_expiration);
+            //$ctVisite_contre->setVstDateExpiration($date_expiration);
+            $ctVisite_contre->setVstDateExpiration($ctVisite->getVstDateExpiration());
             $date = new \DateTime();
             $ctVisite_contre->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$ctVisite->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.$date->format("Y"));
-            $ctVisite_contre->setVstCreated($ctVisite->getVstCreated());
-            $ctVisite_contre->setVstUpdated(new \DateTime());
+            $ctVisite_contre->setVstCreated(new \DateTime());
+            $ctVisite_contre->setVstUpdated($ctVisite->getVstUpdated());
             $ctVisite_contre->setCtUtilisationId($ctVisite->getCtUtilisationId());
             $anml = $ctVisite_contre->getVstAnomalieId();
-            $ctVisite_contre->setVstIsApte($anml->count()>0?true:false);
+            $ctVisite_contre->setVstIsApte($anml->count()>0?false:true);
             $ctVisite_contre->setVstIsContreVisite(true);
             $ctVisite_contre->setVstDureeReparation($ctVisite->getVstDureeReparation());
             $ctVisite_contre->setVstIsActive(true);
-            $ctVisite_contre->setVstGenere($ctVisite->getVstGenere() + 1);
+            $ctVisite_contre->setVstGenere(0);
             $ctVisite_contre->setVstObservation($ctVisite->getVstObservation()." CONTRE DU ID : ".$ctVisite->getId());
 
             $ctVisiteRepository->add($ctVisite_contre, true);
@@ -656,13 +622,14 @@ class CtAppVisiteController extends AbstractController
             $enregistrement_ok = true;
 
             // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
+            return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite', ["id" => $ctVisite_new->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('ct_app_visite/contre_visite.html.twig', [
             'form_visite' => $form_visite->createView(),
             'message' => $message,
             'enregistrement_ok' => $enregistrement_ok,
-            'contre_ok' => $contre,
+            'contre' => $contre,
             'recherche_ok' => $recherche_ok,
             'message_indisponible_contre' => $message_indisponible_contre,
             'carte_grise' => $ctCarteGrise,
@@ -675,86 +642,26 @@ class CtAppVisiteController extends AbstractController
      */
     public function RechercheVisiteImmatriculation(Request $request, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
     {
-        if($request->request->get('search-immatriculation')){
-            var_dump($request);
-            $recherche = strtoupper($request->request->get('search-immatriculation'));
+        $recherche = "";
+        if($request){
+            if($request->request->get("immatriculation")){
+                $recherche = strtoupper($request->request->get('immatriculation'));
+            }
+            if($request->query->get("immatriculation")){
+                $recherche = strtoupper($request->query->get('immatriculation'));
+            }
             $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
             $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
-            $form_visite = $this->createFormBuilder($ctVisite)
-                ->add('ct_centre_id', EntityType::class, [
-                    'label' => 'Centre',
-                    'class' => CtCentre::class,
-                ])
-                ->add('ct_type_visite_id', EntityType::class, [
-                    'label' => 'Type de visite',
-                    'class' => CtTypeVisite::class,
-                ])
-                ->add('ct_usage_id', EntityType::class, [
-                    'label' => 'Usage',
-                    'class' => CtUsage::class,
-                ])
-                ->add('ct_utilisation_id', EntityType::class, [
-                    'label' => 'Utilisation',
-                    'class' => CtUtilisation::class,
-                ])
-                ->add('vst_anomalie_id', EntityType::class, [
-                    'label' => 'Anomalies',
-                    'class' => CtAnomalie::class,
-                    'multiple' => true,
-                    'attr' => [
-                        'class' => 'multi is_anomalie',
-                        'multiple' => true,
-                        'data-live-search' => true,
-                        'data-select' => true,
-                    ],
-                ])
-                /* ->add('vst_date_expiration', DateType::class, [
-                    'label' => 'Date d\'expiration',
-                    'widget' => 'single_text',
-                    'attr' => [
-                        'class' => 'datetimepicker',
-                    ],
-                    'data' => new \DateTime('now'),
-                ]) */
-                ->add('ct_verificateur_id', EntityType::class, [
-                    'label' => 'Vérificateur',
-                    'class' => CtUser::class,
-                    'query_builder' => function(CtUserRepository $ctUserRepository){
-                        $qb = $ctUserRepository->createQueryBuilder('u');
-                        return $qb
-                            ->Where('u.ct_role_id = :val1')
-                            ->andWhere('u.ct_centre_id = :val2')
-                            ->setParameter('val1', 14)
-                            ->setParameter('val2', $this->getUser()->getCtCentreId())
-                        ;
-                    }
-                ])
-                ->add('vst_extra', EntityType::class, [
-                    'label' => 'Extra',
-                    'class' => CtVisiteExtra::class,
-                    'multiple' => true,
-                    'attr' => [
-                        'class' => 'multi',
-                        'multiple' => true,
-                        'data-live-search' => true,
-                        'data-select' => true,
-                    ],
-                ])
-                ->add('ct_carte_grise_id', CtVisiteCarteGriseType::class, [
-                    'label' => 'Carte Grise',
-                    'disabled' => true,
-                ])
-                ->add('vst_duree_reparation', TextType::class, [
-                    'label' => 'Durée de reparation accordée',
-                ])
-                ->getForm();
+            $centre = $this->getUser()->getCtCentreId();
+            $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite, ["immatriculation" => $recherche, "centre" => $centre]);
             $form_visite->handleRequest($request);
-            return $this->render('ct_app_visite/creer_visite.html.twig', [
+            return $this->render('ct_app_visite/recherche_visite_vue.html.twig', [
                 'form_visite' => $form_visite->createView(),
+                'immatriculation' => $recherche,
+                'id' => $ctVisite->getId(),
             ]);
         }
         return $this->redirectToRoute('app_ct_app_visite_recherche_visite');
-
     }
 
     /**
@@ -762,88 +669,30 @@ class CtAppVisiteController extends AbstractController
      */
     public function RechercheVisiteNumeroSerie(Request $request, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
     {
-        if($request->request->get('search-numero-serie')){
-            $recherche = $request->request->get('search-numero-serie');
-            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            if($vehicule_id != null){
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"], ["cg_is_active" => true]);
-                $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
-                $form_visite = $this->createFormBuilder($ctVisite)
-                    ->add('ct_centre_id', EntityType::class, [
-                        'label' => 'Centre',
-                        'class' => CtCentre::class,
-                    ])
-                    ->add('ct_type_visite_id', EntityType::class, [
-                        'label' => 'Type de visite',
-                        'class' => CtTypeVisite::class,
-                    ])
-                    ->add('ct_usage_id', EntityType::class, [
-                        'label' => 'Usage',
-                        'class' => CtUsage::class,
-                    ])
-                    ->add('ct_utilisation_id', EntityType::class, [
-                        'label' => 'Utilisation',
-                        'class' => CtUtilisation::class,
-                    ])
-                    ->add('vst_anomalie_id', EntityType::class, [
-                        'label' => 'Anomalies',
-                        'class' => CtAnomalie::class,
-                        'multiple' => true,
-                        'attr' => [
-                            'class' => 'multi is_anomalie',
-                            'multiple' => true,
-                            'data-live-search' => true,
-                            'data-select' => true,
-                        ],
-                    ])
-                    /* ->add('vst_date_expiration', DateType::class, [
-                        'label' => 'Date d\'expiration',
-                        'widget' => 'single_text',
-                        'attr' => [
-                            'class' => 'datetimepicker',
-                        ],
-                        'data' => new \DateTime('now'),
-                    ]) */
-                    ->add('ct_verificateur_id', EntityType::class, [
-                        'label' => 'Vérificateur',
-                        'class' => CtUser::class,
-                        'query_builder' => function(CtUserRepository $ctUserRepository){
-                            $qb = $ctUserRepository->createQueryBuilder('u');
-                            return $qb
-                                ->Where('u.ct_role_id = :val1')
-                                ->andWhere('u.ct_centre_id = :val2')
-                                ->setParameter('val1', 14)
-                                ->setParameter('val2', $this->getUser()->getCtCentreId())
-                            ;
-                        }
-                    ])
-                    ->add('vst_extra', EntityType::class, [
-                        'label' => 'Extra',
-                        'class' => CtVisiteExtra::class,
-                        'multiple' => true,
-                        'attr' => [
-                            'class' => 'multi',
-                            'multiple' => true,
-                            'data-live-search' => true,
-                            'data-select' => true,
-                        ],
-                    ])
-                    ->add('ct_carte_grise_id', CtVisiteCarteGriseType::class, [
-                        'label' => 'Carte Grise',
-                        'disabled' => true,
-                    ])
-                    ->add('vst_duree_reparation', TextType::class, [
-                        'label' => 'Durée de reparation accordée',
-                    ])
-                    ->getForm();
-
-                $form_visite->handleRequest($request);
+        $recherche = "";
+        $vehicule_id = New CtVehicule();
+        if($request){
+            if($request->request->get("immatriculation")){
+                $recherche = strtoupper($request->request->get('immatriculation'));
+                $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             }
+            if($request->query->get("immatriculation")){
+                $recherche = strtoupper($request->query->get('immatriculation'));
+                $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            }
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
+            $centre = $this->getUser()->getCtCentreId();
+            $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite, ["immatriculation" => $recherche, "centre" => $centre]);
+            $form_visite->handleRequest($request);
+            return $this->render('ct_app_visite/recherche_visite_vue.html.twig', [
+                'form_visite' => $form_visite->createView(),
+                'immatriculation' => $recherche,
+                'id' => $ctVisite->getId(),
+            ]);
         }
-
-        return $this->render('ct_app_visite/creer_visite.html.twig', [
-            'form_visite' => $form_visite->createView(),
-        ]);
+        return $this->redirectToRoute('app_ct_app_visite_recherche_visite');
     }
 
     /**
