@@ -622,7 +622,7 @@ class CtAppVisiteController extends AbstractController
             $enregistrement_ok = true;
 
             // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
-            return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite', ["id" => $ctVisite_new->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite', ["id" => $ctVisite_contre->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('ct_app_visite/contre_visite.html.twig', [

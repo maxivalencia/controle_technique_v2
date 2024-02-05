@@ -1183,153 +1183,115 @@ class CtAppImprimableController extends AbstractController
         $totalDesPrixCartes = 0;
         $totalDesPrixCarnets = 0;
         $montantTotal = 0;
-        /* if(new \DateTime($dateDeploiement) > $date_of_visite){
-            $liste_visites = $ctVisiteRepository->findByFicheDeControle($type_visite_id->getId(), $centre->getId(), $date_of_visite);
-        }else{
-            $nomGroup = $date_of_visite->format('d').'/'.$date_of_visite->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$type_visite.'/'.$date_of_visite->format("Y");
-            $liste_visites = $ctVisiteRepository->findBy(["vst_num_feuille_caisse" => $nomGroup, "vst_is_active" => true]);
-        } */
-        //$liste_des_visites = new ArrayCollection();
+        
         $tarif = 0;
-        //if($liste_visites != null){
-            //foreach($liste_visites as $liste){
-            //    if($liste->isVstIsContreVisite() == true){
-            //        continue;
-            //    }
-            $liste = $visite;
-                $usage = $liste->getCtUsageId();
-                //$motif = $liste->getCtMotifId();
-                //$calculable = $motif->isMtfIsCalculable();
-                $tarif = 0;
-                $prixPv = 0;
-                $carnet = 0;
-                $carte = 0;
-                $tva = 0;
-                $montant = 0;
-                $aptitude = "Inapte";
-                //$listes_cartes = $ctVisiteExtraRepository->findOneBy(["" => $liste->getId()]);
-                $listes_autre = $liste->getVstExtra();
-                $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
-                $utilisation = $liste->getCtUtilisationId();
-                if($utilisation != $utilisationAdministratif){
-                    $type_visite_id = $visite->getCtTypeVisiteId();
-                    $usage_tarif = $ctUsageTarifRepository->findOneBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
-                    $tarif = $usage_tarif->getUsgTrfPrix();
-                    $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
-                    $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
-                    foreach($arretePvTarif as $apt){
-                        $arretePrix = $apt->getCtArretePrixId();
-                        //if(new \DateTime() >= $arretePrix->getArtDateApplication()){
-                        if($liste->isVstIsContreVisite() == false){
-                            if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
-                                if($liste->isVstIsApte()){
-                                    $prixPv = $apt->getVetPrix();
-                                    //$aptitude = "Apte";
-                                } else {
-                                    $prixPv = 2 * $apt->getVetPrix();
-                                    //$aptitude = "Inapte";
-                                }
-                                //break;
-                            }
-                        /* } else {
-                            continue;
-                        } */
+        
+        $liste = $visite;
+        $usage = $liste->getCtUsageId();
+        $tarif = 0;
+        $prixPv = 0;
+        $carnet = 0;
+        $carte = 0;
+        $tva = 0;
+        $montant = 0;
+        $aptitude = "Inapte";
+        //$listes_cartes = $ctVisiteExtraRepository->findOneBy(["" => $liste->getId()]);
+        $listes_autre = $liste->getVstExtra();
+        $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
+        $utilisation = $liste->getCtUtilisationId();
+        if($utilisation != $utilisationAdministratif){
+            $type_visite_id = $visite->getCtTypeVisiteId();
+            $usage_tarif = $ctUsageTarifRepository->findOneBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
+            $tarif = $usage_tarif->getUsgTrfPrix();
+            $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
+            $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
+            foreach($arretePvTarif as $apt){
+                $arretePrix = $apt->getCtArretePrixId();
+                //if(new \DateTime() >= $arretePrix->getArtDateApplication()){
+                if($liste->isVstIsContreVisite() == false){
+                    if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
+                        if($liste->isVstIsApte()){
+                            $prixPv = $apt->getVetPrix();
+                            //$aptitude = "Apte";
+                        } else {
+                            $prixPv = 2 * $apt->getVetPrix();
+                            //$aptitude = "Inapte";
+                        }
                     }
                 }
-                foreach($listes_autre as $autre){
-                    $vet = $ctVisiteExtraTarifRepository->findOneBy(["ct_imprime_tech_id" => $autre->getId()], ["vet_annee" => "DESC"]);
-                    if($autre->getId() == 1){
-                        $carnet = $carnet + $vet->getVetPrix();
-                    } else {
-                        $carte = $carte + $vet->getVetPrix();
-                    }
-                }
-                /* $compteur_usage = 0;
-                foreach($liste_des_usages as $ldu){ */
-                //$array_usages[$liste->getCtUsageId()->getUsgLibelle()]++; 
-                //foreach($array_usages as $au){
-                    /* if($liste_des_usages[$compteur_usage]["usage"] == $liste->getCtUsageId()->getUsgLibelle()){ */
-                    //if($ldu->getUsage() == $liste->getCtUsageId()->getUsgLibelle()){
-                        //$ldu->getUsage();
-                        /* $usg = [
-                            "usage" => $lstu->getUsgLibelle(),
-                            "nombre" => $liste_des_usages[$compteur_usage]["nombre"] + 1,
-                        ];
-                        $liste_des_usages->add($usg); */
-                        //$au["nombre"]++;
-                        //unset($liste_des_usages[$compteur_usage]["nombre"]);
-                        /* $ldu["nombre"]++; */
-                        //break;
-                        //$ldu->setNombre($ldu->setNombre() + 1);
-                    /* }
-                    $compteur_usage++;
-                } */
-                //$array_usages[$liste->getCtUsageId()->getUsgLibelle()] += 1;
-
-                $droit = $tarif + $prixPv + $carnet + $carte;
-                $tva = ($droit * floatval($prixTva)) / 100;
-                $montant = $droit + $tva + $timbre;
-                /* $vst = [
-                    "controle_pv" => $liste->getVstNumPv(),
-                    "immatriculation" => $liste->getCtCarteGriseId()->getCgImmatriculation(),
-                    "usage" => $liste->getCtUsageId()->getUsgLibelle(),
-                    "aptitude" => $aptitude,
-                    "verificateur" => $liste->getCtVerificateurId()->getUsrNom(),
-                    "cooperative" => $liste->getCtCarteGriseId()->getCgNomCooperative(),
-                    "droit" => $tarif,
-                    "prix_pv" => $prixPv,
-                    "carnet" => $carnet,
-                    "carte" => $carte,
-                    "tva" => $tva,
-                    "timbre" => $timbre,
-                    "montant" => $montant,
-                    "utilisation" => $utilisation,
-                ]; */
-                //$liste_des_visites->add($vst);
-                $nombreReceptions = $nombreReceptions + 1;
-                $totalDesDroits = $totalDesDroits + $tarif;
-                $totalDesPrixPv = $totalDesPrixPv + $prixPv;
-                $totalDesTVA = $totalDesTVA + $tva;
-                $totalDesTimbres = $totalDesTimbres + $timbre;
-                $montantTotal = $montantTotal + $montant;
-                $totalDesPrixCartes = $totalDesPrixCartes + $carte;
-                $totalDesPrixCarnets = $totalDesPrixCarnets + $carnet;
             }
+            foreach($listes_autre as $autre){
+                $vet = $ctVisiteExtraTarifRepository->findOneBy(["ct_imprime_tech_id" => $autre->getId()], ["vet_annee" => "DESC"]);
+                if($autre->getId() == 1){
+                    $carnet = $carnet + $vet->getVetPrix();
+                } else {
+                    $carte = $carte + $vet->getVetPrix();
+                }
+            }
+            
+            $droit = $tarif + $prixPv + $carnet + $carte;
+            $tva = ($droit * floatval($prixTva)) / 100;
+            $montant = $droit + $tva + $timbre;
+            
+            $nombreReceptions = $nombreReceptions + 1;
+            $totalDesDroits = $totalDesDroits + $tarif;
+            $totalDesPrixPv = $totalDesPrixPv + $prixPv;
+            $totalDesTVA = $totalDesTVA + $tva;
+            $totalDesTimbres = $totalDesTimbres + $timbre;
+            $montantTotal = $montantTotal + $montant;
+            $totalDesPrixCartes = $totalDesPrixCartes + $carte;
+            $totalDesPrixCarnets = $totalDesPrixCarnets + $carnet;
+        }
         //}
-
-        $html = $this->renderView('ct_app_imprimable/proces_verbal_visite_premiere.html.twig', [
-            'logo' => $logo,
-            'date' => $date,
-            //'province' => $centre->getCtProvinceId()->getPrvNom(),
-            //'centre' => $centre->getCtrNom(),
-            //'user' => $this->getUser(),
-            //'type' => $type_visite,
-            //'date_visite' => $date_of_visite,
-            //'nombre_visite' => $nombreReceptions,
-            'total_des_droits' => $tarif,
-            'total_des_prix_pv' => $prixPv,
-            'total_des_tht' => $tarif + $prixPv + $carnet + $carte,
-            'total_des_tva' => $tva,
-            'total_des_timbres' => $timbre,
-            'total_des_carnets' => $carnet,
-            'total_des_cartes' => $carte,
-            'montant_total' => $montant,
-            'ct_visite' => $vst,
-            //'liste_usage' => $array_usages,
-            //'liste_usage' => $vst,
-        ]);
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        /* $dompdf->setPaper('A4', 'landscape'); */
-        //$dompdf->set_option("isPhpEnabled", true);
-        //$dompdf->setOptions("isPhpEnabled", true);
-        $dompdf->render();
-        $output = $dompdf->output();
-        $filename = "PROCES_VERBAL_".$id."_VISITE_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
-        file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("PROCES_VERBAL_".$id."_VISITE_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
-            "Attachment" => true,
-        ]);
+        if($visite->isVstIsContreVisite()){
+            $html = $this->renderView('ct_app_imprimable/proces_verbal_visite_contre.html.twig', [
+                'logo' => $logo,
+                'date' => $date,
+                'total_des_droits' => $tarif,
+                'total_des_prix_pv' => $prixPv,
+                'total_des_tht' => $tarif + $prixPv + $carnet + $carte,
+                'total_des_tva' => $tva,
+                'total_des_timbres' => $timbre,
+                'total_des_carnets' => $carnet,
+                'total_des_cartes' => $carte,
+                'montant_total' => $montant,
+                'ct_visite' => $vst,
+            ]);
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            /* $dompdf->setPaper('A4', 'landscape'); */
+            $dompdf->render();
+            $output = $dompdf->output();
+            $filename = "PROCES_VERBAL_".$id."_CONTRE_VISITE_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+            file_put_contents($dossier.$filename, $output);
+            $dompdf->stream("PROCES_VERBAL_".$id."_CONTRE_VISITE_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+                "Attachment" => true,
+            ]);
+        } else {
+            $html = $this->renderView('ct_app_imprimable/proces_verbal_visite_premiere.html.twig', [
+                'logo' => $logo,
+                'date' => $date,
+                'total_des_droits' => $tarif,
+                'total_des_prix_pv' => $prixPv,
+                'total_des_tht' => $tarif + $prixPv + $carnet + $carte,
+                'total_des_tva' => $tva,
+                'total_des_timbres' => $timbre,
+                'total_des_carnets' => $carnet,
+                'total_des_cartes' => $carte,
+                'montant_total' => $montant,
+                'ct_visite' => $vst,
+            ]);
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            /* $dompdf->setPaper('A4', 'landscape'); */
+            $dompdf->render();
+            $output = $dompdf->output();
+            $filename = "PROCES_VERBAL_".$id."_VISITE_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+            file_put_contents($dossier.$filename, $output);
+            $dompdf->stream("PROCES_VERBAL_".$id."_VISITE_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+                "Attachment" => true,
+            ]);
+        }
     }
 
 
