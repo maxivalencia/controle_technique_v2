@@ -31,6 +31,7 @@ use App\Controller\Datetime;
 use App\Entity\CtCentre;
 use App\Entity\CtTypeReception;
 use App\Entity\CtConstAvDedCarac;
+use App\Entity\CtGenreCategorie;
 use App\Entity\CtVisite;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -1022,6 +1023,7 @@ class CtAppImprimableController extends AbstractController
             //foreach($liste_constatations as $liste){
                 $marques = $constatation->getCtConstAvDedCarac();
                 $carac = new CtConstAvDedCarac();
+                $genre = new CtGenreCategorie();
                 foreach($marques as $mrq){
                     $marque = $mrq->getCtMarqueId();
                     $genre = $mrq->getCtGenreId();
@@ -1082,7 +1084,7 @@ class CtAppImprimableController extends AbstractController
             'logo' => $logo,
             'date' => $date,
             'user' => $this->getUser(),
-            'total_des_droits' => $totalDesDroits,
+            'total_des_droits' => $tarif,
             'total_des_prix_pv' => $prixPv,
             'total_des_tht' => $totalDesTHT,
             'total_des_tva' => $totalDesTVA,
@@ -1294,6 +1296,4 @@ class CtAppImprimableController extends AbstractController
         }
     }
 
-
-    // eto no ametrahana ny reception : par type, duplicata et modification
 }

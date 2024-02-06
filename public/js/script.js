@@ -94,3 +94,83 @@ $( document ).ready(function() {
     //$(".form_ct_centre_id").select2();
     //$("option").select2();
 });
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_premiere_circule" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_premiere_circule').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_premiere_circule').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_premiere_circule').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_premiere_circule').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_type_car" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_type_car').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_type_car').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_type_car').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_type_car').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_num_serie_type" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_num_serie_type').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_num_serie_type').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_num_serie_type').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_num_serie_type').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_num_moteur" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_num_moteur').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_num_moteur').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_num_moteur').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_num_moteur').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_cylindre" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_cylindre').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_cylindre').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_cylindre').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_cylindre').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_puissance" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_puissance').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_puissance').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_puissance').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_puissance').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_nbr_assis" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_nbr_assis').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_nbr_assis').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_nbr_assis').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_nbr_assis').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_largeur" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_largeur').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_largeur').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_largeur').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_largeur').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_hauteur" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_hauteur').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_hauteur').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_hauteur').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_hauteur').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_longueur" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_longueur').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_longueur').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_longueur').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_longueur').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_charge_utile" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_charge_utile').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_charge_utile').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_charge_utile').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_charge_utile').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_poids_vide" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_cad_poids_vide').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_poids_vide').val());
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_cad_poids_vide').val($('#ct_constatation_ct_const_av_ded_carac_note_descriptive_cad_poids_vide').val());
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_ct_genre_id" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_ct_genre_id').val($(this).val()).change();
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_ct_genre_id').val($(this).val()).change();
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_ct_marque_id" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_ct_marque_id').val($(this).val()).change();
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_ct_marque_id').val($(this).val()).change();
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_ct_source_energie_id" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_ct_source_energie_id').val($(this).val()).change();
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_ct_source_energie_id').val($(this).val()).change();
+} );
+
+$( "#ct_constatation_ct_const_av_ded_carac_note_descriptive_ct_carrosserie_id" ).on( "change", function() {
+    $('#ct_constatation_ct_const_av_ded_carac_carte_grise_ct_carrosserie_id').val($(this).val()).change();
+    $('#ct_constatation_ct_const_av_ded_carac_corps_vehicule_ct_carrosserie_id').val($(this).val()).change();
+} );
