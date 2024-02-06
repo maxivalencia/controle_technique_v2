@@ -1033,7 +1033,7 @@ class CtAppImprimableController extends AbstractController
                 $prixPv = 0;
                 //$utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
                 $genreCategorie = $genre->getCtGenreCategorieId();
-                $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["tp_dp_libelle" => "Constatation"]);
+                $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["id" => 2]);
                 $droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => $genreCategorie->getId(), "ct_type_droit_ptac_id" => $typeDroit->getId()], ["ct_arrete_prix_id" => "DESC", "dp_prix_max" => "DESC"]);
                 foreach($droits as $dt){
                     if(($carac->getCadPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($carac->getCadPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax())){
@@ -1084,7 +1084,7 @@ class CtAppImprimableController extends AbstractController
             'logo' => $logo,
             'date' => $date,
             'user' => $this->getUser(),
-            'total_des_droits' => $tarif,
+            'total_des_droits' => $totalDesDroits,
             'total_des_prix_pv' => $prixPv,
             'total_des_tht' => $totalDesTHT,
             'total_des_tva' => $totalDesTVA,
