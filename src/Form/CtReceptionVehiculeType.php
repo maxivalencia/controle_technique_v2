@@ -61,10 +61,19 @@ class CtReceptionVehiculeType extends AbstractType
                 ],
                 'disabled' => true,
             ])
-            /* ->add('vhc_hauteur')
-            ->add('vhc_largeur')
-            ->add('vhc_longueur')
-            ->add('vhc_created')
+            ->add('vhc_hauteur', null, [
+                'label' => 'Hauteur',
+                'required'   => true,
+            ])
+            ->add('vhc_largeur', null, [
+                'label' => 'Largeur',
+                'required'   => true,
+            ])
+            ->add('vhc_longueur', null, [
+                'label' => 'Longueur',
+                'required'   => true,
+            ])
+            /* ->add('vhc_created')
             ->add('vhc_provenance') */
         ;
     }

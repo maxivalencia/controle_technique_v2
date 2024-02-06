@@ -201,76 +201,11 @@ class CtAppReceptionController extends AbstractController
         $enregistrement_ok = False;
         $typeReception = $ctTypeReceptionRepository->findOneBy(["id" => 2]);
 
-        //$form_reception = $this->createForm(CtReceptionReceptionType::class, $ct_reception);
-        $form_reception = $this->createFormBuilder($ctReception)
-            ->add('ct_utilisation_id', EntityType::class, [
-                'label' => 'Utilisation',
-                'class' => CtUtilisation::class,
-            ])
-            ->add('ct_motif_id', EntityType::class, [
-                'label' => 'Motif',
-                'class' => CtMotif::class,
-            ])
-            ->add('rcp_immatriculation', TextType::class, [
-                'label' => 'Immatriculation',
-            ])
-            ->add('rcp_proprietaire', TextType::class, [
-                'label' => 'Propriétaire',
-            ])
-            ->add('rcp_profession', TextType::class, [
-                'label' => 'Profession',
-            ])
-            ->add('rcp_adresse', TextType::class, [
-                'label' => 'Adresse',
-            ])
-            ->add('rcp_nbr_assis', TextType::class, [
-                'label' => 'Nombre de place assise',
-                'data' => 0,
-            ])
-            ->add('rcp_ngr_debout', TextType::class, [
-                'label' => 'Nombre de place debout',
-                'data' => 0,
-            ])
-            ->add('ct_source_energie_id', EntityType::class, [
-                'label' => 'Source d\'energie',
-                'class' => CtSourceEnergie::class,
-            ])
-            ->add('ct_carrosserie_id', EntityType::class, [
-                'label' => 'Carrosserie',
-                'class' => CtCarrosserie::class,
-            ])
-            ->add('rcp_mise_service', DateType::class, [
-                'label' => 'Date de mise en service',
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker',
-                ],
-                'data' => new \DateTime('now'),
-            ])
-            ->add('ct_verificateur_id', EntityType::class, [
-                'label' => 'Vérificateur',
-                'class' => CtUser::class,
-                'query_builder' => function(CtUserRepository $ctUserRepository/* , CtRoleRepository $ctRoleRepository */){
-                    /* $ctRoleRepository = new CtRoleRepository();
-                    $verificateurId = $ctRoleRepository->findOneBy(["role_name" => "VERIFICATEUR"]) */;
-                    $qb = $ctUserRepository->createQueryBuilder('u');
-                    return $qb
-                        ->Where('u.ct_role_id = :val1')
-                        ->andWhere('u.ct_centre_id = :val2')
-                        ->setParameter('val1', 3)
-                        ->setParameter('val2', $this->getUser()->getCtCentreId())
-                    ;
-                }
-            ])
-            ->add('ct_vehicule_id', CtReceptionVehiculeType::class, [
-                'label' => 'Véhicule',
-                'required'   => true,
-            ])
-        ->getForm();
+        $form_reception = $this->createForm(CtReceptionReceptionType::class, $ctReception, ['centre' => $this->getUser()->getCtCentreId()]);
         $form_reception->handleRequest($request);
 
         //if ($form_reception->isSubmitted() && $form_reception->isValid()) {
-        if ($form_reception->isSubmitted()) {
+        if ($form_reception->isSubmitted() && $form_reception->isValid()) {
             $ctVehicule->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
             $ctVehicule->setCtMarqueId($ctReception->getCtVehiculeId()->getCtMarqueId());
             $ctVehicule->setVhcCylindre($ctReception->getCtVehiculeId()->getVhcCylindre());
@@ -279,6 +214,9 @@ class CtAppReceptionController extends AbstractController
             $ctVehicule->setVhcChargeUtile($ctReception->getCtVehiculeId()->getVhcChargeUtile());
             $ctVehicule->setVhcNumSerie($ctReception->getCtVehiculeId()->getVhcNumSerie());
             $ctVehicule->setVhcNumMoteur($ctReception->getCtVehiculeId()->getVhcNumMoteur());
+            $ctVehicule->setVhcLongueur($ctReception->getCtVehiculeId()->getVhcLongueur());
+            $ctVehicule->setVhcLargeur($ctReception->getCtVehiculeId()->getVhcLargeur());
+            $ctVehicule->setVhcHauteur($ctReception->getCtVehiculeId()->getVhcHauteur());
             $ctVehicule->setVhcCreated(new \DateTime());
             $ctVehicule->setVhcType($ctReception->getCtVehiculeId()->getVhcType());
             $ctVehicule->setVhcPoidsTotalCharge($ctReception->getCtVehiculeId()->getVhcPoidsVide() + $ctReception->getCtVehiculeId()->getVhcChargeUtile());
@@ -303,12 +241,12 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setCtCarrosserieId($ctReception->getCtCarrosserieId());
             $date = new \DateTime();
             //$date = $date->format('Y-m-d');
-            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.date("Y"));
+            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$typeReception->getTprcpLibelle().'/'.date("Y"));
             $ctReception_new->setRcpCreated(new \DateTime());
             $ctReception_new->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
             $ctReception_new->setRcpIsActive(true);
             $ctReception_new->setRcpGenere(intval($ctReception->getRcpGenere()));
-            $ctReception_new->setRcpObservation($ctReception->getRcpObservation()." ");
+            $ctReception_new->setRcpObservation("");
 
             $ctReceptionRepository->add($ctReception_new, true);
             $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.date("Y"));
@@ -365,90 +303,46 @@ class CtAppReceptionController extends AbstractController
         $message = "";
         $enregistrement_ok = False;
         $vehicule_encours = 1;
-        $typeReception = $ctTypeReceptionRepository->findOneBy(["id" => 2]);
+        $total_vehicule = 0;
+        $typeReception = $ctTypeReceptionRepository->findOneBy(["id" => 1]);
+        $date = new \DateTime();
+        $code = '';
         if($request->request->get('total_vehicule')){
             $total_vehicule = (int)$request->request->get('total_vehicule');
         }
-        if($request->query->get('nombre_vehicule')){
-            $vehicule_encours = (int)$request->query->get('nombre_vehicule') + 1;
+        if($request->request->get('nombre_vehicule')){
+            $total_vehicule = (int)$request->request->get('nombre_vehicule');
+            $code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
         }
         if($request->request->get('vehicule_encours')){
             $vehicule_encours = (int)$request->request->get('vehicule_encours') + 1;
+            $code = $request->request->get('code');
             if($vehicule_encours > $total_vehicule){
                 // eto no assiana ny redirection rehefa vita ny boucle rehetra
             }
         }
+        if($request->request->get('code')){
+            $code = $request->request->get('code');
+        }
+        if($request->query->get('total_vehicule')){
+            $total_vehicule = (int)$request->query->get('total_vehicule');
+        }
+        if($request->query->get('nombre_vehicule')){
+            $total_vehicule = (int)$request->query->get('nombre_vehicule');
+            $code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
+        }
+        if($request->query->get('vehicule_encours')){
+            $vehicule_encours = (int)$request->query->get('vehicule_encours') + 1;
+            $code = $request->query->get('code');
+            if($vehicule_encours > $total_vehicule){
+                // eto no assiana ny redirection rehefa vita ny boucle rehetra
+            }
+        }
+        if($request->query->get('code')){
+            $code = $request->query->get('code');
+        }
 
-        //$form_reception = $this->createForm(CtReceptionReceptionType::class, $ct_reception);
-        $form_reception = $this->createFormBuilder($ctReception)
-            ->add('ct_utilisation_id', EntityType::class, [
-                'label' => 'Utilisation',
-                'class' => CtUtilisation::class,
-            ])
-            ->add('ct_motif_id', EntityType::class, [
-                'label' => 'Motif',
-                'class' => CtMotif::class,
-            ])
-            ->add('rcp_immatriculation', TextType::class, [
-                'label' => 'Immatriculation',
-            ])
-            ->add('rcp_proprietaire', TextType::class, [
-                'label' => 'Propriétaire',
-            ])
-            ->add('rcp_profession', TextType::class, [
-                'label' => 'Profession',
-            ])
-            ->add('rcp_adresse', TextType::class, [
-                'label' => 'Adresse',
-            ])
-            ->add('rcp_nbr_assis', TextType::class, [
-                'label' => 'Nombre de place assise',
-                'data' => 0,
-            ])
-            ->add('rcp_ngr_debout', TextType::class, [
-                'label' => 'Nombre de place debout',
-                'data' => 0,
-            ])
-            ->add('ct_source_energie_id', EntityType::class, [
-                'label' => 'Source d\'energie',
-                'class' => CtSourceEnergie::class,
-            ])
-            ->add('ct_carrosserie_id', EntityType::class, [
-                'label' => 'Carrosserie',
-                'class' => CtCarrosserie::class,
-            ])
-            ->add('rcp_mise_service', DateType::class, [
-                'label' => 'Date de mise en service',
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker',
-                ],
-                'data' => new \DateTime('now'),
-            ])
-            ->add('ct_verificateur_id', EntityType::class, [
-                'label' => 'Vérificateur',
-                'class' => CtUser::class,
-                'query_builder' => function(CtUserRepository $ctUserRepository/* , CtRoleRepository $ctRoleRepository */){
-                    /* $verificateurId = $ctRoleRepository->findOneBy(["role_name" => "VERIFICATEUR"]); */
-                    $qb = $ctUserRepository->createQueryBuilder('u');
-                    return $qb
-                        ->Where('u.ct_role_id = :val1')
-                        ->andWhere('u.ct_centre_id = :val2')
-                        ->setParameter('val1', 3)
-                        ->setParameter('val2', $this->getUser()->getCtCentreId())
-                    ;
-                }
-            ])
-            ->add('ct_vehicule_id', CtReceptionVehiculeType::class, [
-                'label' => 'Véhicule',
-            ])
-            /* ->add('total_vehicule', TextType::class, [
-                'label' => 'Total vehicule',
-            ])
-            ->add('vehicule_encours', TextType::class, [
-                'label' => 'Véhicule encours',
-            ]) */
-        ->getForm();
+        $form_reception = $this->createForm(CtReceptionReceptionType::class, $ctReception, ['centre' => $this->getUser()->getCtCentreId()]);        
         $form_reception->handleRequest($request);
 
         if ($form_reception->isSubmitted() && $form_reception->isValid()) {
@@ -460,6 +354,9 @@ class CtAppReceptionController extends AbstractController
             $ctVehicule->setVhcChargeUtile($ctReception->getCtVehiculeId()->getVhcChargeUtile());
             $ctVehicule->setVhcNumSerie($ctReception->getCtVehiculeId()->getVhcNumSerie());
             $ctVehicule->setVhcNumMoteur($ctReception->getCtVehiculeId()->getVhcNumMoteur());
+            $ctVehicule->setVhcLongueur($ctReception->getCtVehiculeId()->getVhcLongueur());
+            $ctVehicule->setVhcLargeur($ctReception->getCtVehiculeId()->getVhcLargeur());
+            $ctVehicule->setVhcHauteur($ctReception->getCtVehiculeId()->getVhcHauteur());
             $ctVehicule->setVhcCreated(new \DateTime());
             $ctVehicule->setVhcType($ctReception->getCtVehiculeId()->getVhcType());
             $ctVehicule->setVhcPoidsTotalCharge($ctReception->getCtVehiculeId()->getVhcPoidsVide() + $ctReception->getCtVehiculeId()->getVhcChargeUtile());
@@ -484,12 +381,12 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setCtCarrosserieId($ctReception->getCtCarrosserieId());
             $date = new \DateTime();
             //$date = $date->format('Y-m-d');
-            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.$date->format("Y"));
+            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$typeReception->getTprcpLibelle().'/'.$date->format("Y"));
             $ctReception_new->setRcpCreated(new \DateTime());
             $ctReception_new->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
             $ctReception_new->setRcpIsActive(true);
             $ctReception_new->setRcpGenere(intval($ctReception->getRcpGenere()));
-            $ctReception_new->setRcpObservation($ctReception->getRcpObservation()." ");
+            $ctReception_new->setRcpObservation($code);
 
             $ctReceptionRepository->add($ctReception_new, true);
             $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.date("Y"));
@@ -512,6 +409,7 @@ class CtAppReceptionController extends AbstractController
             'enregistrement_ok' => $enregistrement_ok,
             'total_vehicule' => $total_vehicule,
             'vehicule_encours' => $vehicule_encours,
+            'code' => $code,
         ]);
     }
 
@@ -538,92 +436,7 @@ class CtAppReceptionController extends AbstractController
             }
         }
 
-        //$form_reception = $this->createForm(CtReceptionReceptionType::class, $ct_reception);
-        $form_reception = $this->createFormBuilder($ctReception)
-            ->add('rcp_num_pv', TextType::class, [
-                'label' => 'Numéro PV',
-                'disabled' => true,
-            ])
-            ->add('ct_type_reception_id', EntityType::class, [
-                'label' => 'Type de réception',
-                'class' => CtTypeReception::class,
-                'disabled' => true,
-            ])
-            ->add('ct_utilisation_id', EntityType::class, [
-                'label' => 'Utilisation',
-                'class' => CtUtilisation::class,
-                'disabled' => true,
-            ])
-            ->add('ct_motif_id', EntityType::class, [
-                'label' => 'Motif',
-                'class' => CtMotif::class,
-                'disabled' => true,
-            ])
-            ->add('rcp_immatriculation', TextType::class, [
-                'label' => 'Immatriculation',
-                'disabled' => true,
-            ])
-            ->add('rcp_proprietaire', TextType::class, [
-                'label' => 'Propriétaire',
-                'disabled' => true,
-            ])
-            ->add('rcp_profession', TextType::class, [
-                'label' => 'Profession',
-                'disabled' => true,
-            ])
-            ->add('rcp_adresse', TextType::class, [
-                'label' => 'Adresse',
-                'disabled' => true,
-            ])
-            ->add('rcp_nbr_assis', TextType::class, [
-                'label' => 'Nombre de place assise',
-                'data' => 0,
-                'disabled' => true,
-            ])
-            ->add('rcp_ngr_debout', TextType::class, [
-                'label' => 'Nombre de place debout',
-                'data' => 0,
-                'disabled' => true,
-            ])
-            ->add('ct_source_energie_id', EntityType::class, [
-                'label' => 'Source d\'energie',
-                'class' => CtSourceEnergie::class,
-                'disabled' => true,
-            ])
-            ->add('ct_carrosserie_id', EntityType::class, [
-                'label' => 'Carrosserie',
-                'class' => CtCarrosserie::class,
-                'disabled' => true,
-            ])
-            ->add('rcp_mise_service', DateType::class, [
-                'label' => 'Date de première mise en circulation',
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker',
-                ],
-                'data' => new \DateTime('now'),
-                'disabled' => true,
-            ])
-            ->add('ct_verificateur_id', EntityType::class, [
-                'label' => 'Vérificateur',
-                'class' => CtUser::class,
-                'query_builder' => function(CtUserRepository $ctUserRepository/* , CtRoleRepository $ctRoleRepository */){
-                    /* $verificateurId = $ctRoleRepository->findOneBy(["role_name" => "VERIFICATEUR"]); */
-                    $qb = $ctUserRepository->createQueryBuilder('u');
-                    return $qb
-                        ->Where('u.ct_role_id = :val1')
-                        ->andWhere('u.ct_centre_id = :val2')
-                        ->setParameter('val1', 3)
-                        ->setParameter('val2', $this->getUser()->getCtCentreId())
-                    ;
-                },
-                'disabled' => true,
-            ])
-            ->add('ct_vehicule_id', CtReceptionVehiculeType::class, [
-                'label' => 'Véhicule',
-                'disabled' => true,
-            ])
-        ->getForm();
+        $form_reception = $this->createForm(CtReceptionReceptionType::class, $ctReception, ['centre' => $this->getUser()->getCtCentreId()]);
         $form_reception->handleRequest($request);
 
         if ($form_reception->isSubmitted() && $form_reception->isValid()) {
@@ -635,6 +448,9 @@ class CtAppReceptionController extends AbstractController
             $ctVehicule->setVhcChargeUtile($ctReception->getCtVehiculeId()->getVhcChargeUtile());
             $ctVehicule->setVhcNumSerie($ctReception->getCtVehiculeId()->getVhcNumSerie());
             $ctVehicule->setVhcNumMoteur($ctReception->getCtVehiculeId()->getVhcNumMoteur());
+            $ctVehicule->setVhcLongueur($ctReception->getCtVehiculeId()->getVhcLongueur());
+            $ctVehicule->setVhcLargeur($ctReception->getCtVehiculeId()->getVhcLargeur());
+            $ctVehicule->setVhcHauteur($ctReception->getCtVehiculeId()->getVhcHauteur());
             $ctVehicule->setVhcCreated(new \DateTime());
             $ctVehicule->setVhcType($ctReception->getCtVehiculeId()->getVhcType());
             $ctVehicule->setVhcPoidsTotalCharge($ctReception->getCtVehiculeId()->getVhcPoidsVide() + $ctReception->getCtVehiculeId()->getVhcChargeUtile());
@@ -705,70 +521,7 @@ class CtAppReceptionController extends AbstractController
             }
         }
 
-        //$form_reception = $this->createForm(CtReceptionReceptionType::class, $ct_reception);
-        $form_reception = $this->createFormBuilder($ctReception)
-            ->add('ct_utilisation_id', EntityType::class, [
-                'label' => 'Utilisation',
-                'class' => CtUtilisation::class,
-            ])
-            ->add('ct_motif_id', EntityType::class, [
-                'label' => 'Motif',
-                'class' => CtMotif::class,
-            ])
-            ->add('rcp_immatriculation', TextType::class, [
-                'label' => 'Immatriculation',
-            ])
-            ->add('rcp_proprietaire', TextType::class, [
-                'label' => 'Propriétaire',
-            ])
-            ->add('rcp_profession', TextType::class, [
-                'label' => 'Profession',
-            ])
-            ->add('rcp_adresse', TextType::class, [
-                'label' => 'Adresse',
-            ])
-            ->add('rcp_nbr_assis', TextType::class, [
-                'label' => 'Nombre de place assise',
-                'data' => 0,
-            ])
-            ->add('rcp_ngr_debout', TextType::class, [
-                'label' => 'Nombre de place debout',
-                'data' => 0,
-            ])
-            ->add('ct_source_energie_id', EntityType::class, [
-                'label' => 'Source d\'energie',
-                'class' => CtSourceEnergie::class,
-            ])
-            ->add('ct_carrosserie_id', EntityType::class, [
-                'label' => 'Carrosserie',
-                'class' => CtCarrosserie::class,
-            ])
-            ->add('rcp_mise_service', DateType::class, [
-                'label' => 'Date de mise en service',
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker',
-                ],
-                'data' => new \DateTime('now'),
-            ])
-            ->add('ct_verificateur_id', EntityType::class, [
-                'label' => 'Vérificateur',
-                'class' => CtUser::class,
-                'query_builder' => function(CtUserRepository $ctUserRepository/* , CtRoleRepository $ctRoleRepository */){
-                    /* $verificateurId = $ctRoleRepository->findOneBy(["role_name" => "VERIFICATEUR"]); */
-                    $qb = $ctUserRepository->createQueryBuilder('u');
-                    return $qb
-                        ->Where('u.ct_role_id = :val1')
-                        ->andWhere('u.ct_centre_id = :val2')
-                        ->setParameter('val1', 3)
-                        ->setParameter('val2', $this->getUser()->getCtCentreId())
-                    ;
-                }
-            ])
-            ->add('ct_vehicule_id', CtReceptionVehiculeType::class, [
-                'label' => 'Véhicule',
-            ])
-        ->getForm();
+        $form_reception = $this->createForm(CtReceptionReceptionType::class, $ctReception, ['centre' => $this->getUser()->getCtCentreId()]);
         $form_reception->handleRequest($request);
 
         if ($form_reception->isSubmitted() && $form_reception->isValid()) {
@@ -780,6 +533,9 @@ class CtAppReceptionController extends AbstractController
             $ctVehicule->setVhcChargeUtile($ctReception->getCtVehiculeId()->getVhcChargeUtile());
             $ctVehicule->setVhcNumSerie($ctReception->getCtVehiculeId()->getVhcNumSerie());
             $ctVehicule->setVhcNumMoteur($ctReception->getCtVehiculeId()->getVhcNumMoteur());
+            $ctVehicule->setVhcLongueur($ctReception->getCtVehiculeId()->getVhcLongueur());
+            $ctVehicule->setVhcLargeur($ctReception->getCtVehiculeId()->getVhcLargeur());
+            $ctVehicule->setVhcHauteur($ctReception->getCtVehiculeId()->getVhcHauteur());
             $ctVehicule->setVhcCreated(new \DateTime());
             $ctVehicule->setVhcType($ctReception->getCtVehiculeId()->getVhcType());
             $ctVehicule->setVhcPoidsTotalCharge($ctReception->getCtVehiculeId()->getVhcPoidsVide() + $ctReception->getCtVehiculeId()->getVhcChargeUtile());
@@ -842,7 +598,7 @@ class CtAppReceptionController extends AbstractController
         //$id = $request->query->get("id");
         $identification = intval($id);
         $reception = $ctReceptionRepository->findOneBy(["id" => $identification], ["id" => "DESC"]);
-        $vehicule = $ctVehiculeRepository->findOneBy(["id" => $reception->getId()], ["id" => "DESC"]);
+        $vehicule = $ctVehiculeRepository->findOneBy(["id" => $reception->getCtVehiculeId()], ["id" => "DESC"]);
         /* if($vehicule == null){
             return $this->redirectToRoute('app_ct_app_reception_creer_reception_isole');
         } */
@@ -859,6 +615,9 @@ class CtAppReceptionController extends AbstractController
             "vhc_poids_vide" => $vehicule->getVhcPoidsVide(),
             "vhc_charge_utile" => $vehicule->getVhcChargeUtile(),
             "vhc_poids_total_charge" => $vehicule->getVhcPoidsTotalCharge(),
+            "vhc_longueur" => $vehicule->getVhcLongueur(),
+            "vhc_largeur" => $vehicule->getVhcLargeur(),
+            "vhc_hauteur" => $vehicule->getVhcHauteur(),
             "ct_utilisation_id" => $reception->getCtUtilisationId()->getUtLibelle(),
             "ct_motif_id" => $reception->getCtMotifId()->getMtfLibelle(),
             "rcp_immatriculation" => $reception->getRcpImmatriculation(),

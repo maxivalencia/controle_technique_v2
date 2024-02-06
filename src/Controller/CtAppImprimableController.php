@@ -629,7 +629,7 @@ class CtAppImprimableController extends AbstractController
     {
         $identification = intval($id);
         $reception = $ctReceptionRepository->findOneBy(["id" => $identification], ["id" => "DESC"]);
-        $vehicule = $ctVehiculeRepository->findOneBy(["id" => $reception->getId()], ["id" => "DESC"]);
+        $vehicule = $ctVehiculeRepository->findOneBy(["id" => $reception->getCtVehiculeId()], ["id" => "DESC"]);
         $type_reception_id = $ctTypeReceptionRepository->findOneBy(["id" => $reception->getCtTypeReceptionId()]);
         $type_reception = $type_reception_id->getTprcpLibelle();
         $centre = $ctCentreRepository->findOneBy(["id" => $reception->getCtCentreId()]);
