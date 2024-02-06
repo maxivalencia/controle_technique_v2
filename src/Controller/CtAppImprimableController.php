@@ -1205,23 +1205,35 @@ class CtAppImprimableController extends AbstractController
             $type_visite_id = $visite->getCtTypeVisiteId();
             $usage_tarif = $ctUsageTarifRepository->findOneBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
             $tarif = $usage_tarif->getUsgTrfPrix();
-            $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
+            $pvId = $ctImprimeTechRepository->findOneBy(["id" => 12]);
             $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
+            //$arretePvTarif = $ctVisiteExtraTarifRepository->findOneBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
             foreach($arretePvTarif as $apt){
                 $arretePrix = $apt->getCtArretePrixId();
                 //if(new \DateTime() >= $arretePrix->getArtDateApplication()){
                 if($liste->isVstIsContreVisite() == false){
-                    if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
-                        if($liste->isVstIsApte()){
+                    //if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
+                    if(new \DateTime() >= $arretePrix->getArtDateApplication()){
+                        if($liste->isVstIsApte() == true){
                             $prixPv = $apt->getVetPrix();
                             //$aptitude = "Apte";
                         } else {
                             $prixPv = 2 * $apt->getVetPrix();
                             //$aptitude = "Inapte";
                         }
+                        break;
                     }
                 }
             }
+            /* if($liste->isVstIsContreVisite() == false){
+                if($liste->isVstIsApte() == true){
+                    $prixPv = $arretePvTarif->getVetPrix();
+                    //$aptitude = "Apte";
+                } else {
+                    $prixPv = 2 * $arretePvTarif->getVetPrix();
+                    //$aptitude = "Inapte";
+                }
+            } */
             foreach($listes_autre as $autre){
                 $vet = $ctVisiteExtraTarifRepository->findOneBy(["ct_imprime_tech_id" => $autre->getId()], ["vet_annee" => "DESC"]);
                 if($autre->getId() == 1){
@@ -1230,11 +1242,11 @@ class CtAppImprimableController extends AbstractController
                     $carte = $carte + $vet->getVetPrix();
                 }
             }
-            
+
             $droit = $tarif + $prixPv + $carnet + $carte;
             $tva = ($droit * floatval($prixTva)) / 100;
             $montant = $droit + $tva + $timbre;
-            
+
             $nombreReceptions = $nombreReceptions + 1;
             $totalDesDroits = $totalDesDroits + $tarif;
             $totalDesPrixPv = $totalDesPrixPv + $prixPv;
