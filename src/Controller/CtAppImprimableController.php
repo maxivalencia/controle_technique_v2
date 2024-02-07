@@ -694,17 +694,10 @@ class CtAppImprimableController extends AbstractController
         $totalDesTVA = 0;
         $totalDesTimbres = 0;
         $montantTotal = 0;
-        /* if(new \DateTime($dateDeploiement) > $date_of_reception){
-            $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
-        }else{
-            $nomGroup = $date_of_reception->format('d').'/'.$date_of_reception->format('m').'/'.$centre->getCtrCode().'/'.$type_reception.'/'.$date->format("Y");
-            $liste_receptions = $ctReceptionRepository->findBy(["rcp_num_group" => $nomGroup, "rcp_is_active" => true]);
-        } */
+        
         $liste_des_receptions = new ArrayCollection();
         $tarif = 0;
         $liste = $reception;
-        //if($liste_receptions != null){
-            //foreach($liste_receptions as $liste){
                 $genre = $liste->getCtGenreId();
                 $motif = $liste->getCtMotifId();
                 $calculable = $motif->isMtfIsCalculable();
@@ -717,7 +710,6 @@ class CtAppImprimableController extends AbstractController
                         $motifTarif = $ctMotifTarifRepository->findBy(["ct_motif_id" => $motif->getId()], ["ct_arrete_prix" => "DESC"]);
                         foreach($motifTarif as $mtf){
                             $arretePrix = $mtf->getCtArretePrix();
-                            //if(new \DateTime() >= $arretePrix->getArtDateApplication()){
                             if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
                                 $tarif = $mtf->getMtfTrfPrix();
                                 break;
@@ -727,10 +719,8 @@ class CtAppImprimableController extends AbstractController
                     if($calculable == true){
                         $genreCategorie = $genre->getCtGenreCategorieId();
                         $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["tp_dp_libelle" => "Réception"]);
-                        //$droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => 1, "ct_type_droit_ptac_id" => 1], ["ct_arrete_prix_id" => "DESC"]);
                         $droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => $genreCategorie->getId(), "ct_type_droit_ptac_id" => $typeDroit->getId()], ["ct_arrete_prix_id" => "DESC", "dp_prix_max" => "DESC"]);
-                        foreach($droits as $dt){
-                            //$tarif = $dt->getDpDroit();
+                        foreach($droits as $dt){;
                             if(($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax())){
                                 $tarif = $dt->getDpDroit();
                                 break;
@@ -740,11 +730,10 @@ class CtAppImprimableController extends AbstractController
                             }
                         }
                     }
-                    $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
+                    $pvId = $ctImprimeTechRepository->findOneBy(["id" => 12]);
                     $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
                     foreach($arretePvTarif as $apt){
                         $arretePrix = $apt->getCtArretePrixId();
-                        //if(new \DateTime() >= $arretePrix->getArtDateApplication()){
                         if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
                             $prixPv = 2 * $apt->getVetPrix();
                             break;
@@ -774,8 +763,6 @@ class CtAppImprimableController extends AbstractController
                 $totalDesTVA = $totalDesTVA + $tva;
                 $totalDesTimbres = $totalDesTimbres + $timbre;
                 $montantTotal = $montantTotal + $montant;
-            //}
-        //}
 
         $html = $this->renderView('ct_app_imprimable/proces_verbal_reception_isole.html.twig', [
             'logo' => $logo,
@@ -792,7 +779,6 @@ class CtAppImprimableController extends AbstractController
             'total_des_tva' => $totalDesTVA,
             'total_des_timbres' => $totalDesTimbres,
             'montant_total' => $montantTotal,
-            //'ct_receptions' => $liste_des_receptions,
             'reception' => $reception_data,
         ]);
         $dompdf->loadHtml($html);
@@ -814,7 +800,6 @@ class CtAppImprimableController extends AbstractController
     {
         $identification = intval($id);
         $constatation = $ctConstAvDedRepository->findOneBy(["id" => $identification], ["id" => "DESC"]);
-        //$constatation_types_carte_grise = $ctConstAvDedTypeRepository->findOne();
         $constatation_caracteristiques = $constatation->getCtConstAvDedCarac();
         foreach($constatation_caracteristiques as $constatation_carac){
             if($constatation_carac->getCtConstAvDedTypeId()->getId() == 1){
@@ -827,34 +812,26 @@ class CtAppImprimableController extends AbstractController
                 $constatation_caracteristique_note_descriptive = $constatation_carac;
             }
         }
-        //$constatation_caracteristique_carte_grise = $ctConstAvDedCaracRepository->findOneBy(["ct_const_av_ded_type_id" => 1, "ctConstAvDeds" => [$constatation->getId()]], ["id" => "DESC"]);
-        //$constatation_caracteristique_corps_du_vehicule = $ctConstAvDedCaracRepository->findOneBy(["ct_const_av_ded_type_id" => 2, "ctConstAvDeds" => $constatation], ["id" => "DESC"]);
-        //$constatation_caracteristique_note_descriptive = $ctConstAvDedCaracRepository->findOneBy(["ct_const_av_ded_type_id" => 3, "ctConstAvDeds" => $constatation], ["id" => "DESC"]);
 
-        //$type_constatation_id = $ctTypeReceptionRepository->findOneBy(["id" => $reception->getCtTypeReceptionId()]);
-        //$type_constatation = $type_reception_id->getTprcpLibelle();
-        //$centre = $ctCentreRepository->findOneBy(["id" => $reception->getCtCentreId()]);
-        //$date_of_reception = $reception->getRcpCreated();
-        //var_dump($constatation_caracteristique_carte_grise);
-        if($constatation_caracteristique_carte_grise != null){
+        if($constatation_caracteristique_carte_grise->getCadNumSerieType() != null){
             $constatation_carte_grise_data = [
-                "date_premiere_mise_en_circulation" => $constatation_caracteristique_carte_grise->getCadPremiereCircule(),
-                "genre" => $constatation_caracteristique_carte_grise->getCtGenreId()->getGrLibelle(),
-                "marque" => $constatation_caracteristique_carte_grise->getCtMarqueId()->getMrqLibelle(),
-                "type" => $constatation_caracteristique_carte_grise->getCadTypeCar(),
-                "numero_de_serie" => $constatation_caracteristique_carte_grise->getCadNumSerieType(),
-                "numero_moteur" => $constatation_caracteristique_carte_grise->getCadNumMoteur(),
-                "source_energie" => $constatation_caracteristique_carte_grise->getCtSourceEnergieId()->getSreLibelle(),
-                "cylindre" => $constatation_caracteristique_carte_grise->getCadCylindre(),
-                "puissance" => $constatation_caracteristique_carte_grise->getCadPuissance(),
-                "carrosserie" => $constatation_caracteristique_carte_grise->getCtCarrosserieId()->getCrsLibelle(),
-                "nbr_assise" => $constatation_caracteristique_carte_grise->getCadNbrAssis(),
-                "charge_utile" =>$constatation_caracteristique_carte_grise->getCadChargeUtile(),
-                "poids_a_vide" => $constatation_caracteristique_carte_grise->getCadPoidsVide(),
-                "poids_total_a_charge" => $constatation_caracteristique_carte_grise->getCadPoidsTotalCharge(),
-                "longueur" => $constatation_caracteristique_carte_grise->getCadLongueur(),
-                "largeur" => $constatation_caracteristique_carte_grise->getCadLargeur(),
-                "hauteur" => $constatation_caracteristique_carte_grise->getCadHauteur(),
+                "date_premiere_mise_en_circulation" => $constatation_caracteristique_carte_grise->getCadPremiereCircule() ? $constatation_caracteristique_carte_grise->getCadPremiereCircule() : '',
+                "genre" => $constatation_caracteristique_carte_grise->getCtGenreId()->getGrLibelle() ? $constatation_caracteristique_carte_grise->getCtGenreId()->getGrLibelle() : '',
+                "marque" => $constatation_caracteristique_carte_grise->getCtMarqueId()->getMrqLibelle() ? $constatation_caracteristique_carte_grise->getCtMarqueId()->getMrqLibelle() : '',
+                "type" => $constatation_caracteristique_carte_grise->getCadTypeCar() ? $constatation_caracteristique_carte_grise->getCadTypeCar() : '',
+                "numero_de_serie" => $constatation_caracteristique_carte_grise->getCadNumSerieType() ? $constatation_caracteristique_carte_grise->getCadNumSerieType() : '',
+                "numero_moteur" => $constatation_caracteristique_carte_grise->getCadNumMoteur() ? $constatation_caracteristique_carte_grise->getCadNumMoteur() : '',
+                "source_energie" => $constatation_caracteristique_carte_grise->getCtSourceEnergieId()->getSreLibelle() ? $constatation_caracteristique_carte_grise->getCtSourceEnergieId()->getSreLibelle() : '',
+                "cylindre" => $constatation_caracteristique_carte_grise->getCadCylindre() ? $constatation_caracteristique_carte_grise->getCadCylindre() : '',
+                "puissance" => $constatation_caracteristique_carte_grise->getCadPuissance() ? $constatation_caracteristique_carte_grise->getCadPuissance() : '',
+                "carrosserie" => $constatation_caracteristique_carte_grise->getCtCarrosserieId()->getCrsLibelle() ? $constatation_caracteristique_carte_grise->getCtCarrosserieId()->getCrsLibelle() : '',
+                "nbr_assise" => $constatation_caracteristique_carte_grise->getCadNbrAssis() ? $constatation_caracteristique_carte_grise->getCadNbrAssis() : '',
+                "charge_utile" => $constatation_caracteristique_carte_grise->getCadChargeUtile() ? $constatation_caracteristique_carte_grise->getCadChargeUtile() : '',
+                "poids_a_vide" => $constatation_caracteristique_carte_grise->getCadPoidsVide() ? $constatation_caracteristique_carte_grise->getCadPoidsVide() : '',
+                "poids_total_a_charge" => $constatation_caracteristique_carte_grise->getCadPoidsTotalCharge() ? $constatation_caracteristique_carte_grise->getCadPoidsTotalCharge() : '',
+                "longueur" => $constatation_caracteristique_carte_grise->getCadLongueur() ? $constatation_caracteristique_carte_grise->getCadLongueur() : '',
+                "largeur" => $constatation_caracteristique_carte_grise->getCadLargeur() ? $constatation_caracteristique_carte_grise->getCadLargeur() : '',
+                "hauteur" => $constatation_caracteristique_carte_grise->getCadHauteur() ? $constatation_caracteristique_carte_grise->getCadHauteur() : '',
             ];
         } else {
             $constatation_carte_grise_data = [
@@ -877,26 +854,26 @@ class CtAppImprimableController extends AbstractController
                 "hauteur" => "",
             ];
         }
-        //return $this->redirectToRoute('app_ct_app_historique', [], Response::HTTP_SEE_OTHER);
-        if($constatation_caracteristique_carte_grise != null){
+        
+        if($constatation_caracteristique_corps_du_vehicule != null){
             $constatation_corps_du_vehicule_data = [
-                "date_premiere_mise_en_circulation" => $constatation_caracteristique_corps_du_vehicule->getCadPremiereCircule(),
-                "genre" => $constatation_caracteristique_corps_du_vehicule->getCtGenreId()->getGrLibelle(),
-                "marque" => $constatation_caracteristique_corps_du_vehicule->getCtMarqueId()->getMrqLibelle(),
-                "type" => $constatation_caracteristique_corps_du_vehicule->getCadTypeCar(),
-                "numero_de_serie" => $constatation_caracteristique_corps_du_vehicule->getCadNumSerieType(),
-                "numero_moteur" => $constatation_caracteristique_corps_du_vehicule->getCadNumMoteur(),
-                "source_energie" => $constatation_caracteristique_corps_du_vehicule->getCtSourceEnergieId()->getSreLibelle(),
-                "cylindre" => $constatation_caracteristique_corps_du_vehicule->getCadCylindre(),
-                "puissance" => $constatation_caracteristique_corps_du_vehicule->getCadPuissance(),
-                "carrosserie" => $constatation_caracteristique_corps_du_vehicule->getCtCarrosserieId()->getCrsLibelle(),
-                "nbr_assise" => $constatation_caracteristique_corps_du_vehicule->getCadNbrAssis(),
-                "charge_utile" =>$constatation_caracteristique_corps_du_vehicule->getCadChargeUtile(),
-                "poids_a_vide" => $constatation_caracteristique_corps_du_vehicule->getCadPoidsVide(),
-                "poids_total_a_charge" => $constatation_caracteristique_corps_du_vehicule->getCadPoidsTotalCharge(),
-                "longueur" => $constatation_caracteristique_corps_du_vehicule->getCadLongueur(),
-                "largeur" => $constatation_caracteristique_corps_du_vehicule->getCadLargeur(),
-                "hauteur" => $constatation_caracteristique_corps_du_vehicule->getCadHauteur(),
+                "date_premiere_mise_en_circulation" => $constatation_caracteristique_corps_du_vehicule->getCadPremiereCircule() ? $constatation_caracteristique_corps_du_vehicule->getCadPremiereCircule() : '',
+                "genre" => $constatation_caracteristique_corps_du_vehicule->getCtGenreId()->getGrLibelle() ? $constatation_caracteristique_corps_du_vehicule->getCtGenreId()->getGrLibelle() : '',
+                "marque" => $constatation_caracteristique_corps_du_vehicule->getCtMarqueId()->getMrqLibelle() ? $constatation_caracteristique_corps_du_vehicule->getCtMarqueId()->getMrqLibelle() : '',
+                "type" => $constatation_caracteristique_corps_du_vehicule->getCadTypeCar() ? $constatation_caracteristique_corps_du_vehicule->getCadTypeCar() : '',
+                "numero_de_serie" => $constatation_caracteristique_corps_du_vehicule->getCadNumSerieType() ? $constatation_caracteristique_corps_du_vehicule->getCadNumSerieType() : '',
+                "numero_moteur" => $constatation_caracteristique_corps_du_vehicule->getCadNumMoteur() ? $constatation_caracteristique_corps_du_vehicule->getCadNumMoteur() : '',
+                "source_energie" => $constatation_caracteristique_corps_du_vehicule->getCtSourceEnergieId()->getSreLibelle() ? $constatation_caracteristique_corps_du_vehicule->getCtSourceEnergieId()->getSreLibelle() : '',
+                "cylindre" => $constatation_caracteristique_corps_du_vehicule->getCadCylindre() ? $constatation_caracteristique_corps_du_vehicule->getCadCylindre() : '',
+                "puissance" => $constatation_caracteristique_corps_du_vehicule->getCadPuissance() ? $constatation_caracteristique_corps_du_vehicule->getCadPuissance() : '',
+                "carrosserie" => $constatation_caracteristique_corps_du_vehicule->getCtCarrosserieId()->getCrsLibelle() ? $constatation_caracteristique_corps_du_vehicule->getCtCarrosserieId()->getCrsLibelle() : '',
+                "nbr_assise" => $constatation_caracteristique_corps_du_vehicule->getCadNbrAssis() ? $constatation_caracteristique_corps_du_vehicule->getCadNbrAssis() : '',
+                "charge_utile" => $constatation_caracteristique_corps_du_vehicule->getCadChargeUtile() ? $constatation_caracteristique_corps_du_vehicule->getCadChargeUtile() : '',
+                "poids_a_vide" => $constatation_caracteristique_corps_du_vehicule->getCadPoidsVide() ? $constatation_caracteristique_corps_du_vehicule->getCadPoidsVide() : '',
+                "poids_total_a_charge" => $constatation_caracteristique_corps_du_vehicule->getCadPoidsTotalCharge() ? $constatation_caracteristique_corps_du_vehicule->getCadPoidsTotalCharge() : '',
+                "longueur" => $constatation_caracteristique_corps_du_vehicule->getCadLongueur() ? $constatation_caracteristique_corps_du_vehicule->getCadLongueur() : '',
+                "largeur" => $constatation_caracteristique_corps_du_vehicule->getCadLargeur() ? $constatation_caracteristique_corps_du_vehicule->getCadLargeur() : '',
+                "hauteur" => $constatation_caracteristique_corps_du_vehicule->getCadHauteur() ? $constatation_caracteristique_corps_du_vehicule->getCadHauteur() : '',
             ];
         } else {
             $constatation_corps_du_vehicule_data = [
@@ -920,25 +897,25 @@ class CtAppImprimableController extends AbstractController
             ];
         }
 
-        if($constatation_caracteristique_carte_grise != null){
+        if($constatation_caracteristique_note_descriptive != null){
             $constatation_note_descriptive_data = [
-                "date_premiere_mise_en_circulation" => $constatation_caracteristique_note_descriptive->getCadPremiereCircule(),
-                "genre" => $constatation_caracteristique_note_descriptive->getCtGenreId()->getGrLibelle(),
-                "marque" => $constatation_caracteristique_note_descriptive->getCtMarqueId()->getMrqLibelle(),
-                "type" => $constatation_caracteristique_note_descriptive->getCadTypeCar(),
-                "numero_de_serie" => $constatation_caracteristique_note_descriptive->getCadNumSerieType(),
-                "numero_moteur" => $constatation_caracteristique_note_descriptive->getCadNumMoteur(),
-                "source_energie" => $constatation_caracteristique_note_descriptive->getCtSourceEnergieId()->getSreLibelle(),
-                "cylindre" => $constatation_caracteristique_note_descriptive->getCadCylindre(),
-                "puissance" => $constatation_caracteristique_note_descriptive->getCadPuissance(),
-                "carrosserie" => $constatation_caracteristique_note_descriptive->getCtCarrosserieId()->getCrsLibelle(),
-                "nbr_assise" => $constatation_caracteristique_note_descriptive->getCadNbrAssis(),
-                "charge_utile" =>$constatation_caracteristique_note_descriptive->getCadChargeUtile(),
-                "poids_a_vide" => $constatation_caracteristique_note_descriptive->getCadPoidsVide(),
-                "poids_total_a_charge" => $constatation_caracteristique_note_descriptive->getCadPoidsTotalCharge(),
-                "longueur" => $constatation_caracteristique_note_descriptive->getCadLongueur(),
-                "largeur" => $constatation_caracteristique_note_descriptive->getCadLargeur(),
-                "hauteur" => $constatation_caracteristique_note_descriptive->getCadHauteur(),
+                "date_premiere_mise_en_circulation" => $constatation_caracteristique_note_descriptive->getCadPremiereCircule() ? $constatation_caracteristique_note_descriptive->getCadPremiereCircule() : '',
+                "genre" => $constatation_caracteristique_note_descriptive->getCtGenreId()->getGrLibelle() ? $constatation_caracteristique_note_descriptive->getCtGenreId()->getGrLibelle() : '',
+                "marque" => $constatation_caracteristique_note_descriptive->getCtMarqueId()->getMrqLibelle() ? $constatation_caracteristique_note_descriptive->getCtMarqueId()->getMrqLibelle() : '',
+                "type" => $constatation_caracteristique_note_descriptive->getCadTypeCar() ? $constatation_caracteristique_note_descriptive->getCadTypeCar() : '',
+                "numero_de_serie" => $constatation_caracteristique_note_descriptive->getCadNumSerieType() ? $constatation_caracteristique_note_descriptive->getCadNumSerieType() : '',
+                "numero_moteur" => $constatation_caracteristique_note_descriptive->getCadNumMoteur() ? $constatation_caracteristique_note_descriptive->getCadNumMoteur() : '',
+                "source_energie" => $constatation_caracteristique_note_descriptive->getCtSourceEnergieId()->getSreLibelle() ? $constatation_caracteristique_note_descriptive->getCtSourceEnergieId()->getSreLibelle() : '',
+                "cylindre" => $constatation_caracteristique_note_descriptive->getCadCylindre() ? $constatation_caracteristique_note_descriptive->getCadCylindre() : '',
+                "puissance" => $constatation_caracteristique_note_descriptive->getCadPuissance() ? $constatation_caracteristique_note_descriptive->getCadPuissance() : '',
+                "carrosserie" => $constatation_caracteristique_note_descriptive->getCtCarrosserieId()->getCrsLibelle() ? $constatation_caracteristique_note_descriptive->getCtCarrosserieId()->getCrsLibelle() : '',
+                "nbr_assise" => $constatation_caracteristique_note_descriptive->getCadNbrAssis() ? $constatation_caracteristique_note_descriptive->getCadNbrAssis() : '',
+                "charge_utile" => $constatation_caracteristique_note_descriptive->getCadChargeUtile() ? $constatation_caracteristique_note_descriptive->getCadChargeUtile() : '',
+                "poids_a_vide" => $constatation_caracteristique_note_descriptive->getCadPoidsVide() ? $constatation_caracteristique_note_descriptive->getCadPoidsVide() : '',
+                "poids_total_a_charge" => $constatation_caracteristique_note_descriptive->getCadPoidsTotalCharge() ? $constatation_caracteristique_note_descriptive->getCadPoidsTotalCharge() : '',
+                "longueur" => $constatation_caracteristique_note_descriptive->getCadLongueur() ? $constatation_caracteristique_note_descriptive->getCadLongueur() : '',
+                "largeur" => $constatation_caracteristique_note_descriptive->getCadLargeur() ? $constatation_caracteristique_note_descriptive->getCadLargeur() : '',
+                "hauteur" => $constatation_caracteristique_note_descriptive->getCadHauteur() ? $constatation_caracteristique_note_descriptive->getCadHauteur() : '',
             ];
         } else {
             $constatation_note_descriptive_data = [
@@ -1012,15 +989,6 @@ class CtAppImprimableController extends AbstractController
         $totalDesTVA = 0;
         $totalDesTimbres = 0;
         $montantTotal = 0;
-        /* if(new \DateTime($dateDeploiement) > $date_of_reception){
-            $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
-        }else{
-            $nomGroup = $date_of_reception->format('d').'/'.$date_of_reception->format('m').'/'.$centre->getCtrCode().'/'.$type_reception.'/'.$date->format("Y");
-            $liste_receptions = $ctReceptionRepository->findBy(["rcp_num_group" => $nomGroup, "rcp_is_active" => true]);
-        } */
-        
-        //if($liste_constatations != null){
-            //foreach($liste_constatations as $liste){
                 $marques = $constatation->getCtConstAvDedCarac();
                 $carac = new CtConstAvDedCarac();
                 $genre = new CtGenreCategorie();
@@ -1031,7 +999,6 @@ class CtAppImprimableController extends AbstractController
                 }
                 $tarif = 0;
                 $prixPv = 0;
-                //$utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
                 $genreCategorie = $genre->getCtGenreCategorieId();
                 $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["id" => 2]);
                 $droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => $genreCategorie->getId(), "ct_type_droit_ptac_id" => $typeDroit->getId()], ["ct_arrete_prix_id" => "DESC", "dp_prix_max" => "DESC"]);
@@ -1044,11 +1011,13 @@ class CtAppImprimableController extends AbstractController
                         break;
                     }
                 }
-                $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
+                $pvId = $ctImprimeTechRepository->findOneBy(["id" => 12]);
                 $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
                 foreach($arretePvTarif as $apt){
                     $arretePrix = $apt->getCtArretePrixId();
-                    if($constatation->getCadCreated() >= $arretePrix->getArtDateApplication()){
+                    //if($constatation->getCadCreated() >= $arretePrix->getArtDateApplication()){
+                    // secours fotsiny  new date time fa mila atao daten'ilay pv no tena izy 
+                    if(new \DateTime() >= $arretePrix->getArtDateApplication()){
                         $prixPv = $apt->getVetPrix();
                         break;
                     }
@@ -1069,16 +1038,12 @@ class CtAppImprimableController extends AbstractController
                     "timbre" => $timbre,
                     "montant" => $montant,
                 ];
-                //$liste_des_constatations->add($cad);
-                //$nombreConstatations = $nombreConstatations + 1;
                 $totalDesDroits = $totalDesDroits + $tarif;
                 $totalDesPrixPv = $totalDesPrixPv + $prixPv;
                 $totalDesTHT = $totalDesDroits + $totalDesPrixPv;
                 $totalDesTVA = $totalDesTVA + $tva;
                 $totalDesTimbres = $totalDesTimbres + $timbre;
                 $montantTotal = $montantTotal + $montant;
-            //}
-        //}
 
         $html = $this->renderView('ct_app_imprimable/proces_verbal_constatation.html.twig', [
             'logo' => $logo,
@@ -1090,7 +1055,6 @@ class CtAppImprimableController extends AbstractController
             'total_des_tva' => $totalDesTVA,
             'total_des_timbres' => $totalDesTimbres,
             'montant_total' => $montantTotal,
-            //'ct_receptions' => $liste_des_receptions,
             'constatation' => $constatation_data,
             'constatation_carte_grise_data' => $constatation_carte_grise_data,
             'constatation_corps_du_vehicule_data' => $constatation_corps_du_vehicule_data,
@@ -1197,7 +1161,6 @@ class CtAppImprimableController extends AbstractController
         $tva = 0;
         $montant = 0;
         $aptitude = "Inapte";
-        //$listes_cartes = $ctVisiteExtraRepository->findOneBy(["" => $liste->getId()]);
         $listes_autre = $liste->getVstExtra();
         $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
         $utilisation = $liste->getCtUtilisationId();
@@ -1207,33 +1170,21 @@ class CtAppImprimableController extends AbstractController
             $tarif = $usage_tarif->getUsgTrfPrix();
             $pvId = $ctImprimeTechRepository->findOneBy(["id" => 12]);
             $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
-            //$arretePvTarif = $ctVisiteExtraTarifRepository->findOneBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
             foreach($arretePvTarif as $apt){
                 $arretePrix = $apt->getCtArretePrixId();
-                //if(new \DateTime() >= $arretePrix->getArtDateApplication()){
                 if($liste->isVstIsContreVisite() == false){
                     //if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
+                    // secours fotsiny  new date time fa mila atao daten'ilay pv no tena izy
                     if(new \DateTime() >= $arretePrix->getArtDateApplication()){
                         if($liste->isVstIsApte() == true){
                             $prixPv = $apt->getVetPrix();
-                            //$aptitude = "Apte";
                         } else {
                             $prixPv = 2 * $apt->getVetPrix();
-                            //$aptitude = "Inapte";
                         }
                         break;
                     }
                 }
             }
-            /* if($liste->isVstIsContreVisite() == false){
-                if($liste->isVstIsApte() == true){
-                    $prixPv = $arretePvTarif->getVetPrix();
-                    //$aptitude = "Apte";
-                } else {
-                    $prixPv = 2 * $arretePvTarif->getVetPrix();
-                    //$aptitude = "Inapte";
-                }
-            } */
             foreach($listes_autre as $autre){
                 $vet = $ctVisiteExtraTarifRepository->findOneBy(["ct_imprime_tech_id" => $autre->getId()], ["vet_annee" => "DESC"]);
                 if($autre->getId() == 1){

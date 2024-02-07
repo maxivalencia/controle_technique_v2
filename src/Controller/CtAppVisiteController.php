@@ -382,7 +382,7 @@ class CtAppVisiteController extends AbstractController
         } */
 
         if ($form_visite->isSubmitted() && $form_visite->isValid()) {
-            //$ctVisite_new = $ctVisite;
+            $ctVisite_new = $ctVisite;
             if($request->request->get('ct_visite_visite')){
                 //$recherche = $request->request->get('ct_visite_visite');
                 $recherche = $request->request->get('ct_visite_visite');
@@ -411,6 +411,11 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_new->setVstIsApte($anml->count()>0?false:true);
             $ctVisite_new->setVstIsContreVisite(false);
             $ctVisite_new->setVstDureeReparation($ctVisite->getVstDureeReparation());
+            $liste_extra = $ctVisite->getCtExtraVentes();
+            var_dump($ctVisite->getCtExtraVentes());
+            foreach($liste_extra as $extra){
+                $ctVisite_new->addCtExtraVente($extra);
+            }
             $ctVisite_new->setVstIsActive(true);
             $ctVisite_new->setVstGenere(0);
             $ctVisite_new->setVstObservation(" - ");

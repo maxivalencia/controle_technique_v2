@@ -311,7 +311,7 @@ class CtAppConstatationController extends AbstractController
             $message = "Constatation ajouter avec succes";
             $enregistrement_ok = true;
 
-            // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
+            // asiana redirection mandeha amin'ny générer rehefa vita ilay izy
             return $this->redirectToRoute('app_ct_app_constatation_voir_constatation_avant_dedouanement', ["id" => $ctConstatation_new->getId()], Response::HTTP_SEE_OTHER);
         }
 
