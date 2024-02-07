@@ -58,7 +58,7 @@
             <!-- <div class="preloader flex-column justify-content-center align-items-center">
                 <img class="animation__shake" src="../dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
             </div> -->
-                        
+
             <span class="fond_bar_entete">
             <!-- Navbar -->
             <nav class="main-header navbar navbar-expand navbar-white navbar-light fond_bar_entete">
@@ -107,7 +107,7 @@
             </nav>
             <!-- /.navbar -->
             </span>
-            
+
             <!-- Main Sidebar Container -->
             <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <!-- Brand Logo -->
@@ -135,8 +135,8 @@
                                         {# <i class="right fas fa-angle-left"></i> #}
                                     </p>
                                 </a>
-                            </li>   
-                        {% endif %}                      
+                            </li>
+                        {% endif %}
 
                         <!-- Début administrateur -->
                         {% if is_granted("ROLE_ADMIN") %}
@@ -265,7 +265,7 @@
                                         </ul>
                                     </li>
                                 </ul>
-                            </li>                         
+                            </li>
                         {% endif %}
                         <!-- Début Historique -->
                         {% if is_granted("ROLE_CONTROLE_TECHNIQUE") %}
@@ -295,25 +295,75 @@
                                 <a href="#" class="nav-link">
                                     <i class="fa fa-archive"></i>
                                     <p>
-                                        Autre service
+                                        Autres services
                                         <i class="fas fa-angle-left right"></i>
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    {% if is_granted("ROLE_ADMIN") %}
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Type services</p>
+                                            </a>
+                                            <ul class="nav nav-treeview" style="padding-left:5px;">
+                                                <li class="nav-item">
+                                                    <a href="#" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Liste</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Créer</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Tarif services</p>
+                                            </a>
+                                            <ul class="nav nav-treeview" style="padding-left:5px;">
+                                                <li class="nav-item">
+                                                    <a href="#" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Liste</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Créer</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
-                                            <p>Liste</p>
+                                            <p>Services</p>
                                         </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Créer</p>
-                                        </a>
+                                        <ul class="nav nav-treeview" style="padding-left:5px;">
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Liste</p>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Créer</p>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </li>
                                 </ul>
-                            </li>   
+                            </li>
                         {% endif %}
                         <!-- Début Statistique autre service -->
                         {% if is_granted("ROLE_STAFF") %}
@@ -333,7 +383,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>                      
+                            </li>
                         {% endif %}
                         <!-- Début Réception -->
                         {% if is_granted("ROLE_RECEPTION") %}
@@ -346,29 +396,31 @@
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                Type
-                                                <i class="fas fa-angle-left right"></i>
-                                            </p>
-                                        </a>
-                                        <ul class="nav nav-treeview" style="padding-left:5px;">
-                                            <li class="nav-item">
-                                                <a href="{{ path('app_ct_app_reception_liste_type') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Liste</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ path('app_ct_app_reception_creer_type') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Créer</p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    {% if is_granted("ROLE_ADMIN") %}
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Type
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview" style="padding-left:5px;">
+                                                <li class="nav-item">
+                                                    <a href="{{ path('app_ct_app_reception_liste_type') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Liste</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="{{ path('app_ct_app_reception_creer_type') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Créer</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -432,29 +484,31 @@
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                Type
-                                                <i class="fas fa-angle-left right"></i>
-                                            </p>
-                                        </a>
-                                        <ul class="nav nav-treeview" style="padding-left:5px;">
-                                            <li class="nav-item">
-                                                <a href="{{ path('app_ct_app_visite_liste_type') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Liste</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ path('app_ct_app_visite_creer_type') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Créer</p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    {% if is_granted("ROLE_ADMIN") %}
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Type
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview" style="padding-left:5px;">
+                                                <li class="nav-item">
+                                                    <a href="{{ path('app_ct_app_visite_liste_type') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Liste</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="{{ path('app_ct_app_visite_creer_type') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Créer</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -546,29 +600,31 @@
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                Type
-                                                <i class="fas fa-angle-left right"></i>
-                                            </p>
-                                        </a>
-                                        <ul class="nav nav-treeview" style="padding-left:5px;">
-                                            <li class="nav-item">
-                                                <a href="{{ path('app_ct_app_constatation_liste_type') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Liste</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="{{ path('app_ct_app_constatation_creer_type') }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Créer</p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    {% if is_granted("ROLE_ADMIN") %}
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Type
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview" style="padding-left:5px;">
+                                                <li class="nav-item">
+                                                    <a href="{{ path('app_ct_app_constatation_liste_type') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Liste</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="{{ path('app_ct_app_constatation_creer_type') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Créer</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -697,7 +753,7 @@
                                         </ul>
                                     </li>
                                 </ul>
-                            </li>                         
+                            </li>
                         {% endif %}
                         <!-- Début data -->
                         {% if is_granted("ROLE_ADMIN") %}
