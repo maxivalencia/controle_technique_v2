@@ -34,10 +34,16 @@ class CtVisiteExtra
      */
     private $ctExtraVentes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=CtAutreVente::class, mappedBy="auv_extra")
+     */
+    private $ctAutreVentes;
+
     public function __construct()
     {
         $this->ctVisites = new ArrayCollection();
         $this->ctExtraVentes = new ArrayCollection();
+        $this->ctAutreVentes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,6 +115,33 @@ class CtVisiteExtra
             if ($ctExtraVente->getCtVisiteExtraId() === $this) {
                 $ctExtraVente->setCtVisiteExtraId(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CtVisite>
+     */
+    public function getCtAutreVentes(): Collection
+    {
+        return $this->ctAutreVentes;
+    }
+
+    public function addCtAutreVentes(CtVisite $ctAutreVente): self
+    {
+        if (!$this->ctAutreVentes->contains($ctAutreVente)) {
+            $this->ctAutreVentes[] = $ctAutreVente;
+            $ctAutreVente->addVstExtra($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCtAutreVentes(CtVisite $ctAutreVente): self
+    {
+        if ($this->ctAutreVentes->removeElement($ctAutreVente)) {
+            $ctAutreVente->removeVstExtra($this);
         }
 
         return $this;

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des tarifs types de service{% endblock %}
+
+{% block app_ct %}
+
+<div class="box">
+    <div class="box-header">TOTAL TARIF SERVICE : {{ total }}</div><br>
+    <div>
+        <div>
+            <a href="#" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Créer tarif service</a>
+        </div>
+        <div class="marge-elts">
+            <table class="table liste">
+                <thead>
+                    <tr>
+                        <th>prix</th>
+                        <th>arrêté</th>
+                        <th>date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ct_autre_tarif in ct_autre_tarifs %}
+                    <tr>
+                        <td>{{ ct_autre_tarif.autPrix }}</td>
+                        <td>{{ ct_autre_tarif.autArrete }}</td>
+                        <td>{{ ct_autre_tarif.autDate ? ct_autre_tarif.autDate|date('d/m/Y') : '' }}</td>
+                        <td>
+                            <a href="#" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                            <a href="#" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <a href="#" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Créer tarif service</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

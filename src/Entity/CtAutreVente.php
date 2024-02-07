@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CtAutreVenteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -61,6 +63,16 @@ class CtAutreVente
      * @ORM\Column(type="integer", nullable=true)
      */
     private $controle_id;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=CtVisiteExtra::class, inversedBy="ctAutreVentes", cascade={"persist", "remove"})
+     */
+    private $auv_extra;
+
+    public function __construct()
+    {
+        $this->auv_extra = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -171,6 +183,30 @@ class CtAutreVente
     public function setControleId(?int $controle_id): self
     {
         $this->controle_id = $controle_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CtVisiteExtra>
+     */
+    public function getAuvExtra(): Collection
+    {
+        return $this->auv_extra;
+    }
+
+    public function addAuvExtra(CtVisiteExtra $auvExtra): self
+    {
+        if (!$this->auv_extra->contains($auvExtra)) {
+            $this->auv_extra[] = $auvExtra;
+        }
+
+        return $this;
+    }
+
+    public function removeAuvExtra(CtVisiteExtra $auvExtra): self
+    {
+        $this->auv_extra->removeElement($auvExtra);
 
         return $this;
     }

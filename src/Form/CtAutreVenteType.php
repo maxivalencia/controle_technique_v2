@@ -5,9 +5,13 @@ namespace App\Form;
 use App\Entity\CtAutreVente;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use App\Entity\CtVisiteExtra;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class CtAutreVenteType extends AbstractType
@@ -52,6 +56,17 @@ class CtAutreVenteType extends AbstractType
             ]) */
             ->add('ct_centre_id', null, [
                 'label' => 'Centre',
+            ])
+            ->add('auv_extra', EntityType::class, [
+                'label' => 'Extra',
+                'class' => CtVisiteExtra::class,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => true,
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
         ;
     }

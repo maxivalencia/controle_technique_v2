@@ -122,7 +122,6 @@ class CtAppReceptionController extends AbstractController
      */
     public function CreerReception(Request $request): Response
     {
-
         $form_bilan = $this->createFormBuilder()
             ->add('ct_type_reception_id', EntityType::class, [
                 'label' => 'Séléctionner le type de réception',

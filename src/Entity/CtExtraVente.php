@@ -28,7 +28,7 @@ class CtExtraVente
     private $ct_visite_extra_id;
 
     /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $exv_created_at;
 
