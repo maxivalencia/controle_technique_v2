@@ -12,6 +12,7 @@ use App\Entity\CtRole;
 use App\Form\CtRoleType;
 use App\Repository\CtRoleRepository;
 use App\Repository\CtUserRepository;
+use App\Repository\CtVisiteExtraRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -78,6 +79,18 @@ class CtVisiteVisiteType extends AbstractType
                     ;
                 }
             ])
+            /* ->add('vst_extra', EntityType::class, [
+                'label' => 'Extra',
+                'class' => CtVisiteExtra::class,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'multi select',
+                    'multiple' => true,
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+                'required' => false,
+            ]) */
             ->add('vst_extra', EntityType::class, [
                 'label' => 'Extra',
                 'class' => CtVisiteExtra::class,
@@ -88,6 +101,13 @@ class CtVisiteVisiteType extends AbstractType
                     'data-live-search' => true,
                     'data-select' => true,
                 ],
+                'query_builder' => function(CtVisiteExtraRepository $ctVisiteExtraRepository){
+                    $qb = $ctVisiteExtraRepository->createQueryBuilder('u');
+                    return $qb
+                        ->orderBy('u.id', 'ASC')
+                        ->setMaxResults(11)
+                    ;
+                },
                 'required' => false,
             ])
             ->add('ct_carte_grise_id', CtVisiteCarteGriseType::class, [

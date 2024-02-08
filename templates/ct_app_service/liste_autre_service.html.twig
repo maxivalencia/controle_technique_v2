@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste Autre service{% endblock %}
+
+{% block app_ct %}
+
+<div class="box">
+    <div class="box-header">TOTAL AUTRE SERVICE : {{ total }}</div><br>
+    <div>
+        <div>
+            <a href="{{ path('app_ct_app_new_service') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Créer autre service</a>
+        </div>
+        <div class="marge-elts">
+            <table class="table liste">
+                <thead>
+                    <tr>
+                        <th>Numéro de controle</th>
+                        <th>Utilisation</th>
+                        <th>Immatriculation</th>
+                        <th>Imprimé technique</th>
+                        <th>Secretaire</th>
+                        <th>Verificateur</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ct_autre_service in ct_autre_services %}
+                    <tr>
+                        <td>{{ ct_autre_service.controle_id }}</td>
+                        <td>{{ ct_autre_service.ct_usage_it }}</td>
+                        <td>{{ ct_autre_service.ct_carte_grise_id }}</td>
+                        <td>
+                            {% for auv_extra in ct_autre_service.auv_extra %}
+                                {{ auv_extra.vste_libelle }}<br>
+                            {% endfor %}
+                        </td>
+                        <td>{{ ct_autre_service.user_id }}</td>
+                        <td>{{ ct_autre_service.verificateur_id }}</td>
+                        <td>
+                            <a href="#" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                            <a href="#" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <a href="{{ path('app_ct_app_new_service') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Créer autre service</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
