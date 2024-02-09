@@ -69,6 +69,16 @@ class CtAutreVente
      */
     private $auv_extra;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $auv_validite;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $auv_itineraire;
+
     public function __construct()
     {
         $this->auv_extra = new ArrayCollection();
@@ -207,6 +217,30 @@ class CtAutreVente
     public function removeAuvExtra(CtVisiteExtra $auvExtra): self
     {
         $this->auv_extra->removeElement($auvExtra);
+
+        return $this;
+    }
+
+    public function getAuvValidite(): ?string
+    {
+        return strtoupper($this->auv_validite);
+    }
+
+    public function setAuvValidite(string $auv_validite): self
+    {
+        $this->auv_validite = strtoupper($auv_validite);
+
+        return $this;
+    }
+
+    public function getAuvItineraire(): ?string
+    {
+        return strtoupper($this->auv_itineraire);
+    }
+
+    public function setAuvItineraire(string $auv_itineraire): self
+    {
+        $this->auv_itineraire = strtoupper($auv_itineraire);
 
         return $this;
     }

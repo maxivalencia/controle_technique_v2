@@ -9,6 +9,7 @@ use App\Entity\CtAutreVente;
 use App\Form\CtAutreVenteType;
 use App\Form\CtAutreVenteAutreVenteType;
 use App\Repository\CtAutreVenteRepository;
+use App\Repository\CtCarteGriseRepository;
 use App\Entity\CtAutreTarif;
 use App\Form\CtAutreTarifType;
 use App\Repository\CtAutreTarifRepository;
@@ -54,13 +55,23 @@ class CtAppServiceController extends AbstractController
     /**
      * @Route("/new_service", name="app_ct_app_new_service", methods={"GET", "POST"})
      */
-    public function NewService(Request $request, CtAutreVenteRepository $ctAutreVenteRepository): Response
+    public function NewService(Request $request, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtAutreTarifRepository $ctAutreTarifRepository): Response
     {
         $ctAutreVente = new CtAutreVente();
         $form_autre_vente = $this->createForm(CtAutreVenteAutreVenteType::class, $ctAutreVente, ["centre" => $this->getUser()->getCtCentreId()]);
         $form_autre_vente->handleRequest($request);
 
         if ($form_autre_vente->isSubmitted() && $form_autre_vente->isValid()) {
+            $imm = $request->request->get("ct_autre_vente_autre_vente");
+            $immatriculation = strtoupper($imm["ct_carte_grise"]);
+            $ctAutreVente->setCtCarteGriseId($ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $immatriculation], ["id" => "DESC"]));
+            $ctAutreVente->setUserId($this->getUser());
+            $ctAutreVente->setCtCentreId($this->getUser()->getCtCentreId());
+            $ctAutreVente->setAuvCreatedAt(new \DateTime);
+            $ctAutreVente->setAuvIsVisible(true);
+            $ctAutreVente->setCtAutreTarifId($ctAutreTarifRepository->findOneBy(["ct_usage_imprime_technique_id" => $ctAutreVente->getCtUsageIt()], ["id" => "DESC"]));
+            $ctAutreVente->setAuvValidite($ctAutreVente->getAuvValidite() ? $ctAutreVente->getAuvValidite() : "");
+            $ctAutreVente->setAuvItineraire($ctAutreVente->getAuvItineraire() ? $ctAutreVente->getAuvItineraire() : "");
             $ctAutreVenteRepository->add($ctAutreVente, true);
 
             return $this->redirectToRoute('app_ct_app_liste_service', [], Response::HTTP_SEE_OTHER);

@@ -20,22 +20,26 @@
                         <th>Imprimé technique</th>
                         <th>Secretaire</th>
                         <th>Verificateur</th>
+                        <th>Validité</th>
+                        <th>Itinéraire</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for ct_autre_service in ct_autre_services %}
                     <tr>
-                        <td>{{ ct_autre_service.controle_id }}</td>
-                        <td>{{ ct_autre_service.ct_usage_it }}</td>
-                        <td>{{ ct_autre_service.ct_carte_grise_id }}</td>
+                        <td>{{ ct_autre_service.controleId }}</td>
+                        <td>{{ ct_autre_service.ctUsageIt }}</td>
+                        <td>{{ ct_autre_service.ctCarteGriseId }}</td>
                         <td>
-                            {% for auv_extra in ct_autre_service.auv_extra %}
-                                {{ auv_extra.vste_libelle }}<br>
+                            {% for auv_extra in ct_autre_service.auvExtra %}
+                                {{ auv_extra.vsteLibelle }}<br>
                             {% endfor %}
                         </td>
-                        <td>{{ ct_autre_service.user_id }}</td>
-                        <td>{{ ct_autre_service.verificateur_id }}</td>
+                        <td>{{ ct_autre_service.userId }}</td>
+                        <td>{{ ct_autre_service.verificateurId }}</td>
+                        <td>{{ ct_autre_service.auvValidite }}</td>
+                        <td>{{ ct_autre_service.auvItineraire }}</td>
                         <td>
                             <a href="#" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
                             <a href="#" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>

@@ -68,6 +68,12 @@ class CtAutreVenteType extends AbstractType
                     'data-select' => true,
                 ],
             ])
+            ->add('auv_validite', null, [
+                'label' => 'Validité',
+            ])
+            ->add('auv_itineraire', null, [
+                'label' => 'Itinéraire',
+            ])
         ;
     }
 

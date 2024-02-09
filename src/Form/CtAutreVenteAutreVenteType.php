@@ -40,12 +40,24 @@ class CtAutreVenteAutreVenteType extends AbstractType
                     ;
                 }
             ])
-            ->add('ct_carte_grise_id', null, [
+            ->add('ct_carte_grise', null, [
                 'label' => 'Numéro d\'immatriculation',
+                'mapped' => false,
             ])
+            /* ->add('ct_carte_grise_id', null, [
+                'label' => 'Numéro d\'immatriculation',
+            ]) */
             /* ->add('ct_centre_id') */
             ->add('auv_extra', null, [
                 'label' => 'Imprimé technique utiliser',
+            ])
+            ->add('auv_validite', null, [
+                'label' => 'Validité',
+                'empty_data' => '',
+            ])
+            ->add('auv_itineraire', null, [
+                'label' => 'Itinéraire',
+                'empty_data' => '',
             ])
         ;
     }
