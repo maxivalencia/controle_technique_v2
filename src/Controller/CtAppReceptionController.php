@@ -308,44 +308,54 @@ class CtAppReceptionController extends AbstractController
         $typeReception = $ctTypeReceptionRepository->findOneBy(["id" => 1]);
         $date = new \DateTime();
         $code = '';
-        if($request->request->get('total_vehicule')){
-            $total_vehicule = (int)$request->request->get('total_vehicule');
-        }
-        if($request->request->get('nombre_vehicule')){
-            $total_vehicule = (int)$request->request->get('nombre_vehicule');
-            $code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
-        }
         if($request->request->get('vehicule_encours')){
+            $total_vehicule = (int)$request->request->get('total_vehicule');
             $vehicule_encours = (int)$request->request->get('vehicule_encours') + 1;
             $code = $request->request->get('code');
-            if($vehicule_encours > $total_vehicule){
+            if($vehicule_encours >= $total_vehicule){
                 // eto no assiana ny redirection rehefa vita ny boucle rehetra
                 return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_par_type', ["id" => $code]);
             }
+        }else{
+            $total_vehicule = (int)$request->query->get('nombre_vehicule');
+            $code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
         }
-        if($request->request->get('code')){
+        if($request->request->get('total_vehicule')){
+            $total_vehicule = (int)$request->request->get('total_vehicule');
+        }
+        /* if($request->request->get('nombre_vehicule')){
+            $total_vehicule = (int)$request->request->get('nombre_vehicule');
+            $code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
+        } */
+        /* if($request->request->get('code')){
             $code = $request->request->get('code');
         }else{
+            $code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
+        } */
+        if($request->query->get('vehicule_encours')){
+            $total_vehicule = (int)$request->query->get('total_vehicule');
+            $vehicule_encours = (int)$request->query->get('vehicule_encours') + 1;
+            $code = $request->query->get('code');
+            if($vehicule_encours >= $total_vehicule){
+                // eto no assiana ny redirection rehefa vita ny boucle rehetra
+                return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_par_type', ["id" => $code]);
+            }
+        }else{
+            $total_vehicule = (int)$request->query->get('nombre_vehicule');
             $code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
         }
         if($request->query->get('total_vehicule')){
             $total_vehicule = (int)$request->query->get('total_vehicule');
         }
-        if($request->query->get('nombre_vehicule')){
+        /* if($request->query->get('nombre_vehicule')){
             $total_vehicule = (int)$request->query->get('nombre_vehicule');
-            //$code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
-        }
-        if($request->query->get('vehicule_encours')){
-            $vehicule_encours = (int)$request->query->get('vehicule_encours') + 1;
+            $code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
+        } */
+        /* if($request->query->get('code')){
             $code = $request->query->get('code');
-            if($vehicule_encours > $total_vehicule){
-                // eto no assiana ny redirection rehefa vita ny boucle rehetra
-                return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_par_type', ["id" => $code]);
-            }
-        }
-        if($request->query->get('code')){
-            $code = $request->query->get('code');
-        }
+        }else{
+            $code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
+        } */
 
         $form_reception = $this->createForm(CtReceptionReceptionType::class, $ctReception, ['centre' => $this->getUser()->getCtCentreId()]);        
         $form_reception->handleRequest($request);
