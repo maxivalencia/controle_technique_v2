@@ -127,7 +127,7 @@
         <br>
         <div align="center" style="font-size:14px;margin-left:50px;">
             <div align="center"><u><strong>RECAPITULATION PAR USAGE EFFECTIF</strong></u></div>
-            <div style="font-size:10px;">
+            <div style="font-size:12px;">
                 {% set colonne = 5 %}
                 {% set colonne_encours = 0 %}
                 <table>
@@ -135,6 +135,8 @@
                     {% if colonne_encours == 0 %}
                         <tr>
                     {% endif %}
+                    {# <td align="right" style="border: 0px solid black;" width="125"> {{ usage.usage }} : </td>
+                    <td align="left" style="border: 0px solid black;" width="10"><strong> {{ usage.nombre }} </strong></td> #}
                     <td align="right" style="border: 0px solid black;" width="125"> {{ usage.usage }} : </td>
                     <td align="left" style="border: 0px solid black;" width="10"><strong> {{ usage.nombre }} </strong></td>
                     {% set colonne_encours = colonne_encours + 1 %}
@@ -145,6 +147,11 @@
                 {% endfor %}
                 </table>
             </div>
+        </div>
+        <div style="font-size:14px;margin-left:600px;" align="center">
+            <br><br>
+            {{ province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}<br>
+            <strong>Le chef de Centre<strong>
         </div>
         <div id="footer">
             {# <span><p class="page-number">Page </p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> #}

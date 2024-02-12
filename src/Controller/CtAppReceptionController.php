@@ -29,6 +29,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\RateLimiter\Policy\Rate;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @Route("/ct_app_reception")
@@ -240,7 +241,8 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setCtCarrosserieId($ctReception->getCtCarrosserieId());
             $date = new \DateTime();
             //$date = $date->format('Y-m-d');
-            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$typeReception->getTprcpLibelle().'/'.date("Y"));
+            //$ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$typeReception->getTprcpLibelle().'/'.date("Y"));
+            $ctReception_new->setRcpNumGroup("");
             $ctReception_new->setRcpCreated(new \DateTime());
             $ctReception_new->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
             $ctReception_new->setRcpIsActive(true);
@@ -318,23 +320,27 @@ class CtAppReceptionController extends AbstractController
             $code = $request->request->get('code');
             if($vehicule_encours > $total_vehicule){
                 // eto no assiana ny redirection rehefa vita ny boucle rehetra
+                return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_par_type', ["id" => $code]);
             }
         }
         if($request->request->get('code')){
             $code = $request->request->get('code');
+        }else{
+            $code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
         }
         if($request->query->get('total_vehicule')){
             $total_vehicule = (int)$request->query->get('total_vehicule');
         }
         if($request->query->get('nombre_vehicule')){
             $total_vehicule = (int)$request->query->get('nombre_vehicule');
-            $code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
+            //$code = $date->format('H_i_s_d_m_Y').'_'.$this->getUser()->getCtCentreId()->getCtrCode();
         }
         if($request->query->get('vehicule_encours')){
             $vehicule_encours = (int)$request->query->get('vehicule_encours') + 1;
             $code = $request->query->get('code');
             if($vehicule_encours > $total_vehicule){
                 // eto no assiana ny redirection rehefa vita ny boucle rehetra
+                return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_par_type', ["id" => $code]);
             }
         }
         if($request->query->get('code')){
@@ -380,12 +386,13 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setCtCarrosserieId($ctReception->getCtCarrosserieId());
             $date = new \DateTime();
             //$date = $date->format('Y-m-d');
-            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$typeReception->getTprcpLibelle().'/'.$date->format("Y"));
+            //$ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$typeReception->getTprcpLibelle().'/'.$date->format("Y"));
+            $ctReception_new->setRcpNumGroup($code);
             $ctReception_new->setRcpCreated(new \DateTime());
             $ctReception_new->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
             $ctReception_new->setRcpIsActive(true);
             $ctReception_new->setRcpGenere(intval($ctReception->getRcpGenere()));
-            $ctReception_new->setRcpObservation($code);
+            $ctReception_new->setRcpObservation("");
 
             $ctReceptionRepository->add($ctReception_new, true);
             $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.date("Y"));
@@ -636,11 +643,55 @@ class CtAppReceptionController extends AbstractController
     /**
      * @Route("/recapitulation_reception_par_type/{id}", name="app_ct_app_reception_recapitulation_reception_par_type", methods={"GET", "POST"})
      */
-    public function RecapitulationReceptionParType(Request $request, CtVehiculeRepository $ctVehiculeRepository, CtReceptionRepository $ctReceptionRepository): Response
+    public function RecapitulationReceptionParType(Request $request, string $id, CtVehiculeRepository $ctVehiculeRepository, CtReceptionRepository $ctReceptionRepository): Response
     {
         //récapitulation réception isolé
-        return $this->render('ct_app_reception/index.html.twig', [
-            'controller_name' => 'CtAppReceptionController',
+        //$id = $request->query->get("id");
+        $liste_reception = new ArrayCollection();
+        $identification = $id;
+        $receptions = $ctReceptionRepository->findBy(["rcp_num_group" => $identification], ["id" => "DESC"]);
+        foreach($receptions as $reception){
+            $vehicule = $ctVehiculeRepository->findOneBy(["id" => $reception->getCtVehiculeId()], ["id" => "DESC"]);
+            /* if($vehicule == null){
+                return $this->redirectToRoute('app_ct_app_reception_creer_reception_isole');
+            } */
+            $reception_data = ["id" => $identification,
+                "ct_genre_id" => $vehicule->getCtGenreId()->getGrLibelle(),
+                "ct_marque_id" => $vehicule->getCtMarqueId()->getMrqLibelle(),
+                "vhc_type" => $vehicule->getVhcType(),
+                "vhc_num_serie" => $vehicule->getVhcNumSerie(),
+                "vhc_num_moteur" => $vehicule->getVhcNumMoteur(),
+                "ct_carrosserie_id" => $reception->getCtCarrosserieId()->getCrsLibelle(),
+                "ct_source_energie_id" => $reception->getCtSourceEnergieId()->getSreLibelle(),
+                "vhc_cylindre" => $vehicule->getVhcCylindre(),
+                "vhc_puissance" => $vehicule->getVhcPuissance(),
+                "vhc_poids_vide" => $vehicule->getVhcPoidsVide(),
+                "vhc_charge_utile" => $vehicule->getVhcChargeUtile(),
+                "vhc_poids_total_charge" => $vehicule->getVhcPoidsTotalCharge(),
+                "vhc_longueur" => $vehicule->getVhcLongueur(),
+                "vhc_largeur" => $vehicule->getVhcLargeur(),
+                "vhc_hauteur" => $vehicule->getVhcHauteur(),
+                "ct_utilisation_id" => $reception->getCtUtilisationId()->getUtLibelle(),
+                "ct_motif_id" => $reception->getCtMotifId()->getMtfLibelle(),
+                "rcp_immatriculation" => $reception->getRcpImmatriculation(),
+                "rcp_proprietaire" => $reception->getRcpProprietaire(),
+                "rcp_profession" => $reception->getRcpProfession(),
+                "rcp_adresse" => $reception->getRcpAdresse(),
+                "rcp_nbr_assis" => $reception->getRcpNbrAssis(),
+                "rcp_ngr_debout" => $reception->getRcpNgrDebout(),
+                "rcp_mise_service" => $reception->getRcpMiseService(),
+                "ct_verificateur_id" => $reception->getCtVerificateurId()->getUsrNom(),
+            ];
+            $liste_reception->add($reception_data);
+        }
+
+        return $this->render('ct_app_reception/recapitulation_reception_par_type.html.twig', [
+            'receptions' => $liste_reception,
+            'id' => $identification,
         ]);
+        //récapitulation réception isolé
+        /* return $this->render('ct_app_reception/index.html.twig', [
+            'controller_name' => 'CtAppReceptionController',
+        ]); */
     }
 }

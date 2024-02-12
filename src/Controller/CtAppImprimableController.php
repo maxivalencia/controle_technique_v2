@@ -21,6 +21,7 @@ use App\Repository\CtVehiculeRepository;
 use App\Repository\CtTypeVisiteRepository;
 use App\Repository\CtUsageTarifRepository;
 use App\Repository\CtUsageRepository;
+use App\Repository\CtUserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,6 +34,8 @@ use App\Entity\CtTypeReception;
 use App\Entity\CtConstAvDedCarac;
 use App\Entity\CtGenreCategorie;
 use App\Entity\CtVisite;
+use App\Entity\CtMarque;
+use App\Entity\CtUser;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -91,6 +94,7 @@ class CtAppImprimableController extends AbstractController
         $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
         $dateDeploiement = $deploiement->getAttribut();
         if(new \DateTime($dateDeploiement) > $date_of_reception){
+            // $liste_receptions = $ctReceptionRepository->findBy(["ct_type_reception_id" => $type_reception_id, "ct_centre_id" => $centre, "rcp_created" => $date_of_reception]);
             $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
         }else{
             $nomGroup = $date_of_reception->format('d').'/'.$date_of_reception->format('m').'/'.$centre->getCtrCode().'/'.$type_reception.'/'.$date->format("Y");
@@ -111,9 +115,94 @@ class CtAppImprimableController extends AbstractController
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $output = $dompdf->output();
-        $filename = "FICHE_DE_CONTROLE_RECEP".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        $filename = "FICHE_DE_CONTROLE_RECEP_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("FICHE_DE_CONTROLE_RECEP".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+        $dompdf->stream("FICHE_DE_CONTROLE_RECEP_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+            "Attachment" => true,
+        ]);
+    }
+
+    /**
+     * @Route("/fiche_de_controle_constatation", name="app_ct_app_imprimable_fiche_de_controle_constatation", methods={"GET", "POST"})
+     */
+    public function FicheDeControleConstatation(Request $request, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    {
+        //$type_reception = "";
+        $date_constatation = new \DateTime();
+        $date_of_constatation = new \DateTime();
+        //$type_reception_id = new CtTypeReception();
+        $centre = new CtCentre();
+        if($request->request->get('form')){
+            $rechercheform = $request->request->get('form');
+            //$recherche = $rechercheform['ct_type_reception_id'];
+            $date_constatation = $rechercheform['date'];
+            $date_of_constatation = new \DateTime($date_constatation);
+            //$type_reception_id = $ctTypeReceptionRepository->findOneBy(["id" => $recherche]);
+            //$type_reception = $type_reception_id->getTprcpLibelle();
+            if($rechercheform['ct_centre_id'] != ""){
+                $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
+            } else{
+                $centre = $this->getUser()->getCtCentreId();
+            }
+        }
+        $pdfOptions = new Options();
+        $pdfOptions->set('isRemoteEnabled', true);
+        $pdfOptions->setIsRemoteEnabled(true);
+        $pdfOptions->setIsPhpEnabled(true);
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
+
+        $date = new \DateTime();
+        $logo = file_get_contents($this->getParameter('logo').'logo.txt');
+
+        $dossier = $this->getParameter('dossier_fiche_de_controle_constatation')."/".$centre->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+        if (!file_exists($dossier)) {
+            mkdir($dossier, 0777, true);
+        }
+        // teste date, comparaison avant utilisation rcp_num_group
+        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        $dateDeploiement = $deploiement->getAttribut();
+        $liste_constatations = new ArrayCollection();
+        //$lst_consts = $ctConstAvDedRepository->findBy(["id" => $centre->getId(), "cad_created" => $date_of_constatation]);
+        $lst_consts = $ctConstAvDedRepository->findByFicheDeControle($centre->getId(), $date_of_constatation);
+        foreach($lst_consts as $liste){
+            $marque = "";
+            $marques = $liste->getCtMarqueId();
+            foreach($marques as $mrq){
+                $marque = $mrq->getMrqLibelle();
+            }
+            $const = [
+                "cadProprietaireNom" => $liste->getCadProprietaireNom(),
+                "cadProprietaireAdresse" => $liste->getCadProprietaireAdresse(),
+                "cadMarque" => $marque,
+                "cadImmatriculation" => $liste->getCadImmatriculation(),
+            ];
+            $liste_constatations->add($const);
+        }
+        /* if(new \DateTime($dateDeploiement) > $date_of_constatation){
+            $liste_constatations = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
+        }else{
+            $nomGroup = $date_of_constatation->format('d').'/'.$date_of_reception->format('m').'/'.$centre->getCtrCode().'/'.$type_reception.'/'.$date->format("Y");
+            $liste_constatations = $ctReceptionRepository->findBy(["rcp_num_group" => $nomGroup, "rcp_is_active" => true]);
+        } */
+        $html = $this->renderView('ct_app_imprimable/fiche_de_controle_constatation.html.twig', [
+            'logo' => $logo,
+            'date' => $date,
+            'province' => $centre->getCtProvinceId()->getPrvNom(),
+            'centre' => $centre->getCtrNom(),
+            'user' => $this->getUser(),
+            //'type' => $type_reception,
+            'date_constatation' => $date_of_constatation,
+            'ct_constatations' => $liste_constatations,
+        ]);
+        $dompdf->loadHtml($html);
+        /* $dompdf->setPaper('A4', 'portrait'); */
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $output = $dompdf->output();
+        $filename = "FICHE_DE_CONTROLE_CONST_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        file_put_contents($dossier.$filename, $output);
+        $dompdf->stream("FICHE_DE_CONTROLE_CONST_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
     }
@@ -170,6 +259,7 @@ class CtAppImprimableController extends AbstractController
         $totalDesTimbres = 0;
         $montantTotal = 0;
         if(new \DateTime($dateDeploiement) > $date_of_reception){
+            // $liste_receptions = $ctReceptionRepository->findBy(["ct_type_reception_id" => $type_reception_id, "ct_centre_id" => $centre, "rcp_created" => $date_of_reception]);
             $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
         }else{
             $nomGroup = $date_of_reception->format('d').'/'.$date_of_reception->format('m').'/'.$centre->getCtrCode().'/'.$type_reception.'/'.$date->format("Y");
@@ -425,15 +515,15 @@ class CtAppImprimableController extends AbstractController
         $liste_usage = $ctUsageRepository->findAll();
         $liste_des_usages = new ArrayCollection();
         //$array_usages = array();
-        //$array_usages = [];
+        $array_usages = [];
         foreach($liste_usage as $lstu){
             $usg = [
                 "usage" => $lstu->getUsgLibelle(),
                 "nombre" => 0,
             ];
             //array_push()
-            $liste_des_usages->add($usg);
-            //$array_usages[$lstu->getUsgLibelle()] = 0;
+            //$liste_des_usages->add($usg);
+            $array_usages[$lstu->getUsgLibelle()] = 0;
         }
 
         if($request->request->get('form')){
@@ -536,6 +626,7 @@ class CtAppImprimableController extends AbstractController
                         $carte = $carte + $vet->getVetPrix();
                     }
                 }
+                $array_usages[$liste->getCtUsageId()->getUsgLibelle()] = $array_usages[$liste->getCtUsageId()->getUsgLibelle()] + 1;
                 $compteur_usage = 0;
                 foreach($liste_des_usages as $ldu){
                 //$array_usages[$liste->getCtUsageId()->getUsgLibelle()]++; 
@@ -587,6 +678,15 @@ class CtAppImprimableController extends AbstractController
                 $totalDesPrixCartes = $totalDesPrixCartes + $carte;
                 $totalDesPrixCarnets = $totalDesPrixCarnets + $carnet;
             }
+        }
+        foreach($liste_usage as $lstu){
+            $usg = [
+                "usage" => $lstu->getUsgLibelle(),
+                "nombre" => $array_usages[$lstu->getUsgLibelle()],
+            ];
+            //array_push()
+            $liste_des_usages->add($usg);
+            $array_usages[$lstu->getUsgLibelle()] = 0;
         }
 
         $html = $this->renderView('ct_app_imprimable/feuille_de_caisse_visite.html.twig', [
@@ -780,6 +880,181 @@ class CtAppImprimableController extends AbstractController
             'total_des_timbres' => $totalDesTimbres,
             'montant_total' => $montantTotal,
             'reception' => $reception_data,
+        ]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        /* $dompdf->setPaper('A4', 'landscape'); */
+        $dompdf->render();
+        $output = $dompdf->output();
+        $filename = "PROCES_VERBAL_".$id."_RECEP_".$rcp->getRcpImmatriculation()."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        file_put_contents($dossier.$filename, $output);
+        $dompdf->stream("PROCES_VERBAL_".$id."_RECEP_".$rcp->getRcpImmatriculation()."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+            "Attachment" => true,
+        ]);
+    }
+
+    /**
+     * @Route("/proces_verbal_reception_par_type/{id}", name="app_ct_app_imprimable_proces_verbal_reception_par_type", methods={"GET", "POST"})
+     */
+    public function ProcesVerbalReceptionParType(Request $request, string $id, CtVehiculeRepository $ctVehiculeRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    {
+        $identification = $id;
+        $liste_receptions = new ArrayCollection();
+        $reception = $ctReceptionRepository->findOneBy(["rcp_num_group" => $identification], ["id" => "DESC"]);        
+        $type_reception_id = $ctTypeReceptionRepository->findOneBy(["id" => $reception->getCtTypeReceptionId()]);
+        $type_reception = $type_reception_id->getTprcpLibelle();
+        $centre = $ctCentreRepository->findOneBy(["id" => $reception->getCtCentreId()]);
+        $date_of_reception = $reception->getRcpCreated();
+
+        $receptions = $ctReceptionRepository->findBy(["rcp_num_group" => $identification], ["id" => "ASC"]);
+        foreach($receptions as $rcp){
+            $vehicule = $ctVehiculeRepository->findOneBy(["id" => $rcp->getCtVehiculeId()], ["id" => "DESC"]);
+            $reception_data = ["id" => $identification,
+                "ct_genre_id" => $vehicule->getCtGenreId()->getGrLibelle(),
+                "ct_marque_id" => $vehicule->getCtMarqueId()->getMrqLibelle(),
+                "vhc_type" => $vehicule->getVhcType(),
+                "vhc_num_serie" => $vehicule->getVhcNumSerie(),
+                "vhc_num_moteur" => $vehicule->getVhcNumMoteur(),
+                "ct_carrosserie_id" => $rcp->getCtCarrosserieId()->getCrsLibelle(),
+                "ct_source_energie_id" => $rcp->getCtSourceEnergieId()->getSreLibelle(),
+                "vhc_cylindre" => $vehicule->getVhcCylindre(),
+                "vhc_puissance" => $vehicule->getVhcPuissance(),
+                "vhc_poids_vide" => $vehicule->getVhcPoidsVide(),
+                "vhc_charge_utile" => $vehicule->getVhcChargeUtile(),
+                "vhc_poids_total_charge" => $vehicule->getVhcPoidsTotalCharge(),
+                "ct_utilisation_id" => $rcp->getCtUtilisationId()->getUtLibelle(),
+                "ct_motif_id" => $rcp->getCtMotifId()->getMtfLibelle(),
+                "rcp_immatriculation" => $rcp->getRcpImmatriculation(),
+                "rcp_proprietaire" => $rcp->getRcpProprietaire(),
+                "rcp_profession" => $rcp->getRcpProfession(),
+                "rcp_adresse" => $rcp->getRcpAdresse(),
+                "rcp_nbr_assis" => $rcp->getRcpNbrAssis(),
+                "rcp_ngr_debout" => $rcp->getRcpNgrDebout(),
+                "rcp_mise_service" => $rcp->getRcpMiseService(),
+                "ct_verificateur_id" => $rcp->getCtVerificateurId()->getUsrNom(),
+                "ct_type_reception_id" => $type_reception,
+                "ct_centre_id" => $centre->getCtrNom(),
+                "ct_province_id" => $centre->getCtProvinceId()->getPrvNom(),
+                "rcp_num_pv" => $rcp->getRcpNumPv(),
+                "rcp_created" => $rcp->getRcpCreated(),
+            ];
+            $liste_receptions->add($reception_data);
+        }
+
+        $pdfOptions = new Options();
+        $pdfOptions->set('isRemoteEnabled', true);
+        $pdfOptions->setIsRemoteEnabled(true);
+        $pdfOptions->setIsPhpEnabled(true);
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
+
+        $date = new \DateTime();
+        $logo = file_get_contents($this->getParameter('logo').'logo.txt');
+
+        $dossier = $this->getParameter('dossier_reception_par_type')."/".$type_reception."/".$centre->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+        if (!file_exists($dossier)) {
+            mkdir($dossier, 0777, true);
+        }
+        // teste date, comparaison avant utilisation rcp_num_group
+        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        $dateDeploiement = $deploiement->getAttribut();
+        $autreTva = $ctAutreRepository->findOneBy(["nom" => "TVA"]);
+        $prixTva = $autreTva->getAttribut();
+        $autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
+        $prixTimbre = $autreTimbre->getAttribut();
+        $timbre = floatval($prixTimbre);
+        $nombreReceptions = 0;
+        $totalDesDroits = 0;
+        $totalDesPrixPv = 0;
+        $totalDesTVA = 0;
+        $totalDesTimbres = 0;
+        $montantTotal = 0;
+        
+        $liste_des_receptions = new ArrayCollection();
+        $tarif = 0;
+        $liste = $reception;
+                $genre = $liste->getCtGenreId();
+                $motif = $liste->getCtMotifId();
+                $calculable = $motif->isMtfIsCalculable();
+                $tarif = 0;
+                $prixPv = 0;
+                $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
+                $utilisation = $liste->getCtUtilisationId();
+                if($utilisation != $utilisationAdministratif){
+                    if($calculable == false){
+                        $motifTarif = $ctMotifTarifRepository->findBy(["ct_motif_id" => $motif->getId()], ["ct_arrete_prix" => "DESC"]);
+                        foreach($motifTarif as $mtf){
+                            $arretePrix = $mtf->getCtArretePrix();
+                            if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
+                                $tarif = $mtf->getMtfTrfPrix();
+                                break;
+                            }
+                        }
+                    }
+                    if($calculable == true){
+                        $genreCategorie = $genre->getCtGenreCategorieId();
+                        $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["tp_dp_libelle" => "Réception"]);
+                        $droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => $genreCategorie->getId(), "ct_type_droit_ptac_id" => $typeDroit->getId()], ["ct_arrete_prix_id" => "DESC", "dp_prix_max" => "DESC"]);
+                        foreach($droits as $dt){;
+                            if(($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax())){
+                                $tarif = $dt->getDpDroit();
+                                break;
+                            }elseif($dt->getDpPrixMin() <= $dt->getDpPrixMax() && $dt->getDpPrixMin() == 0 && $dt->getDpPrixMax() == 0){
+                                $tarif = $dt->getDpDroit();
+                                break;
+                            }
+                        }
+                    }
+                    $pvId = $ctImprimeTechRepository->findOneBy(["id" => 12]);
+                    $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
+                    foreach($arretePvTarif as $apt){
+                        $arretePrix = $apt->getCtArretePrixId();
+                        if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
+                            $prixPv = 2 * $apt->getVetPrix();
+                            break;
+                        }
+                    }
+                }
+                $droit = $tarif + $prixPv;
+                $tva = ($droit * floatval($prixTva)) / 100;
+                $montant = $droit + $tva + $timbre;
+                $rcp = [
+                    "controle_pv" => $liste->getRcpNumPv(),
+                    "motif" => $motif,
+                    "genre" => $genre,
+                    "immatriculation" => $liste->getRcpImmatriculation(),
+                    "droit" => $tarif,
+                    "prix_pv" => $prixPv,
+                    "tva" => $tva,
+                    "timbre" => $timbre,
+                    "montant" => $montant,
+                    "utilisation" => $utilisation,
+                ];
+                $liste_des_receptions->add($rcp);
+                $nombreReceptions = $nombreReceptions + 1;
+                $totalDesDroits = $totalDesDroits + $tarif;
+                $totalDesPrixPv = $totalDesPrixPv + $prixPv;
+                $totalDesTHT = $totalDesDroits + $totalDesPrixPv;
+                $totalDesTVA = $totalDesTVA + $tva;
+                $totalDesTimbres = $totalDesTimbres + $timbre;
+                $montantTotal = $montantTotal + $montant;
+
+        $html = $this->renderView('ct_app_imprimable/proces_verbal_reception_par_type.html.twig', [
+            'logo' => $logo,
+            'date' => $date,
+            'province' => $centre->getCtProvinceId()->getPrvNom(),
+            'centre' => $centre->getCtrNom(),
+            'user' => $this->getUser(),
+            'type' => $type_reception,
+            'date_reception' => $date_of_reception,
+            'nombre_reception' => $nombreReceptions,
+            'total_des_droits' => $totalDesDroits,
+            'total_des_prix_pv' => $totalDesPrixPv,
+            'total_des_tht' => $totalDesTHT,
+            'total_des_tva' => $totalDesTVA,
+            'total_des_timbres' => $totalDesTimbres,
+            'montant_total' => $montantTotal,
+            'receptions' => $liste_receptions,
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
@@ -1065,9 +1340,9 @@ class CtAppImprimableController extends AbstractController
         /* $dompdf->setPaper('A4', 'landscape'); */
         $dompdf->render();
         $output = $dompdf->output();
-        $filename = "PROCES_VERBAL_".$id."_CONST_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        $filename = "PROCES_VERBAL_".$id."_CONST_".$constatation->getCadImmatriculation()."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("PROCES_VERBAL_".$id."_CONST_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+        $dompdf->stream("PROCES_VERBAL_".$id."_CONST_".$constatation->getCadImmatriculation()."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
     }
@@ -1116,6 +1391,7 @@ class CtAppImprimableController extends AbstractController
             "verificateur" => $visite->getCtVerificateurId(),
             "operateur" => $visite->getCtUserId(),
             "validite" => $visite->getVstDateExpiration(),
+            "reparation" => $visite->getVstDureeReparation(),
         ];
         $type_visite = $visite->getCtTypeVisiteId();
 
@@ -1128,10 +1404,16 @@ class CtAppImprimableController extends AbstractController
 
         $date = new \DateTime();
         $logo = file_get_contents($this->getParameter('logo').'logo.txt');
-
-        $dossier = $this->getParameter('dossier_visite_premiere')."/".$type_visite."/".$this->getUser()->getCtCentreId()->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
-        if (!file_exists($dossier)) {
-            mkdir($dossier, 0777, true);
+        if($visite->isVstIsContreVisite()){
+            $dossier = $this->getParameter('dossier_visite_contre')."/".$type_visite."/".$this->getUser()->getCtCentreId()->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+            if (!file_exists($dossier)) {
+                mkdir($dossier, 0777, true);
+            }
+        } else {
+            $dossier = $this->getParameter('dossier_visite_premiere')."/".$type_visite."/".$this->getUser()->getCtCentreId()->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+            if (!file_exists($dossier)) {
+                mkdir($dossier, 0777, true);
+            }
         }
         // teste date, comparaison avant utilisation rcp_num_group
         $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
@@ -1224,15 +1506,14 @@ class CtAppImprimableController extends AbstractController
             ]);
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
-            /* $dompdf->setPaper('A4', 'landscape'); */
             $dompdf->render();
             $output = $dompdf->output();
-            $filename = "PROCES_VERBAL_".$id."_CONTRE_VISITE_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+            $filename = "PROCES_VERBAL_".$id."_CONTRE_VISITE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
             file_put_contents($dossier.$filename, $output);
-            $dompdf->stream("PROCES_VERBAL_".$id."_CONTRE_VISITE_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+            $dompdf->stream("PROCES_VERBAL_".$id."_CONTRE_VISITE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
                 "Attachment" => true,
             ]);
-        } else {
+        } elseif($visite->isVstIsApte()) {
             $html = $this->renderView('ct_app_imprimable/proces_verbal_visite_premiere.html.twig', [
                 'logo' => $logo,
                 'date' => $date,
@@ -1248,15 +1529,426 @@ class CtAppImprimableController extends AbstractController
             ]);
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
-            /* $dompdf->setPaper('A4', 'landscape'); */
             $dompdf->render();
             $output = $dompdf->output();
-            $filename = "PROCES_VERBAL_".$id."_VISITE_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+            $filename = "PROCES_VERBAL_".$id."_VISITE_APTE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
             file_put_contents($dossier.$filename, $output);
-            $dompdf->stream("PROCES_VERBAL_".$id."_VISITE_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+            $dompdf->stream("PROCES_VERBAL_".$id."_VISITE_APTE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+                "Attachment" => true,
+            ]);
+        } else {
+            $html = $this->renderView('ct_app_imprimable/proces_verbal_visite_inapte.html.twig', [
+                'logo' => $logo,
+                'date' => $date,
+                'total_des_droits' => $tarif,
+                'total_des_prix_pv' => $prixPv,
+                'total_des_tht' => $tarif + $prixPv + $carnet + $carte,
+                'total_des_tva' => $tva,
+                'total_des_timbres' => $timbre,
+                'total_des_carnets' => $carnet,
+                'total_des_cartes' => $carte,
+                'montant_total' => $montant,
+                'ct_visite' => $vst,
+                'visite' => $visite,
+            ]);
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $output = $dompdf->output();
+            $filename = "PROCES_VERBAL_".$id."_VISITE_INAPTE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+            file_put_contents($dossier.$filename, $output);
+            $dompdf->stream("PROCES_VERBAL_".$id."_VISITE_INAPTE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
                 "Attachment" => true,
             ]);
         }
     }
 
+    /**
+     * @Route("/fiche_verificateur", name="app_ct_app_imprimable_fiche_verificateur", methods={"GET", "POST"})
+     */
+    public function FicheVerificateur(Request $request, CtUserRepository $ctUserRepository, CtUsageRepository $ctUsageRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageTarifRepository $ctUsageTarifRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    {
+        $type_visite = "";
+        $date_visite = new \DateTime();
+        $date_of_visite = new \DateTime();
+        $type_visite_id = new CtTypeReception();
+        $centre = new CtCentre();
+        $verificateur = new CtUser();
+
+        $liste_usage = $ctUsageRepository->findAll();
+        $liste_des_usages = new ArrayCollection();
+        foreach($liste_usage as $lstu){
+            $usg = [
+                "usage" => $lstu->getUsgLibelle(),
+                "nombre" => 0,
+            ];
+            $liste_des_usages->add($usg);
+        }
+
+        if($request->request->get('form')){
+            $rechercheform = $request->request->get('form');
+            $recherche = $rechercheform['ct_user_id'];
+            $date_visite = $rechercheform['date'];
+            $date_of_visite = new \DateTime($date_visite);
+            $verificateur = $ctUserRepository->findOneBy(["id" => $recherche]);
+            if($rechercheform['ct_centre_id'] != ""){
+                $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
+            } else{
+                $centre = $this->getUser()->getCtCentreId();
+            }
+        }
+        $pdfOptions = new Options();
+        $pdfOptions->set('isRemoteEnabled', true);
+        $pdfOptions->setIsRemoteEnabled(true);
+        $pdfOptions->setIsPhpEnabled(true);
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
+
+        $date = new \DateTime();
+        $logo = file_get_contents($this->getParameter('logo').'logo.txt');
+
+        $dossier = $this->getParameter('dossier_fiche_verificateur')."/".$centre->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+        if (!file_exists($dossier)) {
+            mkdir($dossier, 0777, true);
+        }
+        // teste date, comparaison avant utilisation rcp_num_group
+        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        $dateDeploiement = $deploiement->getAttribut();
+        $autreTva = $ctAutreRepository->findOneBy(["nom" => "TVA"]);
+        $prixTva = $autreTva->getAttribut();
+        $autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
+        $prixTimbre = $autreTimbre->getAttribut();
+        $timbre = floatval($prixTimbre);
+        $nombreReceptions = 0;
+        $totalDesDroits = 0;
+        $totalDesPrixPv = 0;
+        $totalDesTVA = 0;
+        $totalDesTimbres = 0;
+        $totalDesPrixCartes = 0;
+        $totalDesPrixCarnets = 0;
+        $montantTotal = 0;
+        $apte = 0;
+        $inapte = 0;
+        if(new \DateTime($dateDeploiement) > $date_of_visite){
+            // $liste_visites = $ctVisiteRepository->findByFicheDeControle($type_visite_id->getId(), $centre->getId(), $date_of_visite);
+            $liste_visites = $ctVisiteRepository->findBy(["ct_verificateur_id" => $verificateur, "ct_centre_id" => $centre, "vst_created" => $date_of_visite], ["id" => "ASC"]);
+        }else{
+            $nomGroup = $date_of_visite->format('d').'/'.$date_of_visite->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$type_visite.'/'.$date_of_visite->format("Y");
+            //$liste_visites = $ctVisiteRepository->findBy(["vst_num_feuille_caisse" => $nomGroup, "vst_is_active" => true]);
+            $liste_visites = $ctVisiteRepository->findBy(["ct_verificateur_id" => $verificateur, "ct_centre_id" => $centre, "vst_created" => $date_of_visite], ["id" => "ASC"]);
+        }
+        $liste_des_visites = new ArrayCollection();
+        $tarif = 0;
+        if($liste_visites != null){
+            foreach($liste_visites as $liste){
+                if($liste->isVstIsContreVisite() == true){
+                    continue;
+                }
+                $usage = $liste->getCtUsageId();
+                $tarif = 0;
+                $prixPv = 0;
+                $carnet = 0;
+                $carte = 0;
+                $aptitude = "Inapte";
+                $listes_autre = $liste->getVstExtra();
+                $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
+                $utilisation = $liste->getCtUtilisationId();
+                if($utilisation != $utilisationAdministratif){
+                    $usage_tarif = $ctUsageTarifRepository->findOneBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
+                    $tarif = $usage_tarif->getUsgTrfPrix();
+                    $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
+                    $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
+                    foreach($arretePvTarif as $apt){
+                        $arretePrix = $apt->getCtArretePrixId();
+                        //if(new \DateTime() >= $arretePrix->getArtDateApplication()){
+                        if($liste->isVstIsContreVisite() == false){
+                            if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
+                                if($liste->isVstIsApte()){
+                                    $prixPv = $apt->getVetPrix();
+                                    $aptitude = "Apte";
+                                    $apte = $apte + 1;
+                                } else {
+                                    $prixPv = 2 * $apt->getVetPrix();
+                                    $aptitude = "Inapte";
+                                    $inapte = $inapte + 1;
+                                }
+                                break;
+                            }
+                        } else {
+                            continue;
+                        }
+                    }
+                }
+                foreach($listes_autre as $autre){
+                    $vet = $ctVisiteExtraTarifRepository->findOneBy(["ct_imprime_tech_id" => $autre->getId()], ["vet_annee" => "DESC"]);
+                    if($autre->getId() == 1){
+                        $carnet = $carnet + $vet->getVetPrix();
+                    } else {
+                        $carte = $carte + $vet->getVetPrix();
+                    }
+                }
+                $compteur_usage = 0;
+                foreach($liste_des_usages as $ldu){
+                    if($liste_des_usages[$compteur_usage]["usage"] == $liste->getCtUsageId()->getUsgLibelle()){
+                        $ldu["nombre"]++;
+                    }
+                    $compteur_usage++;
+                }
+
+                $droit = $tarif + $prixPv + $carnet + $carte;
+                $tva = ($droit * floatval($prixTva)) / 100;
+                $montant = $droit + $tva + $timbre;
+                $vst = [
+                    "controle_pv" => $liste->getVstNumPv(),
+                    "immatriculation" => $liste->getCtCarteGriseId()->getCgImmatriculation(),
+                    "usage" => $liste->getCtUsageId()->getUsgLibelle(),
+                    "aptitude" => $aptitude,
+                    "verificateur" => $liste->getCtVerificateurId()->getUsrNom(),
+                    "cooperative" => $liste->getCtCarteGriseId()->getCgNomCooperative(),
+                    "droit" => $tarif,
+                    "prix_pv" => $prixPv,
+                    "carnet" => $carnet,
+                    "carte" => $carte,
+                    "tva" => $tva,
+                    "timbre" => $timbre,
+                    "montant" => $montant,
+                    "utilisation" => $utilisation,
+                ];
+                $liste_des_visites->add($vst);
+                $nombreReceptions = $nombreReceptions + 1;
+                $totalDesDroits = $totalDesDroits + $tarif;
+                $totalDesPrixPv = $totalDesPrixPv + $prixPv;
+                $totalDesTVA = $totalDesTVA + $tva;
+                $totalDesTimbres = $totalDesTimbres + $timbre;
+                $montantTotal = $montantTotal + $montant;
+                $totalDesPrixCartes = $totalDesPrixCartes + $carte;
+                $totalDesPrixCarnets = $totalDesPrixCarnets + $carnet;
+            }
+        }
+
+        $html = $this->renderView('ct_app_imprimable/fiche_verificateur.html.twig', [
+            'logo' => $logo,
+            'date' => $date,
+            'province' => $centre->getCtProvinceId()->getPrvNom(),
+            'centre' => $centre->getCtrNom(),
+            'user' => $this->getUser(),
+            'type' => $type_visite,
+            'date_visite' => $date_of_visite,
+            'nombre_visite' => $nombreReceptions,
+            'total_des_droits' => $totalDesDroits,
+            'total_des_prix_pv' => $totalDesPrixPv,
+            'total_des_tva' => $totalDesTVA,
+            'total_des_timbres' => $totalDesTimbres,
+            'total_des_carnets' => $totalDesPrixCarnets,
+            'total_des_cartes' => $totalDesPrixCartes,
+            'montant_total' => $montantTotal,
+            'ct_visites' => $liste_visites,
+            'liste_usage' => $liste_des_usages,
+            'verificateur' => $verificateur->getUsrNom(),
+            'nbr_apte' => $apte,
+            'nbr_inapte' => $inapte,
+        ]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+        $output = $dompdf->output();
+        $filename = "FICHE_VERIFICATEUR_".$verificateur."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        file_put_contents($dossier.$filename, $output);
+        $dompdf->stream("FICHE_VERIFICATEUR_".$verificateur."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+            "Attachment" => true,
+        ]);
+    }
+
+    /**
+     * @Route("/liste_anomalies", name="app_ct_app_imprimable_liste_anomalies", methods={"GET", "POST"})
+     */
+    public function ListeAnomalies(Request $request, CtUserRepository $ctUserRepository, CtUsageRepository $ctUsageRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageTarifRepository $ctUsageTarifRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    {
+        $type_visite = "";
+        $date_visite = new \DateTime();
+        $date_of_visite = new \DateTime();
+        $type_visite_id = new CtTypeReception();
+        $centre = new CtCentre();
+        $verificateur = new CtUser();
+
+        $liste_usage = $ctUsageRepository->findAll();
+        $liste_des_usages = new ArrayCollection();
+        foreach($liste_usage as $lstu){
+            $usg = [
+                "usage" => $lstu->getUsgLibelle(),
+                "nombre" => 0,
+            ];
+            $liste_des_usages->add($usg);
+        }
+
+        if($request->request->get('form')){
+            $rechercheform = $request->request->get('form');
+            $date_visite = $rechercheform['date'];
+            $date_of_visite = new \DateTime($date_visite);
+            if($rechercheform['ct_centre_id'] != ""){
+                $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
+            } else{
+                $centre = $this->getUser()->getCtCentreId();
+            }
+        }
+        $pdfOptions = new Options();
+        $pdfOptions->set('isRemoteEnabled', true);
+        $pdfOptions->setIsRemoteEnabled(true);
+        $pdfOptions->setIsPhpEnabled(true);
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
+
+        $date = new \DateTime();
+        $logo = file_get_contents($this->getParameter('logo').'logo.txt');
+
+        $dossier = $this->getParameter('dossier_liste_anomalie')."/".$centre->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+        if (!file_exists($dossier)) {
+            mkdir($dossier, 0777, true);
+        }
+        // teste date, comparaison avant utilisation rcp_num_group
+        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        $dateDeploiement = $deploiement->getAttribut();
+        $autreTva = $ctAutreRepository->findOneBy(["nom" => "TVA"]);
+        $prixTva = $autreTva->getAttribut();
+        $autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
+        $prixTimbre = $autreTimbre->getAttribut();
+        $timbre = floatval($prixTimbre);
+        $nombreReceptions = 0;
+        $totalDesDroits = 0;
+        $totalDesPrixPv = 0;
+        $totalDesTVA = 0;
+        $totalDesTimbres = 0;
+        $totalDesPrixCartes = 0;
+        $totalDesPrixCarnets = 0;
+        $montantTotal = 0;
+        $apte = 0;
+        $inapte = 0;
+        if(new \DateTime($dateDeploiement) > $date_of_visite){
+            // $liste_visites = $ctVisiteRepository->findByFicheDeControle($type_visite_id->getId(), $centre->getId(), $date_of_visite);
+            $liste_visites = $ctVisiteRepository->findBy(["vst_is_apte" => 0, "ct_centre_id" => $centre, "vst_created" => $date_of_visite], ["id" => "ASC"]);
+        }else{
+            $nomGroup = $date_of_visite->format('d').'/'.$date_of_visite->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$type_visite.'/'.$date_of_visite->format("Y");
+            //$liste_visites = $ctVisiteRepository->findBy(["vst_num_feuille_caisse" => $nomGroup, "vst_is_active" => true]);
+            $liste_visites = $ctVisiteRepository->findBy(["vst_is_apte" => 0, "ct_centre_id" => $centre, "vst_created" => $date_of_visite], ["id" => "ASC"]);
+        }
+        $liste_des_visites = new ArrayCollection();
+        $tarif = 0;
+        if($liste_visites != null){
+            foreach($liste_visites as $liste){
+                if($liste->isVstIsContreVisite() == true){
+                    continue;
+                }
+                $usage = $liste->getCtUsageId();
+                $tarif = 0;
+                $prixPv = 0;
+                $carnet = 0;
+                $carte = 0;
+                $aptitude = "Inapte";
+                $listes_autre = $liste->getVstExtra();
+                $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
+                $utilisation = $liste->getCtUtilisationId();
+                if($utilisation != $utilisationAdministratif){
+                    $usage_tarif = $ctUsageTarifRepository->findOneBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
+                    $tarif = $usage_tarif->getUsgTrfPrix();
+                    $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
+                    $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
+                    foreach($arretePvTarif as $apt){
+                        $arretePrix = $apt->getCtArretePrixId();
+                        if($liste->isVstIsContreVisite() == false){
+                            if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
+                                if($liste->isVstIsApte()){
+                                    $prixPv = $apt->getVetPrix();
+                                    $aptitude = "Apte";
+                                    $apte = $apte + 1;
+                                } else {
+                                    $prixPv = 2 * $apt->getVetPrix();
+                                    $aptitude = "Inapte";
+                                    $inapte = $inapte + 1;
+                                }
+                                break;
+                            }
+                        } else {
+                            continue;
+                        }
+                    }
+                }
+                foreach($listes_autre as $autre){
+                    $vet = $ctVisiteExtraTarifRepository->findOneBy(["ct_imprime_tech_id" => $autre->getId()], ["vet_annee" => "DESC"]);
+                    if($autre->getId() == 1){
+                        $carnet = $carnet + $vet->getVetPrix();
+                    } else {
+                        $carte = $carte + $vet->getVetPrix();
+                    }
+                }
+                $compteur_usage = 0;
+                foreach($liste_des_usages as $ldu){
+                    if($liste_des_usages[$compteur_usage]["usage"] == $liste->getCtUsageId()->getUsgLibelle()){
+                        $ldu["nombre"]++;
+                    }
+                    $compteur_usage++;
+                }
+
+                $droit = $tarif + $prixPv + $carnet + $carte;
+                $tva = ($droit * floatval($prixTva)) / 100;
+                $montant = $droit + $tva + $timbre;
+                $vst = [
+                    "controle_pv" => $liste->getVstNumPv(),
+                    "immatriculation" => $liste->getCtCarteGriseId()->getCgImmatriculation(),
+                    "usage" => $liste->getCtUsageId()->getUsgLibelle(),
+                    "aptitude" => $aptitude,
+                    "verificateur" => $liste->getCtVerificateurId()->getUsrNom(),
+                    "cooperative" => $liste->getCtCarteGriseId()->getCgNomCooperative(),
+                    "droit" => $tarif,
+                    "prix_pv" => $prixPv,
+                    "carnet" => $carnet,
+                    "carte" => $carte,
+                    "tva" => $tva,
+                    "timbre" => $timbre,
+                    "montant" => $montant,
+                    "utilisation" => $utilisation,
+                ];
+                $liste_des_visites->add($vst);
+                $nombreReceptions = $nombreReceptions + 1;
+                $totalDesDroits = $totalDesDroits + $tarif;
+                $totalDesPrixPv = $totalDesPrixPv + $prixPv;
+                $totalDesTVA = $totalDesTVA + $tva;
+                $totalDesTimbres = $totalDesTimbres + $timbre;
+                $montantTotal = $montantTotal + $montant;
+                $totalDesPrixCartes = $totalDesPrixCartes + $carte;
+                $totalDesPrixCarnets = $totalDesPrixCarnets + $carnet;
+            }
+        }
+
+        $html = $this->renderView('ct_app_imprimable/liste_anomalie.html.twig', [
+            'logo' => $logo,
+            'date' => $date,
+            'province' => $centre->getCtProvinceId()->getPrvNom(),
+            'centre' => $centre->getCtrNom(),
+            'user' => $this->getUser(),
+            'type' => $type_visite,
+            'date_visite' => $date_of_visite,
+            'nombre_visite' => $nombreReceptions,
+            'total_des_droits' => $totalDesDroits,
+            'total_des_prix_pv' => $totalDesPrixPv,
+            'total_des_tva' => $totalDesTVA,
+            'total_des_timbres' => $totalDesTimbres,
+            'total_des_carnets' => $totalDesPrixCarnets,
+            'total_des_cartes' => $totalDesPrixCartes,
+            'montant_total' => $montantTotal,
+            'ct_visites' => $liste_visites,
+            'liste_usage' => $liste_des_usages,
+            'verificateur' => $verificateur->getUsrNom(),
+            'nbr_apte' => $apte,
+            'nbr_inapte' => $inapte,
+        ]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $output = $dompdf->output();
+        $filename = "LISTE_ANOMALIES_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        file_put_contents($dossier.$filename, $output);
+        $dompdf->stream("LISTE_ANOMALIES_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+            "Attachment" => true,
+        ]);
+    }
 }

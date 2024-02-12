@@ -39,7 +39,7 @@
                             {% do form_fiche_verificateur.ct_centre_id.setRendered() %}
                         {% endif %}
                         {{ form_row(form_fiche_verificateur.ct_user_id) }}
-                        <button class="btn btn-primary" type="submit" formaction="{{ path('app_ct_app_imprimable_feuille_de_caisse_constatation') }}">Générer</button>
+                        <button class="btn btn-primary" type="submit" formaction="{{ path('app_ct_app_imprimable_fiche_verificateur') }}">Générer</button>
                     {{ form_end(form_fiche_verificateur) }}
                 </div>
             </td>
@@ -55,7 +55,7 @@
                             {% do form_liste_anomalies.ct_centre_id.setRendered() %}
                         {% endif %}
                         <br><br><br><br>
-                        <button class="btn btn-primary" type="submit" formaction="{{ path('app_ct_app_imprimable_feuille_de_caisse_constatation') }}">Générer</button>
+                        <button class="btn btn-primary" type="submit" formaction="{{ path('app_ct_app_imprimable_liste_anomalies') }}">Générer</button>
                     {{ form_end(form_liste_anomalies) }}
                 </div>
             </td>

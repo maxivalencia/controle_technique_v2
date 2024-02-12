@@ -20,7 +20,6 @@
                         {% else %}
                             {% do form_feuille_de_caisse.ct_centre_id.setRendered() %}
                         {% endif %}
-                        <br><br>
                         <button class="btn btn-success" type="submit" formaction="{{ path('app_ct_app_imprimable_feuille_de_caisse_constatation') }}">
                             Générer
                         </button>
@@ -38,8 +37,8 @@
                         {% else %}
                             {% do form_fiche_controle.ct_centre_id.setRendered() %}
                         {% endif %}
-                        {{ form_row(form_fiche_controle.ct_user_id) }}
-                        <button class="btn btn-success" type="submit">
+                        {# {{ form_row(form_fiche_controle.ct_user_id) }} #}
+                        <button class="btn btn-success" type="submit" formaction="{{ path('app_ct_app_imprimable_fiche_de_controle_constatation') }}">
                             Générer
                         </button>
                     {{ form_end(form_fiche_controle) }}

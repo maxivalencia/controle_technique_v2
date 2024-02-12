@@ -173,7 +173,7 @@ class CtAppConstatationController extends AbstractController
                     'data-select' => true,
                 ],
             ])
-            ->add('ct_user_id', EntityType::class, [
+            /* ->add('ct_user_id', EntityType::class, [
                 'label' => 'Séléctionner verificateur',
                 'class' => CtUser::class,
                 'query_builder' => function(CtUserRepository $ctUserRepository){
@@ -193,7 +193,7 @@ class CtAppConstatationController extends AbstractController
                     'data-live-search' => true,
                     'data-select' => true,
                 ],
-            ])
+            ]) */
             ->getForm();
         $form_fiche_controle->handleRequest($request);
 
@@ -299,7 +299,7 @@ class CtAppConstatationController extends AbstractController
             //$ctConstatation_new->addCtConstAvDedCarac();
             $date = new \DateTime();
             $ctConstAvDedRepository->add($ctConstatation_new, true);
-            $ctConstatation_new->setCadNumero($ctConstatation_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ctConstatation_new->getCtCentreId()->getId().'/'.'CONST/'.$date->format("Y"));
+            $ctConstatation_new->setCadNumero($ctConstatation_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ctConstatation_new->getCtCentreId()->getCtrCode().'/'.'CONST/'.$date->format("Y"));
             $ctConstAvDedRepository->add($ctConstatation_new, true);
 
             if($ctConstatation->getId() != null && $ctConstatation->getId() < $ctConstatation_new->getId()){
@@ -458,7 +458,7 @@ class CtAppConstatationController extends AbstractController
             //$ctConstatation_new->addCtConstAvDedCarac();
 
             $ctConstAvDedRepository->add($ctConstatation_new, true);
-            $ctConstatation_new->setCadNumero($ctConstatation_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ctConstatation_new->getCtCentreId()->getId().'/'.'CONST/'.$date->format("Y"));
+            $ctConstatation_new->setCadNumero($ctConstatation_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ctConstatation_new->getCtCentreId()->getCtrCode().'/'.'CONST/'.$date->format("Y"));
             $ctConstAvDedRepository->add($ctConstatation_new, true);
 
             if($ctConstatation->getId() != null && $ctConstatation->getId() < $ctConstatation_new->getId()){
