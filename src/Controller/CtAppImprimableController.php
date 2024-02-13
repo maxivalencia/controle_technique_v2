@@ -765,6 +765,8 @@ class CtAppImprimableController extends AbstractController
             "rcp_num_pv" => $reception->getRcpNumPv(),
             "rcp_created" => $reception->getRcpCreated(),
         ];
+        $reception->setRcpGenere($reception->getRcpGenere() + 1);
+        $ctReceptionRepository->add($reception, true);
 
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
@@ -886,9 +888,10 @@ class CtAppImprimableController extends AbstractController
         /* $dompdf->setPaper('A4', 'landscape'); */
         $dompdf->render();
         $output = $dompdf->output();
-        $filename = "PROCES_VERBAL_".$id."_RECEP_".$rcp->getRcpImmatriculation()."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        $filename = "PROCES_VERBAL_".$id."_RECEP_".$reception->getRcpImmatriculation()."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("PROCES_VERBAL_".$id."_RECEP_".$rcp->getRcpImmatriculation()."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+        //$reception->setRcpGenere($reception->getRcpGenere() + 1);
+        $dompdf->stream("PROCES_VERBAL_".$id."_RECEP_".$reception->getRcpImmatriculation()."_".$type_reception."_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
     }
@@ -939,6 +942,8 @@ class CtAppImprimableController extends AbstractController
                 "rcp_created" => $rcp->getRcpCreated(),
             ];
             $liste_receptions->add($reception_data);
+            $rcp->setRcpGenere($rcp->getRcpGenere() + 1);
+            $ctReceptionRepository->add($rcp, true);
         }
 
         $pdfOptions = new Options();
@@ -969,7 +974,7 @@ class CtAppImprimableController extends AbstractController
         $totalDesTVA = 0;
         $totalDesTimbres = 0;
         $montantTotal = 0;
-        
+
         $liste_des_receptions = new ArrayCollection();
         $tarif = 0;
         $liste = $reception;
@@ -1129,7 +1134,7 @@ class CtAppImprimableController extends AbstractController
                 "hauteur" => "",
             ];
         }
-        
+
         if($constatation_caracteristique_corps_du_vehicule != null){
             $constatation_corps_du_vehicule_data = [
                 "date_premiere_mise_en_circulation" => $constatation_caracteristique_corps_du_vehicule->getCadPremiereCircule() ? $constatation_caracteristique_corps_du_vehicule->getCadPremiereCircule() : '',
@@ -1235,7 +1240,10 @@ class CtAppImprimableController extends AbstractController
             "protection_environnement" => $constatation->isCadProtecEnv() ? "OUI" : "NON",
             "divers" => $constatation->getCadDivers(),
         ];
-        
+
+        $constatation->setCadGenere($constatation->getCadGenere() + 1);
+        $ctConstAvDedRepository->add($constatation, true);
+
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
         $pdfOptions->setIsRemoteEnabled(true);
@@ -1291,7 +1299,7 @@ class CtAppImprimableController extends AbstractController
                 foreach($arretePvTarif as $apt){
                     $arretePrix = $apt->getCtArretePrixId();
                     //if($constatation->getCadCreated() >= $arretePrix->getArtDateApplication()){
-                    // secours fotsiny  new date time fa mila atao daten'ilay pv no tena izy 
+                    // secours fotsiny  new date time fa mila atao daten'ilay pv no tena izy
                     if(new \DateTime() >= $arretePrix->getArtDateApplication()){
                         $prixPv = $apt->getVetPrix();
                         break;
@@ -1394,6 +1402,9 @@ class CtAppImprimableController extends AbstractController
             "reparation" => $visite->getVstDureeReparation(),
         ];
         $type_visite = $visite->getCtTypeVisiteId();
+
+        $visite->setVstGenere($visite->getVstGenere() + 1);
+        $ctVisiteRepository->add($visite, true);
 
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
