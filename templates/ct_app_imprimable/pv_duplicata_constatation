@@ -1,0 +1,297 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Proces Verbal Duplicata</title>
+        <style>
+            html{margin:20px 20px 20px 20px;}
+            .footer{
+                position:fixed;
+                bottom:0px;
+                left:0px;
+                right:40px;
+                height:20px;
+                align:center;
+
+                /** Extra personal styles **/
+                width: 100%;
+                /* background-color: #03a9f4; */
+                color: black;
+                margin-right: 20px;
+                text-align: center;
+                line-height: 20px;
+            }
+            .footer .page-number:after { content: counter(page); }
+            .page_break { page-break-before: always; }
+        </style>
+    </head>
+    <body style="font-size:10px;">
+        <table style="font-size:10px">
+            <tr>
+                <td width="200" align="center" style="font-size:12px;line-height:1em;">
+                    <strong>DIRECTION GENERALE DE LA SECURITE ROUTIERE</strong>
+                    <br>-----------------------------<br>
+                    <strong>DIRECTION DES OPERATIONS ROUTIERE</strong>
+                    <br>-----------------------------<br>
+                    <strong>
+                        CENTRE DE SECURITE ROUTIERE<br>
+                        {{ constatation.centre }} - {{ constatation.province }}
+                    </strong>
+                    <br>-----------------------------<br>
+                    {# <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png"> #}
+                    <img src="{{ logo }}" alt="logo" width="25px" height="25px" type="images/png">
+                    <br>« LAHITOKANA NY AINA »
+                </td>
+                <td width="150" align="center" valign="bottom" style="font-size:12px;">
+                    <div align="center">
+                        <strong>
+                            {# ANNEXE IV<br>
+                            ---------------- #}
+                        </strong>
+                    </div>
+                </td>
+                <td width="200" align="center" valign="top" style="font-size:12px;">
+                    {% set trans_day_hash = {
+                            "January": "Janvier",
+                            "February": "Février",
+                            "March": "Mars",
+                            "April": "Avril",
+                            "May": "Mai",
+                            "June": "Juin",
+                            "July": "Juillet",
+                            "August": "Août",
+                            "September": "Septembre",
+                            "October": "Octobre",
+                            "November": "Novembre",
+                            "December": "Décembre"
+                        }
+                    %}
+                    <strong>REPOBLIKAN’I MADAGASIKARA</strong><br>
+                    <i>Fitiavana - Tanindrazana - Fandrosoana</i>
+                    <br>--------------------------<br><br>
+                    {# Enregistrer sous<br>
+                    N° : <strong>{{ reception.rcp_num_pv }}</strong><br> #}
+                    {# -------------------------- #}
+                    {{ constatation.province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
+                    <br><br>--------------------------<br><br>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <div align="center">
+            <table width="400" style="font-size:14px;border:1px solid black;" align="center">
+                <tr align="center">
+                    <td align="center">
+                        <strong>
+                            PROCES-VERBAL DE CONSTATATION AVANT DEDOUANEMENT
+                        </strong>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div align="right" style="font-size:14px;margin-left:20px;margin-right:20px;">
+            <br><br>
+            <strong>
+                N° <u>{{ constatation.pv }}</u> du {{ constatation.date|date('d') }} {{ trans_day_hash[constatation.date|date('F')] }} {{ constatation.date|date('Y') }}
+            </strong>
+        </div>
+        <div style="font-size:14px;margin-left:20px;margin-right:20px;margin-top:10px;">
+            <div><strong><u>REFERENCES</u> :     - DECRET N° 2012-1019 du 08 janvier 2013</strong></div>
+            <div style="font-size:14px;margin-left:20px;margin-top:10px;">
+                Je soussigné Monsieur <strong>{{ constatation.verificateur }}</strong>, vérificateur chargé des constatations, certifie que le véhicule immatriculé <strong>{{ constatation.immatriculation }}</strong>. En provenance de (1) <strong>{{ constatation.provenance }}</strong><br>
+                Date et Port d'embarquement : (2) <strong>{{ constatation.date_embarquement|date('d') }} {{ trans_day_hash[constatation.date_embarquement|date('F')] }} {{ constatation.date_embarquement|date('Y') }}</strong> à <strong>{{ constatation.port_embarquement }}</strong> décrit ci-après :
+            </div>
+        </div>
+        <div align="center" style="font-size:12px;margin-top:10px;">
+            <table style="border:1px solid black;border-collapse: collapse;">
+                <tr>
+                    <th colspan="2" width="150px" style="border:1px solid black;border-collapse: collapse;">CARACTERISTIQUES DU VEHICULE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">NOTICE <br>DESCRIPTIVE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">CARTE GRISE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">CORPS DU VEHICULE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">OBSERVATIONS</th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">1 - DATE DE PREMIERE MISE EN CIRCULATION</th>                    
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.date_premiere_mise_en_circulation }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.date_premiere_mise_en_circulation }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.date_premiere_mise_en_circulation }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">2 - GENRE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.genre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.genre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.genre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">3 - MARQUE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.marque }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.marque }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.marque }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">4 - TYPE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.type }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.type }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.type }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">5 - NUMERO DANS LA SERIE DU TYPE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.numero_de_serie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.numero_de_serie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.numero_de_serie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">6 - NUMERO DU MOTEUR</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.numero_moteur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.numero_moteur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.numero_moteur }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">7 - SOURCE D'ENERGIE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.source_energie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.source_energie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.source_energie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">8 - CYLINDRE (en Cm3)</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.cylindre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.cylindre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.cylindre }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">9 - PUISSANCE ADMINISTRATIVE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.puissance }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.puissance }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.puissance }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">10 - CARROSSERIE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.carrosserie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.carrosserie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.carrosserie }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">11 - NOMBRE DE PLACE ASSISE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.nbr_assise|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.nbr_assise|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.nbr_assise|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">12 - CHARGE UTILE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.charge_utile|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.charge_utile|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.charge_utile|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">13 - POIDS A VIDE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.poids_a_vide|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.poids_a_vide|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.poids_a_vide|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">14 - POIDS TOTAL A CHARGE</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.poids_total_a_charge|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.poids_total_a_charge|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.poids_total_a_charge|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th rowspan="3" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">15 - DIMENSIONS</th>
+                    <th align="left" width="150px" style="border:1px solid black;border-collapse: collapse;">LONGUEUR</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.longueur|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.longueur|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.longueur|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">LARGEUR</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.largeur|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.largeur|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.largeur|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <th align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;">HAUTEUR</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_note_descriptive_data.hauteur|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_carte_grise_data.hauteur|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation_corps_du_vehicule_data.hauteur|number_format(0, ',', ' ') }}</th>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;"></th>
+                </tr>
+                <tr>
+                    <td colspan="2" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:10px;">
+                        <span>
+                            <strong>16 - POIDS MAXIMA :</strong><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;161 Poids maxima par essieu <strong>(3)</strong> :<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Par essieu tandem à roues jumelées <strong>(4)</strong><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Par essieu Tridem <strong>(4)</strong><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;162 Poids total en charge d'un véhicule isolé <strong>(3)</strong><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- à deux essieu<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- à trois essieu<br>
+                        </span>
+                    </td>
+                    <td width="110px" style="border:1px solid black;border-collapse: collapse;"></td>
+                    <td width="110px" style="border:1px solid black;border-collapse: collapse;"></td>
+                    <td width="110px" style="border:1px solid black;border-collapse: collapse;"></td>
+                    <th width="110px" style="border:1px solid black;border-collapse: collapse;">{{ constatation.observation }}</th>
+                </tr>
+                <tr>
+                    <th colspan="6" align="left" width="150px" style="border:1px solid black;border-collapse: collapse;font-size:14px;"><u>DIVERS</u> : {{ constatation.divers }}</th>
+                </tr>
+            </table>
+            <br>
+            <div align="right" style="margin-right:20px"><strong><u>LE CHEF DE CENTRE</u></strong></div>
+            <div align="left" style="font-size:12px;margin-left:20px;">
+                Présenté par Monsieur/Madama : <strong>{{ constatation.proprietaire }}</strong><br>
+                Adresse <strong>{{ constatation.adresse }}</strong><br>
+                se disant propriétaire dudit véhicule<br>
+                est entiérement &laquo; <strong>{{ constatation.conforme }}</strong> &raquo; (5) au Type décrit plus haut,<br>
+                <strong>
+                    encore en bon état de fonctionnement, {{ constatation.etat }}
+                    <table> 
+                        <tr>
+                            <td align="left"  valign="top";>
+                                et répond aux conditions de
+                            </td>
+                            <td>
+                                - Sécurité des personnes,<br>
+                                - Sécurité des marchandises,<br>
+                                - Protection de l'environnement
+                            </td>
+                            <td>
+                                {{ constatation.securite_personne }}<br>
+                                {{ constatation.securite_marchandise }}<br>
+                                {{ constatation.protection_environnement }}
+                            </td>
+                        </tr>
+                    </table>
+                </strong>
+            </div>
+            <br>
+            <div align="left" style="font-size:10px;margin-left:10px;">
+                <i>
+                    (1) - Mettre le pays d'origine (et éventuellement la ville ou le département)<br>
+                    (2) - Mettre la date de mise à quai et ville où se trouve le port d'embarquement<br>
+                    (3) - Ne pas recopier ni reproduire les rubriques inutiles<br>
+                    (4) - Entraxe compris entre 1,35 à 1,80m à condition que la charge transmise par les roues de même essieu de la combinaison ne dépasse pas 11,50 tonnes.<br>
+                    (5) - Rayer la mention inutile
+                </i>
+            </div>
+        </div>
+        <div class="footer">
+            <span>Direction Générale de la Sécurité Routière BP 784 Alarobia Antananarivo NIF : 4001 089525 STAT : 71102 11 2006 0 043 19</span>
+        </div>
+    </body>
+</html>

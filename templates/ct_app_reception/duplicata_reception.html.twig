@@ -48,7 +48,7 @@
                 <td style="width:50%;">
                     <div class="box">
                         <div class="entete-formulaire">Informations véhicule</div><hr>
-                        {{ form_row(form_reception.rcp_num_pv) }}
+                        {# {{ form_row(form_reception.rcp_num_pv) }} #}
                         {{ form_row(form_reception.ct_vehicule_id.vhc_type) }}
                         {{ form_row(form_reception.ct_vehicule_id.vhc_num_serie) }}
                         {{ form_row(form_reception.ct_vehicule_id.vhc_num_moteur) }}
@@ -68,7 +68,7 @@
                 <td style="width:50%;">
                     <div class="box">
                         <div class="entete-formulaire">Informations réception</div><hr>
-                        {{ form_row(form_reception.ct_type_reception_id) }}
+                        {# {{ form_row(form_reception.ct_type_reception_id) }} #}
                         {{ form_row(form_reception.ct_source_energie_id) }}
                         {{ form_row(form_reception.ct_carrosserie_id) }}
                         {{ form_row(form_reception.rcp_nbr_assis) }}
@@ -86,7 +86,7 @@
         </tbody>
     </table> 
     <div class="box">
-        <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+        <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Dupliquer') }}</button>
     </div>
 {{ form_end(form_reception) }}
 {% endblock %}

@@ -12,6 +12,7 @@ use App\Entity\CtVehicule;
 use App\Entity\CtUser;
 use App\Entity\CtUtilisation;
 use App\Form\CtReceptionReceptionType;
+use App\Form\CtReceptionReceptionDisableType;
 use App\Form\CtReceptionVehiculeType;
 use App\Form\CtTypeReceptionType;
 use App\Repository\CtReceptionRepository;
@@ -435,17 +436,28 @@ class CtAppReceptionController extends AbstractController
 
         if($request->request->get('search-immatriculation')){
             $recherche = $request->request->get('search-immatriculation');
-            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"], ["rcp_is_active" => true]);
+            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+        }
+        if($request->query->get('search-immatriculation')){
+            $recherche = $request->query->get('search-immatriculation');
+            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
         }
         if($request->request->get('search-numero-serie')){
             $recherche = $request->request->get('search-numero-serie');
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"], ["rcp_is_active" => true]);
+                $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+            }
+        }
+        if($request->query->get('search-numero-serie')){
+            $recherche = $request->query->get('search-numero-serie');
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            if($vehicule_id != null){
+                $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
             }
         }
 
-        $form_reception = $this->createForm(CtReceptionReceptionType::class, $ctReception, ['centre' => $this->getUser()->getCtCentreId()]);
+        $form_reception = $this->createForm(CtReceptionReceptionDisableType::class, $ctReception, ["disabled" => true]);
         $form_reception->handleRequest($request);
 
         if ($form_reception->isSubmitted() && $form_reception->isValid()) {
@@ -484,7 +496,8 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setCtCarrosserieId($ctReception->getCtCarrosserieId());
             $date = new \DateTime();
             //$date = $date->format('Y-m-d');
-            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.$date->format("Y"));
+            //$ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.$date->format("Y"));
+            $ctReception_new->setRcpNumGroup($ctReception->getRcpNumGroup());
             $ctReception_new->setRcpCreated(new \DateTime());
             $ctReception_new->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
             $ctReception_new->setRcpIsActive(true);
@@ -520,13 +533,24 @@ class CtAppReceptionController extends AbstractController
 
         if($request->request->get('search-immatriculation')){
             $recherche = $request->request->get('search-immatriculation');
-            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"], ["rcp_is_active" => true]);
+            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+        }
+        if($request->query->get('search-immatriculation')){
+            $recherche = $request->query->get('search-immatriculation');
+            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+        }
+        if($request->query->get('search-numero-serie')){
+            $recherche = $request->query->get('search-numero-serie');
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            if($vehicule_id != null){
+                $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+            }
         }
         if($request->request->get('search-numero-serie')){
             $recherche = $request->request->get('search-numero-serie');
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"], ["rcp_is_active" => true]);
+                $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
             }
         }
 
@@ -569,7 +593,8 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setCtCarrosserieId($ctReception->getCtCarrosserieId());
             $date = new \DateTime();
             //$date = $date->format('Y-m-d');
-            $ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.$date->format("Y"));
+            //$ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.$date->format("Y"));
+            $ctReception_new->setRcpNumGroup($ctReception->getRcpNumGroup());
             $ctReception_new->setRcpCreated(new \DateTime());
             $ctReception_new->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
             $ctReception_new->setRcpIsActive(true);
@@ -590,6 +615,7 @@ class CtAppReceptionController extends AbstractController
             $enregistrement_ok = true;
 
             // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
+            return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_isole', ["id" => $ctReception_new->getId()]);
         }
         return $this->render('ct_app_reception/modification_reception.html.twig', [
             'form_reception' => $form_reception->createView(),
