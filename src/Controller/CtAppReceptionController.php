@@ -517,6 +517,7 @@ class CtAppReceptionController extends AbstractController
             'form_reception' => $form_reception->createView(),
             'message' => $message,
             'enregistrement_ok' => $enregistrement_ok,
+            'id' => $ctReception->getId(),
         ]);
     }
 

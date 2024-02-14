@@ -86,7 +86,10 @@
         </tbody>
     </table> 
     <div class="box">
-        <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Dupliquer') }}</button>
+        {# <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Dupliquer') }}</button> #}
+        {% if id is not null %}
+            <a href="{{ path('app_ct_app_imprimable_proces_verbal_reception_duplicata', {'id': id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Dupliquer</a>
+        {% endif %}
     </div>
 {{ form_end(form_reception) }}
 {% endblock %}
