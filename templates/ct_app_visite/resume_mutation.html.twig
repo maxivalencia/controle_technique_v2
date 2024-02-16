@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Récapitulation visite{% endblock %}
+
+{% block app_ct %}
+<div class="box">
+    <div class="box-header">RECAPITULATION DE VISITE</div><br>
+    <div>        
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ ct_visite.id }}</td>
+                </tr>
+                <tr>
+                    <th>numéro pv</th>
+                    <td>{{ ct_visite.vstNumPv }}</td>
+                </tr>
+                <tr>
+                    <th>numéro feuille de caisse</th>
+                    <td>{{ ct_visite.vstNumFeuilleCaisse }}</td>
+                </tr>
+                <tr>
+                    <th>date expiration</th>
+                    <td>{{ ct_visite.vstDateExpiration ? ct_visite.vstDateExpiration|date('d/m/Y') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>created</th>
+                    <td>{{ ct_visite.vstCreated ? ct_visite.vstCreated|date('d/m/Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>updated</th>
+                    <td>{{ ct_visite.vstUpdated ? ct_visite.vstUpdated|date('d/m/Y H:i:s') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>est-apte</th>
+                    <td>{{ ct_visite.vstIsApte ? 'Oui' : 'Non' }}</td>
+                </tr>
+                <tr>
+                    <th>est-contre visite</th>
+                    <td>{{ ct_visite.vstIsContreVisite ? 'Oui' : 'Non' }}</td>
+                </tr>
+                <tr>
+                    <th>durée réparation</th>
+                    <td>{{ ct_visite.vstDureeReparation }}</td>
+                </tr>
+                <tr>
+                    <th>est-active</th>
+                    <td>{{ ct_visite.vstIsActive ? 'Oui' : 'Non' }}</td>
+                </tr>
+                <tr>
+                    <th>généré</th>
+                    <td>{{ ct_visite.vstGenere }}</td>
+                </tr>
+                <tr>
+                    <th>observation</th>
+                    <td>{{ ct_visite.vstObservation }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{{ path('app_ct_app_imprimable_proces_verbal_visite', {'id': ct_visite.id}) }}" class="btn btn-danger"><i class="fa fa-book" aria-hidden="true"></i> Imprimer</a>
+    </div>
+</div>
+{% endblock %}

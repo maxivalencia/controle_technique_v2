@@ -169,7 +169,11 @@ class CtAppVisiteController extends AbstractController
         if($ctCarteGrise == null){
             $ctCarteGrise = new CtCarteGrise();
         }
-        $form_carte_grise = $this->createForm(CtRensCarteGriseType::class, $ctCarteGrise);
+        if($ctCarteGrise->getId() == null){
+            $form_carte_grise = $this->createForm(CtRensCarteGriseType::class, $ctCarteGrise);
+        }else{
+            $form_carte_grise = $this->createForm(CtRensCarteGriseType::class, $ctCarteGrise, ["disable" => true]);
+        }
         $form_carte_grise->handleRequest($request);
         $message = "";
         $enregistrement_ok = False;
@@ -246,6 +250,165 @@ class CtAppVisiteController extends AbstractController
             'form_carte_grise' => $form_carte_grise->createView(),
             'message' => $message,
             'enregistrement_ok' => $enregistrement_ok,
+        ]);
+    }
+
+    /**
+     * @Route("/mutation_vehicule", name="app_ct_app_visite_mutation_vehicule", methods={"GET", "POST"})
+     */
+    public function MutationVehicule(Request $request, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
+    {
+        $ctCarteGrise = new CtCarteGrise();
+        $ctCarteGrise_new = new CtCarteGrise();
+        $ctVehicule = new CtVehicule();
+        $immatriculation = '';
+        if($request->request->get('search-immatriculation')){
+            $recherche = strtoupper($request->request->get('search-immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+        if($request->request->get('search-numero-serie')){
+            $recherche = strtoupper($request->request->get('search-numero-serie'));
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+        if($request->request->get('search-identification')){
+            $recherche = strtoupper($request->request->get('search-identification'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+        if($request->query->get('search-immatriculation')){
+            $recherche = strtoupper($request->query->get('search-immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+        if($request->query->get('search-numero-serie')){
+            $recherche = $request->query->get('search-numero-serie');
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+        if($request->query->get('search-identification')){
+            $recherche = $request->query->get('search-identification');
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+
+        //if($ctCarteGrise == null){
+        if(is_null($ctCarteGrise)){
+            $ctCarteGrise = new CtCarteGrise();
+        }
+        //if($ctCarteGrise->getId() == null){
+        if(is_null($ctCarteGrise)){
+            $form_carte_grise = $this->createForm(CtRensCarteGriseType::class, $ctCarteGrise, ["disable" => true]);
+        }else{
+            $form_carte_grise = $this->createForm(CtRensCarteGriseType::class, $ctCarteGrise, ["disable" => false]);
+            /* if($ctCarteGrise->getId() == null){
+                $form_carte_grise = $this->createForm(CtRensCarteGriseType::class, $ctCarteGrise, ["disable" => true]);
+            }else{
+                $form_carte_grise = $this->createForm(CtRensCarteGriseType::class, $ctCarteGrise, ["disable" => false]);
+            } */
+        }
+        $form_carte_grise->handleRequest($request);
+        $message = "";
+        $enregistrement_ok = False;
+        //var_dump($ctCarteGrise);
+
+        if ($form_carte_grise->isSubmitted() && $form_carte_grise->isValid()) {
+            try{
+                //var_dump($ctCarteGrise->getCgImmatriculation());
+                $imm = "";
+                $imm = strtoupper($request->request->get('immatriculation'));
+                if($imm == ""){
+                    $imm = strtoupper($request->query->get('immatriculation'));
+                }
+                $ctCarteGrise_old = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $imm], ["id" => "DESC"]);
+                //var_dump($ctCarteGrise_old);
+                
+                $ctVehicule->setCtGenreId($ctCarteGrise->getCtVehiculeId()->getCtGenreId());
+                $ctVehicule->setCtMarqueId($ctCarteGrise->getCtVehiculeId()->getCtMarqueId());
+                $ctVehicule->setVhcCylindre($ctCarteGrise->getCtVehiculeId()->getVhcCylindre());
+                $ctVehicule->setVhcPuissance($ctCarteGrise->getCtVehiculeId()->getVhcPuissance());
+                $ctVehicule->setVhcPoidsVide($ctCarteGrise->getCtVehiculeId()->getVhcPoidsVide());
+                $ctVehicule->setVhcChargeUtile($ctCarteGrise->getCtVehiculeId()->getVhcChargeUtile());
+                $ctVehicule->setVhcNumSerie($ctCarteGrise->getCtVehiculeId()->getVhcNumSerie());
+                $ctVehicule->setVhcNumMoteur($ctCarteGrise->getCtVehiculeId()->getVhcNumMoteur());
+                $ctVehicule->setVhcCreated(new \DateTime());
+                $ctVehicule->setVhcType($ctCarteGrise->getCtVehiculeId()->getVhcType());
+                $ctVehicule->setVhcPoidsTotalCharge($ctCarteGrise->getCtVehiculeId()->getVhcPoidsVide() + $ctCarteGrise->getCtVehiculeId()->getVhcChargeUtile());
+
+                $ctVehiculeRepository->add($ctVehicule, true);
+
+                $ctCarteGrise_new->setCtCarrosserieId($ctCarteGrise->getCtCarrosserieId());
+                $ctCarteGrise_new->setCtCentreId($this->getUser()->getCtCentreId());
+                $ctCarteGrise_new->setCtSourceEnergieId($ctCarteGrise->getCtSourceEnergieId());
+                $ctCarteGrise_new->setCtUserId($this->getUser());
+                $ctCarteGrise_new->setCgDateEmission($ctCarteGrise->getCgDateEmission());
+                $ctCarteGrise_new->setCgNom($ctCarteGrise->getCgNom());
+                $ctCarteGrise_new->setCgPrenom($ctCarteGrise->getCgPrenom());
+                $ctCarteGrise_new->setCgProfession($ctCarteGrise->getCgProfession());
+                $ctCarteGrise_new->setCgAdresse($ctCarteGrise->getCgAdresse());
+                $ctCarteGrise_new->setCgPhone($ctCarteGrise->getCgPhone());
+                $ctCarteGrise_new->setCgNbrAssis($ctCarteGrise->getCgNbrAssis());
+                $ctCarteGrise_new->setCgNbrDebout(0);
+                $ctCarteGrise_new->setCgPuissanceAdmin($ctCarteGrise->getCtVehiculeId()->getVhcPuissance());
+                $ctCarteGrise_new->setCgMiseEnService($ctCarteGrise->getCgMiseEnService());
+                $ctCarteGrise_new->setCgPatente($ctCarteGrise->getCgPatente());
+                $ctCarteGrise_new->setCgAni($ctCarteGrise->getCgAni());
+                $ctCarteGrise_new->setCgRta($ctCarteGrise->getCgRta());
+                $ctCarteGrise_new->setCgNumCarteViolette($ctCarteGrise->getCgNumCarteViolette());
+                $ctCarteGrise_new->setCgDateCarteViolette($ctCarteGrise->getCgDateCarteViolette());
+                $ctCarteGrise_new->setCgLieuCarteViolette($ctCarteGrise->getCgLieuCarteViolette());
+                $ctCarteGrise_new->setCgNumVignette($ctCarteGrise->getCgNumVignette());
+                $ctCarteGrise_new->setCgDateVignette($ctCarteGrise->getCgDateVignette());
+                $ctCarteGrise_new->setCgLieuVignette($ctCarteGrise->getCgLieuVignette());
+                $ctCarteGrise_new->setCgImmatriculation($ctCarteGrise->getCgImmatriculation());
+                $ctCarteGrise_new->setCgCreated(new \DateTime());
+                $ctCarteGrise_new->setCgNomCooperative($ctCarteGrise->getCgNomCooperative());
+                $ctCarteGrise_new->setCgItineraire($ctCarteGrise->getCgItineraire());
+                $ctCarteGrise_new->setCgIsTransport($ctCarteGrise->isCgIsTransport());
+                $ctCarteGrise_new->setCgNumIdentification($ctCarteGrise->getCgNumIdentification());
+                $ctCarteGrise_new->setCtZoneDesserteId($ctCarteGrise->getCtZoneDesserteId());
+                $ctCarteGrise_new->setCgIsActive(true);
+                $ctCarteGrise_new->setCgAntecedantId($ctCarteGrise_old);
+                $ctCarteGrise_new->setCgObservation($ctCarteGrise->getCgObservation());
+                $ctCarteGrise_new->setCgCommune($ctCarteGrise->getCgCommune());
+                $ctCarteGrise_new->setCtVehiculeId($ctVehicule);
+
+                $ctCarteGriseRepository->add($ctCarteGrise_new, true);
+
+                //if($ctCarteGrise->getId() != null && $ctCarteGrise->getId() < $ctCarteGrise_new->getId()){
+                $ctCarteGrise_old->setCgIsActive(false);
+                $ctCarteGriseRepository->add($ctCarteGrise_old, true);
+                //}
+
+                $message = "Enregistrement effectué avec succès du véhicule portant l'immatriculation : ".$ctCarteGrise->getCgImmatriculation();
+                $enregistrement_ok = False;
+                $date_mutation = new \DateTime();
+                $ct_visite_old = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise_old->getId()], ["id" => "DESC"]);
+                //if(!is_null($ct_visite_old)){
+                    $ct_visite_new = clone($ct_visite_old);
+                    $ct_visite_new->setCtCarteGriseId($ctCarteGrise_new);
+                    $ct_visite_new->setVstObservation($ct_visite_new->getVstObservation()." Mutation du visite portant numero pv : ".$ct_visite_old->getId().", date mutation :".$date_mutation->format("d/m/Y").", par le secrétaire ".$this->getUser()->getId()." ".$this->getUser());
+                    $ct_visite_old->setVstIsActive(true);
+                    $ct_visite_old->setVstIsActive(false);
+                    $ctVisiteRepository->add($ct_visite_new, true);
+                    $ctVisiteRepository->add($ct_visite_old, true);
+                    // assiana redirection mandeha amin'ny générer mutation rehefa vita ilay mutation fa ito mbola essaye fotsiny
+                    return $this->redirectToRoute('app_ct_app_visite_recapitulation_mutation', ["id" => $ct_visite_new->getId()], Response::HTTP_SEE_OTHER);
+                //}
+            } catch (Exception $e) {
+                $message = "Echec de l'enregistrement du véhicule";
+                $enregistrement_ok = False;
+            }
+        }
+        return $this->render('ct_app_visite/mutation_vehicule.html.twig', [
+            'ct_carte_grise' => $ctCarteGrise,
+            'form_carte_grise' => $form_carte_grise->createView(),
+            'message' => $message,
+            'enregistrement_ok' => $enregistrement_ok,
+            'immatriculation' => $immatriculation,
         ]);
     }
 
@@ -478,6 +641,17 @@ class CtAppVisiteController extends AbstractController
     {
         // efa ok ito
         return $this->render('ct_app_visite/resume_visite.html.twig', [
+            'ct_visite' => $ctVisite,
+        ]);
+    }
+
+    /**
+     * @Route("/recapitulation_mutation/{id}", name="app_ct_app_visite_recapitulation_mutation", methods={"GET", "POST"})
+     */
+    public function RecapitulationMutation(Request $request, int $id, CtVisite $ctVisite): Response
+    {
+        // efa ok ito
+        return $this->render('ct_app_visite/resume_mutation.html.twig', [
             'ct_visite' => $ctVisite,
         ]);
     }

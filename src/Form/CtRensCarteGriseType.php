@@ -19,6 +19,7 @@ class CtRensCarteGriseType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $disable = $options["disable"];
         $transport = [
             'Oui' => true,
             'Non' => false
@@ -26,6 +27,7 @@ class CtRensCarteGriseType extends AbstractType
         $builder
             ->add('ct_centre_id', null, [
                 'label' => 'Centre',
+                'disabled' => $disable
             ])
             ->add('cg_date_emission', null, [
                 'label' => 'Date émission',
@@ -33,31 +35,40 @@ class CtRensCarteGriseType extends AbstractType
                 'attr' => [
                     'class' => 'datetimepicker',
                 ],
-                'data' => new \DateTime('now'),
+                //'data' => new \DateTime('now'),
+                'disabled' => $disable
             ])
             ->add('cg_immatriculation', null, [
                 'label' => 'Numéro d\'immatriculation',
+                'disabled' => $disable
             ])
             ->add('cg_num_identification', null, [
                 'label' => 'Numéro d\'identification',
+                'disabled' => $disable
             ])
             ->add('cg_nom', null, [
                 'label' => 'Nom propriétaire',
+                'disabled' => $disable
             ])
             ->add('cg_prenom', null, [
                 'label' => 'Prénom propriétaire',
+                'disabled' => $disable
             ])
             ->add('cg_profession', null, [
                 'label' => 'Profession propriétaire',
+                'disabled' => $disable
             ])
             ->add('cg_adresse', null, [
                 'label' => 'Adresse propriétaire',
+                'disabled' => $disable
             ])
             ->add('cg_phone', null, [
                 'label' => 'Téléphone propriétaire',
+                'disabled' => $disable
             ])
             ->add('cg_commune', null, [
                 'label' => 'Commune',
+                'disabled' => $disable
             ])
             ->add('cg_is_transport', ChoiceType::class, [
                 'label' => 'Transport',
@@ -65,13 +76,16 @@ class CtRensCarteGriseType extends AbstractType
                 'attr' => [
                     'class' => 'istransport',
                 ],
-                'data' => false,
+                //'data' => false,
+                'disabled' => $disable
             ])
             ->add('cg_num_carte_violette', null, [
                 'label' => 'Numéro carte violette',
+                'disabled' => $disable
             ])
             ->add('cg_lieu_carte_violette', null, [
                 'label' => 'Lieu carte violette',
+                'disabled' => $disable
             ])
             ->add('cg_date_carte_violette', null, [
                 'label' => 'Date carte violette',
@@ -79,19 +93,22 @@ class CtRensCarteGriseType extends AbstractType
                 'attr' => [
                     'class' => 'datetimepicker',
                 ],
-                'data' => new \DateTime('now'),
+                //'data' => new \DateTime('now'),
+                'disabled' => $disable
             ])
             ->add('cg_num_vignette', null, [
                 'label' => 'Numéro licence',
                 'attr' => [
                     'class' => 'transport',
                 ],
+                'disabled' => $disable
             ])
             ->add('cg_lieu_vignette', null, [
                 'label' => 'Lieu numéro licence',
                 'attr' => [
                     'class' => 'transport',
                 ],
+                'disabled' => $disable
             ])
             ->add('cg_date_vignette', null, [
                 'label' => 'Date numéro licence',
@@ -99,23 +116,29 @@ class CtRensCarteGriseType extends AbstractType
                 'attr' => [
                     'class' => 'datetimepicker transport',
                 ],
-                'data' => new \DateTime('now'),
+                //'data' => new \DateTime('now'),
+                'disabled' => $disable
             ])
             ->add('cg_patente', null, [
                 'label' => 'Patente',
+                'disabled' => $disable
             ])
             ->add('ct_carrosserie_id', null, [
                 'label' => 'Carrosserie',
+                'disabled' => $disable
             ])
             ->add('ct_source_energie_id', null, [
                 'label' => 'Source d\'energie',
+                'disabled' => $disable
             ])
             ->add('cg_ani', null, [
                 'label' => 'ANI',
+                'disabled' => $disable
             ])
             ->add('cg_nbr_assis', null, [
                 'label' => 'Nombre de place assise',
-                'data' => 0,
+                //'data' => 0,
+                'disabled' => $disable
             ])
             ->add('cg_mise_en_service', null, [
                 'label' => 'Date de première mise en circulation',
@@ -123,22 +146,26 @@ class CtRensCarteGriseType extends AbstractType
                 'attr' => [
                     'class' => 'datetimepicker',
                 ],
-                'data' => new \DateTime('now'),
+                //'data' => new \DateTime('now'),
+                'disabled' => $disable
             ])
             ->add('ct_vehicule_id', CtRensVehiculeType::class, [
                 'label' => 'Véhicule',
+                'disabled' => $disable
             ])            
             ->add('cg_nom_cooperative', null, [
                 'label' => 'Nom coopérative',
                 'attr' => [
                     'class' => 'transport',
                 ],
+                'disabled' => $disable
             ])
             ->add('cg_itineraire', null, [
                 'label' => 'Itinéraire',
                 'attr' => [
                     'class' => 'transport',
                 ],
+                'disabled' => $disable
             ])
             /* ->add('ct_zone_desserte_id', EntityType::class, [
                 'label' => 'Zone desservie',
@@ -167,6 +194,10 @@ class CtRensCarteGriseType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CtCarteGrise::class,
+            'disable' => false,
+        ]);
+        $resolver->setRequired([
+            'disable',
         ]);
     }
 }

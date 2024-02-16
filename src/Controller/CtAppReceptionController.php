@@ -251,7 +251,7 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setRcpObservation("");
 
             $ctReceptionRepository->add($ctReception_new, true);
-            $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.date("Y"));
+            $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.$date->format("Y"));
             $ctReceptionRepository->add($ctReception_new, true);
 
             if($ctReception->getId() != null && $ctReception->getId() < $ctReception_new->getId()){
@@ -367,7 +367,7 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setRcpObservation("");
 
             $ctReceptionRepository->add($ctReception_new, true);
-            $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.date("Y"));
+            $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.$date->format("Y"));
             $ctReceptionRepository->add($ctReception_new, true);
 
             if($ctReception->getId() != null && $ctReception->getId() < $ctReception_new->getId()){
@@ -505,7 +505,7 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setRcpObservation($ctReception->getRcpObservation()." ");
 
             $ctReceptionRepository->add($ctReception_new, true);
-            $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.date("Y"));
+            $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.$date->format("Y"));
             $ctReceptionRepository->add($ctReception_new, true);
 
             $message = "Réception ajouter avec succes";
@@ -603,7 +603,7 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setRcpObservation($ctReception->getRcpObservation()." ");
 
             $ctReceptionRepository->add($ctReception_new, true);
-            $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.date("Y"));
+            $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.$date->format("Y"));
             $ctReceptionRepository->add($ctReception_new, true);
 
             if($ctReception->getId() != null && $ctReception->getId() < $ctReception_new->getId()){
