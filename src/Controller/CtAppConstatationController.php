@@ -10,6 +10,7 @@ use App\Entity\CtUser;
 use App\Form\CtConstAvDedTypeType;
 use App\Form\CtConstatationCaracType;
 use App\Form\CtConstatationType;
+use App\Form\CtConstatationEditType;
 use App\Form\CtConstatationDisableType;
 use App\Repository\CtConstAvDedTypeRepository;
 use App\Repository\CtConstAvDedCaracRepository;
@@ -413,7 +414,7 @@ class CtAppConstatationController extends AbstractController
             'ct_const_av_ded_carac_carte_grise' => $ctConstAvDedCarac_carteGrise,
             'ct_const_av_ded_carac_corps_du_vehicule' => $ctConstAvDedCarac_corpsDuVehicule,
             'id' => $id,
-        ]);        
+        ]);
     }
 
     /**
@@ -426,7 +427,30 @@ class CtAppConstatationController extends AbstractController
         $ctConstAvDedCarac_noteDescriptive = new CtConstAvDedCarac();
         $ctConstAvDedCarac_carteGrise = new CtConstAvDedCarac();
         $ctConstAvDedCarac_corpsDuVehicule = new CtConstAvDedCarac();
-        $form_constatation = $this->createForm(CtConstatationType::class, $ctConstatation, ["centre" => $this->getUser()->getCtCentreId()]);
+        if($request->request->get('search-immatriculation')){
+            $recherche = strtoupper($request->request->get('search-immatriculation'));
+            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche], ["id" => "DESC"]);
+        }
+        if($request->query->get('search-immatriculation')){
+            $recherche = strtoupper($request->query->get('search-immatriculation'));
+            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche], ["id" => "DESC"]);
+            //var_dump($ctConstatation);
+        }
+        $identification_constatation = $ctConstatation->getId();
+        $ctConstAvDedCarac = $ctConstatation->getCtConstAvDedCarac();
+        foreach($ctConstAvDedCarac as $ctCADC){
+            if($ctCADC->getCtConstAvDedTypeId()->getId() == 1){
+                $ctConstAvDedCarac_carteGrise = $ctCADC;
+            }
+            if($ctCADC->getCtConstAvDedTypeId()->getId() == 2){
+                $ctConstAvDedCarac_corpsDuVehicule = $ctCADC;
+            }
+            if($ctCADC->getCtConstAvDedTypeId()->getId() == 3){
+                $ctConstAvDedCarac_noteDescriptive = $ctCADC;
+            }
+        }
+
+        $form_constatation = $this->createForm(CtConstatationEditType::class, $ctConstatation, ["centre" => $this->getUser()->getCtCentreId(), "carte_grise" => $ctConstAvDedCarac_carteGrise, "notice_descriptive" => $ctConstAvDedCarac_noteDescriptive, "corps_vehicule" => $ctConstAvDedCarac_corpsDuVehicule]);
         $form_constatation->handleRequest($request);
 
         if ($form_constatation->isSubmitted() && $form_constatation->isValid()) {
@@ -451,7 +475,7 @@ class CtAppConstatationController extends AbstractController
             $ctConstAvDedCarac_noteDescriptive->setCadPremiereCircule($form_constatation['ct_const_av_ded_carac_note_descriptive']['cad_premiere_circule']->getData());
             $ctConstAvDedCarac_noteDescriptive->setCadNbrAssis($form_constatation['ct_const_av_ded_carac_note_descriptive']['cad_nbr_assis']->getData());
             //$ctConstAvDedCarac_noteDescriptive->addCtConstAvDed($form_constatation['unmapped_field']->getData());
-            
+
             $ctConstAvDecCaracRepository->add($ctConstAvDedCarac_noteDescriptive, true);
 
             // eto ny par carte grise
@@ -475,7 +499,7 @@ class CtAppConstatationController extends AbstractController
             $ctConstAvDedCarac_carteGrise->setCadPremiereCircule($form_constatation['ct_const_av_ded_carac_carte_grise']['cad_premiere_circule']->getData());
             $ctConstAvDedCarac_carteGrise->setCadNbrAssis($form_constatation['ct_const_av_ded_carac_carte_grise']['cad_nbr_assis']->getData());
             //$ctConstAvDedCarac_carteGrise->addCtConstAvDed($form_constatation['unmapped_field']->getData());
-            
+
             $ctConstAvDecCaracRepository->add($ctConstAvDedCarac_carteGrise, true);
 
             // eto ny par corps du véhicule
@@ -530,11 +554,11 @@ class CtAppConstatationController extends AbstractController
             $ctConstatation_new->setCadNumero($ctConstatation_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ctConstatation_new->getCtCentreId()->getCtrCode().'/'.'CONST/'.$date->format("Y"));
             $ctConstAvDedRepository->add($ctConstatation_new, true);
 
-            if($ctConstatation->getId() != null && $ctConstatation->getId() < $ctConstatation_new->getId()){
+            /* if($ctConstatation->getId() != null && $ctConstatation->getId() < $ctConstatation_new->getId()){
                 $ctConstatation->setCadIsActive(false);
 
                 $ctConstAvDedRepository->add($ctConstatation, true);
-            }
+            } */
 
             $message = "Constatation ajouter avec succes";
             $enregistrement_ok = true;
