@@ -635,6 +635,12 @@
                                                     <p>Créer</p>
                                                 </a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a href="{{ path('app_ct_app_visite_contre_visite') }}" class="nav-link">
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>Rechercher</p>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -729,7 +735,7 @@
                                         </a>
                                         <ul class="nav nav-treeview" style="padding-left:5px;">
                                             <li class="nav-item">
-                                                <a href="{{ path('app_ct_app_visite_contre_visite') }}" class="nav-link">
+                                                <a href="{{ path('app_ct_app_constatation_duplicata_constatation_avant_dedouanement') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Créer</p>
                                                 </a>
@@ -771,7 +777,7 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="{{ path('app_ct_app_imprime_technique_activer_imprimer') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Activer des imprimés</p>
                                         </a>
@@ -786,25 +792,25 @@
                                         </a>
                                         <ul class="nav nav-treeview" style="padding-left:5px;">
                                             <li class="nav-item">
-                                                <a href="#" class="nav-link">
+                                                <a href="{{ path('app_ct_app_imprime_technique_liste_utiliser') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Liste des utilisés</p>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="#" class="nav-link">
+                                                <a href="{{ path('app_ct_app_imprime_technique_liste_non_utiliser') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Liste des non utilisés</p>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="#" class="nav-link">
+                                                <a href="{{ path('app_ct_app_imprime_technique_mise_a_jour_utilisation') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Mise à jour utilisation</p>
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="#" class="nav-link">
+                                                <a href="{{ path('app_ct_app_imprime_technique_mise_a_jour_multiple') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Mise à jour multiple</p>
                                                 </a>
@@ -817,29 +823,62 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                Imprimés techniques
-                                                <i class="fas fa-angle-left right"></i>
-                                            </p>
-                                        </a>
-                                        <ul class="nav nav-treeview" style="padding-left:5px;">
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Liste</p>
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Créer</p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    {% if is_granted("ROLE_ADMIN") %}
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Imprimés techniques
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview" style="padding-left:5px;">
+                                                <li class="nav-item">
+                                                    <a href="{{ path('app_ct_app_imprime_technique_liste_imprimer') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Liste</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="{{ path('app_ct_app_imprime_technique_creer_imprimer') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Créer</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_APPROVISIONNEMENT") %}
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>
+                                                    Bordereau d'envoi
+                                                    <i class="fas fa-angle-left right"></i>
+                                                </p>
+                                            </a>
+                                            <ul class="nav nav-treeview" style="padding-left:5px;">
+                                                <li class="nav-item">
+                                                    <a href="{{ path('app_ct_app_imprime_technique_rechercher_bordereau') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Rechercher</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="{{ path('app_ct_app_imprime_technique_liste_bordereau') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Liste</p>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="{{ path('app_ct_app_imprime_technique_creer_bordereau') }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>Créer</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% endif %}
                                 </ul>
                             </li>
                         {% endif %}

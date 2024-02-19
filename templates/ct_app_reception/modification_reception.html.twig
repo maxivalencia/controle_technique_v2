@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Duplicata réception{% endblock %}
+{% block title %}rechercher réception{% endblock %}
 
 {% block app_ct %}
 <div class="box">
@@ -84,7 +84,7 @@
         </tbody>
     </table> 
     <div class="box">
-        <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+        <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default(boutton) }}</button>
     </div>
 {{ form_end(form_reception) }}
 {% endblock %}

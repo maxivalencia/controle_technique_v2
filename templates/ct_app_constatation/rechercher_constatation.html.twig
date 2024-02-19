@@ -1,0 +1,310 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création constatation avant dédouanement{% endblock %}
+
+{% block app_ct %}
+<div class="box">
+    <div class="box-header">DUPLICATA CONSTATATION AVANT DEDOUANEMENT</div><br>
+</div>
+
+<div class="box">
+    <div class="entete-formulaire">Recherche</div><br>
+    <div>
+        <table class="table" style="width:100%;">
+            <tbody>
+                <tr>
+                    <td style="width:50%;">
+                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_constatation_duplicata_constatation_avant_dedouanement') }}">
+                            <div class="">
+                                <strong>Par numéro d'immatriculation :</strong><br>
+                                <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
+                                <input type="text" name="search-immatriculation" id="search-immatriculation" class="form-control" placeholder="numéro d'immatriculation...">
+                                <button class="btn btn-primary" type="submit" style="float:right">
+                                    Rechercher
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                    <td style="width:50%;">
+                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_constatation_duplicata_constatation_avant_dedouanement') }}">
+                            <div class="">
+                                <strong>Par numéro dans la série du type :</strong><br>
+                                <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
+                                <input type="text" name="search-numero-serie" id="search-numero-serie" class="form-control" placeholder="numéro de série...">
+                                <button class="btn btn-primary" type="submit" style="float:right">
+                                    Rechercher
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="box">
+    <div style="text-align:center;font-size:28px;"><strong>Caractéristique du véhicule</strong></div><br>
+</div>
+
+{% if ct_const_av_ded is not null %}
+    <table class="table bordure" style="width:100%;">
+        <tbody>
+            <tr>
+                <td style="width:25%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Informations véhicule</div><hr>
+                        <table>
+                            <tr>
+                                <th>provenance</th>
+                                <td>{{ ct_const_av_ded.cadProvenance }}</td>
+                            </tr>
+                            <tr>
+                                <th>divers</th>
+                                <td>{{ ct_const_av_ded.cadDivers }}</td>
+                            </tr>
+                            <tr>
+                                <th>nom propriétaire</th>
+                                <td>{{ ct_const_av_ded.cadProprietaireNom }}</td>
+                            </tr>
+                            <tr>
+                                <th>adresse propriétaire</th>
+                                <td>{{ ct_const_av_ded.cadProprietaireAdresse }}</td>
+                            </tr>
+                            <tr>
+                                <th>état</th>
+                                <td>{{ ct_const_av_ded.cadBonEtat ? 'Bon' : 'Mauvais' }}</td>
+                            </tr>
+                            <tr>
+                                <th>sécurité personne</th>
+                                <td>{{ ct_const_av_ded.cadSecPers ? 'Oui' : 'Non' }}</td>
+                            </tr>
+                            <tr>
+                                <th>sécurité marchandise</th>
+                                <td>{{ ct_const_av_ded.cadSecMarch ? 'Oui' : 'Non' }}</td>
+                            </tr>
+                            <tr>
+                                <th>protection environnement</th>
+                                <td>{{ ct_const_av_ded.cadProtecEnv ? 'Oui' : 'Non' }}</td>
+                            </tr>
+                            <tr>
+                                <th>numéro</th>
+                                <td>{{ ct_const_av_ded.cadNumero }}</td>
+                            </tr>
+                            <tr>
+                                <th>immatriculation</th>
+                                <td>{{ ct_const_av_ded.cadImmatriculation }}</td>
+                            </tr>
+                            <tr>
+                                <th>date d'embarquement</th>
+                                <td>{{ ct_const_av_ded.cadDateEmbarquement ? ct_const_av_ded.cadDateEmbarquement|date('d/m/Y') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>lieu d'embarquement</th>
+                                <td>{{ ct_const_av_ded.cadLieuEmbarquement }}</td>
+                            </tr>
+                            <tr>
+                                <th>created</th>
+                                <td>{{ ct_const_av_ded.cadCreated ? ct_const_av_ded.cadCreated|date('d/m/Y H:i:s') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>observation</th>
+                                <td>{{ ct_const_av_ded.cadObservation }}</td>
+                            </tr>
+                            <tr>
+                                <th>conforme</th>
+                                <td>{{ ct_const_av_ded.cadConforme ? 'Oui' : 'Non' }}</td>
+                            </tr>
+                            <tr>
+                                <th>est-active</th>
+                                <td>{{ ct_const_av_ded.cadIsActive ? 'Oui' : 'Non' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                <td style="width:25%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Informations constatation notice descriptive</div><hr>
+                        <table>
+                            <tr>
+                                <th>cylindre</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadCylindre }}</td>
+                            </tr>
+                            <tr>
+                                <th>puissance</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadPuissance }}</td>
+                            </tr>
+                            <tr>
+                                <th>poids à vide</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadPoidsVide }}</td>
+                            </tr>
+                            <tr>
+                                <th>charge utile</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadChargeUtile }}</td>
+                            </tr>
+                            <tr>
+                                <th>hauteur</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadHauteur }}</td>
+                            </tr>
+                            <tr>
+                                <th>largeur</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadLargeur }}</td>
+                            </tr>
+                            <tr>
+                                <th>longueur</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadLongueur }}</td>
+                            </tr>
+                            <tr>
+                                <th>numéro de série du type</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadNumSerieType }}</td>
+                            </tr>
+                            <tr>
+                                <th>numéro moteur</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadNumMoteur }}</td>
+                            </tr>
+                            <tr>
+                                <th>type véhicule</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadTypeCar }}</td>
+                            </tr>
+                            <tr>
+                                <th>poids total à charge</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadPoidsTotalCharge }}</td>
+                            </tr>
+                            <tr>
+                                <th>date première circulation</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadPremiereCircule }}</td>
+                            </tr>
+                            <tr>
+                                <th>nombre assis</th>
+                                <td>{{ ct_const_av_ded_carac_notice_descriptive.cadNbrAssis }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                <td style="width:25%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Informations constatation carte grise</div><hr>
+                        <table>
+                            <tr>
+                                <th>cylindre</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadCylindre }}</td>
+                            </tr>
+                            <tr>
+                                <th>puissance</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadPuissance }}</td>
+                            </tr>
+                            <tr>
+                                <th>poids à vide</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadPoidsVide }}</td>
+                            </tr>
+                            <tr>
+                                <th>charge utile</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadChargeUtile }}</td>
+                            </tr>
+                            <tr>
+                                <th>hauteur</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadHauteur }}</td>
+                            </tr>
+                            <tr>
+                                <th>largeur</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadLargeur }}</td>
+                            </tr>
+                            <tr>
+                                <th>longueur</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadLongueur }}</td>
+                            </tr>
+                            <tr>
+                                <th>numéro de série du type</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadNumSerieType }}</td>
+                            </tr>
+                            <tr>
+                                <th>numéro moteur</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadNumMoteur }}</td>
+                            </tr>
+                            <tr>
+                                <th>type véhicule</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadTypeCar }}</td>
+                            </tr>
+                            <tr>
+                                <th>poids total à charge</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadPoidsTotalCharge }}</td>
+                            </tr>
+                            <tr>
+                                <th>date première circulation</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadPremiereCircule }}</td>
+                            </tr>
+                            <tr>
+                                <th>nombre assis</th>
+                                <td>{{ ct_const_av_ded_carac_carte_grise.cadNbrAssis }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                <td style="width:25%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Informations constatation corps du véhicule</div><hr>
+                        <table>
+                            <tr>
+                                <th>cylindre</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadCylindre }}</td>
+                            </tr>
+                            <tr>
+                                <th>puissance</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadPuissance }}</td>
+                            </tr>
+                            <tr>
+                                <th>poids à vide</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadPoidsVide }}</td>
+                            </tr>
+                            <tr>
+                                <th>charge utile</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadChargeUtile }}</td>
+                            </tr>
+                            <tr>
+                                <th>hauteur</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadHauteur }}</td>
+                            </tr>
+                            <tr>
+                                <th>largeur</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadLargeur }}</td>
+                            </tr>
+                            <tr>
+                                <th>longueur</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadLongueur }}</td>
+                            </tr>
+                            <tr>
+                                <th>numéro de série du type</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadNumSerieType }}</td>
+                            </tr>
+                            <tr>
+                                <th>numéro moteur</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadNumMoteur }}</td>
+                            </tr>
+                            <tr>
+                                <th>type véhicule</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadTypeCar }}</td>
+                            </tr>
+                            <tr>
+                                <th>poids total à charge</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadPoidsTotalCharge }}</td>
+                            </tr>
+                            <tr>
+                                <th>date première circulation</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadPremiereCircule }}</td>
+                            </tr>
+                            <tr>
+                                <th>nombre assis</th>
+                                <td>{{ ct_const_av_ded_carac_corps_du_vehicule.cadNbrAssis }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table> 
+    <div class="box">
+        {% if id is not null %}
+            <a href="{{ path('app_ct_app_imprimable_proces_verbal_constatation_duplicata', {'id': id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> Dupliquer</a>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}

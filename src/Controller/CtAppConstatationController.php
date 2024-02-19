@@ -10,6 +10,7 @@ use App\Entity\CtUser;
 use App\Form\CtConstAvDedTypeType;
 use App\Form\CtConstatationCaracType;
 use App\Form\CtConstatationType;
+use App\Form\CtConstatationDisableType;
 use App\Repository\CtConstAvDedTypeRepository;
 use App\Repository\CtConstAvDedCaracRepository;
 use App\Repository\CtConstAvDedRepository;
@@ -345,6 +346,74 @@ class CtAppConstatationController extends AbstractController
             'ct_const_av_deds' => $liste_des_constatations,
             'total' => count($ctConstatations),
         ]);
+    }
+
+    /**
+     * @Route("/duplicata_constatation_avant_dedouanement", name="app_ct_app_constatation_duplicata_constatation_avant_dedouanement", methods={"GET", "POST"})
+     */
+    public function DuplicataConstataionAvantDedouanement(Request $request, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
+    {
+        $ctConstatation = new CtConstAvDed();
+        $ctConstatation_new = new CtConstAvDed();
+        $ctConstAvDedCarac_noteDescriptive = new CtConstAvDedCarac();
+        $ctConstAvDedCarac_carteGrise = new CtConstAvDedCarac();
+        $ctConstAvDedCarac_corpsDuVehicule = new CtConstAvDedCarac();
+        $message = "";
+        $enregistrement_ok = False;
+        $id = 0;
+
+        if($request->request->get('search-immatriculation')){
+            $recherche = strtoupper($request->request->get('search-immatriculation'));
+            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche], ["id" => "DESC"]);
+        }
+        if($request->query->get('search-immatriculation')){
+            $recherche = strtoupper($request->query->get('search-immatriculation'));
+            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche], ["id" => "DESC"]);
+            //var_dump($ctConstatation);
+        }
+        /* if($request->request->get('search-numero-serie')){
+            $recherche = $request->request->get('search-numero-serie');
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            if($vehicule_id != null){
+                $ctReception = $ctConstAvDedRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+            }
+        }
+        if($request->query->get('search-numero-serie')){
+            $recherche = $request->query->get('search-numero-serie');
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            if($vehicule_id != null){
+                $ctConstatation = $ctConstAvDedRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+            }
+        } */
+        //$ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => "BW-589-TG"], ["id" => "DESC"]);
+        if($ctConstatation != null){
+            $id = $ctConstatation->getId();
+            //$ctConstatation = new CtConstAvDed();
+            //$ctConstatation = $ctConstAvDedRepository->findOneBy(["id" => $id], ["id" => "DESC"]);
+            $ctConstAvDedCarac = $ctConstatation->getCtConstAvDedCarac();
+            $ctConstAvDedCarac_noteDescriptive = new CtConstAvDedCarac();
+            $ctConstAvDedCarac_carteGrise = new CtConstAvDedCarac();
+            $ctConstAvDedCarac_corpsDuVehicule = new CtConstAvDedCarac();
+            foreach($ctConstAvDedCarac as $ctCADC){
+                if($ctCADC->getCtConstAvDedTypeId()->getId() == 1){
+                    $ctConstAvDedCarac_carteGrise = $ctCADC;
+                }
+                if($ctCADC->getCtConstAvDedTypeId()->getId() == 2){
+                    $ctConstAvDedCarac_corpsDuVehicule = $ctCADC;
+                }
+                if($ctCADC->getCtConstAvDedTypeId()->getId() == 3){
+                    $ctConstAvDedCarac_noteDescriptive = $ctCADC;
+                }
+            }
+        }
+
+        return $this->render('ct_app_constatation/rechercher_constatation.html.twig', [
+            'ct_const_av_ded' => $ctConstatation,
+            'ct_const_av_ded_carac_notice_descriptive' => $ctConstAvDedCarac_noteDescriptive,
+            'ct_const_av_ded_carac_carte_grise' => $ctConstAvDedCarac_carteGrise,
+            'ct_const_av_ded_carac_corps_du_vehicule' => $ctConstAvDedCarac_corpsDuVehicule,
+            'id' => $id,
+        ]);        
     }
 
     /**

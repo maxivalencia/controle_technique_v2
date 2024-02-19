@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Récapitulation réception modification{% endblock %}
+
+{% block app_ct %}
+<div class="box">
+    <div class="box-header">RECAPITULATION RECEPTION MODIFICATION</div><br>
+</div>
+<table class="table bordure" style="width:100%;">
+    <tbody>
+        <tr>
+            <td style="width:50%;">
+                <div class="box">
+                    <div class="entete-formulaire">Informations véhicule</div><hr>
+                    <table>
+                        <tr>
+                            <th>Genre véhicule</th>
+                            <td>{{ reception.ct_genre_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Marque véhicule</th>
+                            <td>{{ reception.ct_marque_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Type véhicule</th>
+                            <td>{{ reception.vhc_type }}</td>
+                        </tr>
+                        <tr>
+                            <th>Numéro dans la série du type</th>
+                            <td>{{ reception.vhc_num_serie }}</td>
+                        </tr>
+                        <tr>
+                            <th>Numéro du moteur</th>
+                            <td>{{ reception.vhc_num_moteur }}</td>
+                        </tr>
+                        <tr>
+                            <th>Carrosserie</th>
+                            <td>{{ reception.ct_carrosserie_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Source d'energie</th>
+                            <td>{{ reception.ct_source_energie_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Cylindrée</th>
+                            <td>{{ reception.vhc_cylindre }}</td>
+                        </tr>
+                        <tr>
+                            <th>Puissance</th>
+                            <td>{{ reception.vhc_puissance }}</td>
+                        </tr>
+                        <tr>
+                            <th>Poids à vide</th>
+                            <td>{{ reception.vhc_poids_vide }}</td>
+                        </tr>
+                        <tr>
+                            <th>Charge utile</th>
+                            <td>{{ reception.vhc_charge_utile }}</td>
+                        </tr>
+                        <tr>
+                            <th>Poids total autorisé en charge</th>
+                            <td>{{ reception.vhc_poids_total_charge }}</td>
+                        </tr>
+                        <tr>
+                            <th>Longueur</th>
+                            <td>{{ reception.vhc_longueur }}</td>
+                        </tr>
+                        <tr>
+                            <th>Largeur</th>
+                            <td>{{ reception.vhc_largeur }}</td>
+                        </tr>
+                        <tr>
+                            <th>Hauteur</th>
+                            <td>{{ reception.vhc_hauteur }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td style="width:50%;">
+                <div class="box">
+                    <div class="entete-formulaire">Informations réception</div><hr>
+                    <table>
+                        <tr>
+                            <th>Utilisation</th>
+                            <td>{{ reception.ct_utilisation_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Motif</th>
+                            <td>{{ reception.ct_motif_id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Immatriculation</th>
+                            <td>{{ reception.rcp_immatriculation }}</td>
+                        </tr>
+                        <tr>
+                            <th>Propriétaire</th>
+                            <td>{{ reception.rcp_proprietaire }}</td>
+                        </tr>
+                        <tr>
+                            <th>Profession</th>
+                            <td>{{ reception.rcp_profession }}</td>
+                        </tr>
+                        <tr>
+                            <th>Adresse</th>
+                            <td>{{ reception.rcp_adresse }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nombre de place assise</th>
+                            <td>{{ reception.rcp_nbr_assis}}</td>
+                        </tr>
+                        <tr>
+                            <th>Nombre de place debout</th>
+                            <td>{{ reception.rcp_ngr_debout }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date de mise en service</th>
+                            <td>{{ reception.rcp_mise_service ? reception.rcp_mise_service|date('d/m/Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Vérificateur</th>
+                            <td>{{ reception.ct_verificateur_id }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table> 
+<div class="box">
+    {# <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button> #}
+    {# <button class="btn btn-success" type="button"><i class="fa fa-success" aria-hidden="true"></i> Enregistrer</button> #}
+    <a href="{{ path('app_ct_app_imprimable_proces_verbal_reception_isole', {'id' : reception.id }) }}" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Imprimer</a>
+</div>
+{% endblock %}

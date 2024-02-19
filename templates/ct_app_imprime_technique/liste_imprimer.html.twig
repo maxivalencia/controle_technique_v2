@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des imprimés{% endblock %}
+
+{% block app_ct %}
+
+<div class="box">
+    <div class="box-header">LISTE DES IMPRIMES</div><br>
+    <div>
+        <div>
+            <a href="{{ path('app_ct_app_imprime_technique_creer_imprimer') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Créer un imprimé technique</a>
+        </div>
+        <div class="marge-elts">
+            <table class="table liste">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Unité</th>
+                        <th>Abréviation</th>
+                        {# <th>created_at</th>
+                        <th>updated_at</th> #}
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ct_imprime_tech in ct_imprime_teches %}
+                    <tr>
+                        <td>{{ ct_imprime_tech.nomImprimeTech }}</td>
+                        <td>{{ ct_imprime_tech.uteImprimeTech }}</td>
+                        <td>{{ ct_imprime_tech.abrevImprimeTech }}</td>
+                        {# <td>{{ ct_imprime_tech.prttCreatedAt ? ct_imprime_tech.prttCreatedAt|date('d/m/Y') : '' }}</td>
+                        <td>{{ ct_imprime_tech.prttUpdatedAt ? ct_imprime_tech.prttUpdatedAt|date('d/m/Y') : '' }}</td> #}
+                        <td>
+                            <a href="{{ path('app_ct_imprime_tech_show', {'id': ct_imprime_tech.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                            <a href="{{ path('app_ct_imprime_tech_edit', {'id': ct_imprime_tech.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <a href="{{ path('app_ct_app_imprime_technique_creer_imprimer') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Créer un imprimé technique</a>
+        </div>  
+    </div>
+</div>
+{% endblock %}

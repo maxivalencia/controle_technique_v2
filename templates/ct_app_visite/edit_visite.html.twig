@@ -1,12 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}visite vehicule {{ immatriculation }}{% endblock %}
+{% block title %}Modification visite{% endblock %}
 
 {% block app_ct %}
-
 <div class="box">
-    <div class="box-header">VISITE VEHICULE IMMATRICULE : {{ immatriculation }}</div><br>
+    {# <div class="box-header-right"></div>
+    <div class="box-header-left"></div> #}
+    <div class="box-header">MODIFICATION VISITE</div>
 </div>
+
+{# à mettre ici un message flash quand l'information véhicule n'existe pas #}
+{#
+    {% if recherche_ok == true and contre == false %}
+        <div style="text-align:center;align:center;color:white;background-color:red">
+            {{  message_indisponible_contre }}
+        </div>
+    {% endif %}
+
+    {% if enregistrement_ok is not empty or enregistrement_ok is not null %}
+        {% if enregistrement_ok == true %}
+            <div style="text-align:center;align:center;color:white;background-color:green">
+                {{ message }}
+            </div>
+        {% endif %}
+        {% if enregistrement_ok == false %}
+            <div style="text-align:center;align:center;color:white;background-color:red">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endif %}
+#}
 
 {{ form_start(form_visite) }}
     {# {{ form_widget(form_carte_grise.ct_vehicule_id) }} #}
@@ -35,7 +58,6 @@
                             {{ form_row(form_visite.ct_carte_grise_id.cg_lieu_vignette) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_date_vignette) }}
                             {# {{ form_row(form_visite.ct_carte_grise_id.ct_zone_desserte_id) }} #}
-                            {# {% do form_visite.ct_carte_grise_id.ct_zone_desserte_id.setRendered() %} #}
                             </div>
                             <hr>
                             {{ form_row(form_visite.ct_carte_grise_id.cg_num_carte_violette) }}
@@ -66,22 +88,25 @@
                 <td style="width:50%;">
                     <div class="box">
                         <div class="entete-formulaire">Information visite technique</div><hr>
-                            {# <input type="text" name="immatriculation" id="immatriculation" class="form-control" value="{{ immatriculation }}" placeholder="immatriculation..." required disabled><br> #}
-                            {# <div class="form-group"><label for="ct_visite_visite_ct_carte_grise_id">Carte Grise identification</label><input type="text" id="ct_visite_visite_ct_carte_grise_id" name="ct_visite_visite[ct_carte_grise_id]" maxlength="255" class="form-control" value="{{ immatriculation }}" /></div> #}
-                            {{ form_row(form_visite.vst_observation) }}
-                            {{ form_row(form_visite.ct_centre_id) }}
-                            {{ form_row(form_visite.ct_type_visite_id) }}
-                            {{ form_row(form_visite.ct_usage_id) }}
-                            {{ form_row(form_visite.ct_utilisation_id) }}
-                            {{ form_row(form_visite.vst_anomalie_id) }}
-                            <div class="duree">
-                            {{ form_row(form_visite.vst_duree_reparation) }}
+                            {# {% if contre == false %}
+                                <div style="visibility:hidden;">
+                            {% else %}
+                                <div>
+                            {% endif %} #}
+                                <div>
+                                {{ form_row(form_visite.ct_centre_id) }}
+                                {{ form_row(form_visite.ct_type_visite_id) }}
+                                {{ form_row(form_visite.ct_usage_id) }}
+                                {{ form_row(form_visite.ct_utilisation_id) }}
+                                {{ form_row(form_visite.vst_anomalie_id) }}
+                                <div class="duree">
+                                {{ form_row(form_visite.vst_duree_reparation, { 'attr':{'disabled':'disabled'} }) }}
+                                </div>
+                                {{ form_row(form_visite.vst_date_expiration) }}
+                                {{ form_row(form_visite.ct_verificateur_id) }}
+                                {{ form_row(form_visite.vst_extra) }}
+                                {# {% do form_visite.vst_extra.setRendered() %} #}
                             </div>
-                            {{ form_row(form_visite.vst_date_expiration) }}
-                            {# {{ form_row(form_visite.vst_date_expiration) }} #}
-                            {{ form_row(form_visite.ct_verificateur_id) }}
-                            {{ form_row(form_visite.vst_extra) }}
-
                     </div>
                 </td>
             </tr>
@@ -90,18 +115,7 @@
         </tbody>
     </table>
     <div class="box">
-        <table>
-            <tr>
-                <td>
-                    <a href="{{ path('app_ct_app_imprimable_proces_verbal_visite', {'id': id}) }}" class="btn btn-danger"><i class="fa fa-book" aria-hidden="true"></i> Imprimer</a>
-                </td>
-                <td width="50px">
-                </td>
-                <td>
-                    <a href="{{ path('app_ct_app_visite_modification_visite', {'search-immatriculation': immatriculation}) }}" class="btn btn-primary"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
-                </td>        
-            </tr>    
-        </table>
+        <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
     </div>
 {{ form_end(form_visite) }}
 {% endblock %}

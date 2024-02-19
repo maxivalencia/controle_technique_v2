@@ -555,7 +555,8 @@ class CtAppReceptionController extends AbstractController
             }
         }
 
-        $form_reception = $this->createForm(CtReceptionReceptionType::class, $ctReception, ['centre' => $this->getUser()->getCtCentreId()]);
+        //$form_reception = $this->createForm(CtReceptionReceptionType::class, $ctReception, ['centre' => $this->getUser()->getCtCentreId()]);
+        $form_reception = $this->createForm(CtReceptionReceptionDisableType::class, $ctReception, ["disabled" => true]);
         $form_reception->handleRequest($request);
 
         if ($form_reception->isSubmitted() && $form_reception->isValid()) {
@@ -602,26 +603,112 @@ class CtAppReceptionController extends AbstractController
             $ctReception_new->setRcpGenere(intval($ctReception->getRcpGenere()));
             $ctReception_new->setRcpObservation($ctReception->getRcpObservation()." ");
 
-            $ctReceptionRepository->add($ctReception_new, true);
+            //$ctReceptionRepository->add($ctReception_new, true);
             $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.$date->format("Y"));
-            $ctReceptionRepository->add($ctReception_new, true);
+            //$ctReceptionRepository->add($ctReception_new, true);
 
-            if($ctReception->getId() != null && $ctReception->getId() < $ctReception_new->getId()){
+            /* if($ctReception->getId() != null && $ctReception->getId() < $ctReception_new->getId()){
                 $ctReception->setRcpIsActive(false);
 
                 $ctReceptionRepository->add($ctReception, true);
-            }
+            } */
 
             $message = "Réception modifier avec succes";
             $enregistrement_ok = true;
 
             // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
-            return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_isole', ["id" => $ctReception_new->getId()]);
+            return $this->redirectToRoute('app_ct_app_reception_reception_modification', ["id" => $ctReception->getId()]);
         }
         return $this->render('ct_app_reception/modification_reception.html.twig', [
             'form_reception' => $form_reception->createView(),
             'message' => $message,
             'enregistrement_ok' => $enregistrement_ok,
+            'boutton' => 'Modifier',
+        ]);
+    }
+
+    /**
+     * @Route("/reception_modification/{id}", name="app_ct_app_reception_reception_modification", methods={"GET", "POST"})
+     */
+    public function ReceptionModification(Request $request, int $id, CtTypeReceptionRepository $ctTypeReceptionRepository, CtRoleRepository $ctRoleRepository, CtReceptionRepository $ctReceptionRepository, CtVehiculeRepository $ctVehiculeRepository): Response
+    {
+        $ctReception = $ctReceptionRepository->findOneBy(["id" => $id]);
+        $ctVehicule = new CtVehicule();
+        $ctReception_new = new CtReception();
+        $message = "";
+        $enregistrement_ok = False;
+        
+
+        $form_reception = $this->createForm(CtReceptionReceptionType::class, $ctReception, ['centre' => $this->getUser()->getCtCentreId()]);
+        //$form_reception = $this->createForm(CtReceptionReceptionDisableType::class, $ctReception, ["disabled" => false]);
+        $form_reception->handleRequest($request);
+
+        if ($form_reception->isSubmitted() && $form_reception->isValid()) {
+            $ctVehicule->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
+            $ctVehicule->setCtMarqueId($ctReception->getCtVehiculeId()->getCtMarqueId());
+            $ctVehicule->setVhcCylindre($ctReception->getCtVehiculeId()->getVhcCylindre());
+            $ctVehicule->setVhcPuissance($ctReception->getCtVehiculeId()->getVhcPuissance());
+            $ctVehicule->setVhcPoidsVide($ctReception->getCtVehiculeId()->getVhcPoidsVide());
+            $ctVehicule->setVhcChargeUtile($ctReception->getCtVehiculeId()->getVhcChargeUtile());
+            $ctVehicule->setVhcNumSerie($ctReception->getCtVehiculeId()->getVhcNumSerie());
+            $ctVehicule->setVhcNumMoteur($ctReception->getCtVehiculeId()->getVhcNumMoteur());
+            $ctVehicule->setVhcLongueur($ctReception->getCtVehiculeId()->getVhcLongueur());
+            $ctVehicule->setVhcLargeur($ctReception->getCtVehiculeId()->getVhcLargeur());
+            $ctVehicule->setVhcHauteur($ctReception->getCtVehiculeId()->getVhcHauteur());
+            //$ctVehicule->setVhcCreated(new \DateTime());
+            $ctVehicule->setVhcCreated($ctReception->getCtVehiculeId()->getVhcCreated());
+            $ctVehicule->setVhcType($ctReception->getCtVehiculeId()->getVhcType());
+            $ctVehicule->setVhcPoidsTotalCharge($ctReception->getCtVehiculeId()->getVhcPoidsVide() + $ctReception->getCtVehiculeId()->getVhcChargeUtile());
+
+            $ctVehiculeRepository->add($ctVehicule, true);
+
+            $ctReception_new->setCtCentreId($this->getUser()->getCtCentreId());
+            $ctReception_new->setCtMotifId($ctReception->getCtMotifId());
+            $ctReception_new->setCtTypeReceptionId($ctReception->getCtTypeReceptionId());
+            $ctReception_new->setCtUserId($this->getUser());
+            $ctReception_new->setCtVerificateurId($ctReception->getCtVerificateurId());
+            $ctReception_new->setCtUtilisationId($ctReception->getCtUtilisationId());
+            $ctReception_new->setCtVehiculeId($ctVehicule);
+            $ctReception_new->setRcpMiseService($ctReception->getRcpMiseService());
+            $ctReception_new->setRcpImmatriculation($ctReception->getRcpImmatriculation());
+            $ctReception_new->setRcpProprietaire($ctReception->getRcpProprietaire());
+            $ctReception_new->setRcpProfession($ctReception->getRcpProfession());
+            $ctReception_new->setRcpAdresse($ctReception->getRcpAdresse());
+            $ctReception_new->setRcpNbrAssis($ctReception->getRcpNbrAssis());
+            $ctReception_new->setRcpNgrDebout($ctReception->getRcpNgrDebout());
+            $ctReception_new->setCtSourceEnergieId($ctReception->getCtSourceEnergieId());
+            $ctReception_new->setCtCarrosserieId($ctReception->getCtCarrosserieId());
+            $date = new \DateTime();
+            //$date = $date->format('Y-m-d');
+            //$ctReception_new->setRcpNumGroup($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctReception->getCtTypeReceptionId()->getTprcpLibelle().'/'.$date->format("Y"));
+            $ctReception_new->setRcpNumGroup($ctReception->getRcpNumGroup());
+            $ctReception_new->setRcpCreated($ctReception->getRcpCreated());
+            $ctReception_new->setCtGenreId($ctReception->getCtVehiculeId()->getCtGenreId());
+            $ctReception_new->setRcpIsActive(true);
+            $ctReception_new->setRcpGenere(intval($ctReception->getRcpGenere()));
+            $ctReception_new->setRcpObservation($ctReception->getRcpObservation()." modification de la reception, ID initial : ".$ctReception->getId().", date modification ".$date->format("d/m/Y"));
+
+            $ctReceptionRepository->add($ctReception_new, true);
+            $ctReception_new->setRcpNumPv($ctReception_new->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.'RECEP/'.$date->format("Y"));
+            $ctReceptionRepository->add($ctReception_new, true);
+
+            /* if($ctReception->getId() != null && $ctReception->getId() < $ctReception_new->getId()){
+                $ctReception->setRcpIsActive(false);
+
+                $ctReceptionRepository->add($ctReception, true);
+            } */
+
+            $message = "Réception modifier avec succes";
+            $enregistrement_ok = true;
+
+            // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
+            return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_isole', ["id" => $ctReception_new->getId(), "old" => $ctReception->getId()]);
+        }
+        return $this->render('ct_app_reception/modification_reception.html.twig', [
+            'form_reception' => $form_reception->createView(),
+            'message' => $message,
+            'enregistrement_ok' => $enregistrement_ok,
+            'boutton' => 'Enregistrer',
         ]);
     }
 
@@ -723,5 +810,53 @@ class CtAppReceptionController extends AbstractController
         /* return $this->render('ct_app_reception/index.html.twig', [
             'controller_name' => 'CtAppReceptionController',
         ]); */
+    }
+
+    /**
+     * @Route("/recapitulation_reception_isole/{id}/{old}", name="app_ct_app_reception_recapitulation_reception_isole", methods={"GET", "POST"})
+     */
+    public function RecapitulationReceptionModification(Request $request, int $id, int $old, CtVehiculeRepository $ctVehiculeRepository, CtReceptionRepository $ctReceptionRepository): Response
+    {
+        //récapitulation réception isolé
+        //$id = $request->query->get("id");
+        $identification = intval($id);
+        $reception = $ctReceptionRepository->findOneBy(["id" => $identification], ["id" => "DESC"]);
+        $vehicule = $ctVehiculeRepository->findOneBy(["id" => $reception->getCtVehiculeId()], ["id" => "DESC"]);
+        $reception_old = $ctReceptionRepository->findOneBy(["id" => $old], ["id" => "DESC"]);
+        $reception_old->setRcpIsActive(false);
+        $ctReceptionRepository->add($reception_old, true);
+        /* if($vehicule == null){
+            return $this->redirectToRoute('app_ct_app_reception_creer_reception_isole');
+        } */
+        $reception_data = ["id" => $identification,
+            "ct_genre_id" => $vehicule->getCtGenreId()->getGrLibelle(),
+            "ct_marque_id" => $vehicule->getCtMarqueId()->getMrqLibelle(),
+            "vhc_type" => $vehicule->getVhcType(),
+            "vhc_num_serie" => $vehicule->getVhcNumSerie(),
+            "vhc_num_moteur" => $vehicule->getVhcNumMoteur(),
+            "ct_carrosserie_id" => $reception->getCtCarrosserieId()->getCrsLibelle(),
+            "ct_source_energie_id" => $reception->getCtSourceEnergieId()->getSreLibelle(),
+            "vhc_cylindre" => $vehicule->getVhcCylindre(),
+            "vhc_puissance" => $vehicule->getVhcPuissance(),
+            "vhc_poids_vide" => $vehicule->getVhcPoidsVide(),
+            "vhc_charge_utile" => $vehicule->getVhcChargeUtile(),
+            "vhc_poids_total_charge" => $vehicule->getVhcPoidsTotalCharge(),
+            "vhc_longueur" => $vehicule->getVhcLongueur(),
+            "vhc_largeur" => $vehicule->getVhcLargeur(),
+            "vhc_hauteur" => $vehicule->getVhcHauteur(),
+            "ct_utilisation_id" => $reception->getCtUtilisationId()->getUtLibelle(),
+            "ct_motif_id" => $reception->getCtMotifId()->getMtfLibelle(),
+            "rcp_immatriculation" => $reception->getRcpImmatriculation(),
+            "rcp_proprietaire" => $reception->getRcpProprietaire(),
+            "rcp_profession" => $reception->getRcpProfession(),
+            "rcp_adresse" => $reception->getRcpAdresse(),
+            "rcp_nbr_assis" => $reception->getRcpNbrAssis(),
+            "rcp_ngr_debout" => $reception->getRcpNgrDebout(),
+            "rcp_mise_service" => $reception->getRcpMiseService(),
+            "ct_verificateur_id" => $reception->getCtVerificateurId()->getUsrNom(),
+        ];
+        return $this->render('ct_app_reception/recapitulation_reception_isole.html.twig', [
+            'reception' => $reception_data,
+        ]);
     }
 }
