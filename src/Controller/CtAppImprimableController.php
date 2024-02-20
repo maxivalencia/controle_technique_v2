@@ -36,6 +36,11 @@ use App\Entity\CtGenreCategorie;
 use App\Entity\CtVisite;
 use App\Entity\CtMarque;
 use App\Entity\CtUser;
+use App\Entity\CtImprimeTech;
+use App\Form\CtImprimeTechType;
+use App\Entity\CtBordereau;
+use App\Form\CtBordereauType;
+use App\Repository\CtBordereauRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -2860,6 +2865,225 @@ class CtAppImprimableController extends AbstractController
      * @Route("/proces_verbal_visite_modification/{id}", name="app_ct_app_imprimable_proces_verbal_visite_modification", methods={"GET", "POST"})
      */
     public function ProcesVerbalVisiteModification(Request $request, int $id, CtVehiculeRepository $ctVehiculeRepository, CtUsageRepository $ctUsageRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageTarifRepository $ctUsageTarifRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    {
+        $visite = $ctVisiteRepository->findOneBy(["id" => $id], ["id" => "DESC"]);
+        $carte_grise = $visite->getCtCarteGriseId();
+        $vehicule = $carte_grise->getCtVehiculeId();
+        $vst = [
+            "centre" => $visite->getCtCentreId()->getCtrNom(),
+            "province" => $visite->getCtCentreId()->getCtProvinceId()->getPrvNom(),
+            "pv" => $visite->getVstNumPv(),
+            "date" => $visite->getVstCreated(),
+            "nom" => $carte_grise->getCgNom().' '.$carte_grise->getCgPrenom(),
+            "adresse" => $carte_grise->getCgAdresse(),
+            "telephone" => $carte_grise->getCgPhone(),
+            "profession" => $carte_grise->getCgProfession(),
+            "immatriculation" => $carte_grise->getCgImmatriculation(),
+            "marque" => $vehicule->getCtMarqueId(),
+            "commune" => $carte_grise->getCgCommune(),
+            "genre" => $vehicule->getCtGenreId(),
+            "type" => $vehicule->getVhcType(),
+            "carrosserie" => $carte_grise->getCtCarrosserieId(),
+            "source_energie" => $carte_grise->getCtSourceEnergieId(),
+            "puissance" => $carte_grise->getCgPuissanceAdmin(),
+            "num_serie" => $vehicule->getVhcNumSerie(),
+            "nbr_assise" => $carte_grise->getCgNbrAssis(),
+            "nbr_debout" => $carte_grise->getCgNbrDebout(),
+            "num_moteur" => $vehicule->getVhcNumMoteur(),
+            "ptac" => $vehicule->getVhcPoidsTotalCharge(),
+            "pav" => $vehicule->getVhcPoidsVide(),
+            "cu" => $vehicule->getVhcChargeUtile(),
+            "annee_mise_circulation" => $carte_grise->getCgMiseEnService(),
+            "usage" => $visite->getCtUsageId(),
+            "carte_violette" => $carte_grise->getCgNumCarteViolette(),
+            "date_carte" => $carte_grise->getCgDateCarteViolette(),
+            "licence" => $carte_grise->getCgNumVignette(),
+            "date_licence" => $carte_grise->getCgDateVignette(),
+            "patente" => $carte_grise->getCgPatente(),
+            "ani" => $carte_grise->getCgAni(),
+            "aptitude" => $visite->isVstIsApte() ? "APTE" : "INAPTE",
+            "verificateur" => $visite->getCtVerificateurId(),
+            "operateur" => $visite->getCtUserId(),
+            "validite" => $visite->getVstDateExpiration(),
+            "reparation" => $visite->getVstDureeReparation(),
+        ];
+        $type_visite = $visite->getCtTypeVisiteId();
+
+        $visite->setVstGenere($visite->getVstGenere() + 1);
+        $ctVisiteRepository->add($visite, true);
+
+        $pdfOptions = new Options();
+        $pdfOptions->set('isRemoteEnabled', true);
+        $pdfOptions->setIsRemoteEnabled(true);
+        $pdfOptions->setIsPhpEnabled(true);
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
+
+        $date = new \DateTime();
+        $logo = file_get_contents($this->getParameter('logo').'logo.txt');
+        if($visite->isVstIsContreVisite()){
+            $dossier = $this->getParameter('dossier_visite_contre')."/".$type_visite."/".$this->getUser()->getCtCentreId()->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+            if (!file_exists($dossier)) {
+                mkdir($dossier, 0777, true);
+            }
+        } else {
+            $dossier = $this->getParameter('dossier_visite_premiere')."/".$type_visite."/".$this->getUser()->getCtCentreId()->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+            if (!file_exists($dossier)) {
+                mkdir($dossier, 0777, true);
+            }
+        }
+        // teste date, comparaison avant utilisation rcp_num_group
+        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        $dateDeploiement = $deploiement->getAttribut();
+        $autreTva = $ctAutreRepository->findOneBy(["nom" => "TVA"]);
+        $prixTva = $autreTva->getAttribut();
+        $autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
+        $prixTimbre = $autreTimbre->getAttribut();
+        $timbre = floatval($prixTimbre);
+        $nombreReceptions = 0;
+        $totalDesDroits = 0;
+        $totalDesPrixPv = 0;
+        $totalDesTVA = 0;
+        $totalDesTimbres = 0;
+        $totalDesPrixCartes = 0;
+        $totalDesPrixCarnets = 0;
+        $montantTotal = 0;
+        
+        $tarif = 0;
+        
+        $liste = $visite;
+        $usage = $liste->getCtUsageId();
+        $tarif = 0;
+        $prixPv = 0;
+        $carnet = 0;
+        $carte = 0;
+        $tva = 0;
+        $montant = 0;
+        $aptitude = "Inapte";
+        $listes_autre = $liste->getVstExtra();
+        $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
+        $utilisation = $liste->getCtUtilisationId();
+        if($utilisation != $utilisationAdministratif){
+            $type_visite_id = $visite->getCtTypeVisiteId();
+            $usage_tarif = $ctUsageTarifRepository->findOneBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
+            $tarif = $usage_tarif->getUsgTrfPrix();
+            $pvId = $ctImprimeTechRepository->findOneBy(["id" => 12]);
+            $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
+            foreach($arretePvTarif as $apt){
+                $arretePrix = $apt->getCtArretePrixId();
+                if($liste->isVstIsContreVisite() == false){
+                    //if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
+                    // secours fotsiny  new date time fa mila atao daten'ilay pv no tena izy
+                    if(new \DateTime() >= $arretePrix->getArtDateApplication()){
+                        if($liste->isVstIsApte() == true){
+                            $prixPv = $apt->getVetPrix();
+                        } else {
+                            $prixPv = 2 * $apt->getVetPrix();
+                        }
+                        break;
+                    }
+                }
+            }
+            foreach($listes_autre as $autre){
+                $vet = $ctVisiteExtraTarifRepository->findOneBy(["ct_imprime_tech_id" => $autre->getId()], ["vet_annee" => "DESC"]);
+                if($autre->getId() == 1){
+                    $carnet = $carnet + $vet->getVetPrix();
+                } else {
+                    $carte = $carte + $vet->getVetPrix();
+                }
+            }
+
+            $droit = $tarif + $prixPv + $carnet + $carte;
+            $tva = ($droit * floatval($prixTva)) / 100;
+            $montant = $droit + $tva + $timbre;
+
+            $nombreReceptions = $nombreReceptions + 1;
+            $totalDesDroits = $totalDesDroits + $tarif;
+            $totalDesPrixPv = $totalDesPrixPv + $prixPv;
+            $totalDesTVA = $totalDesTVA + $tva;
+            $totalDesTimbres = $totalDesTimbres + $timbre;
+            $montantTotal = $montantTotal + $montant;
+            $totalDesPrixCartes = $totalDesPrixCartes + $carte;
+            $totalDesPrixCarnets = $totalDesPrixCarnets + $carnet;
+        }
+        //}
+        if($visite->isVstIsContreVisite()){
+            $html = $this->renderView('ct_app_imprimable/pv_modification_visite_contre.html.twig', [
+                'logo' => $logo,
+                'date' => $date,
+                'total_des_droits' => $tarif,
+                'total_des_prix_pv' => $prixPv,
+                'total_des_tht' => $tarif + $prixPv + $carnet + $carte,
+                'total_des_tva' => $tva,
+                'total_des_timbres' => $timbre,
+                'total_des_carnets' => $carnet,
+                'total_des_cartes' => $carte,
+                'montant_total' => $montant,
+                'ct_visite' => $vst,
+            ]);
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $output = $dompdf->output();
+            $filename = "PROCES_VERBAL_MODIFICATION_".$id."_CONTRE_VISITE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+            file_put_contents($dossier.$filename, $output);
+            $dompdf->stream("PROCES_VERBAL_MODIFICATION_".$id."_CONTRE_VISITE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+                "Attachment" => true,
+            ]);
+        } elseif($visite->isVstIsApte()) {
+            $html = $this->renderView('ct_app_imprimable/pv_modification_visite_premiere.html.twig', [
+                'logo' => $logo,
+                'date' => $date,
+                'total_des_droits' => $tarif,
+                'total_des_prix_pv' => $prixPv,
+                'total_des_tht' => $tarif + $prixPv + $carnet + $carte,
+                'total_des_tva' => $tva,
+                'total_des_timbres' => $timbre,
+                'total_des_carnets' => $carnet,
+                'total_des_cartes' => $carte,
+                'montant_total' => $montant,
+                'ct_visite' => $vst,
+            ]);
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $output = $dompdf->output();
+            $filename = "PROCES_VERBAL_MODIFICATION_".$id."_VISITE_APTE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+            file_put_contents($dossier.$filename, $output);
+            $dompdf->stream("PROCES_VERBAL_MODIFICATION_".$id."_VISITE_APTE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+                "Attachment" => true,
+            ]);
+        } else {
+            $html = $this->renderView('ct_app_imprimable/proces_verbal_visite_inapte.html.twig', [
+                'logo' => $logo,
+                'date' => $date,
+                'total_des_droits' => $tarif,
+                'total_des_prix_pv' => $prixPv,
+                'total_des_tht' => $tarif + $prixPv + $carnet + $carte,
+                'total_des_tva' => $tva,
+                'total_des_timbres' => $timbre,
+                'total_des_carnets' => $carnet,
+                'total_des_cartes' => $carte,
+                'montant_total' => $montant,
+                'ct_visite' => $vst,
+                'visite' => $visite,
+            ]);
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            $output = $dompdf->output();
+            $filename = "PROCES_VERBAL_MODIFICATION_".$id."_VISITE_INAPTE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
+            file_put_contents($dossier.$filename, $output);
+            $dompdf->stream("PROCES_VERBAL_MODIFICATION_".$id."_VISITE_INAPTE_".$carte_grise->getCgImmatriculation()."_".$type_visite."_".$this->getUser()->getCtCentreId()->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+                "Attachment" => true,
+            ]);
+        }
+    }
+
+    /**
+     * @Route("/bordereau_envoi/{numero}", name="app_ct_app_imprimable_bordereau_envoi", methods={"GET", "POST"})
+     */
+    public function BordereauEnvoi(Request $request, string $numero)//: Response
     {
         $visite = $ctVisiteRepository->findOneBy(["id" => $id], ["id" => "DESC"]);
         $carte_grise = $visite->getCtCarteGriseId();

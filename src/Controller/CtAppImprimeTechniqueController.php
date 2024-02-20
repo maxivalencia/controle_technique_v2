@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\CtImprimeTech;
 use App\Form\CtImprimeTechType;
 use App\Repository\CtImprimeTechRepository;
+use App\Entity\CtBordereau;
+use App\Form\CtBordereauType;
+use App\Repository\CtBordereauRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -110,20 +113,36 @@ class CtAppImprimeTechniqueController extends AbstractController
     /**
      * @Route("/rechercher_bordereau", name="app_ct_app_imprime_technique_rechercher_bordereau", methods={"GET", "POST"})
      */
-    public function RechercherBordereau(): Response
+    public function RechercherBordereau(Request $request, CtBordereauRepository $ctBordereauRepository): Response
     {
+        $total = 0;
+        $numero = "";
+        if($request->request->get('numero')){
+            $numero = $request->request->get('numero');
+        }
+        if($request->query->get('numero')){
+            $numero = $request->query->get('numero');
+        }
+        $ct_bordereaux = $ctBordereauRepository->findBy(["bl_numero" => $numero], ["id" => "DESC"]);
+        $total =  count($ct_bordereaux);
         return $this->render('ct_app_imprime_technique/recherche_bordereau.html.twig', [
-            'controller_name' => 'CtAppImprimeTechniqueController',
+            'ct_bordereaus' => $ct_bordereaux,
+            'total' => $total,
+            'numero' => $numero,
         ]);
     }
 
     /**
      * @Route("/liste_bordereau", name="app_ct_app_imprime_technique_liste_bordereau", methods={"GET", "POST"})
      */
-    public function ListeBordereau(): Response
+    public function ListeBordereau(CtBordereauRepository $ctBordereauRepository): Response
     {
+        //$ct_bordereaux = $ctBordereauRepository->findAll();
+        $ct_bordereaux = $ctBordereauRepository->findBy([], ["id" => "DESC"]);
+        $total = count($ct_bordereaux);
         return $this->render('ct_app_imprime_technique/liste_bordereau.html.twig', [
-            'controller_name' => 'CtAppImprimeTechniqueController',
+            'ct_bordereaus' => $ct_bordereaux,
+            'total' => $total,
         ]);
     }
 

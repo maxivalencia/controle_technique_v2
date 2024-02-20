@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rechercher Bordereau{% endblock %}
+
+{% block app_ct %}
+<div class="box">
+    <div class="box-header">RECHERCHER BORDEREAU</div><br>
+</div>
+<div class="box">
+    <div class="entete-formulaire">Recherche</div><br>
+    <div>
+        <table class="table" style="width:100%;">
+            <tbody>
+                <tr>
+                    <td style="width:100%;">
+                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_imprime_technique_rechercher_bordereau') }}">
+                            <div class="">
+                                <strong>Numéro du bordereau :</strong><br>
+                                <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
+                                <input type="text" name="numero" id="numero" class="form-control" placeholder="numéro du bordereau...">
+                                <br>
+                                <button class="btn btn-primary" type="submit" style="float:right">
+                                    Rechercher
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="box">
+    <div class="entete-formulaire">Liste des imprimés dans le bordereau</div><br>
+    <div>
+        <div class="marge-elts">
+            <table class="table liste">
+                <thead>
+                    <tr>
+                        {# <th>Id</th> #}
+                        <th>Date</th>
+                        <th>Numéro bordereau</th>
+                        <th>Nom centre</th>
+                        <th>Nom IT</th>
+                        <th>Unité</th>
+                        <th>Numéro IT</th>
+                        <th>Reférence demande</th>
+
+                        {# <th>début numéro</th>
+                        <th>fin numéro</th>
+                        <th>created_at</th>
+                        <th>updated_at</th>
+                        <th>Reférence</th>
+                        <th>Date reférencer</th>
+                        <th>observation</th> #}
+                        {# <th>actions</th> #}
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ct_bordereau in ct_bordereaus %}
+                    <tr>
+                        {# <td>{{ ct_bordereau.id }}</td> #}
+                        <td>{{ ct_bordereau.blCreatedAt ? ct_bordereau.blCreatedAt|date('d/m/Y') : '' }}</td>
+                        <td>{{ ct_bordereau.blNumero }}</td>
+                        <td>{{ ct_bordereau.ctCentreId }}</td>
+                        <td>{{ ct_bordereau.ctImprimeTechId }}</td>
+                        <td>{{ ct_bordereau.ctImprimeTechId.uteImprimeTech }}</td>
+                        <td>{{ ct_bordereau.blDebutNumero }} à {{ ct_bordereau.blFinNumero }}</td>
+                        <td>{{ ct_bordereau.refExpr }}</td>
+                        {# <td>{{ ct_bordereau.blDebutNumero }}</td>
+                        <td>{{ ct_bordereau.blFinNumero }}</td>
+                        <td>{{ ct_bordereau.blCreatedAt ? ct_bordereau.blCreatedAt|date('d/m/Y') : '' }}</td>
+                        <td>{{ ct_bordereau.blUpdatedAt ? ct_bordereau.blUpdatedAt|date('d/m/Y') : '' }}</td>
+                        <td>{{ ct_bordereau.refExpr }}</td>
+                        <td>{{ ct_bordereau.dateRefExpr ? ct_bordereau.dateRefExpr|date('d/m/Y') : '' }}</td>
+                        <td>{{ ct_bordereau.blObservation }}</td> #}
+                        {# <td>
+                            <a href="{{ path('app_ct_bordereau_show', {'id': ct_bordereau.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                            <a href="{{ path('app_ct_bordereau_edit', {'id': ct_bordereau.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </td> #}
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="box">
+    {# <a href="{{ path('app_ct_app_imprimable_bordereau_envoi', {'numero' : numero }) }}" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Imprimer</a> #}
+    <a href="#" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Imprimer</a>
+</div>
+{% endblock %}
