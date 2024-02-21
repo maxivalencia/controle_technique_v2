@@ -67,8 +67,8 @@ class CtAppImprimeTechniqueController extends AbstractController
                     $imprime_tech_use->setItuUsed(0);
                     $imprime_tech_use->setActivedAt($date);
                     $imprime_tech_use->setItuIsVisible(1);
-                    var_dump($imprime_tech_use);
-                    //$$ctImprimeTechUseRepository->add($imprime_tech_use, true);
+                    //var_dump($imprime_tech_use);
+                    $ctImprimeTechUseRepository->add($imprime_tech_use, true);
                 }
             }
         }
