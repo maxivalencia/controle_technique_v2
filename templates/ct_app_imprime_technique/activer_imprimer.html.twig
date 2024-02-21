@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activer Bordereau{% endblock %}
+
+{% block app_ct %}
+
+<div class="box">
+    <div class="box-header">TOTAL BORDEREAU : {{ total }}</div><br>
+    <div>
+        {# <div>
+            <a href="{{ path('app_ct_app_imprime_technique_creer_bordereau') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Activer un bordereau</a>
+        </div> #}
+        <div class="marge-elts">
+            <table class="table liste">
+                <thead>
+                    <tr>
+                        {# <th>Id</th> #}
+                        <th>Date</th>
+                        <th>Numéro bordereau</th>
+                        <th>Nom centre</th>
+                        <th>Nom IT</th>
+                        <th>Unité</th>
+                        <th>Numéro IT</th>
+                        <th>Reférence demande</th>
+
+                        {# <th>début numéro</th>
+                        <th>fin numéro</th>
+                        <th>created_at</th>
+                        <th>updated_at</th>
+                        <th>Reférence</th>
+                        <th>Date reférencer</th>
+                        <th>observation</th> #}
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ct_bordereau in ct_bordereaus %}
+                    <tr>
+                        {# <td>{{ ct_bordereau.id }}</td> #}
+                        <td>{{ ct_bordereau.blCreatedAt ? ct_bordereau.blCreatedAt|date('d/m/Y') : '' }}</td>
+                        <td>{{ ct_bordereau.blNumero }}</td>
+                        <td>{{ ct_bordereau.ctCentreId }}</td>
+                        <td>{{ ct_bordereau.ctImprimeTechId }}</td>
+                        <td>{{ ct_bordereau.ctImprimeTechId.uteImprimeTech }}</td>
+                        <td>{{ ct_bordereau.blDebutNumero }} à {{ ct_bordereau.blFinNumero }}</td>
+                        <td>{{ ct_bordereau.refExpr }}</td>
+                        {# <td>{{ ct_bordereau.blDebutNumero }}</td>
+                        <td>{{ ct_bordereau.blFinNumero }}</td>
+                        <td>{{ ct_bordereau.blCreatedAt ? ct_bordereau.blCreatedAt|date('d/m/Y') : '' }}</td>
+                        <td>{{ ct_bordereau.blUpdatedAt ? ct_bordereau.blUpdatedAt|date('d/m/Y') : '' }}</td>
+                        <td>{{ ct_bordereau.refExpr }}</td>
+                        <td>{{ ct_bordereau.dateRefExpr ? ct_bordereau.dateRefExpr|date('d/m/Y') : '' }}</td>
+                        <td>{{ ct_bordereau.blObservation }}</td> #}
+                        <td>
+                            <a href="{{ path('app_ct_app_imprime_technique_activer_imprimer', {'id': ct_bordereau.id}) }}" class="btn btn-danger"> Activer</a>
+                            {# <a href="{{ path('app_ct_bordereau_show', {'id': ct_bordereau.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                            <a href="{{ path('app_ct_bordereau_edit', {'id': ct_bordereau.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a> #}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {# <div>
+            <a href="{{ path('app_ct_app_imprime_technique_creer_bordereau') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Créer un bordereau</a>
+        </div> #}
+    </div>
+</div>
+{% endblock %}
