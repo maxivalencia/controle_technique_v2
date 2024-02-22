@@ -17,6 +17,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\Entity\CtCentre;
 
 /**
  * @Route("/ct_app_imprime_technique")
@@ -89,10 +97,64 @@ class CtAppImprimeTechniqueController extends AbstractController
     /**
      * @Route("/liste_utiliser", name="app_ct_app_imprime_technique_liste_utiliser", methods={"GET", "POST"})
      */
-    public function ListeUtiliser(): Response
+    public function ListeUtiliser(Request $request, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
     {
+        $form_feuille_utilisation = $this->createFormBuilder()
+            ->add('date', DateType::class, [
+                'label' => 'Séléctionner la date',
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'datetimepicker',
+                    'style' => 'width:100%;',
+                ],
+                'data' => new \DateTime('now'),
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_feuille_utilisation->handleRequest($request);
+        $form_situation_de_stock = $this->createFormBuilder()
+            ->add('date', DateType::class, [
+                'label' => 'Séléctionner la date',
+                'widget' => 'single_text',
+                'attr' => [
+                    'class' => 'datetimepicker',
+                    'style' => 'width:100%;',
+                ],
+                'data' => new \DateTime('now'),
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_situation_de_stock->handleRequest($request);
+
+        $date = new \DateTime();
+        $date_du_jour = $date->format("Y-m-d");
+        $liste_imprimer_utiliser = $ctImprimeTechUseRepository->findBy(["ct_centre_id" => $this->getUser()->getCtCentreId(), "itu_used" => 1, "created_at" => $date]);
         return $this->render('ct_app_imprime_technique/liste_utiliser.html.twig', [
-            'controller_name' => 'CtAppImprimeTechniqueController',
+            'ct_imprime_tech_uses' => $liste_imprimer_utiliser ,
+            'form_feuille_utilisation' => $form_feuille_utilisation->createView(),
+            'form_situation_de_stock' => $form_situation_de_stock->createView(),
         ]);
     }
 
@@ -132,7 +194,6 @@ class CtAppImprimeTechniqueController extends AbstractController
     public function ListeImprimer(CtImprimeTechRepository $ctImprimeTechRepository): Response
     {
         return $this->render('ct_app_imprime_technique/liste_imprimer.html.twig', [
-            'controller_name' => 'CtAppImprimeTechniqueController',
             'ct_imprime_teches' => $ctImprimeTechRepository->findAll(),
         ]);
     }
@@ -210,8 +271,8 @@ class CtAppImprimeTechniqueController extends AbstractController
             $ctBordereau_new->setBlCreatedAt(new \DateTime());
             $ctBordereauRepository->add($ctBordereau, true);
             $numeroBordereau = $ctBordereau_new->getBlNumero();
-            
-            // eto no ametrahana ny 
+
+            // eto no ametrahana ny filtre sao dia misy doublon ny imprimer angatahana amin'ny bordereau
 
             //return $this->redirectToRoute('app_ct_bordereau_index', [], Response::HTTP_SEE_OTHER);
         }
