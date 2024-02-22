@@ -7,6 +7,7 @@ use App\Form\CtImprimeTechType;
 use App\Repository\CtImprimeTechRepository;
 use App\Entity\CtImprimeTechUse;
 use App\Form\CtImprimeTechUseType;
+use App\Form\CtImprimeTechUseDisableType;
 use App\Repository\CtImprimeTechUseRepository;
 use App\Entity\CtBordereau;
 use App\Form\CtBordereauType;
@@ -174,10 +175,40 @@ class CtAppImprimeTechniqueController extends AbstractController
     /**
      * @Route("/mise_a_jour_utilisation", name="app_ct_app_imprime_technique_mise_a_jour_utilisation", methods={"GET", "POST"})
      */
-    public function MiseAJourUtilisation(): Response
+    public function MiseAJourUtilisation(Request $request, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
     {
+        $ct_imprime_tech = new CtImprimeTech();
+        $form_recherche = $this->createFormBuilder()
+            ->add('numero_imprime_tech', TextType::class, [
+                'label' => 'Par numéro d\'imprimé technique',
+            ])
+            ->add('ct_imprime_tech_id', EntityType::class, [
+                'label' => 'Type d\'imprimé technique',
+                'class' => CtImprimeTech::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_recherche->handleRequest($request);
+
+        if ($form_recherche->isSubmitted() && $form_recherche->isValid()) {
+            $imprime_technique_id = $form_recherche['ct_imprime_tech_id'];
+            $numero_imprime_technique = $form_recherche['numero_imprime_tech'];
+
+            $ct_imprime_tech = $ctImprimeTechUseRepository->findOneBy(["ct_imprime_tech_id" => $imprime_technique_id, "itu_numero" => $numero_imprime_technique, "itu_used" => 0]);
+        }
+
+        $form_constatation = $this->createForm(CtImprimeTechUseDisableType::class, $ct_imprime_tech, ["disable" => true]);
+        $form_constatation->handleRequest($request);
         return $this->render('ct_app_imprime_technique/mise_a_jour_utilisation.html.twig', [
-            'controller_name' => 'CtAppImprimeTechniqueController',
+            'form_recherche' => $form_recherche->createView(),
+            'form_constatation' => $form_constatation->createView(),
         ]);
     }
 

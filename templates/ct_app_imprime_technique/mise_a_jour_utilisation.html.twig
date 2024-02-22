@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des imprimés utilisés{% endblock %}
+
+{% block app_ct %}
+<div class="box">
+    <div class="box-header">IMPRIME UTILISER</div><br>
+</div>
+<table class="table" style="width:100%;">
+    <tbody>
+        <tr>
+            <td style="width:50%;">
+                <div class="box">
+                    <div class="entete-formulaire">Recherche</div><br>
+                    <div>
+                        {{ form_start(form_recherche) }}
+                            <table style="width:100%;">
+                                <tr style="width:100%;">
+                                    <td style="width:50%;">{{ form_row(form_recherche.ct_imprime_tech_id) }}</td>
+                                    <td style="width:50%;">{{ form_row(form_recherche.numero_imprime_tech) }}</td>
+                                </tr>
+                            </table>
+                            <button class="btn btn-success" type="submit" formaction="{{ path('app_ct_app_imprime_technique_mise_a_jour_utilisation') }}">
+                                Rechercher
+                            </button>
+                        {{ form_end(form_recherche) }}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="box">
+    <table>
+        <tr>
+            <td>
+                <a href="{{ path('app_ct_app_imprime_technique_liste_utiliser') }}" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Retour à la liste</a>
+            </td>
+            <td>
+                <a href="{{ path('app_ct_app_imprime_technique_mise_a_jour_multiple') }}" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Retour à l'ajout multiple</a>
+            </td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

@@ -25,7 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 class CtVisiteVisiteDisableType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
-    {        
+    {
         $disable = $options["disable"];
         $immatriculation = $options["immatriculation"];
         $builder
