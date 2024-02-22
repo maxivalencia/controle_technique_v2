@@ -41,6 +41,19 @@
     </tbody>
 </table>
 <div class="box">
+    <table>
+        <tr>
+            <td>
+                <a href="#" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Retour à la recherche</a>
+            </td>
+            <td>
+                <a href="#" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Retour à l'ajout multiple</a>
+            </td>
+            <td>
+                <a href="#" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Listes des non utilisés</a>
+            </td>
+        </tr>
+    </table>
 </div>
 <div class="box">
     <div class="entete-formulaire">Liste des imprimés dans le bordereau</div><br>
@@ -49,15 +62,8 @@
             <table class="table liste">
                 <thead>
                     <tr>
-                        {# <th>Id</th> #}
                         <th>N° controle / N° enregistrement</th>
                         <th>N° IT</th>
-                        {# <th>utilisé</th> #}
-                        {# <th>Actived_at</th>
-                        <th>Created_at</th>
-                        <th>Updated_at</th>
-                        <th>observation</th>
-                        <th>est visible</th> #}
                         <th>IT</th>
                         <th>Motif utilisation</th>
                         <th>actions</th>
@@ -66,20 +72,13 @@
                 <tbody>
                 {% for ct_imprime_tech_use in ct_imprime_tech_uses %}
                     <tr>
-                        {# <td>{{ ct_imprime_tech_use.id }}</td> #}
                         <td>{{ ct_imprime_tech_use.ctControleId }}</td>
                         <td>{{ ct_imprime_tech_use.ituNumero }}</td>
-                        {# <td>{{ ct_imprime_tech_use.ituUsed ? 'Oui' : 'Non' }}</td> #}
-                        {# <td>{{ ct_imprime_tech_use.activedAt ? ct_imprime_tech_use.activedAt|date('d/m/Y H:i:s') : '' }}</td>
-                        <td>{{ ct_imprime_tech_use.createdAt ? ct_imprime_tech_use.createdAt|date('d/m/Y H:i:s') : '' }}</td>
-                        <td>{{ ct_imprime_tech_use.updatedAt ? ct_imprime_tech_use.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
-                        <td>{{ ct_imprime_tech_use.ituObservation }}</td>
-                        <td>{{ ct_imprime_tech_use.ituIsVisible ? 'Oui' : 'Non' }}</td> #}
                         <td>{{ ct_imprime_tech_use.ct_imprime_tech_id }}</td>
                         <td>{{ ct_imprime_tech_use.ct_usage_it_id }}</td>
                         <td>
                             <a href="{{ path('app_ct_imprime_tech_use_show', {'id': ct_imprime_tech_use.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
-                            <a href="{{ path('app_ct_imprime_tech_use_edit', {'id': ct_imprime_tech_use.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            {# <a href="{{ path('app_ct_imprime_tech_use_edit', {'id': ct_imprime_tech_use.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a> #}
                         </td>
                     </tr>
                 {% else %}
@@ -92,8 +91,4 @@
         </div>
     </div>
 </div>
-{# <div class="box"> #}
-    {# <a href="{{ path('app_ct_app_imprimable_bordereau_envoi', {'numero' : numero }) }}" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Imprimer</a> #}
-    {# <a href="#" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Imprimer</a>
-</div> #}
 {% endblock %}

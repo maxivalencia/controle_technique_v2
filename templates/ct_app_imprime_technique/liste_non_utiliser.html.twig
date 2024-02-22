@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des imprimés non utilisés{% endblock %}
+
+{% block app_ct %}
+<div class="box">
+    <div class="box-header">IMPRIME NON UTILISER</div><br>
+</div>
+<div class="box">
+    <div class="entete-formulaire">Liste des imprimés dans le bordereau</div><br>
+    <div>
+        <div class="marge-elts">
+            <table class="table liste">
+                <thead>
+                    <tr>
+                        <th>N° controle / N° enregistrement</th>
+                        <th>N° IT</th>
+                        <th>IT</th>
+                        <th>Motif utilisation</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ct_imprime_tech_use in ct_imprime_tech_uses %}
+                    <tr>
+                        <td>{{ ct_imprime_tech_use.ctControleId }}</td>
+                        <td>{{ ct_imprime_tech_use.ituNumero }}</td>
+                        <td>{{ ct_imprime_tech_use.ct_imprime_tech_id }}</td>
+                        <td>{{ ct_imprime_tech_use.ct_usage_it_id }}</td>
+                        <td>
+                            <a href="{{ path('app_ct_imprime_tech_use_show', {'id': ct_imprime_tech_use.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
+                            {# <a href="{{ path('app_ct_imprime_tech_use_edit', {'id': ct_imprime_tech_use.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a> #}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="box">
+    <table>
+        <tr>
+            <td>
+                <a href="#" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i>  Retour à listes des utilisés</a>
+            </td>
+            <td>
+                <a href="#" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Retour à la recherche</a>
+            </td>
+            <td>
+                <a href="#" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Retour à l'ajout multiple</a>
+            </td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

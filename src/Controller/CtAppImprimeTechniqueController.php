@@ -161,10 +161,13 @@ class CtAppImprimeTechniqueController extends AbstractController
     /**
      * @Route("/liste_non_utiliser", name="app_ct_app_imprime_technique_liste_non_utiliser", methods={"GET", "POST"})
      */
-    public function ListeNonUtiliser(): Response
+    public function ListeNonUtiliser(Request $request, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
     {
+        $date = new \DateTime();
+        $date_du_jour = $date->format("Y-m-d");
+        $liste_imprimer_utiliser = $ctImprimeTechUseRepository->findBy(["ct_centre_id" => $this->getUser()->getCtCentreId(), "itu_used" => 1, "created_at" => $date]);
         return $this->render('ct_app_imprime_technique/liste_non_utiliser.html.twig', [
-            'controller_name' => 'CtAppImprimeTechniqueController',
+            'ct_imprime_tech_uses' => $liste_imprimer_utiliser ,
         ]);
     }
 
