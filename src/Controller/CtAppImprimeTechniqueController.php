@@ -204,11 +204,11 @@ class CtAppImprimeTechniqueController extends AbstractController
             $ct_imprime_tech = $ctImprimeTechUseRepository->findOneBy(["ct_imprime_tech_id" => $imprime_technique_id, "itu_numero" => $numero_imprime_technique, "itu_used" => 0]);
         }
 
-        $form_constatation = $this->createForm(CtImprimeTechUseDisableType::class, $ct_imprime_tech, ["disable" => true]);
-        $form_constatation->handleRequest($request);
+        $form_imprime_tech_use = $this->createForm(CtImprimeTechUseDisableType::class, $ct_imprime_tech, ["disable" => true]);
+        $form_imprime_tech_use->handleRequest($request);
         return $this->render('ct_app_imprime_technique/mise_a_jour_utilisation.html.twig', [
             'form_recherche' => $form_recherche->createView(),
-            'form_constatation' => $form_constatation->createView(),
+            'form_imprime_tech_use' => $form_imprime_tech_use->createView(),
         ]);
     }
 
