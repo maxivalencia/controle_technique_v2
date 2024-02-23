@@ -1,18 +1,45 @@
 <?php
 
 namespace App\Controller;
-
+use App\Repository\CtMotifTarifRepository;
+use App\Repository\CtReceptionRepository;
+use App\Repository\CtConstAvDedRepository;
+use App\Repository\CtConstAvDedCaracRepository;
+use App\Repository\CtConstAvDedTypeRepository;
+use App\Repository\CtVisiteRepository;
+use App\Repository\CtVisiteExtraRepository;
+use App\Repository\CtVisiteExtraTarifRepository;
+use App\Repository\CtTypeDroitPTACRepository;
+use App\Repository\CtAutreRepository;
+use App\Repository\CtTypeReceptionRepository;
+use App\Repository\CtDroitPTACRepository;
+use App\Repository\CtCentreRepository;
+use App\Repository\CtUtilisationRepository;
+use App\Repository\CtVehiculeRepository;
+use App\Repository\CtTypeVisiteRepository;
+use App\Repository\CtUsageTarifRepository;
+use App\Repository\CtUsageRepository;
+use App\Repository\CtUserRepository;
 use App\Entity\CtImprimeTech;
 use App\Form\CtImprimeTechType;
 use App\Repository\CtImprimeTechRepository;
 use App\Entity\CtImprimeTechUse;
 use App\Form\CtImprimeTechUseType;
 use App\Form\CtImprimeTechUseDisableType;
+use App\Form\CtImprimeTechUseMultipleType;
 use App\Repository\CtImprimeTechUseRepository;
 use App\Entity\CtBordereau;
 use App\Form\CtBordereauType;
 use App\Form\CtBordereauAjoutType;
 use App\Repository\CtBordereauRepository;
+use App\Controller\Datetime;
+use App\Entity\CtCentre;
+use App\Entity\CtTypeReception;
+use App\Entity\CtConstAvDedCarac;
+use App\Entity\CtGenreCategorie;
+use App\Entity\CtVisite;
+use App\Entity\CtMarque;
+use App\Entity\CtUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +52,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use App\Entity\CtCentre;
 
 /**
  * @Route("/ct_app_imprime_technique")
@@ -175,9 +201,10 @@ class CtAppImprimeTechniqueController extends AbstractController
     /**
      * @Route("/mise_a_jour_utilisation", name="app_ct_app_imprime_technique_mise_a_jour_utilisation", methods={"GET", "POST"})
      */
-    public function MiseAJourUtilisation(Request $request, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
+    public function MiseAJourUtilisation(Request $request, CtImprimeTechRepository $ctImprimeTechRepository, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
     {
-        $ct_imprime_tech = new CtImprimeTech();
+        $id = 0;
+        $ct_imprime_tech_use = new CtImprimeTechUse();
         $form_recherche = $this->createFormBuilder()
             ->add('numero_imprime_tech', TextType::class, [
                 'label' => 'Par numéro d\'imprimé technique',
@@ -197,17 +224,49 @@ class CtAppImprimeTechniqueController extends AbstractController
             ->getForm();
         $form_recherche->handleRequest($request);
 
-        if ($form_recherche->isSubmitted() && $form_recherche->isValid()) {
+        if($form_recherche->isSubmitted() && $form_recherche->isValid()) {
             $imprime_technique_id = $form_recherche['ct_imprime_tech_id'];
-            $numero_imprime_technique = $form_recherche['numero_imprime_tech'];
+            $numero_imprime_technique = 0;
+            $num_imp_tech = $request->request->get('form');
+            if($num_imp_tech['numero_imprime_tech'] != ""){
+                $numero_imprime_technique = intval($num_imp_tech['numero_imprime_tech']);
+                $imprime_technique_id = $num_imp_tech['ct_imprime_tech_id'];
+            }
 
-            $ct_imprime_tech = $ctImprimeTechUseRepository->findOneBy(["ct_imprime_tech_id" => $imprime_technique_id, "itu_numero" => $numero_imprime_technique, "itu_used" => 0]);
+            $ct_imprime_tech_use = $ctImprimeTechUseRepository->findOneBy(["ct_imprime_tech_id" => $imprime_technique_id, "itu_numero" => $numero_imprime_technique, "itu_used" => 0, "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+            $id = $ct_imprime_tech_use->getId();
         }
 
-        $form_imprime_tech_use = $this->createForm(CtImprimeTechUseDisableType::class, $ct_imprime_tech, ["disable" => true]);
-        $form_imprime_tech_use->handleRequest($request);
+        $form_imprime_tech_use = $this->createForm(CtImprimeTechUseDisableType::class, $ct_imprime_tech_use, ["disable" => true]);
+        $form_imprime_tech_use->handleRequest($request);       
+
         return $this->render('ct_app_imprime_technique/mise_a_jour_utilisation.html.twig', [
             'form_recherche' => $form_recherche->createView(),
+            'form_imprime_tech_use' => $form_imprime_tech_use->createView(),
+            'id' => $id,
+        ]);
+    }
+
+    /**
+     * @Route("/mise_a_jour_utilisation_effectif/{id}", name="app_ct_app_imprime_technique_mise_a_jour_utilisation_effectif", methods={"GET", "POST"})
+     */
+    public function MiseAJourUtilisationEffectif(Request $request, int $id, CtImprimeTechUse $ctImprimeTechUse, CtImprimeTechRepository $ctImprimeTechRepository, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
+    {
+        $ct_imprime_tech_use = $ctImprimeTechUseRepository->findOneBy(["id" => $id]);
+        $form_imprime_tech_use = $this->createForm(CtImprimeTechUseDisableType::class, $ct_imprime_tech_use, ["disable" => false]);
+        $form_imprime_tech_use->handleRequest($request);       
+
+        if($form_imprime_tech_use->isSubmitted() && $form_imprime_tech_use->isValid()) {
+            $ct_imprime_tech_use->setItuUsed(1);
+            $ct_imprime_tech_use->setCreatedAt(new \DateTime());
+            $ct_imprime_tech_use->setCtUserId($this->getUser());
+            if($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "VISITE"){
+                // Action raha visite dia makany makana ary ato anaty if no asiana ny redirection farany avy eo
+                //$visite = 
+            }
+            //if($ct_imprime_tech_use->getCtControleId())
+        }
+        return $this->render('ct_app_imprime_technique/mise_a_jour_utilisation_2.html.twig', [
             'form_imprime_tech_use' => $form_imprime_tech_use->createView(),
         ]);
     }
@@ -215,10 +274,25 @@ class CtAppImprimeTechniqueController extends AbstractController
     /**
      * @Route("/mise_a_jour_multiple", name="app_ct_app_imprime_technique_mise_a_jour_multiple", methods={"GET", "POST"})
      */
-    public function MiseAJourMultiple(): Response
+    public function MiseAJourMultiple(Request $request, CtImprimeTechRepository $ctImprimeTechRepository, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
     {
+        $ct_imprime_tech_use = new CtImprimeTechUse();
+        //$ct_imprime_tech_use = $ctImprimeTechUseRepository->findOneBy(["id" => $id]);
+        $form_imprime_tech_use = $this->createForm(CtImprimeTechUseMultipleType::class, $ct_imprime_tech_use);
+        $form_imprime_tech_use->handleRequest($request);       
+
+        if($form_imprime_tech_use->isSubmitted() && $form_imprime_tech_use->isValid()) {
+            $ct_imprime_tech_use->setItuUsed(1);
+            $ct_imprime_tech_use->setCreatedAt(new \DateTime());
+            $ct_imprime_tech_use->setCtUserId($this->getUser());
+            if($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "VISITE"){
+                // Action raha visite dia makany makana ary ato anaty if no asiana ny redirection farany avy eo
+                //$visite = 
+            }
+            //if($ct_imprime_tech_use->getCtControleId())
+        }
         return $this->render('ct_app_imprime_technique/mise_a_jour_multiple.html.twig', [
-            'controller_name' => 'CtAppImprimeTechniqueController',
+            'form_imprime_tech_use' => $form_imprime_tech_use->createView(),
         ]);
     }
 

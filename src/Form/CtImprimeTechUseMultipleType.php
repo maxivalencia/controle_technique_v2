@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\CtImprimeTechUse;
-use App\Entity\CtImprimeTech;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,11 +12,10 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use DateTime;
 
-class CtImprimeTechUseDisableType extends AbstractType
+class CtImprimeTechUseMultipleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $disable = $options["disable"];
         $visible = [
             'Oui' => true,
             'Non' => false
@@ -33,11 +31,19 @@ class CtImprimeTechUseDisableType extends AbstractType
         $builder
             ->add('ct_controle_id', null, [
                 'label' => 'N° controle / N° enregistrement',
-                'disabled' => $disable,
+                'disabled' => false,
             ])
             ->add('itu_numero', null, [
                 'label' => 'N° de l\'imprimé technique',
-                'disabled' => True,
+                'class' => CtImprimeTechUse::class,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'multi select',
+                    'multiple' => true,
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+                'disabled' => false,
             ])
             /* ->add('itu_used', ChoiceType::class, [
                 'label' => 'Imprimé technique utilisé',
@@ -72,23 +78,22 @@ class CtImprimeTechUseDisableType extends AbstractType
                 'label' => 'Est-visible',
                 'choices' => $visible,
             ]) */
-            ->add('ct_bordereau_id', null, [
+            /* ->add('ct_bordereau_id', null, [
                 'label' => 'Bordereau d\'envoi',
                 'disabled' => True,
-            ])
+            ]) */
             /* ->add('ct_centre_id', null, [
                 'label' => 'Centre',
             ]) */
-            ->add('ct_imprime_tech_id', null, [
+            /* ->add('ct_imprime_tech_id', null, [
                 'label' => 'Type imprimé technique',
-                'disabled' => True,
-            ])
+            ]) */
             /* ->add('ct_user_id', null, [
                 'label' => 'Utilisateur',
             ]) */
             ->add('ct_usage_it_id', null, [
                 'label' => 'Motif d\'utilisation IT',
-                'disabled' => $disable,
+                'disabled' => false,
             ])
         ;
     }
@@ -97,10 +102,6 @@ class CtImprimeTechUseDisableType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CtImprimeTechUse::class,
-            'disable' => false,
-        ]);
-        $resolver->setRequired([
-            'disable',
         ]);
     }
 }
