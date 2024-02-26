@@ -70,6 +70,7 @@ class CtImprimeTechUseRepository extends ServiceEntityRepository
     public function findByUtilisation($centre, $date): array
     {
         return $this->createQueryBuilder('c')
+            ->select('DISTINCT c.ct_controle_id')
             ->andWhere('c.ct_centre_id = :val1')
             ->andWhere('c.created_at LIKE :val2')
             ->setParameter('val1', $centre)

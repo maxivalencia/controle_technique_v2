@@ -3164,54 +3164,57 @@ class CtAppImprimableController extends AbstractController
             }
         }
         $imprime_technique_utiliser = $ctImprimeTechUseRepository->findByUtilisation($centre, $date_of_utilisation);
-        $numero = 0;
-        $utiliser_precedent=[
-            "numero" => "",
-            "reference_operation" => "",
-            "immatriculation" => "",
-            "motif" => "",
-            "pvo" => "",
-            "pvm" => "",
-            "pvmc" => "",
-            "pvmr" => "",
-            "ce" => "",
-            "cb" => "",
-            "cj" => "",
-            "cjbr" => "",
-            "cr" => "",
-            "cae" => "",
-            "cim_31" => "",
-            "cim_31_bis" => "",
-            "cim_32" => "",
-            "cim_32_bis" => "",
-            "plaque_chassis" => "",
-            "adm" => "",
-            "observation" => "",
-        ];
         foreach($imprime_technique_utiliser as $itu){
-            $numero = 0;
-            $utiliser=[
-                "numero" => "",
-                "reference_operation" => "",
-                "immatriculation" => "",
-                "motif" => "",
-                "pvo" => "",
-                "pvm" => "",
-                "pvmc" => "",
-                "pvmr" => "",
-                "ce" => "",
-                "cb" => "",
-                "cj" => "",
-                "cjbr" => "",
-                "cr" => "",
-                "cae" => "",
-                "cim_31" => "",
-                "cim_31_bis" => "",
-                "cim_32" => "",
-                "cim_32_bis" => "",
-                "plaque_chassis" => "",
+            $numero = 1;
+            $liste_controle = $ctImprimeTechUseRepository->findByUtilisationControle($centre, $date_of_utilisation, $itu->getCtControleId());
+            foreach($liste_controle as $lst_ctrl){
+                $it = $lst_ctrl->getCtImprimeTechId()->getId();
+                $utiliser_1=[
+                    "numero" => "-",
+                    "reference_operation" => "-",
+                    "immatriculation" => "-",
+                    "motif" => "-",
+                    "pvo" => $it == 12 ? $lst_ctrl->getItuNumero() : "-",
+                    "pvm" => $it == 13 ? $lst_ctrl->getItuNumero() : "-",
+                    "pvmc" => $it == 14 ? $lst_ctrl->getItuNumero() : "-",
+                    "pvmr" => $it == 15 ? $lst_ctrl->getItuNumero() : "-",
+                    "ce" => $it == 1 ? $lst_ctrl->getItuNumero() : "-",
+                    "cb" => $it == 2 ? $lst_ctrl->getItuNumero() : "-",
+                    "cj" => $it == 4 ? $lst_ctrl->getItuNumero() : "-",
+                    "cjbr" => $it == 5 ? $lst_ctrl->getItuNumero() : "-",
+                    "cr" => $it == 6 ? $lst_ctrl->getItuNumero() : "-",
+                    "cae" => $it == 7 ? $lst_ctrl->getItuNumero() : "-",
+                    "cim_31" => $it == 9 ? $lst_ctrl->getItuNumero() : "-",
+                    "cim_31_bis" => $it == 10 ? $lst_ctrl->getItuNumero() : "-",
+                    "cim_32" => $it == 11 ? $lst_ctrl->getItuNumero() : "-",
+                    "cim_32_bis" => $it == 3 ? $lst_ctrl->getItuNumero() : "-",
+                    "plaque_chassis" => $it == 8 ? $lst_ctrl->getItuNumero() : "-",
+                    "adm" => "",
+                    "observation" => "-",
+                ];
+            }
+            $utiliser_1=[
+                "numero" => "-",
+                "reference_operation" => "-",
+                "immatriculation" => "-",
+                "motif" => "-",
+                "pvo" => "-",
+                "pvm" => "-",
+                "pvmc" => "-",
+                "pvmr" => "-",
+                "ce" => "-",
+                "cb" => "-",
+                "cj" => "-",
+                "cjbr" => "-",
+                "cr" => "-",
+                "cae" => "-",
+                "cim_31" => "-",
+                "cim_31_bis" => "-",
+                "cim_32" => "-",
+                "cim_32_bis" => "-",
+                "plaque_chassis" => "-",
                 "adm" => "",
-                "observation" => "",
+                "observation" => "-",
             ];
 
             $utiliser_precedent = $utiliser;
