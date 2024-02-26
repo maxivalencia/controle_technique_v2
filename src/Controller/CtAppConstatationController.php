@@ -331,7 +331,7 @@ class CtAppConstatationController extends AbstractController
      */
     public function ListeConstatationAvantDedouanement(CtConstAvDedRepository $ctConstAvDedRepository): Response
     {
-        $ctConstatations = $ctConstAvDedRepository->findBy(["ct_centre_id" => $this->getUser()->getCtCentreId()], ["id" => "DESC"]);
+        $ctConstatations = $ctConstAvDedRepository->findBy(["ct_centre_id" => $this->getUser()->getCtCentreId(), "cad_created" => new \DateTime], ["id" => "DESC"]);
         $liste_des_constatations = new ArrayCollection();
         foreach($ctConstatations as $ctConstatation){
             $ctConst = [
@@ -564,6 +564,7 @@ class CtAppConstatationController extends AbstractController
             $enregistrement_ok = true;
 
             // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
+            return $this->redirectToRoute('app_ct_app_constatation_voir_constatation_avant_dedouanement_modification', ["id" => $ctConstatation_new->getId(), "old" => $ctConstatation->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('ct_app_constatation/modification_constatation.html.twig', [
@@ -582,6 +583,41 @@ class CtAppConstatationController extends AbstractController
         $ctConstAvDedCarac_noteDescriptive = new CtConstAvDedCarac();
         $ctConstAvDedCarac_carteGrise = new CtConstAvDedCarac();
         $ctConstAvDedCarac_corpsDuVehicule = new CtConstAvDedCarac();
+        foreach($ctConstAvDedCarac as $ctCADC){
+            if($ctCADC->getCtConstAvDedTypeId()->getId() == 1){
+                $ctConstAvDedCarac_carteGrise = $ctCADC;
+            }
+            if($ctCADC->getCtConstAvDedTypeId()->getId() == 2){
+                $ctConstAvDedCarac_corpsDuVehicule = $ctCADC;
+            }
+            if($ctCADC->getCtConstAvDedTypeId()->getId() == 3){
+                $ctConstAvDedCarac_noteDescriptive = $ctCADC;
+            }
+        }
+
+        return $this->render('ct_app_constatation/recapitulation_constatation.html.twig', [
+            'ct_const_av_ded' => $ctConstatation,
+            'ct_const_av_ded_carac_notice_descriptive' => $ctConstAvDedCarac_noteDescriptive,
+            'ct_const_av_ded_carac_carte_grise' => $ctConstAvDedCarac_carteGrise,
+            'ct_const_av_ded_carac_corps_du_vehicule' => $ctConstAvDedCarac_corpsDuVehicule,
+            'id' => $id,
+        ]);
+    }
+
+    /**
+     * @Route("/voir_constatation_avant_dedouanement_modification/{id}/{old}", name="app_ct_app_constatation_voir_constatation_avant_dedouanement_modification", methods={"GET", "POST"})
+     */
+    public function VoirConstataionAvantDedouanementModification(Request $request, int $id, int $old, CtConstAvDed $ctConstatation, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
+    {
+        //$ctConstatation = new CtConstAvDed();
+        $ctConstatation = $ctConstAvDedRepository->findOneBy(["id" => $id], ["id" => "DESC"]);
+        $ctConstAvDedCarac = $ctConstatation->getCtConstAvDedCarac();
+        $ctConstAvDedCarac_noteDescriptive = new CtConstAvDedCarac();
+        $ctConstAvDedCarac_carteGrise = new CtConstAvDedCarac();
+        $ctConstAvDedCarac_corpsDuVehicule = new CtConstAvDedCarac();
+        $ctConstatation_old = $ctConstAvDedRepository->findOneBy(["id" => $old]);
+        $ctConstatation_old->setCadIsActive(false);
+        $ctConstAvDedRepository->add($ctConstatation_old, true);
         foreach($ctConstAvDedCarac as $ctCADC){
             if($ctCADC->getCtConstAvDedTypeId()->getId() == 1){
                 $ctConstAvDedCarac_carteGrise = $ctCADC;

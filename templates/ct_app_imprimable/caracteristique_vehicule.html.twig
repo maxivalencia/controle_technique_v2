@@ -1,0 +1,273 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Caractéristique Véhicule</title>
+        <style>
+            html{margin:20px 20px 20px 20px;}
+            .footer{
+                position:fixed;
+                bottom:10px;
+                left:0px;
+                right:40px;
+                height:20px;
+                align:center;
+
+                /** Extra personal styles **/
+                width: 100%;
+                /* background-color: #03a9f4; */
+                color: black;
+                margin-right: 20px;
+                text-align: center;
+                line-height: 20px;
+            }
+            .footer .page-number:after { content: counter(page); }
+        </style>
+    </head>
+    <body style="font-size:10px;border:1px solid black;">
+        <div>
+            <table style="font-size:12px">
+                <tr>
+                    <td width="250" align="center" style="line-height:1em;">
+                        <strong>DIRECTION GENERALE DE LA SECURITE ROUTIERE</strong>
+                        <br>-----------------------------<br>
+                        <strong>DIRECTION DES OPERATIONS ROUTIERE</strong>
+                        <br>-----------------------------<br>
+                        <strong>
+                            CENTRE DE SECURITE ROUTIERE<br>
+                            {{ centre }} - {{ province }}
+                        </strong>
+                        <br>-----------------------------<br>
+                        {# <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png"> #}
+                        <img src="{{ logo }}" alt="logo" width="25px" height="25px" type="images/png">
+                        <br>« LAHITOKANA NY AINA » 
+                    </td>
+                    <td width="100" align="center" valign="bottom" style="font-size:12px;">
+                        <div align="center">
+                            <strong>
+                                {# ANNEXE IV<br>
+                                ---------------- #}
+                            </strong>
+                        </div>
+                    </td>
+                    <td width="200" align="center" valign="top" style="font-size:12px;">
+                        {% set trans_day_hash = { 
+                                "January": "Janvier", 
+                                "February": "Février", 
+                                "March": "Mars", 
+                                "April": "Avril", 
+                                "May": "Mai", 
+                                "June": "Juin", 
+                                "July": "Juillet",
+                                "August": "Août",
+                                "September": "Septembre",
+                                "October": "Octobre",
+                                "November": "Novembre",
+                                "December": "Décembre" 
+                            } 
+                        %}
+                        <strong>REPOBLIKAN’I MADAGASIKARA</strong><br>
+                        <i>Fitiavana - Tanindrazana - Fandrosoana</i>
+                        <br>--------------------------<br><br>
+                        {{ province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
+                        <br><br>--------------------------<br><br>
+                    </td>
+                </tr>
+            </table>
+            <div align="center" style="font-size:16px;border:0px solid black;">
+                <h2><u>RENSEIGNEMENT VEHICULE</u></h2>
+            </div>
+            <div align="center" style="font-size:14px;"><h2>Information sur le véhicule : {{ ct_carte_grise.cgImmatriculation }}</h2></div>
+            <div style="font-size:14px;">
+                <table class="table" align="left" style="padding:0;margin:0;font-size=10px;">
+                    <tbody style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th width="175px" style="text-align:left;vertical-align:top;padding:0;margin:0;">Date d'émission de la carte grise</th>
+                            <td width="2px" valign="top"> : </td>
+                            <td width="175px" style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgDateEmission|date('d') }} {{ trans_day_hash[ct_carte_grise.cgDateEmission|date('F')] }} {{ ct_carte_grise.cgDateEmission|date('Y') }}</td>
+                            <th width="175px" style="text-align:left;vertical-align:top;padding:0;margin:0;">Carrosserie</th>
+                            <td width="2px" valign="top"> : </td>
+                            <td width="175px" style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.ctCarrosserieId }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Centre</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.ctCentreId }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Source d'énergie</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.ctSourceEnergieId }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Véhicule identification</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.ctVehiculeId }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Nom du propriétaire</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgNom }} {{ ct_carte_grise.cgPrenom }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Téléphone du propriétaire</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgPhone }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Profession du propriétaire</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgProfession }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Adresse du propriétaire</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgAdresse }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Commune</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgCommune }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Nombre de place assise</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgNbrAssis }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Nombre de place débout</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgNbrDebout }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Puissance administrer</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgPuissanceAdmin }} Ch</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Date de mise en service</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgDateCarteViolette|date('d') }} {{ trans_day_hash[ct_carte_grise.cgDateCarteViolette|date('F')] }} {{ ct_carte_grise.cgDateCarteViolette|date('Y') }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Patente</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgPatente }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Ani</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgAni }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Révue technique automobile</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgRta }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Numéro de la carte violette</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgNumCarteViolette }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Date de la carte violette</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgDateCarteViolette|date('d') }} {{ trans_day_hash[ct_carte_grise.cgDateCarteViolette|date('F')] }} {{ ct_carte_grise.cgDateCarteViolette|date('Y') }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Lieu de la carte violette</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgLieuCarteViolette }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Numéro de licence</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgNumVignette }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Date de licence</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgDateVignette|date('d') }} {{ trans_day_hash[ct_carte_grise.cgDateVignette|date('F')] }} {{ ct_carte_grise.cgDateVignette|date('Y') }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Lieu de licence</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgLieuVignette }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Numéro d'immatriculation</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgImmatriculation }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Nom de la cooperative</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgNomCooperative }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Itineraire</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgItineraire }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Est transporteur</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgIsTransport ? 'Oui' : 'Non' }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Numéro d'identification</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ ct_carte_grise.cgNumIdentification }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Zone deserte</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{# {{ ct_carte_grise.cgZoneDesserteId }} #}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Genre du véhicule</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.ctGenreId }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Marque du véhicule</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.ctMarqueId }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Nombre de cylindre</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcCylindre }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Puissance du véhicule</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcPuissance }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Poids à vide</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcPoidsVide }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Charge utile</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcChargeUtile }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Hauteur du véhicule</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcHauteur }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Largeur du véhicule</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcLargeur }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Longueur du véhicule</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcLongueur }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Numéro de serie du véhicule</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcNumSerie }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Numéro du moteur</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcNumMoteur }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Provenance du véhicule</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcProvenance }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Type</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcType }}</td>
+                        </tr>
+                        <tr style="text-align:left;vertical-align:top;padding:0;margin:0;">
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;">Poids total à charge</th>
+                            <td valign="top"> : </td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;">{{ vehicule_identification.vhcPoidsTotalCharge }}</td>
+                            <th style="text-align:left;vertical-align:top;padding:0;margin:0;"></th>
+                            <td valign="top"></td>
+                            <td style="text-align:left;vertical-align:top;padding:0;margin:0;"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div align="center" style="margin-top:40px;margin-right:20px;margin-left:400px;font-size:12px;">
+                <strong>
+                    {{ province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}<br>
+                    <u>LE CHEF DE CENTRE</u>
+                </strong>
+            </div>
+            <div class="footer">
+                <span>Direction Générale de la Sécurité Routière BP 784 Alarobia Antananarivo NIF : 4001 089525 STAT : 71102 11 2006 0 043 19</span>
+            </div>
+        </div>
+    </body>
+</html>

@@ -20,10 +20,15 @@ class CtHistoriqueController extends AbstractController
     /**
      * @Route("/", name="app_ct_historique_index", methods={"GET"})
      */
-    public function index(CtHistoriqueRepository $ctHistoriqueRepository): Response
+    public function index(CtHistoriqueRepository $ctHistoriqueRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $ctHistoriqueRepository->findBy([], ["id" => "DESC"]), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            100/*limit per page*/
+        );
         return $this->render('ct_historique/index.html.twig', [
-            'ct_historiques' => $ctHistoriqueRepository->findAll(),
+            'ct_historiques' => $pagination,
         ]);
     }
 

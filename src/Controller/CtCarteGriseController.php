@@ -20,10 +20,15 @@ class CtCarteGriseController extends AbstractController
     /**
      * @Route("/", name="app_ct_carte_grise_index", methods={"GET"})
      */
-    public function index(CtCarteGriseRepository $ctCarteGriseRepository): Response
+    public function index(CtCarteGriseRepository $ctCarteGriseRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $ctCarteGriseRepository->findBy([], ["id" => "DESC"]), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            100/*limit per page*/
+        );
         return $this->render('ct_carte_grise/index.html.twig', [
-            'ct_carte_grises' => $ctCarteGriseRepository->findAll(),
+            'ct_carte_grises' => $pagination,
         ]);
     }
 

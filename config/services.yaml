@@ -18,6 +18,7 @@ parameters:
     dossier_fiche_de_controle_constatation: '%kernel.project_dir%/public/generated/fiche_de_controle/constatation/'
     dossier_fiche_verificateur: '%kernel.project_dir%/public/generated/fiche_verificateur/'
     dossier_liste_anomalie: '%kernel.project_dir%/public/generated/liste_anomalie/'
+    dossier_caracteristique: '%kernel.project_dir%/public/generated/caracteristique/cartegrise/'
     dossier_fiche_utilisation_imprime_technique: '%kernel.project_dir%/public/generated/fiche_utilisation_imprime_technique/'
 
 services:

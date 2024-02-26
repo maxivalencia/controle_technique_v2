@@ -20,10 +20,15 @@ class CtVisiteController extends AbstractController
     /**
      * @Route("/", name="app_ct_visite_index", methods={"GET"})
      */
-    public function index(CtVisiteRepository $ctVisiteRepository): Response
+    public function index(CtVisiteRepository $ctVisiteRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $ctVisiteRepository->findBy([], ["id" => "DESC"],[10,100]), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            100/*limit per page*/
+        );
         return $this->render('ct_visite/index.html.twig', [
-            'ct_visites' => $ctVisiteRepository->findAll(),
+            'ct_visites' => $pagination,
         ]);
     }
 

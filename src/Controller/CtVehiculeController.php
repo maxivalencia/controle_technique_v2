@@ -20,10 +20,15 @@ class CtVehiculeController extends AbstractController
     /**
      * @Route("/", name="app_ct_vehicule_index", methods={"GET"})
      */
-    public function index(CtVehiculeRepository $ctVehiculeRepository): Response
+    public function index(CtVehiculeRepository $ctVehiculeRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $ctVehiculeRepository->findBy([], ["id" => "DESC"]), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            100/*limit per page*/
+        );
         return $this->render('ct_vehicule/index.html.twig', [
-            'ct_vehicules' => $ctVehiculeRepository->findAll(),
+            'ct_vehicules' => $pagination,
         ]);
     }
 

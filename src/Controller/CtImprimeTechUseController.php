@@ -20,10 +20,15 @@ class CtImprimeTechUseController extends AbstractController
     /**
      * @Route("/", name="app_ct_imprime_tech_use_index", methods={"GET"})
      */
-    public function index(CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
+    public function index(CtImprimeTechUseRepository $ctImprimeTechUseRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $ctImprimeTechUseRepository->findBy([], ["id" => "DESC"]), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            100/*limit per page*/
+        );
         return $this->render('ct_imprime_tech_use/index.html.twig', [
-            'ct_imprime_tech_uses' => $ctImprimeTechUseRepository->findAll(),
+            'ct_imprime_tech_uses' => $pagination,
         ]);
     }
 

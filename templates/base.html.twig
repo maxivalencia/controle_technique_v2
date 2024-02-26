@@ -300,7 +300,7 @@
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
-                                    {% if is_granted("ROLE_ADMIN") %}
+                                    {# {% if is_granted("ROLE_ADMIN") %}
                                         <li class="nav-item">
                                             <a href="#" class="nav-link">
                                                 <i class="far fa-circle nav-icon"></i>
@@ -341,7 +341,7 @@
                                                 </li>
                                             </ul>
                                         </li>
-                                    {% endif %}
+                                    {% endif %} #}
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -535,18 +535,9 @@
                                         </ul>
                                         <ul class="nav nav-treeview" style="padding-left:5px;">
                                             <li class="nav-item">
-                                                {# <a href="{{ path('app_ct_app_visite_recherche_vehicule') }}" class="nav-link"> #}
-                                                <a href="#" class="nav-link">
+                                                <a href="{{ path('app_ct_app_visite_recherche_vehicule') }}" class="nav-link">
                                                     <i class="far fa-circle nav-icon"></i>
                                                     <p>Rechercher</p>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <ul class="nav nav-treeview" style="padding-left:5px;">
-                                            <li class="nav-item">
-                                                <a href="#" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>Caractéristique</p>
                                                 </a>
                                             </li>
                                         </ul>

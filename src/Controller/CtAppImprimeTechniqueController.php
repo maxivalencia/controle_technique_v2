@@ -250,7 +250,7 @@ class CtAppImprimeTechniqueController extends AbstractController
     /**
      * @Route("/mise_a_jour_utilisation_effectif/{id}", name="app_ct_app_imprime_technique_mise_a_jour_utilisation_effectif", methods={"GET", "POST"})
      */
-    public function MiseAJourUtilisationEffectif(Request $request, int $id, CtImprimeTechUse $ctImprimeTechUse, CtImprimeTechRepository $ctImprimeTechRepository, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
+    public function MiseAJourUtilisationEffectif(Request $request, int $id, CtAutreVenteRepository $ctAutreVenteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtVisiteRepository $ctVisiteRepository, CtImprimeTechUse $ctImprimeTechUse, CtImprimeTechRepository $ctImprimeTechRepository, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
     {
         $ct_imprime_tech_use = $ctImprimeTechUseRepository->findOneBy(["id" => $id]);
         $form_imprime_tech_use = $this->createForm(CtImprimeTechUseDisableType::class, $ct_imprime_tech_use, ["disable" => false]);
@@ -260,11 +260,33 @@ class CtAppImprimeTechniqueController extends AbstractController
             $ct_imprime_tech_use->setItuUsed(1);
             $ct_imprime_tech_use->setCreatedAt(new \DateTime());
             $ct_imprime_tech_use->setCtUserId($this->getUser());
+            $itu_utilisable = false;
             if($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "VISITE"){
-                // Action raha visite dia makany makana ary ato anaty if no asiana ny redirection farany avy eo
-                //$visite = 
+                $controle = $ctVisiteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                if($controle != null){
+                    $itu_utilisable = true;
+                }
+            }elseif($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "RECEPTION"){
+                $controle = $$ctReceptionRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                if($controle != null){
+                    $itu_utilisable = true;
+                }
+            }elseif($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "CONSTATATION"){
+                $controle = $ctConstAvDedRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                if($controle != null){
+                    $itu_utilisable = true;
+                }
+            }else{
+                $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                if($controle != null){
+                    $itu_utilisable = true;
+                }
             }
-            //if($ct_imprime_tech_use->getCtControleId())
+            // asiana même principe ny utilisation sasany rehetra
+            if($itu_utilisable == true){
+                $ctImprimeTechUseRepository->add($ct_imprime_tech_use, true);
+                return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_utilisation', [], Response::HTTP_SEE_OTHER);
+            }
         }
         return $this->render('ct_app_imprime_technique/mise_a_jour_utilisation_2.html.twig', [
             'form_imprime_tech_use' => $form_imprime_tech_use->createView(),
@@ -274,22 +296,52 @@ class CtAppImprimeTechniqueController extends AbstractController
     /**
      * @Route("/mise_a_jour_multiple", name="app_ct_app_imprime_technique_mise_a_jour_multiple", methods={"GET", "POST"})
      */
-    public function MiseAJourMultiple(Request $request, CtImprimeTechRepository $ctImprimeTechRepository, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
+    public function MiseAJourMultiple(Request $request, CtAutreVenteRepository $ctAutreVenteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtVisiteRepository $ctVisiteRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
     {
         $ct_imprime_tech_use = new CtImprimeTechUse();
         //$ct_imprime_tech_use = $ctImprimeTechUseRepository->findOneBy(["id" => $id]);
-        $form_imprime_tech_use = $this->createForm(CtImprimeTechUseMultipleType::class, $ct_imprime_tech_use);
+        $form_imprime_tech_use = $this->createForm(CtImprimeTechUseMultipleType::class, $ct_imprime_tech_use, ["centre" => $this->getUser()->getCtCentreId()]);
         $form_imprime_tech_use->handleRequest($request);       
 
         if($form_imprime_tech_use->isSubmitted() && $form_imprime_tech_use->isValid()) {
-            $ct_imprime_tech_use->setItuUsed(1);
-            $ct_imprime_tech_use->setCreatedAt(new \DateTime());
-            $ct_imprime_tech_use->setCtUserId($this->getUser());
-            if($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "VISITE"){
-                // Action raha visite dia makany makana ary ato anaty if no asiana ny redirection farany avy eo
-                //$visite = 
+            $itu_utilisable = false;
+            $ct_imprime_tech_use_get->setCtCarrosserieId($form_imprime_tech_use['ct_imprime_tech_use_multiple']['imprime_technique_use_numero']->getData());            
+            foreach($ct_imprime_tech_use_get as $ct_itu){
+                $ct_itu->setItuUsed(1);
+                $ct_itu->setCreatedAt(new \DateTime());
+                $ct_itu->setCtUserId($this->getUser());
+                $ct_itu->setCtControleId($ct_imprime_tech_use->getCtControleId());
+                if($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "VISITE"){                    
+                    $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                    $controle = $ctVisiteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                    if($controle != null){
+                        $itu_utilisable = true;
+                    }
+                }elseif($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "RECEPTION"){                    
+                    $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                    $controle = $ctReceptionRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                    if($controle != null){
+                        $itu_utilisable = true;
+                    }
+                }elseif($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "CONSTATATION"){                    
+                    $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                    $controle = $ctConstAvDedRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                    if($controle != null){
+                        $itu_utilisable = true;
+                    }
+                }else{                    
+                    $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                    $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                    if($controle != null){
+                        $itu_utilisable = true;
+                    }
+                }
+                // asiana même principe ny utilisation sasany rehetra
+                if($itu_utilisable == true){
+                    $ctImprimeTechUseRepository->add($ct_itu, true);
+                    return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_utilisation', [], Response::HTTP_SEE_OTHER);
+                }
             }
-            //if($ct_imprime_tech_use->getCtControleId())
         }
         return $this->render('ct_app_imprime_technique/mise_a_jour_multiple.html.twig', [
             'form_imprime_tech_use' => $form_imprime_tech_use->createView(),
@@ -377,7 +429,10 @@ class CtAppImprimeTechniqueController extends AbstractController
             $ctBordereau_new = $ctBordereau;
             $ctBordereau_new->setCtUserId($this->getUser());
             $ctBordereau_new->setBlCreatedAt(new \DateTime());
-            $ctBordereauRepository->add($ctBordereau, true);
+            $ct_bordereau_doublon = $ctBordereauRepository->findBordereauDoublon($ctBordereau->getCtImprimeTechId(), $ctBordereau->getBlDebutNumero(), $ctBordereau->getBlFinNumero());
+            if($ct_bordereau_doublon == null){
+                $ctBordereauRepository->add($ctBordereau, true);
+            }
             $numeroBordereau = $ctBordereau_new->getBlNumero();
 
             // eto no ametrahana ny filtre sao dia misy doublon ny imprimer angatahana amin'ny bordereau

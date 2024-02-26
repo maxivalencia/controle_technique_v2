@@ -1,0 +1,409 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Ct Historique du numéro {{ numero_de_serie }} {% endblock %}
+
+{% block app_ct %}
+    <div align="center"><img src="/dist/images/header.png" class="img-fluid" alt="Image en-tête de la DGSR"></div>
+    <div align="center"><h1>Ct Historique Véhicule</h1></div>
+
+    <div align="center">
+        <form method="GET" action="{{ path('ct_statistique') }}">
+            <input type="text" name="numero" id="numero" value="">
+            <input type="submit" class="btn" value="Rechercher" name="bouton" id="bouton">
+        </form>
+    </div>
+    {# <div align="center"><a href="{{ path('acceuil') }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"> Acceuil</i></a></div> #}
+    <div align="center" style="background-color:#1faccb;"><h2>Information sur le numéro : {{ numero_de_serie }}</h2></div>
+    
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Date d'émission de la carte grise</th>
+                <td> : {{ ct_carte_grise.cgDateEmission ? ct_carte_grise.cgDateEmission|date('d/m/Y') : '' }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Carosserie</th>
+                <td> : {{ ct_carte_grise.ctCarosserie }}</td>
+            </tr>
+            <tr>
+                <th>Centre</th>
+                <td> : {{ ct_carte_grise.ctCentre }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Source d'énergie</th>
+                <td> : {{ ct_carte_grise.ctSourceEnergie }}</td>
+            </tr>
+            <tr>
+                <th>Véhicule identification</th>
+                <td> : {{ ct_carte_grise.ctVehicule }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Nom du propriétaire</th>
+                <td> : {{ ct_carte_grise.cgNom }}</td>
+            </tr>
+            <tr>
+                <th>Prénom du propriétaire</th>
+                <td> : {{ ct_carte_grise.cgPrenom }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Profession du propriétaire</th>
+                <td> : {{ ct_carte_grise.cgProfession }}</td>
+            </tr>
+            <tr>
+                <th>Adresse du propriétaire</th>
+                <td> : {{ ct_carte_grise.cgAdresse }} <br> <strong>Telephone :</strong> {{ ct_carte_grise.cgPhone }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Commune</th>
+                <td> : {{ ct_carte_grise.cgCommune }}</td>
+            </tr>
+            <tr>
+                <th>Nombre de place assis</th>
+                <td> : {{ ct_carte_grise.cgNbrAssis }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Nombre de place débout</th>
+                <td> : {{ ct_carte_grise.cgNbrDebout }}</td>
+            </tr>
+            <tr>
+                <th>Puissance administrer</th>
+                <td> : {{ ct_carte_grise.cgPuissanceAdmin }} Ch</td>
+            {# </tr>
+            <tr> #}
+                <th>Date de mise en service</th>
+                <td> : {{ ct_carte_grise.cgMiseEnService ? ct_carte_grise.cgMiseEnService|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Patente</th>
+                <td> : {{ ct_carte_grise.cgPatente }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Ani</th>
+                <td> : {{ ct_carte_grise.cgAni }}</td>
+            </tr>
+            <tr>
+                <th>Révue technique automobile</th>
+                <td> : {{ ct_carte_grise.cgRta }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Numéro de la carte violette</th>
+                <td> : {{ ct_carte_grise.cgNumCarteViolette }}</td>
+            </tr>
+            <tr>
+                <th>Date de la carte violette</th>
+                <td> : {{ ct_carte_grise.cgDateCarteViolette ? ct_carte_grise.cgDateCarteViolette|date('d/m/Y') : '' }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Lieu de la carte violette</th>
+                <td> : {{ ct_carte_grise.cgLieuCarteViolette }}</td>
+            </tr>
+            <tr>
+                <th>Numéro de vignette</th>
+                <td> : {{ ct_carte_grise.cgNumVignette }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Date de vignette</th>
+                <td> : {{ ct_carte_grise.cgDateVignette ? ct_carte_grise.cgDateVignette|date('d/m/Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Lieu de vignette</th>
+                <td> : {{ ct_carte_grise.cgLieuVignette }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Numéro d'immatriculation</th>
+                <td> : {{ ct_carte_grise.cgImmatriculation }}</td>
+            </tr>
+            <tr>
+                <th>Nom de la cooperative</th>
+                <td> : {{ ct_carte_grise.cgNomCooperative }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Itineraire</th>
+                <td> : {{ ct_carte_grise.cgItineraire }}</td>
+            </tr>
+            <tr>
+                <th>Est transporteur</th>
+                <td> : {{ ct_carte_grise.cgIsTransport ? 'Oui' : 'Non' }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Numéro d'identification</th>
+                <td> : {{ ct_carte_grise.cgNumIdentification }}</td>
+            </tr>
+            <tr>
+                <th>Zone deserte</th>
+                <td> : {{ ct_carte_grise.cgZoneDeserte }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Genre du véhicule</th>
+                <td> : {{ vehicule_identification.ctGenre }}</td>
+            </tr>
+            <tr>
+                <th>Marque du véhicule</th>
+                <td> : {{ vehicule_identification.ctMarque }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Nombre de cylindre</th>
+                <td> : {{ vehicule_identification.vhcCylindre }}</td>
+            </tr>
+            <tr>
+                <th>Puissance du véhicule</th>
+                <td> : {{ vehicule_identification.vhcPuissance }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Poids à vide</th>
+                <td> : {{ vehicule_identification.vhcPoidsVide }}</td>
+            </tr>
+            <tr>
+                <th>Charge utile</th>
+                <td> : {{ vehicule_identification.vhcChargeUtile }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Hauteur du véhicule</th>
+                <td> : {{ vehicule_identification.vhcHauteur }}</td>
+            </tr>
+            <tr>
+                <th>Largeur du véhicule</th>
+                <td> : {{ vehicule_identification.vhcLargeur }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Longueur du véhicule</th>
+                <td> : {{ vehicule_identification.vhcLongueur }}</td>
+            </tr>
+            <tr>
+                <th>Numéro de serie du véhicule</th>
+                <td> : {{ vehicule_identification.vhcNumSerie }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Numéro du moteur</th>
+                <td>: {{ vehicule_identification.vhcNumMoteur }}</td>
+            </tr>
+            <tr>
+                <th>Provenance du véhicule</th>
+                <td> : {{ vehicule_identification.vhcProvenance }}</td>
+            {# </tr>
+            <tr> #}
+                <th>Type</th>
+                <td> : {{ vehicule_identification.vhcType }}</td>
+            </tr>
+            <tr>
+                <th>Poids total à charge</th>
+                <td> : {{ vehicule_identification.vhcPoidsTotalCharge }}</td>
+            {# </tr>
+            <tr> #}
+                <th></th>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <br><div align="center"><a href="{{ path('ct_pdf_historique', {'numero': ct_carte_grise.cgImmatriculation }) }}" class="btn btn-primary">Imprimer caractéristique</a></div><br>
+
+    <div align="center" style="background-color:#1faccb;"><h2>Constatation avant dédouanement</h2></div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Carosserie</th>
+                <th>Genre</th>
+                <th>Marque</th>
+                <th>Source d'energie</th>
+                <th>Cylindre</th>
+                <th>Puissance</th>
+                <th>Poids à Vide</th>
+                <th>Charge Utile</th>
+                <th>Hauteur</th>
+                <th>Largeur</th>
+                <th>Longueur</th>
+                <th>Numéro de SerieType</th>
+                <th>Numéro Moteur</th>
+                <th>Type Caractéristique</th>
+                <th>Poids Maximale</th>
+                <th>Poids Total à Charge</th>
+                <th>Première Circulation</th>
+                <th>Nombre Assis</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ct_const_av_ded_carac in ct_const_av_ded_caracs %}
+            <tr>
+                <td>{{ ct_const_av_ded_carac.ctCarosserie }}</td>
+                <td>{{ ct_const_av_ded_carac.ctGenre }}</td>
+                <td>{{ ct_const_av_ded_carac.ctMarque }}</td>
+                <td>{{ ct_const_av_ded_carac.ctSourceEnergie }}</td>
+                <td>{{ ct_const_av_ded_carac.cadCylindre }}</td>
+                <td>{{ ct_const_av_ded_carac.cadPuissance }}</td>
+                <td>{{ ct_const_av_ded_carac.cadPoidsVide }}</td>
+                <td>{{ ct_const_av_ded_carac.cadChargeUtile }}</td>
+                <td>{{ ct_const_av_ded_carac.cadHauteur }}</td>
+                <td>{{ ct_const_av_ded_carac.cadLargeur }}</td>
+                <td>{{ ct_const_av_ded_carac.cadLongueur }}</td>
+                <td>{{ ct_const_av_ded_carac.cadNumSerieType }}</td>
+                <td>{{ ct_const_av_ded_carac.cadNumMoteur }}</td>
+                <td>{{ ct_const_av_ded_carac.cadTypeCar }}</td>
+                <td>{{ ct_const_av_ded_carac.cadPoidsMaxima }}</td>
+                <td>{{ ct_const_av_ded_carac.cadPoidsTotalCharge }}</td>
+                <td>{{ ct_const_av_ded_carac.cadPremiereCircule }}</td>
+                <td>{{ ct_const_av_ded_carac.cadNbrAssis }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="14">Aucune constatation avant dédouanement trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if ct_const_av_deds %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Centre</th>
+                    <th>Vérificateur</th>
+                    <th>Provenance</th>
+                    <th>Divers</th>
+                    <th>Nom du propriétaire</th>
+                    <th>Adresse du Proprietaire</th>
+                    <th>Etat</th>
+                    <th>Sécurité personnel</th>
+                    <th>Sécurité marchandise</th>
+                    <th>Protection environnement</th>
+                    <th>Numéro</th>
+                    <th>Immatriculation</th>
+                    <th>Date d'embarquement</th>
+                    <th>Lieu d'embarquement</th>
+                    <th>Conforme</th>
+                    <th>Observation</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for ct_const_av_ded in ct_const_av_deds %}
+                <tr>
+                    <td>{{ ct_const_av_ded.ctCentre }}</td>
+                    <td>{{ ct_const_av_ded.ctVerificateur }}</td>
+                    <td>{{ ct_const_av_ded.cadProvenance }}</td>
+                    <td>{{ ct_const_av_ded.cadDivers }}</td>
+                    <td>{{ ct_const_av_ded.cadProprietaireNom }}</td>
+                    <td>{{ ct_const_av_ded.cadProprietaireAdresse }}</td>
+                    <td>{{ ct_const_av_ded.cadBonEtat ? 'Bon' : 'Mauvais' }}</td>
+                    <td>{{ ct_const_av_ded.cadSecPers ? 'Oui' : 'Non' }}</td>
+                    <td>{{ ct_const_av_ded.cadSecMarch ? 'Oui' : 'Non' }}</td>
+                    <td>{{ ct_const_av_ded.cadProtecEnv ? 'Oui' : 'Non' }}</td>
+                    <td>{{ ct_const_av_ded.cadNumero }}</td>
+                    <td>{{ ct_const_av_ded.cadImmatriculation }}</td>
+                    <td>{{ ct_const_av_ded.cadDateEmbarquement ? ct_const_av_ded.cadDateEmbarquement|date('d/m/Y') : '' }}</td>
+                    <td>{{ ct_const_av_ded.cadLieuEmbarquement }}</td>
+                    <td>{{ ct_const_av_ded.cadConforme ? 'Oui' : 'Non' }}</td>
+                    <td>{{ ct_const_av_ded.cadObservation }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="14">Aucune constatation avant dédouanement trouvée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>        
+    {% endif %}
+
+    <div align="center" style="background-color:#1faccb;"><h2>Liste des réceptions effectuée</h2></div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Numéro PV</th>
+                <th>Centre</th>
+                <th>Motif</th>
+                <th>Type de reception</th>
+                <th>Secrétaire</th>
+                <th>Utilisation</th>
+                <th>Numéro de serie</th>
+                <th>Date de mise en service</th>
+                <th>Immatriculation</th>
+                <th>Propriétaire</th>
+                <th>Profession</th>
+                <th>Adresse</th>
+                <th>Nombre de place assis</th>
+                <th>Nombre de place debout</th>
+                <th>Numéro PV détail</th>
+                <th>Source d'énergie</th>
+                <th>Carosserie</th>
+                {# <th>Numéro du Groupe</th> #}
+                <th>Date de réception</th>
+                <th>Genre</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reception in receptions %}
+            <tr>
+                <td>{{ reception.id }}</td>
+                <td>{{ reception.ctCentre }}</td>
+                <td>{{ reception.ctMotif }}</td>
+                <td>{{ reception.ctTypeReception }}</td>
+                <td>{{ reception.ctUser }}</td>
+                <td>{{ reception.ctUtilisation }}</td>
+                <td>{{ reception.ctVehicule }}</td>
+                <td>{{ reception.rcpMiseService ? reception.rcpMiseService|date('d/m/Y') : '' }}</td>
+                <td>{{ reception.rcpImmatriculation }}</td>
+                <td>{{ reception.rcpProprietaire }}</td>
+                <td>{{ reception.rcpProfession }}</td>
+                <td>{{ reception.rcpAdresse }}</td>
+                <td>{{ reception.rcpNbrAssis }}</td>
+                <td>{{ reception.rcpNbrDebout }}</td>
+                <td>{{ reception.rcpNumPv }}</td>
+                <td>{{ reception.ctSourceEnergie }}</td>
+                <td>{{ reception.ctCarosserie }}</td>
+                {# <td>{{ reception.rcpNumGroup }}</td> #}
+                <td>{{ reception.rcpCreated ? reception.rcpCreated|date('d/m/Y') : '' }}</td>
+                <td>{{ reception.ctGenre }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="19">Aucune reception trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div align="center" style="background-color:#1faccb;"><h2>Liste des visites effectuée</h2></div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Numéro PV</th>
+                <th>Centre</th>
+                <th>Type de visite</th>
+                <th>Usage</th>
+                <th>Secrétaire</th>
+                <th>Vérificateur</th>
+                <th>Numéro PV détail</th>
+                <th>Date d'éxpiration</th>
+                <th>Date de visite</th>
+                <th>Utilisation</th>
+                <th>Aptitude de la visite</th>
+                <th>Mode de Visite</th>
+                <th>Durée de réparation</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for visite in visites %}
+            <tr>
+                <td>{{ visite.id }}</td>
+                <td>{{ visite.ctCentre }}</td>
+                <td>{{ visite.ctTypeVisite }}</td>
+                <td>{{ visite.ctUsage }}</td>
+                <td>{{ visite.ctUser }}</td>
+                <td>{{ visite.ctVerificateur }}</td>
+                <td>{{ visite.vstNumPv }}</td>
+                <td>{{ visite.vstDateExpiration ? visite.vstDateExpiration|date('d/m/Y') : '' }}</td>
+                <td>{{ visite.vstCreated ? visite.vstCreated|date('d/m/Y') : '' }}</td>
+                <td>{{ visite.ctUtilisation }}</td>
+                <td>{{ visite.vstIsApte ? 'Apte' : 'Inapte' }}</td>
+                <td>{{ visite.vstIsContreVisite ? 'Contre visite' : 'Visite normale' }}</td>
+                <td>{{ visite.vstDureeReparation }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">Aucune visite trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

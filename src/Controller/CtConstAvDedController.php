@@ -20,10 +20,15 @@ class CtConstAvDedController extends AbstractController
     /**
      * @Route("/", name="app_ct_const_av_ded_index", methods={"GET"})
      */
-    public function index(CtConstAvDedRepository $ctConstAvDedRepository): Response
+    public function index(CtConstAvDedRepository $ctConstAvDedRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $ctConstAvDedRepository->findBy([], ["id" => "DESC"]), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            100/*limit per page*/
+        );
         return $this->render('ct_const_av_ded/index.html.twig', [
-            'ct_const_av_deds' => $ctConstAvDedRepository->findAll(),
+            'ct_const_av_deds' => $pagination,
         ]);
     }
 

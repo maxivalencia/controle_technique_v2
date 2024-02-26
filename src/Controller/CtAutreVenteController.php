@@ -20,10 +20,15 @@ class CtAutreVenteController extends AbstractController
     /**
      * @Route("/", name="app_ct_autre_vente_index", methods={"GET"})
      */
-    public function index(CtAutreVenteRepository $ctAutreVenteRepository): Response
+    public function index(CtAutreVenteRepository $ctAutreVenteRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $ctAutreVenteRepository->findBy([], ["id" => "DESC"]), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            100/*limit per page*/
+        );
         return $this->render('ct_autre_vente/index.html.twig', [
-            'ct_autre_ventes' => $ctAutreVenteRepository->findAll(),
+            'ct_autre_ventes' => $pagination,
         ]);
     }
 

@@ -20,10 +20,15 @@ class CtConstAvDedCaracController extends AbstractController
     /**
      * @Route("/", name="app_ct_const_av_ded_carac_index", methods={"GET"})
      */
-    public function index(CtConstAvDedCaracRepository $ctConstAvDedCaracRepository): Response
+    public function index(CtConstAvDedCaracRepository $ctConstAvDedCaracRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $ctConstAvDedCaracRepository->findBy([], ["id" => "DESC"]), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            100/*limit per page*/
+        );
         return $this->render('ct_const_av_ded_carac/index.html.twig', [
-            'ct_const_av_ded_caracs' => $ctConstAvDedCaracRepository->findAll(),
+            'ct_const_av_ded_caracs' => $pagination,
         ]);
     }
 

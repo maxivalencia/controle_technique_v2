@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Repository\CtImprimeTechUseRepository;
 use App\Entity\CtImprimeTechUse;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -10,12 +11,14 @@ use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use DateTime;
 
 class CtImprimeTechUseMultipleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $this->centre = $options["centre"];
         $visible = [
             'Oui' => true,
             'Non' => false
@@ -33,9 +36,18 @@ class CtImprimeTechUseMultipleType extends AbstractType
                 'label' => 'N° controle / N° enregistrement',
                 'disabled' => false,
             ])
-            ->add('itu_numero', null, [
+            ->add('imprime_technique_use_numero', EntityType::class, [
                 'label' => 'N° de l\'imprimé technique',
                 'class' => CtImprimeTechUse::class,
+                'query_builder' => function(CtImprimeTechUseRepository $ctImprimeTechUseRepository){
+                    $qb = $ctImprimeTechUseRepository->createQueryBuilder('u');
+                    return $qb
+                        ->Where('u.itu_used = :val1')
+                        ->andWhere('u.ct_centre_id = :val2')
+                        ->setParameter('val1', 0)
+                        ->setParameter('val2', $this->centre)
+                    ;
+                },
                 'multiple' => true,
                 'attr' => [
                     'class' => 'multi select',
@@ -43,6 +55,7 @@ class CtImprimeTechUseMultipleType extends AbstractType
                     'data-live-search' => true,
                     'data-select' => true,
                 ],
+                'mapped' => false,
                 'disabled' => false,
             ])
             /* ->add('itu_used', ChoiceType::class, [
@@ -102,6 +115,9 @@ class CtImprimeTechUseMultipleType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CtImprimeTechUse::class,
+        ]);
+        $resolver->setRequired([
+            'centre',
         ]);
     }
 }

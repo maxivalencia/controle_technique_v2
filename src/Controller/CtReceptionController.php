@@ -20,10 +20,15 @@ class CtReceptionController extends AbstractController
     /**
      * @Route("/", name="app_ct_reception_index", methods={"GET"})
      */
-    public function index(CtReceptionRepository $ctReceptionRepository): Response
+    public function index(CtReceptionRepository $ctReceptionRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $ctReceptionRepository->findBy([], ["id" => "DESC"]), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            100/*limit per page*/
+        );
         return $this->render('ct_reception/index.html.twig', [
-            'ct_receptions' => $ctReceptionRepository->findAll(),
+            'ct_receptions' => $pagination,
         ]);
     }
 

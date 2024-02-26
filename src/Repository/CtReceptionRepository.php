@@ -67,25 +67,20 @@ class CtReceptionRepository extends ServiceEntityRepository
     /**
      * @return CtHistoriqueType[] Returns an array of CtHistoriqueType objects
      */
-    public function findByFicheDeControle($value1, $value2, $value3): array
+    public function findByFicheDeControle($type, $centre, $date): array
     {
+        //$date_request = new \DateTime($date->format('Y-m-d'));
         return $this->createQueryBuilder('c')
             ->andWhere('c.ct_type_reception_id = :val1')
             ->andWhere('c.ct_centre_id = :val2')
-            //->andWhere('c.rcp_created BETWEEN :val3 AND :val4')
             ->andWhere('c.rcp_created LIKE :val3')
-            ->andWhere('c.rcp_created LIKE :val4')
-            ->andWhere('c.rcp_created LIKE :val5')
-            ->setParameter('val1', $value1)
-            ->setParameter('val2', $value2)
-            ->setParameter('val3', '%'.$value3->format('Y-').'%')
-            ->setParameter('val4', '%'.$value3->format('-d-').'%')
-            ->setParameter('val5', '%'.$value3->format('-m').'%')
-            //->setParameter('val3', '%'.strtotime($value3).'%')
-            //->setParameter('val3', $value3->format('Y-d-m').' 00:00:00')
-            //->setParameter('val4', $value3->format('Y-d-m').' 23:59:59')
+            //->andWhere('c.rcp_is_active = :val4')
+            ->setParameter('val1', $type)
+            ->setParameter('val2', $centre)
+            //->setParameter('val3', '%'.$date->format('Y-m-d').'%')
+            ->setParameter('val3', '%'.$date->format('Y-d-m').'%')
+            //->setParameter('val4', 1)
             ->orderBy('c.id', 'ASC')
-            //->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;

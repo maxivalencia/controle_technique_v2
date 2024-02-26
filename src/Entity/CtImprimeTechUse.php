@@ -249,6 +249,6 @@ class CtImprimeTechUse
     */
     public function __toString()
     {
-        return $this->getItuNumero().' '.$this->getCtImprimeTechId();
+        return $this->getCtImprimeTechId().' -> '.$this->getItuNumero();
     }
 }

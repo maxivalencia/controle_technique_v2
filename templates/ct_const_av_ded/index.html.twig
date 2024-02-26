@@ -5,7 +5,7 @@
 {% block body %}
     <div class="box-header">Liste Constatation</div><br>
 
-    <table class="table liste">
+    <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -63,9 +63,9 @@
         </tbody>
     </table>
 
-    {# <div class="navigation">
+    <div class="navigation">
         {{ knp_pagination_render(ct_const_av_deds) }}
-    </div> #}
+    </div>
 
     <a href="{{ path('app_ct_const_av_ded_new') }}" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
 {% endblock %}

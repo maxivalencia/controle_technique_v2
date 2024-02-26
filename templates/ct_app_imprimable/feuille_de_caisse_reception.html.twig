@@ -1,7 +1,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Fiche de controle isole</title>
+        <title>Feuille de caisse réception technique</title>
         <style>
             html{margin:20px 20px 20px 20px;}
             #footer{
@@ -87,7 +87,7 @@
             {% for ct_reception in ct_receptions %}
                 <tr>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.controle_pv }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.motif }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.motif }}<br>{{ ct_reception.motif_ptac }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.genre }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.immatriculation }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.droit|number_format(0, ',', ' ') }}</td>

@@ -20,10 +20,15 @@ class CtBordereauController extends AbstractController
     /**
      * @Route("/", name="app_ct_bordereau_index", methods={"GET"})
      */
-    public function index(CtBordereauRepository $ctBordereauRepository): Response
+    public function index(CtBordereauRepository $ctBordereauRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $pagination = $paginator->paginate(
+            $ctBordereauRepository->findBy([], ["id" => "DESC"]), /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            100/*limit per page*/
+        );
         return $this->render('ct_bordereau/index.html.twig', [
-            'ct_bordereaus' => $ctBordereauRepository->findAll(),
+            'ct_bordereaus' => $pagination,
         ]);
     }
 

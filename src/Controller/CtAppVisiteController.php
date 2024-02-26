@@ -296,12 +296,12 @@ class CtAppVisiteController extends AbstractController
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
 
-        //if($ctCarteGrise == null){
-        if(is_null($ctCarteGrise)){
+        if($ctCarteGrise == null){
+        //if(is_null($ctCarteGrise)){
             $ctCarteGrise = new CtCarteGrise();
         }
-        //if($ctCarteGrise->getId() == null){
-        if(is_null($ctCarteGrise)){
+        if($ctCarteGrise->getId() == null){
+        //if(is_null($ctCarteGrise)){
             $form_carte_grise = $this->createForm(CtRensCarteGriseType::class, $ctCarteGrise, ["disable" => true]);
         }else{
             $form_carte_grise = $this->createForm(CtRensCarteGriseType::class, $ctCarteGrise, ["disable" => false]);
@@ -406,6 +406,80 @@ class CtAppVisiteController extends AbstractController
             }
         }
         return $this->render('ct_app_visite/mutation_vehicule.html.twig', [
+            'ct_carte_grise' => $ctCarteGrise,
+            'form_carte_grise' => $form_carte_grise->createView(),
+            'message' => $message,
+            'enregistrement_ok' => $enregistrement_ok,
+            'immatriculation' => $immatriculation,
+        ]);
+    }
+
+    /**
+     * @Route("/recherche_vehicule", name="app_ct_app_visite_recherche_vehicule", methods={"GET", "POST"})
+     */
+    public function RechercheVehicule(Request $request, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
+    {
+        $ctCarteGrise = new CtCarteGrise();
+        $ctCarteGrise_new = new CtCarteGrise();
+        $ctVehicule = new CtVehicule();
+        $immatriculation = '';
+        if($request->request->get('search-immatriculation')){
+            $recherche = strtoupper($request->request->get('search-immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+        if($request->request->get('search-numero-serie')){
+            $recherche = strtoupper($request->request->get('search-numero-serie'));
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+        if($request->request->get('search-identification')){
+            $recherche = strtoupper($request->request->get('search-identification'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+        if($request->query->get('search-immatriculation')){
+            $recherche = strtoupper($request->query->get('search-immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+        if($request->query->get('search-numero-serie')){
+            $recherche = $request->query->get('search-numero-serie');
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+        if($request->query->get('search-identification')){
+            $recherche = $request->query->get('search-identification');
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $immatriculation = $ctCarteGrise->getCgImmatriculation();
+        }
+
+        if($ctCarteGrise == null){
+            $ctCarteGrise = new CtCarteGrise();
+        }
+        $form_carte_grise = $this->createForm(CtRensCarteGriseType::class, $ctCarteGrise, ["disable" => true]);
+        $form_carte_grise->handleRequest($request);
+        $message = "";
+        $enregistrement_ok = False;
+        //var_dump($ctCarteGrise);
+
+        if ($form_carte_grise->isSubmitted() && $form_carte_grise->isValid()) {
+            try{
+                //var_dump($ctCarteGrise->getCgImmatriculation());
+                $imm = "";
+                $imm = strtoupper($request->request->get('immatriculation'));
+                if($imm == ""){
+                    $imm = strtoupper($request->query->get('immatriculation'));
+                }
+                $immatriculation = $imm;
+            } catch (Exception $e) {
+                $message = "Echec de l'enregistrement du véhicule";
+                $enregistrement_ok = False;
+            }
+        }
+        return $this->render('ct_app_visite/recherche_vehicule.html.twig', [
             'ct_carte_grise' => $ctCarteGrise,
             'form_carte_grise' => $form_carte_grise->createView(),
             'message' => $message,
@@ -868,29 +942,35 @@ class CtAppVisiteController extends AbstractController
     public function RechercheVisiteImmatriculation(Request $request, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
     {
         $recherche = "";
+        $ctVisite = new CtVisite();
         if($request){
             if($request->request->get("immatriculation")){
                 $recherche = strtoupper($request->request->get('immatriculation'));
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
             }
             if($request->query->get("immatriculation")){
                 $recherche = strtoupper($request->query->get('immatriculation'));
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
             }
             if($request->request->get("immatriculation")){
                 $recherche = strtoupper($request->request->get('immatriculation'));
                 $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
             }
             if($request->query->get("immatriculation")){
                 $recherche = strtoupper($request->query->get('immatriculation'));
                 $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
             }
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            /* $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
             if($ctCarteGrise == null){
                 $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
             }
-            $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
-            $centre = $this->getUser()->getCtCentreId();
+            $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]); */
+            //$centre = $this->getUser()->getCtCentreId();
             // $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite, ["immatriculation" => $recherche, "centre" => $centre]);
-            $form_visite = $this->createForm(CtVisiteVisiteDisableType::class, $ctVisite, ["immatriculation" => $recherche, "disable" => true]);
+            //$form_visite = $this->createForm(CtVisiteVisiteDisableType::class, $ctVisite, ["immatriculation" => $recherche, "disable" => true]);
+            $form_visite = $this->createForm(CtVisiteVisiteDisableType::class, $ctVisite, ["immatriculation" => $recherche]);
             $form_visite->handleRequest($request);
             return $this->render('ct_app_visite/recherche_visite_vue.html.twig', [
                 'form_visite' => $form_visite->createView(),
