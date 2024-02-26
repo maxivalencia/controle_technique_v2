@@ -3164,8 +3164,32 @@ class CtAppImprimableController extends AbstractController
             }
         }
         $imprime_technique_utiliser = $ctImprimeTechUseRepository->findByUtilisation($centre, $date_of_utilisation);
+        $numero = 0;
+        $utiliser_precedent=[
+            "numero" => "",
+            "reference_operation" => "",
+            "immatriculation" => "",
+            "motif" => "",
+            "pvo" => "",
+            "pvm" => "",
+            "pvmc" => "",
+            "pvmr" => "",
+            "ce" => "",
+            "cb" => "",
+            "cj" => "",
+            "cjbr" => "",
+            "cr" => "",
+            "cae" => "",
+            "cim_31" => "",
+            "cim_31_bis" => "",
+            "cim_32" => "",
+            "cim_32_bis" => "",
+            "plaque_chassis" => "",
+            "adm" => "",
+            "observation" => "",
+        ];
         foreach($imprime_technique_utiliser as $itu){
-            $numero = 1;
+            $numero = 0;
             $utiliser=[
                 "numero" => "",
                 "reference_operation" => "",
@@ -3190,6 +3214,7 @@ class CtAppImprimableController extends AbstractController
                 "observation" => "",
             ];
 
+            $utiliser_precedent = $utiliser;
             $liste_utiliser->add($utiliser);
         }
 
