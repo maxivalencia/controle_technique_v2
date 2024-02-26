@@ -23,6 +23,7 @@ use App\Repository\CtUsageTarifRepository;
 use App\Repository\CtUsageRepository;
 use App\Repository\CtUserRepository;
 use App\Repository\CtCarteGriseRepository;
+use App\Repository\CtImprimeTechUseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +35,7 @@ use App\Entity\CtCentre;
 use App\Entity\CtTypeReception;
 use App\Entity\CtConstAvDedCarac;
 use App\Entity\CtGenreCategorie;
+use App\Entity\CtImprimeTechUse;
 use App\Entity\CtVisite;
 use App\Entity\CtMarque;
 use App\Entity\CtUser;
@@ -131,7 +133,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/fiche_de_controle_constatation", name="app_ct_app_imprimable_fiche_de_controle_constatation", methods={"GET", "POST"})
      */
-    public function FicheDeControleConstatation(Request $request, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    public function FicheDeControleConstatation(Request $request, CtConstAvDedCaracRepository $ctConstAvDedCaracRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
     {
         //$type_reception = "";
         $date_constatation = new \DateTime();
@@ -173,7 +175,8 @@ class CtAppImprimableController extends AbstractController
         $lst_consts = $ctConstAvDedRepository->findByFicheDeControle($centre->getId(), $date_of_constatation);
         foreach($lst_consts as $liste){
             $marque = "";
-            $marques = $liste->getCtMarqueId();
+            $carac = $ctConstAvDedCaracRepository->findOneBy(["ctConstAvDeds" => $liste]);
+            $marques = $carac->getCtMarqueId();
             foreach($marques as $mrq){
                 $marque = $mrq->getMrqLibelle();
             }
@@ -3116,7 +3119,7 @@ class CtAppImprimableController extends AbstractController
         if (!file_exists($dossier)) {
             mkdir($dossier, 0777, true);
         }
-        
+
         $html = $this->renderView('ct_app_imprimable/caracteristique_vehicule.html.twig', [
             'logo' => $logo,
             'date' => $date,
@@ -3137,12 +3140,16 @@ class CtAppImprimableController extends AbstractController
     }
 
     /**
-     * @Route("/bordereau_envoi/{numero}", name="app_ct_app_imprimable_bordereau_envoi", methods={"GET", "POST"})
+     * @Route("/feuille_utilsation", name="app_ct_app_imprimable_feuille_utilisation", methods={"GET", "POST"})
      */
-    public function BordereauEnvoi(Request $request, string $numero)//: Response
+    public function FeuilleUtilisation(Request $request, CtImprimeTechUse $ctImprimeTechUse, string $numero)//: Response
     {
-        $visite->setVstGenere($visite->getVstGenere() + 1);
-        $ctVisiteRepository->add($visite, true);
+        $date = new \DateTime();
+
+        if($request->request->get('form')){
+            $rechercheform = $request->request->get('form');
+            $date_constatation = $
+        }
 
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
@@ -3153,6 +3160,49 @@ class CtAppImprimableController extends AbstractController
 
         $date = new \DateTime();
         $logo = file_get_contents($this->getParameter('logo').'logo.txt');
+        $dossier = $this->getParameter('dossier_feuille_utilisation_imprime_technique')."/".$this->getUser()->getCtCentreId()->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+        if (!file_exists($dossier)) {
+            mkdir($dossier, 0777, true);
+        }
+
+
+
+        $html = $this->renderView('ct_app_imprimable/bordereau_envoi.html.twig', [
+            'logo' => $logo,
+            'date' => $date,
+        ]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        $output = $dompdf->output();
+        $filename = "BORDEREAU_ENVOI".'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        file_put_contents($dossier.$filename, $output);
+        $dompdf->stream("BORDEREAU_ENVOI".'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+            "Attachment" => true,
+        ]);
+    }
+
+    /**
+     * @Route("/bordereau_envoi/{numero}", name="app_ct_app_imprimable_bordereau_envoi", methods={"GET", "POST"})
+     */
+    public function BordereauEnvoi(Request $request, string $numero)//: Response
+    {
+        // $visite->setVstGenere($visite->getVstGenere() + 1);
+        // $ctVisiteRepository->add($visite, true);
+
+        $pdfOptions = new Options();
+        $pdfOptions->set('isRemoteEnabled', true);
+        $pdfOptions->setIsRemoteEnabled(true);
+        $pdfOptions->setIsPhpEnabled(true);
+        $pdfOptions->set('defaultFont', 'Arial');
+        $dompdf = new Dompdf($pdfOptions);
+
+        $date = new \DateTime();
+        $logo = file_get_contents($this->getParameter('logo').'logo.txt');
+        $dossier = $this->getParameter('dossier_bordereau_envoi').'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+        if (!file_exists($dossier)) {
+            mkdir($dossier, 0777, true);
+        }
         
 
 
