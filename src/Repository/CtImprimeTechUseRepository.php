@@ -63,4 +63,21 @@ class CtImprimeTechUseRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * @return CtImprimeTechUse[] Returns an array of CtImprimeTechUse objects
+     */
+    public function findByUtilisation($centre, $date): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.ct_centre_id = :val1')
+            ->andWhere('c.created_ad LIKE :val2')
+            ->setParameter('val1', $centre)
+            ->setParameter('val2', '%'.$date->format('Y-m-d').'%')
+            ->orderBy('c.itu_numero', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

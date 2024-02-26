@@ -3142,13 +3142,55 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/feuille_utilsation", name="app_ct_app_imprimable_feuille_utilisation", methods={"GET", "POST"})
      */
-    public function FeuilleUtilisation(Request $request, CtImprimeTechUse $ctImprimeTechUse, string $numero)//: Response
+    public function FeuilleUtilisation(Request $request, CtCentreRepository $ctCentreRepository , CtImprimeTechUseRepository $ctImprimeTechUseRepository, string $numero)//: Response
     {
-        $date = new \DateTime();
-
+        //$type_reception = "";
+        $date_utilisation = new \DateTime();
+        $date_of_utilisation = new \DateTime();
+        //$type_reception_id = new CtTypeReception();
+        $centre = new CtCentre();
+        $liste_utiliser = new ArrayCollection();
         if($request->request->get('form')){
             $rechercheform = $request->request->get('form');
-            $date_constatation = $
+            //$recherche = $rechercheform['ct_type_reception_id'];
+            $date_utilisation = $rechercheform['date'];
+            $date_of_utilisation = new \DateTime($date_utilisation);
+            //$type_reception_id = $ctTypeReceptionRepository->findOneBy(["id" => $recherche]);
+            //$type_reception = $type_reception_id->getTprcpLibelle();
+            if($rechercheform['ct_centre_id'] != ""){
+                $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
+            } else{
+                $centre = $this->getUser()->getCtCentreId();
+            }
+        }
+        $imprime_technique_utiliser = $ctImprimeTechUseRepository->findByUtilisation($centre, $date_of_utilisation);
+        foreach($imprime_technique_utiliser as $itu){
+            $numero = 1;
+            $utiliser=[
+                "numero" => "",
+                "reference_operation" => "",
+                "immatriculation" => "",
+                "motif" => "",
+                "pvo" => "",
+                "pvm" => "",
+                "pvmc" => "",
+                "pvmr" => "",
+                "ce" => "",
+                "cb" => "",
+                "cj" => "",
+                "cjbr" => "",
+                "cr" => "",
+                "cae" => "",
+                "cim_31" => "",
+                "cim_31_bis" => "",
+                "cim_32" => "",
+                "cim_32_bis" => "",
+                "plaque_chassis" => "",
+                "adm" => "",
+                "observation" => "",
+            ];
+
+            $liste_utiliser->add($utiliser);
         }
 
         $pdfOptions = new Options();
