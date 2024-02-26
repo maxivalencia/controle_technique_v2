@@ -97,19 +97,27 @@
             </tr>
             {% for ct_imprime_tech_use in ct_imprime_tech_uses %}
                 <tr style="font-size:8px;">
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.controle_pv }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.numero }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.reference_operation }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.immatriculation }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.usage }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.aptitude }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.verificateur }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.cooperative }}</td>
-                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.droit|number_format(0, ',', ' ') }}</td>
-                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.prix_pv|number_format(0, ',', ' ') }}</td>
-                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.carnet|number_format(0, ',', ' ') }}</td>
-                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.carte|number_format(0, ',', ' ') }}</td>
-                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.tva|number_format(0, ',', ' ') }}</td>
-                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.timbre|number_format(0, ',', ' ') }}</td>
-                    <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.montant|number_format(0, ',', ' ') }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.motif }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.pvo }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.pvm }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.pvmc }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.pvmr }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.ce }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.cb }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.cj }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.cjbr }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.cr }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.cae }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.cim_31 }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.cim_31_bis }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.cim_32 }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.cim_32_bis }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.plaque_chassis }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.adm }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.observation }}</td>
                 </tr>
             {% else %}
                 <tr>
