@@ -3142,7 +3142,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/feuille_utilsation", name="app_ct_app_imprimable_feuille_utilisation", methods={"GET", "POST"})
      */
-    public function FeuilleUtilisation(Request $request, CtCentreRepository $ctCentreRepository , CtImprimeTechUseRepository $ctImprimeTechUseRepository, string $numero)//: Response
+    public function FeuilleUtilisation(Request $request, CtUsageImprimeTechinque $ctUsageImprimeTechinque, CtVisiteRepository $ctVisiteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository , CtImprimeTechUseRepository $ctImprimeTechUseRepository, string $numero)//: Response
     {
         //$type_reception = "";
         $date_utilisation = new \DateTime();
@@ -3164,8 +3164,9 @@ class CtAppImprimableController extends AbstractController
             }
         }
         $imprime_technique_utiliser = $ctImprimeTechUseRepository->findByUtilisation($centre, $date_of_utilisation);
+        $numero = 0;
         foreach($imprime_technique_utiliser as $itu){
-            $numero = 1;
+            $nombre = 0;
             $liste_controle = $ctImprimeTechUseRepository->findByUtilisationControle($centre, $date_of_utilisation, $itu->getCtControleId());
             foreach($liste_controle as $lst_ctrl){
                 $it = $lst_ctrl->getCtImprimeTechId()->getId();
@@ -3189,7 +3190,7 @@ class CtAppImprimableController extends AbstractController
                     "cim_32" => $it == 11 ? $lst_ctrl->getItuNumero() : "-",
                     "cim_32_bis" => $it == 3 ? $lst_ctrl->getItuNumero() : "-",
                     "plaque_chassis" => $it == 8 ? $lst_ctrl->getItuNumero() : "-",
-                    "adm" => "",
+                    "adm" => "-",
                     "observation" => "-",
                 ];
             }
