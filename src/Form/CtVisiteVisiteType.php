@@ -130,7 +130,7 @@ class CtVisiteVisiteType extends AbstractType
                 'class' => CtImprimeTechUse::class,
                 'query_builder' => function(CtImprimeTechUseRepository $ctImprimeTechUseRepository){
                     $qb = $ctImprimeTechUseRepository->createQueryBuilder('u');
-                    $centre = $this->getUser()->getCtCentreId();
+                    $centre = $this->centre;
                     return $qb
                         ->Where('u.itu_used = :val1')
                         ->andWhere('u.ct_centre_id = :val2')
@@ -146,6 +146,7 @@ class CtVisiteVisiteType extends AbstractType
                     'data-live-search' => true,
                     'data-select' => false,
                 ],
+                'mapped' => false,
             ])
 
             /* ->add('vst_num_pv')
