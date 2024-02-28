@@ -3144,7 +3144,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/feuille_utilsation", name="app_ct_app_imprimable_feuille_utilisation", methods={"GET", "POST"})
      */
-    public function FeuilleUtilisation(Request $request, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVisiteRepository $ctVisiteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository , CtImprimeTechUseRepository $ctImprimeTechUseRepository, string $numero)//: Response
+    public function FeuilleUtilisation(Request $request, CtConstAvDedCaracRepository $ctConstAvDedCaracRepository, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVisiteRepository $ctVisiteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository , CtImprimeTechUseRepository $ctImprimeTechUseRepository, string $numero)//: Response
     {
         //$type_reception = "";
         $date_utilisation = new \DateTime();
@@ -3167,7 +3167,6 @@ class CtAppImprimableController extends AbstractController
         }
         $imprime_technique_utiliser = $ctImprimeTechUseRepository->findByUtilisation($centre, $date_of_utilisation);
         $numero = 0;
-        $immatriculation = "";
         foreach($imprime_technique_utiliser as $itu){
             $nombre = 0;
             $utiliser_1=[
@@ -3196,18 +3195,26 @@ class CtAppImprimableController extends AbstractController
             $liste_controle = $ctImprimeTechUseRepository->findByUtilisationControle($centre, $date_of_utilisation, $itu->getCtControleId());
             foreach($liste_controle as $lst_ctrl){
                 $reference_operation = "-";
+                $immatriculation = "";
                 switch($lst_ctrl->getCtUsageItId()->getId()){
                     case 10:
                         $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                         $reference_operation = $visite->getVstNumPv();
+                        $carte_grise = $visite->getCtCarteGriseId();
+                        $immatriculation = $carte_grise->getCgImmatriculation();
                         break;
                     case 11:
                         $reception = $ctReceptionRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                         $reference_operation = $reception->getRcpNumPv();
+                        $immatriculation = $reception->getRcpImmatriculation();
                         break;
                     case 12:
                         $constatation = $ctConstAvDedRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                         $reference_operation = $constatation->getCadNumero();
+                        /* foreach($constatation->getCtConstAvDedCarac() as $constatation_caracteristique){
+                            $immatriculation = $constatation_caracteristique->getCadIm;
+                        } */
+                        $immatriculation = $constatation->getCadImmatriculation();
                         break;
                     default:
                         $autre_service = $ctAutreVenteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
@@ -3220,7 +3227,7 @@ class CtAppImprimableController extends AbstractController
                     $utiliser_1=[
                         "numero" => ++$numero,
                         "reference_operation" => $reference_operation,
-                        "immatriculation" => "-",
+                        "immatriculation" => $immatriculation,
                         "motif" => "-",
                         "pvo" => $it == 12 ? $lst_ctrl->getItuNumero() : "-",
                         "pvm" => $it == 13 ? $lst_ctrl->getItuNumero() : "-",
