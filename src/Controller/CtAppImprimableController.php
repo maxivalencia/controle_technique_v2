@@ -12,6 +12,7 @@ use App\Repository\CtVisiteExtraRepository;
 use App\Repository\CtVisiteExtraTarifRepository;
 use App\Repository\CtTypeDroitPTACRepository;
 use App\Repository\CtAutreRepository;
+use App\Repository\CtAutreVenteRepository;
 use App\Repository\CtTypeReceptionRepository;
 use App\Repository\CtImprimeTechRepository;
 use App\Repository\CtDroitPTACRepository;
@@ -24,6 +25,7 @@ use App\Repository\CtUsageRepository;
 use App\Repository\CtUserRepository;
 use App\Repository\CtCarteGriseRepository;
 use App\Repository\CtImprimeTechUseRepository;
+use App\Repository\CtUsageImprimeTechniqueRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -3142,7 +3144,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/feuille_utilsation", name="app_ct_app_imprimable_feuille_utilisation", methods={"GET", "POST"})
      */
-    public function FeuilleUtilisation(Request $request, CtUsageImprimeTechinque $ctUsageImprimeTechinque, CtVisiteRepository $ctVisiteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository , CtImprimeTechUseRepository $ctImprimeTechUseRepository, string $numero)//: Response
+    public function FeuilleUtilisation(Request $request, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVisiteRepository $ctVisiteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository , CtImprimeTechUseRepository $ctImprimeTechUseRepository, string $numero)//: Response
     {
         //$type_reception = "";
         $date_utilisation = new \DateTime();
@@ -3165,35 +3167,9 @@ class CtAppImprimableController extends AbstractController
         }
         $imprime_technique_utiliser = $ctImprimeTechUseRepository->findByUtilisation($centre, $date_of_utilisation);
         $numero = 0;
+        $immatriculation = "";
         foreach($imprime_technique_utiliser as $itu){
             $nombre = 0;
-            $liste_controle = $ctImprimeTechUseRepository->findByUtilisationControle($centre, $date_of_utilisation, $itu->getCtControleId());
-            foreach($liste_controle as $lst_ctrl){
-                $it = $lst_ctrl->getCtImprimeTechId()->getId();
-                $utiliser_1=[
-                    "numero" => "-",
-                    "reference_operation" => "-",
-                    "immatriculation" => "-",
-                    "motif" => "-",
-                    "pvo" => $it == 12 ? $lst_ctrl->getItuNumero() : "-",
-                    "pvm" => $it == 13 ? $lst_ctrl->getItuNumero() : "-",
-                    "pvmc" => $it == 14 ? $lst_ctrl->getItuNumero() : "-",
-                    "pvmr" => $it == 15 ? $lst_ctrl->getItuNumero() : "-",
-                    "ce" => $it == 1 ? $lst_ctrl->getItuNumero() : "-",
-                    "cb" => $it == 2 ? $lst_ctrl->getItuNumero() : "-",
-                    "cj" => $it == 4 ? $lst_ctrl->getItuNumero() : "-",
-                    "cjbr" => $it == 5 ? $lst_ctrl->getItuNumero() : "-",
-                    "cr" => $it == 6 ? $lst_ctrl->getItuNumero() : "-",
-                    "cae" => $it == 7 ? $lst_ctrl->getItuNumero() : "-",
-                    "cim_31" => $it == 9 ? $lst_ctrl->getItuNumero() : "-",
-                    "cim_31_bis" => $it == 10 ? $lst_ctrl->getItuNumero() : "-",
-                    "cim_32" => $it == 11 ? $lst_ctrl->getItuNumero() : "-",
-                    "cim_32_bis" => $it == 3 ? $lst_ctrl->getItuNumero() : "-",
-                    "plaque_chassis" => $it == 8 ? $lst_ctrl->getItuNumero() : "-",
-                    "adm" => "-",
-                    "observation" => "-",
-                ];
-            }
             $utiliser_1=[
                 "numero" => "-",
                 "reference_operation" => "-",
@@ -3217,6 +3193,53 @@ class CtAppImprimableController extends AbstractController
                 "adm" => "",
                 "observation" => "-",
             ];
+            $liste_controle = $ctImprimeTechUseRepository->findByUtilisationControle($centre, $date_of_utilisation, $itu->getCtControleId());
+            foreach($liste_controle as $lst_ctrl){
+                $reference_operation = "-";
+                switch($lst_ctrl->getCtUsageItId->get){
+                    case 10:
+                        $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                        $reference_operation = $visite->getVstNumPv();
+                        break;
+                    case 11:
+                        $reception = $ctReceptionRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                        $reference_operation = $reception->getRcpNumPv();
+                        break;
+                    case 12:
+                        $constatation = $ctConstAvDedRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                        $reference_operation = $constatation->getCadNumero();
+                        break;
+                    default:
+                        $autre_service = $ctAutreVenteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                        $type = $autre_service;
+                        $reference_operation = $autre_service->getCadNumero();
+                        break;
+                }
+                    $it = $lst_ctrl->getCtImprimeTechId()->getId();
+                    $utiliser_1=[
+                        "numero" => ++$numero,
+                        "reference_operation" => $reference_operation,
+                        "immatriculation" => "-",
+                        "motif" => "-",
+                        "pvo" => $it == 12 ? $lst_ctrl->getItuNumero() : "-",
+                        "pvm" => $it == 13 ? $lst_ctrl->getItuNumero() : "-",
+                        "pvmc" => $it == 14 ? $lst_ctrl->getItuNumero() : "-",
+                        "pvmr" => $it == 15 ? $lst_ctrl->getItuNumero() : "-",
+                        "ce" => $it == 1 ? $lst_ctrl->getItuNumero() : "-",
+                        "cb" => $it == 2 ? $lst_ctrl->getItuNumero() : "-",
+                        "cj" => $it == 4 ? $lst_ctrl->getItuNumero() : "-",
+                        "cjbr" => $it == 5 ? $lst_ctrl->getItuNumero() : "-",
+                        "cr" => $it == 6 ? $lst_ctrl->getItuNumero() : "-",
+                        "cae" => $it == 7 ? $lst_ctrl->getItuNumero() : "-",
+                        "cim_31" => $it == 9 ? $lst_ctrl->getItuNumero() : "-",
+                        "cim_31_bis" => $it == 10 ? $lst_ctrl->getItuNumero() : "-",
+                        "cim_32" => $it == 11 ? $lst_ctrl->getItuNumero() : "-",
+                        "cim_32_bis" => $it == 3 ? $lst_ctrl->getItuNumero() : "-",
+                        "plaque_chassis" => $it == 8 ? $lst_ctrl->getItuNumero() : "-",
+                        "adm" => "-",
+                        "observation" => "-",
+                    ];
+            }
 
             $utiliser_precedent = $utiliser;
             $liste_utiliser->add($utiliser);
@@ -3274,8 +3297,6 @@ class CtAppImprimableController extends AbstractController
         if (!file_exists($dossier)) {
             mkdir($dossier, 0777, true);
         }
-        
-
 
         $html = $this->renderView('ct_app_imprimable/bordereau_envoi.html.twig', [
             'logo' => $logo,

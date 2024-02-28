@@ -79,6 +79,11 @@ class CtAutreVente
      */
     private $auv_itineraire;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $auv_num_pv;
+
     public function __construct()
     {
         $this->auv_extra = new ArrayCollection();
@@ -241,6 +246,18 @@ class CtAutreVente
     public function setAuvItineraire(string $auv_itineraire): self
     {
         $this->auv_itineraire = strtoupper($auv_itineraire);
+
+        return $this;
+    }
+
+    public function getAuvNumPv(): ?string
+    {
+        return strtoupper($this->auv_num_pv);
+    }
+
+    public function setAuvNumPv(?string $auv_num_pv): self
+    {
+        $this->auv_num_pv = strtoupper($auv_num_pv);
 
         return $this;
     }
