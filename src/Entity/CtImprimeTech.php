@@ -244,6 +244,6 @@ class CtImprimeTech
     */
     public function __toString()
     {
-        return $this->getNomImprimeTech();
+        return $this->getAbrevImprimeTech();
     }
 }

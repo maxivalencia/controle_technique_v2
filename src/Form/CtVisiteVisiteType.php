@@ -125,7 +125,7 @@ class CtVisiteVisiteType extends AbstractType
                 'data' => $immatriculation,
                 //'disabled' => true,
             ])
-            ->add('ct_imprime_tech_use_id', EntityType::class, [
+            /* ->add('ct_imprime_tech_use_id', EntityType::class, [
                 'label' => 'Imprimé technique',
                 'class' => CtImprimeTechUse::class,
                 'query_builder' => function(CtImprimeTechUseRepository $ctImprimeTechUseRepository){
@@ -147,7 +147,7 @@ class CtVisiteVisiteType extends AbstractType
                     'data-select' => false,
                 ],
                 'mapped' => false,
-            ])
+            ]) */
 
             /* ->add('vst_num_pv')
             ->add('vst_num_feuille_caisse')
