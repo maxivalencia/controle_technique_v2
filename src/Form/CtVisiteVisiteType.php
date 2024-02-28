@@ -7,12 +7,14 @@ use App\Entity\CtCarteGrise;
 use App\Entity\CtVisite;
 use App\Entity\CtVisiteExtra;
 use App\Entity\CtUser;
+use App\Entity\CtImprimeTechUse;
 use App\Form\CtUserType;
 use App\Entity\CtRole;
 use App\Form\CtRoleType;
 use App\Repository\CtRoleRepository;
 use App\Repository\CtUserRepository;
 use App\Repository\CtVisiteExtraRepository;
+use App\Repository\CtImprimeTechUseRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -122,6 +124,28 @@ class CtVisiteVisiteType extends AbstractType
                 'label' => 'immatriculation',
                 'data' => $immatriculation,
                 //'disabled' => true,
+            ])
+            ->add('ct_imprime_tech_use_id', EntityType::class, [
+                'label' => 'Imprimé technique',
+                'class' => CtImprimeTechUse::class,
+                'query_builder' => function(CtImprimeTechUseRepository $ctImprimeTechUseRepository){
+                    $qb = $ctImprimeTechUseRepository->createQueryBuilder('u');
+                    $centre = $this->getUser()->getCtCentreId();
+                    return $qb
+                        ->Where('u.itu_used = :val1')
+                        ->andWhere('u.ct_centre_id = :val2')
+                        ->setParameter('val1', 0)
+                        ->setParameter('val2', $centre)
+                    ;
+                },
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'multi',
+                    'style' => 'width:100%;',
+                    'multiple' => true,
+                    'data-live-search' => true,
+                    'data-select' => false,
+                ],
             ])
 
             /* ->add('vst_num_pv')

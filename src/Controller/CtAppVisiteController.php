@@ -15,6 +15,7 @@ use App\Entity\CtUser;
 use App\Entity\CtUtilisation;
 use App\Form\CtCarteGriseType;
 use App\Form\CtAnomalieType;
+use App\Entity\CtImprimeTechUse;
 use App\Form\CtCarteGriseType as FormCtCarteGriseType;
 use App\Repository\CtTypeVisiteRepository;
 use App\Repository\CtCarteGriseRepository;
@@ -32,6 +33,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\DataTransformer\IssueToNumberTransformer;
 use App\Repository\CtUtilisationRepository;
 use App\Repository\CtVisiteRepository;
+use App\Repository\CtImprimeTechUseRepository;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -491,7 +493,7 @@ class CtAppVisiteController extends AbstractController
     /**
      * @Route("/creer_visite", name="app_ct_app_visite_creer_visite", methods={"GET", "POST"})
      */
-    public function CreerVisite(Request $request, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
+    public function CreerVisite(Request $request, CtImprimeTechUseRepository $ctImprimeTechUseRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
     {
         $ctVisite = new CtVisite();
         $ctVisite_new = new CtVisite();
@@ -653,6 +655,32 @@ class CtAppVisiteController extends AbstractController
             $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
         } */
 
+        /* $form_imprime_technique = $this->createFormBuilder()
+            ->add('ct_imprime_tech_use_id', EntityType::class, [
+                'label' => 'Imprimé technique',
+                'class' => CtImprimeTechUse::class,
+                'query_builder' => function(CtImprimeTechUseRepository $ctImprimeTechUseRepository){
+                    $qb = $ctImprimeTechUseRepository->createQueryBuilder('u');
+                    $centre = $this->getUser()->getCtCentreId();
+                    return $qb
+                        ->Where('u.itu_used = :val1')
+                        ->andWhere('u.ct_centre_id = :val2')
+                        ->setParameter('val1', 0)
+                        ->setParameter('val2', $centre)
+                    ;
+                },
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'multi',
+                    'style' => 'width:100%;',
+                    'multiple' => true,
+                    'data-live-search' => true,
+                    'data-select' => false,
+                ],
+            ])
+            ->getForm();
+        $form_imprime_technique->handleRequest($request); */
+
         if ($form_visite->isSubmitted() && $form_visite->isValid()) {
             $ctVisite_new = $ctVisite;
             if($request->request->get('ct_visite_visite')){
@@ -723,6 +751,7 @@ class CtAppVisiteController extends AbstractController
             'immatriculation' => $immatriculation,
             'message' => $message,
             'enregistrement_ok' => $enregistrement_ok,
+            //'form_imprime_technique' => $form_imprime_technique->createView(),
         ]);
     }
 

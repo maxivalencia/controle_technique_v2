@@ -3196,7 +3196,7 @@ class CtAppImprimableController extends AbstractController
             $liste_controle = $ctImprimeTechUseRepository->findByUtilisationControle($centre, $date_of_utilisation, $itu->getCtControleId());
             foreach($liste_controle as $lst_ctrl){
                 $reference_operation = "-";
-                switch($lst_ctrl->getCtUsageItId->get){
+                switch($lst_ctrl->getCtUsageItId()->getId()){
                     case 10:
                         $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                         $reference_operation = $visite->getVstNumPv();

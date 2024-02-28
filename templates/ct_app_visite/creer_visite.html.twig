@@ -186,8 +186,16 @@
                             {# {{ form_row(form_visite.vst_date_expiration) }} #}
                             {{ form_row(form_visite.ct_verificateur_id) }}
                             {{ form_row(form_visite.vst_extra) }}
+                            {{ form_row(form_visite.ct_imprime_tech_use_id) }}
 
                     </div>
+
+                    {# <div>
+                        <div class="entete-formulaire">Imprimé technique utilsé</div><br>
+                        {{ form_start(form_imprime_technique) }}
+                            {{ form_row(form_imprime_technique.ct_imprime_tech_use_id) }}
+                        {{ form_end(form_imprime_technique) }}
+                    </div> #}
                 </td>
             </tr>
             <tr>
