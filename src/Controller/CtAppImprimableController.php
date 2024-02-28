@@ -3196,6 +3196,7 @@ class CtAppImprimableController extends AbstractController
             foreach($liste_controle as $lst_ctrl){
                 $reference_operation = "-";
                 $immatriculation = "";
+                $motif =$lst_ctrl->getCtUsageItId()->getUitLibelle();
                 switch($lst_ctrl->getCtUsageItId()->getId()){
                     case 10:
                         $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
@@ -3228,22 +3229,22 @@ class CtAppImprimableController extends AbstractController
                         "numero" => ++$numero,
                         "reference_operation" => $reference_operation,
                         "immatriculation" => $immatriculation,
-                        "motif" => "-",
-                        "pvo" => $it == 12 ? $lst_ctrl->getItuNumero() : "-",
-                        "pvm" => $it == 13 ? $lst_ctrl->getItuNumero() : "-",
-                        "pvmc" => $it == 14 ? $lst_ctrl->getItuNumero() : "-",
-                        "pvmr" => $it == 15 ? $lst_ctrl->getItuNumero() : "-",
-                        "ce" => $it == 1 ? $lst_ctrl->getItuNumero() : "-",
-                        "cb" => $it == 2 ? $lst_ctrl->getItuNumero() : "-",
-                        "cj" => $it == 4 ? $lst_ctrl->getItuNumero() : "-",
-                        "cjbr" => $it == 5 ? $lst_ctrl->getItuNumero() : "-",
-                        "cr" => $it == 6 ? $lst_ctrl->getItuNumero() : "-",
-                        "cae" => $it == 7 ? $lst_ctrl->getItuNumero() : "-",
-                        "cim_31" => $it == 9 ? $lst_ctrl->getItuNumero() : "-",
-                        "cim_31_bis" => $it == 10 ? $lst_ctrl->getItuNumero() : "-",
-                        "cim_32" => $it == 11 ? $lst_ctrl->getItuNumero() : "-",
-                        "cim_32_bis" => $it == 3 ? $lst_ctrl->getItuNumero() : "-",
-                        "plaque_chassis" => $it == 8 ? $lst_ctrl->getItuNumero() : "-",
+                        "motif" => $motif,
+                        "pvo" => $it == 12 ? $lst_ctrl->getItuNumero() : "",
+                        "pvm" => $it == 13 ? $lst_ctrl->getItuNumero() : "",
+                        "pvmc" => $it == 14 ? $lst_ctrl->getItuNumero() : "",
+                        "pvmr" => $it == 15 ? $lst_ctrl->getItuNumero() : "",
+                        "ce" => $it == 1 ? $lst_ctrl->getItuNumero() : "",
+                        "cb" => $it == 2 ? $lst_ctrl->getItuNumero() : "",
+                        "cj" => $it == 4 ? $lst_ctrl->getItuNumero() : "",
+                        "cjbr" => $it == 5 ? $lst_ctrl->getItuNumero() : "",
+                        "cr" => $it == 6 ? $lst_ctrl->getItuNumero() : "",
+                        "cae" => $it == 7 ? $lst_ctrl->getItuNumero() : "",
+                        "cim_31" => $it == 9 ? $lst_ctrl->getItuNumero() : "",
+                        "cim_31_bis" => $it == 10 ? $lst_ctrl->getItuNumero() : "",
+                        "cim_32" => $it == 11 ? $lst_ctrl->getItuNumero() : "",
+                        "cim_32_bis" => $it == 3 ? $lst_ctrl->getItuNumero() : "",
+                        "plaque_chassis" => $it == 8 ? $lst_ctrl->getItuNumero() : "",
                         "adm" => "-",
                         "observation" => "-",
                     ];
