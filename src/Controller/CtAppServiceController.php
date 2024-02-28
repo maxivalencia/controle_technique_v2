@@ -73,7 +73,9 @@ class CtAppServiceController extends AbstractController
             $ctAutreVente->setAuvValidite($ctAutreVente->getAuvValidite() ? $ctAutreVente->getAuvValidite() : "");
             $ctAutreVente->setAuvItineraire($ctAutreVente->getAuvItineraire() ? $ctAutreVente->getAuvItineraire() : "");
             $ctAutreVenteRepository->add($ctAutreVente, true);
-
+            $date = new \DateTime();
+            $ctAutreVente->setAuvNumPv($ctAutreVente->getId().'/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctAutreVente->getCtUsageIt()->getId().'/'.$date->format("Y"));
+            $ctAutreVenteRepository->add($ctAutreVente, true);
             return $this->redirectToRoute('app_ct_app_liste_service', [], Response::HTTP_SEE_OTHER);
         }
 

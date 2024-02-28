@@ -3144,7 +3144,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/feuille_utilsation", name="app_ct_app_imprimable_feuille_utilisation", methods={"GET", "POST"})
      */
-    public function FeuilleUtilisation(Request $request, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVisiteRepository $ctVisiteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository , CtImprimeTechUseRepository $ctImprimeTechUseRepository, string $numero)//: Response
+    public function FeuilleUtilisation(Request $request, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVisiteRepository $ctVisiteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository , CtImprimeTechUseRepository $ctImprimeTechUseRepository, string $numero)//: Response
     {
         //$type_reception = "";
         $date_utilisation = new \DateTime();
@@ -3211,8 +3211,9 @@ class CtAppImprimableController extends AbstractController
                         break;
                     default:
                         $autre_service = $ctAutreVenteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
-                        $type = $autre_service;
-                        $reference_operation = $autre_service->getCadNumero();
+                        $reference_operation = $autre_service->getAuvNumPv();
+                        $usage = $autre_service->getCtUsageIt();
+                        $carte_grise = $ctCarteGriseRepository->getCtCarteGriseId();
                         break;
                 }
                     $it = $lst_ctrl->getCtImprimeTechId()->getId();
