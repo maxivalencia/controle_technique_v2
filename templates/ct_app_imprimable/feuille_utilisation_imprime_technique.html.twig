@@ -67,36 +67,36 @@
                     <td width="300" align="left"><span style="font-size:14px;"><u>Centre</u> : <strong>{{ centre }}</strong></span></td>
                 </tr>
                 <tr>
-                    <td align="left"><span style="font-size:14px;"><u>Date</u> : <strong>{{ date_visite|date('d') }} {{ trans_day_hash[date_visite|date('F')] }} {{ date_visite|date('Y') }}</strong></td>
+                    <td align="left"><span style="font-size:14px;"><u>Date</u> : <strong>{{ date|date('d') }} {{ trans_day_hash[date|date('F')] }} {{ date|date('Y') }}</strong></td>
                 </tr>
             </table>
         </div>
         <table align="center" style="border: 2px solid black;border-collapse: collapse;font-size:8px">
-            <tr align="center">
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>N°</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>REFERENCE OPERATION</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>N° IMM</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Motif</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PVO<br>(1)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PVM<br>(2)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PVMC<br>(3)</strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PVMR<br>(4)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CE<br>(5)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CB<br>(6)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CJ<br>(7)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CJBR<br>(8)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CR<br>(9)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CAE<br>(10)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CIM31<br>(11)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CIM31B<br>(12)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CIM32<br>(13)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CIM32B<br>(14)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PLQ<br>(15)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>ADM<br>(16)</i></strong></td>
-                <td align="center" valign="middle" width="45" style="border: 1px solid black;border-collapse: collapse;"><strong><i>OBSERVATION</i></strong></td>
+            <tr align="center" style="font-size:8px;">
+                <td align="center" valign="middle" width="20" style="border: 1px solid black;border-collapse: collapse;"><strong><i>N°</i></strong></td>
+                <td align="center" valign="middle" width="120" style="border: 1px solid black;border-collapse: collapse;"><strong><i>REFERENCE OPERATION</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>N° IMM</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Motif</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PVO<br>(1)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PVM<br>(2)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PVMC<br>(3)</strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PVMR<br>(4)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CE<br>(5)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CB<br>(6)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CJ<br>(7)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CJBR<br>(8)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CR<br>(9)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CAE<br>(10)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CIM31<br>(11)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CIM31B<br>(12)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CIM32<br>(13)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>CIM32B<br>(14)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PLQ<br>(15)</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>ADM<br>(16)</i></strong></td>
+                <td align="center" valign="middle" width="75" style="border: 1px solid black;border-collapse: collapse;"><strong><i>OBSERVATION</i></strong></td>
             </tr>
             {% for ct_imprime_tech_use in ct_imprime_tech_uses %}
-                <tr style="font-size:8px;">
+                <tr style="font-size:6px;">
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.numero }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.reference_operation }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.immatriculation }}</td>

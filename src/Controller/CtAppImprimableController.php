@@ -3144,7 +3144,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/feuille_utilsation", name="app_ct_app_imprimable_feuille_utilisation", methods={"GET", "POST"})
      */
-    public function FeuilleUtilisation(Request $request, CtConstAvDedCaracRepository $ctConstAvDedCaracRepository, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVisiteRepository $ctVisiteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository , CtImprimeTechUseRepository $ctImprimeTechUseRepository, string $numero)//: Response
+    public function FeuilleUtilisation(Request $request, CtConstAvDedCaracRepository $ctConstAvDedCaracRepository, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVisiteRepository $ctVisiteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtCentreRepository $ctCentreRepository , CtImprimeTechUseRepository $ctImprimeTechUseRepository)//: Response
     {
         //$type_reception = "";
         $date_utilisation = new \DateTime();
@@ -3504,24 +3504,28 @@ class CtAppImprimableController extends AbstractController
 
         $date = new \DateTime();
         $logo = file_get_contents($this->getParameter('logo').'logo.txt');
-        $dossier = $this->getParameter('dossier_feuille_utilisation_imprime_technique')."/".$this->getUser()->getCtCentreId()->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+        $dossier = $this->getParameter('dossier_feuille_utilisation_imprime_technique')."/".$centre->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
         if (!file_exists($dossier)) {
             mkdir($dossier, 0777, true);
         }
 
 
 
-        $html = $this->renderView('ct_app_imprimable/bordereau_envoi.html.twig', [
+        $html = $this->renderView('ct_app_imprimable/feuille_utilisation_imprime_technique.html.twig', [
             'logo' => $logo,
             'date' => $date,
+            'centre' => $centre->getCtrNom(),
+            'province' => $centre->getCtProvinceId()->getPrvNom(),
+            'ct_imprime_tech_uses' => $liste_utiliser,
+            'user' => $this->getUser(),
         ]);
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
         $output = $dompdf->output();
-        $filename = "BORDEREAU_ENVOI".'_'.$date->format('Y_M_d_H_i_s').".pdf";
+        $filename = "FEUILLE_UTILISATION_IMPRIME_TECHNIQUE_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";
         file_put_contents($dossier.$filename, $output);
-        $dompdf->stream("BORDEREAU_ENVOI".'_'.$date->format('Y_M_d_H_i_s').".pdf", [
+        $dompdf->stream("FEUILLE_UTILISATION_IMPRIME_TECHNIQUE_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf", [
             "Attachment" => true,
         ]);
     }
