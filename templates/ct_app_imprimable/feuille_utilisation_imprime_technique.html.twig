@@ -126,44 +126,7 @@
             {% endfor %}
         </table>
         <br>
-        <div style="font-size:14px;margin-left:600px;">
-            <div align="center"><u><strong>RECAPITULATION</strong></u></div>
-            <div>
-                <strong>
-                    Nombre : {{ nombre_visite|number_format(0, ',', ' ') }}<br>
-                    Total des Droits : Ar {{ total_des_droits|number_format(0, ',', ' ') }}<br>
-                    Total des Prix PV : Ar {{ total_des_prix_pv|number_format(0, ',', ' ') }}<br>
-                    Total des Prix Carnets : Ar {{ total_des_carnets|number_format(0, ',', ' ') }}<br>
-                    Total des Prix Cartes : Ar {{ total_des_cartes|number_format(0, ',', ' ') }}<br>
-                    Total TVA : Ar {{ total_des_tva|number_format(0, ',', ' ') }}<br>
-                    MONTANT TOTAL : Ar {{ montant_total|number_format(0, ',', ' ') }}<br>
-                </strong>
-            </div>
-        </div>
-        <br>
-        <div align="center" style="font-size:14px;margin-left:50px;">
-            <div align="center"><u><strong>RECAPITULATION PAR USAGE EFFECTIF</strong></u></div>
-            <div style="font-size:12px;">
-                {% set colonne = 5 %}
-                {% set colonne_encours = 0 %}
-                <table>
-                {% for usage in liste_usage %}
-                    {% if colonne_encours == 0 %}
-                        <tr>
-                    {% endif %}
-                    {# <td align="right" style="border: 0px solid black;" width="125"> {{ usage.usage }} : </td>
-                    <td align="left" style="border: 0px solid black;" width="10"><strong> {{ usage.nombre }} </strong></td> #}
-                    <td align="right" style="border: 0px solid black;" width="125"> {{ usage.usage }} : </td>
-                    <td align="left" style="border: 0px solid black;" width="10"><strong> {{ usage.nombre }} </strong></td>
-                    {% set colonne_encours = colonne_encours + 1 %}
-                    {% if colonne_encours == colonne %}
-                        </tr>
-                        {% set colonne_encours = 0 %}
-                    {% endif %}
-                {% endfor %}
-                </table>
-            </div>
-        </div>
+       
         <div style="font-size:14px;margin-left:600px;" align="center">
             <br><br>
             {{ province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}<br>

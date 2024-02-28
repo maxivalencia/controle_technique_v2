@@ -3168,8 +3168,30 @@ class CtAppImprimableController extends AbstractController
         $imprime_technique_utiliser = $ctImprimeTechUseRepository->findByUtilisation($centre, $date_of_utilisation);
         $numero = 0;
         foreach($imprime_technique_utiliser as $itu){
-            $nombre = 0;
             $utiliser_1=[
+                "numero" => "-",
+                "reference_operation" => "-",
+                "immatriculation" => "-",
+                "motif" => "-",
+                "pvo" => "-",
+                "pvm" => "-",
+                "pvmc" => "-",
+                "pvmr" => "-",
+                "ce" => "-",
+                "cb" => "-",
+                "cj" => "-",
+                "cjbr" => "-",
+                "cr" => "-",
+                "cae" => "-",
+                "cim_31" => "-",
+                "cim_31_bis" => "-",
+                "cim_32" => "-",
+                "cim_32_bis" => "-",
+                "plaque_chassis" => "-",
+                "adm" => "",
+                "observation" => "-",
+            ];
+            $utiliser_2=[
                 "numero" => "-",
                 "reference_operation" => "-",
                 "immatriculation" => "-",
@@ -3197,61 +3219,280 @@ class CtAppImprimableController extends AbstractController
                 $reference_operation = "-";
                 $immatriculation = "";
                 $motif =$lst_ctrl->getCtUsageItId()->getUitLibelle();
+                $administratif = "";
+                $observation = "";
                 switch($lst_ctrl->getCtUsageItId()->getId()){
                     case 10:
                         $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                         $reference_operation = $visite->getVstNumPv();
                         $carte_grise = $visite->getCtCarteGriseId();
                         $immatriculation = $carte_grise->getCgImmatriculation();
+                        if($visite->getCtUtilisationId()->getId() == 1){
+                            $administratif = "ADM";
+                        }
                         break;
                     case 11:
                         $reception = $ctReceptionRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                         $reference_operation = $reception->getRcpNumPv();
                         $immatriculation = $reception->getRcpImmatriculation();
+                        if($reception->getCtUtilisationId()->getId() == 1){
+                            $administratif = "ADM";
+                        }
                         break;
                     case 12:
                         $constatation = $ctConstAvDedRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                         $reference_operation = $constatation->getCadNumero();
-                        /* foreach($constatation->getCtConstAvDedCarac() as $constatation_caracteristique){
-                            $immatriculation = $constatation_caracteristique->getCadIm;
-                        } */
                         $immatriculation = $constatation->getCadImmatriculation();
+                        if($constatation->getCadImmatriculation() == 1){
+                            $administratif = "ADM";
+                        }
+                        break;
+                    case 14:
+                        $contre = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                        $reference_operation = $contre->getVstNumPv();
+                        $carte_grise = $contre->getCtCarteGriseId();
+                        $immatriculation = $carte_grise->getCgImmatriculation();
+                        $visite_inapte = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $carte_grise, "vst_is_contre_visite" => 1], ["id" => "DESC"]);
+                        $observation = "Inapte du ".$visite_inapte->getVstCreated()." numero ".$visite_inapte->getId();
+                        if($contre->getCtUtilisationId()->getId() == 1){
+                            $administratif = "ADM";
+                        }
                         break;
                     default:
                         $autre_service = $ctAutreVenteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                         $reference_operation = $autre_service->getAuvNumPv();
                         $usage = $autre_service->getCtUsageIt();
                         $carte_grise = $ctCarteGriseRepository->getCtCarteGriseId();
+                        if($carte_grise == null){
+                            switch($lst_ctrl->getCtUsageItId()->getId()){
+                                case 1:
+                                    $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                                    $reference_operation = $visite->getVstNumPv();
+                                    $carte_grise = $visite->getCtCarteGriseId();
+                                    $immatriculation = $carte_grise->getCgImmatriculation();
+                                    if($visite->getCtUtilisationId()->getId() == 1){
+                                        $administratif = "ADM";
+                                    }
+                                    break;
+                                case 2:
+                                    $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                                    $reference_operation = $visite->getVstNumPv();
+                                    $carte_grise = $visite->getCtCarteGriseId();
+                                    $immatriculation = $carte_grise->getCgImmatriculation();
+                                    if($visite->getCtUtilisationId()->getId() == 1){
+                                        $administratif = "ADM";
+                                    }
+                                    break;
+                                case 3:
+                                    $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                                    $reference_operation = $visite->getVstNumPv();
+                                    $carte_grise = $visite->getCtCarteGriseId();
+                                    $immatriculation = $carte_grise->getCgImmatriculation();
+                                    if($visite->getCtUtilisationId()->getId() == 1){
+                                        $administratif = "ADM";
+                                    }
+                                    break;
+                                case 4:
+                                    $reception = $ctReceptionRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                                    $reference_operation = $reception->getRcpNumPv();
+                                    $immatriculation = $reception->getRcpImmatriculation();
+                                    if($reception->getCtUtilisationId()->getId() == 1){
+                                        $administratif = "ADM";
+                                    }
+                                    break;
+                                case 5:
+                                    $constatation = $ctConstAvDedRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                                    $reference_operation = $constatation->getCadNumero();
+                                    $immatriculation = $constatation->getCadImmatriculation();
+                                    if($constatation->getCadImmatriculation() == 1){
+                                        $administratif = "ADM";
+                                    }
+                                    break;
+                                case 6:
+                                    $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                                    $reference_operation = $visite->getVstNumPv();
+                                    $carte_grise = $visite->getCtCarteGriseId();
+                                    $immatriculation = $carte_grise->getCgImmatriculation();
+                                    if($visite->getCtUtilisationId()->getId() == 1){
+                                        $administratif = "ADM";
+                                    }
+                                    break;
+                                case 7:
+                                    $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                                    $reference_operation = $visite->getVstNumPv();
+                                    $carte_grise = $visite->getCtCarteGriseId();
+                                    $immatriculation = $carte_grise->getCgImmatriculation();
+                                    if($visite->getCtUtilisationId()->getId() == 1){
+                                        $administratif = "ADM";
+                                    }
+                                    break;
+                                case 8:
+                                    $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                                    $reference_operation = $visite->getVstNumPv();
+                                    $carte_grise = $visite->getCtCarteGriseId();
+                                    $immatriculation = $carte_grise->getCgImmatriculation();
+                                    if($visite->getCtUtilisationId()->getId() == 1){
+                                        $administratif = "ADM";
+                                    }
+                                    break;
+                            }
+                        }
                         break;
                 }
-                    $it = $lst_ctrl->getCtImprimeTechId()->getId();
-                    $utiliser_1=[
+                $it = $lst_ctrl->getCtImprimeTechId()->getId();
+
+                $ce = "";
+                $cb = "";
+                $cim_32_bis = "";
+                $cj = "";
+                $cjbr = "";
+                $cr = "";
+                $cae = "";
+                $plaque_chassis = "";
+                $cim_31 = "";
+                $cim_31_bis = "";
+                $cim_32 = "";
+                $pvo = "";
+                $pvm = "";
+                $pvmc = "";
+                $pvmr = "";
+                $pvo2 = "";
+                $pvmr2 = "";
+
+                switch($it){
+                    case 1:
+                        $ce = $lst_ctrl->getItuNumero();
+                        break;
+                    case 2:
+                        $cb = $lst_ctrl->getItuNumero();
+                        break;
+                    case 3:
+                        $cim_32_bis = $lst_ctrl->getItuNumero();
+                        break;
+                    case 4:
+                        $cj = $lst_ctrl->getItuNumero();
+                        break;
+                    case 5:
+                        $cjbr = $lst_ctrl->getItuNumero();
+                        break;
+                    case 6:
+                        $cr = $lst_ctrl->getItuNumero();
+                        break;
+                    case 7:
+                        $cae = $lst_ctrl->getItuNumero();
+                        break;
+                    case 8:
+                        $plaque_chassis = $lst_ctrl->getItuNumero();
+                        break;
+                    case 9:
+                        $cim_31 = $lst_ctrl->getItuNumero();
+                        break;
+                    case 10:
+                        $cim_31_bis = $lst_ctrl->getItuNumero();
+                        break;
+                    case 11:
+                        $cim_32 = $lst_ctrl->getItuNumero();
+                        break;
+                    case 12:
+                        if($pvo == ""){
+                            $pvo = $lst_ctrl->getItuNumero();
+                        }else{
+                            $pvo2 = $lst_ctrl->getItuNumero();
+                        }
+                        break;
+                    case 13:
+                        $pvm = $lst_ctrl->getItuNumero();
+                        break;
+                    case 14:
+                        $pvmc = $lst_ctrl->getItuNumero();
+                        break;
+                    case 15:
+                        if($pvmr == ""){
+                            $pvmr = $lst_ctrl->getItuNumero();
+                        }else{
+                            $pvmr2 = $lst_ctrl->getItuNumero();
+                        }
+                        break;
+                }
+                $utiliser_1=[
+                    "numero" => ++$numero,
+                    "reference_operation" => $reference_operation,
+                    "immatriculation" => $immatriculation,
+                    "motif" => $motif,
+                    "pvo" => $pvo,
+                    "pvm" => $pvm,
+                    "pvmc" => $pvmc,
+                    "pvmr" => $pvmr,
+                    "ce" => $ce,
+                    "cb" => $cb,
+                    "cj" => $cj,
+                    "cjbr" => $cjbr,
+                    "cr" => $cr,
+                    "cae" => $cae,
+                    "cim_31" => $cim_31,
+                    "cim_31_bis" => $cim_31_bis,
+                    "cim_32" => $cim_32,
+                    "cim_32_bis" => $cim_32_bis,
+                    "plaque_chassis" => $plaque_chassis,
+                    "adm" => $administratif,
+                    "observation" => $observation,
+                ];
+                if($pvo2 != ""){
+                    $utiliser_2=[
                         "numero" => ++$numero,
                         "reference_operation" => $reference_operation,
                         "immatriculation" => $immatriculation,
                         "motif" => $motif,
-                        "pvo" => $it == 12 ? $lst_ctrl->getItuNumero() : "",
-                        "pvm" => $it == 13 ? $lst_ctrl->getItuNumero() : "",
-                        "pvmc" => $it == 14 ? $lst_ctrl->getItuNumero() : "",
-                        "pvmr" => $it == 15 ? $lst_ctrl->getItuNumero() : "",
-                        "ce" => $it == 1 ? $lst_ctrl->getItuNumero() : "",
-                        "cb" => $it == 2 ? $lst_ctrl->getItuNumero() : "",
-                        "cj" => $it == 4 ? $lst_ctrl->getItuNumero() : "",
-                        "cjbr" => $it == 5 ? $lst_ctrl->getItuNumero() : "",
-                        "cr" => $it == 6 ? $lst_ctrl->getItuNumero() : "",
-                        "cae" => $it == 7 ? $lst_ctrl->getItuNumero() : "",
-                        "cim_31" => $it == 9 ? $lst_ctrl->getItuNumero() : "",
-                        "cim_31_bis" => $it == 10 ? $lst_ctrl->getItuNumero() : "",
-                        "cim_32" => $it == 11 ? $lst_ctrl->getItuNumero() : "",
-                        "cim_32_bis" => $it == 3 ? $lst_ctrl->getItuNumero() : "",
-                        "plaque_chassis" => $it == 8 ? $lst_ctrl->getItuNumero() : "",
-                        "adm" => "-",
-                        "observation" => "-",
+                        "pvo" => $pvo2,
+                        "pvm" => "",
+                        "pvmc" => "",
+                        "pvmr" => "",
+                        "ce" => "",
+                        "cb" => "",
+                        "cj" => "",
+                        "cjbr" => "",
+                        "cr" => "",
+                        "cae" => "",
+                        "cim_31" => "",
+                        "cim_31_bis" => "",
+                        "cim_32" => "",
+                        "cim_32_bis" => "",
+                        "plaque_chassis" => "",
+                        "adm" => $administratif,
+                        "observation" => $observation,
                     ];
+                }
+                if($pvmr2 != ""){
+                    $utiliser_2=[
+                        "numero" => ++$numero,
+                        "reference_operation" => $reference_operation,
+                        "immatriculation" => $immatriculation,
+                        "motif" => $motif,
+                        "pvo" => "",
+                        "pvm" => "",
+                        "pvmc" => "",
+                        "pvmr" => $pvmr2,
+                        "ce" => "",
+                        "cb" => "",
+                        "cj" => "",
+                        "cjbr" => "",
+                        "cr" => "",
+                        "cae" => "",
+                        "cim_31" => "",
+                        "cim_31_bis" => "",
+                        "cim_32" => "",
+                        "cim_32_bis" => "",
+                        "plaque_chassis" => "",
+                        "adm" => $administratif,
+                        "observation" => $observation,
+                    ];
+                }
             }
 
-            $utiliser_precedent = $utiliser;
-            $liste_utiliser->add($utiliser);
+            $liste_utiliser->add($utiliser_1);
+            if($utiliser_2["pvo"] != "" || $utiliser_2["pvmr"] != ""){
+                $liste_utiliser->add($utiliser_2);
+            }
         }
 
         $pdfOptions = new Options();
