@@ -3167,7 +3167,48 @@ class CtAppImprimableController extends AbstractController
         }
         $imprime_technique_utiliser = $ctImprimeTechUseRepository->findByUtilisation($centre, $date_of_utilisation);
         $numero = 0;
+        $motif = "";
+
+        $nombre_ce = 0;
+        $nombre_cb = 0;
+        $nombre_cim_32_bis = 0;
+        $nombre_cj = 0;
+        $nombre_cjbr = 0;
+        $nombre_cr = 0;
+        $nombre_cae = 0;
+        $nombre_plaque_chassis = 0;
+        $nombre_cim_31 = 0;
+        $nombre_cim_31_bis = 0;
+        $nombre_cim_32 = 0;
+        $nombre_pvo = 0;
+        $nombre_pvm = 0;
+        $nombre_pvmc = 0;
+        $nombre_pvmr = 0;
+
+        $nombre_authenticite = 0;
+        $nombre_autre = 0;
+        $nombre_caracteristique = 0;
+        $nombre_constatation = 0;
+        $nombre_contre = 0;
+        $nombre_duplicata_visite = 0;
+        $nombre_duplicata_reception = 0;
+        $nombre_duplicata_constatation = 0;
+        $nombre_duplicata_authenticite = 0;
+        $nombre_mutation = 0;
+        $nombre_rebut = 0;
+        $nombre_reception = 0;
+        $nombre_visite = 0;
+        $nombre_visite_speciale = 0;
+        $nombre_transfert = 0;
+        $nombre_adm = 0;
+
+        $nombre_pv = 0;
+        $nombre_carnet = 0;
+        $nombre_carte = 0;
+        $nombre_plaque = 0;
+
         foreach($imprime_technique_utiliser as $itu){
+            $motif = "";
             $utiliser_1=[
                 "numero" => "-",
                 "reference_operation" => "-",
@@ -3218,7 +3259,12 @@ class CtAppImprimableController extends AbstractController
             foreach($liste_controle as $lst_ctrl){
                 $reference_operation = "-";
                 $immatriculation = "";
-                $motif =$lst_ctrl->getCtUsageItId()->getUitLibelle();
+                if($lst_ctrl->getCtUsageItId() != null){
+                    $motif =$lst_ctrl->getCtUsageItId()->getUitLibelle();
+                }else{
+                    $usage_standard = $ctUsageImprimeTechinqueRepository->findOneBy(["id" => 1]);
+                    $lst_ctrl->setCtUsageItId($usage_standard);
+                }
                 $administratif = "";
                 $observation = "";
                 switch($lst_ctrl->getCtUsageItId()->getId()){
@@ -3227,24 +3273,30 @@ class CtAppImprimableController extends AbstractController
                         $reference_operation = $visite->getVstNumPv();
                         $carte_grise = $visite->getCtCarteGriseId();
                         $immatriculation = $carte_grise->getCgImmatriculation();
+                        $nombre_visite++;
                         if($visite->getCtUtilisationId()->getId() == 1){
                             $administratif = "ADM";
+                            $nombre_adm++;
                         }
                         break;
                     case 11:
                         $reception = $ctReceptionRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                         $reference_operation = $reception->getRcpNumPv();
                         $immatriculation = $reception->getRcpImmatriculation();
+                        $nombre_reception++;
                         if($reception->getCtUtilisationId()->getId() == 1){
                             $administratif = "ADM";
+                            $nombre_adm++;
                         }
                         break;
                     case 12:
                         $constatation = $ctConstAvDedRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                         $reference_operation = $constatation->getCadNumero();
                         $immatriculation = $constatation->getCadImmatriculation();
+                        $nombre_constatation++;
                         if($constatation->getCadImmatriculation() == 1){
                             $administratif = "ADM";
+                            $nombre_adm++;
                         }
                         break;
                     case 14:
@@ -3254,13 +3306,17 @@ class CtAppImprimableController extends AbstractController
                         $immatriculation = $carte_grise->getCgImmatriculation();
                         $visite_inapte = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $carte_grise, "vst_is_contre_visite" => 1], ["id" => "DESC"]);
                         $observation = "Inapte du ".$visite_inapte->getVstCreated()." numero ".$visite_inapte->getId();
+                        $nombre_contre++;
                         if($contre->getCtUtilisationId()->getId() == 1){
                             $administratif = "ADM";
+                            $nombre_adm++;
                         }
                         break;
                     default:
                         $autre_service = $ctAutreVenteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
-                        $reference_operation = $autre_service->getAuvNumPv();
+                        if($autre_service->getAuvNumPv() != null){
+                            $reference_operation = $autre_service->getAuvNumPv();
+                        }
                         $usage = $autre_service->getCtUsageIt();
                         $carte_grise = $ctCarteGriseRepository->getCtCarteGriseId();
                         if($carte_grise == null){
@@ -3270,8 +3326,10 @@ class CtAppImprimableController extends AbstractController
                                     $reference_operation = $visite->getVstNumPv();
                                     $carte_grise = $visite->getCtCarteGriseId();
                                     $immatriculation = $carte_grise->getCgImmatriculation();
+                                    $nombre_mutation++;
                                     if($visite->getCtUtilisationId()->getId() == 1){
                                         $administratif = "ADM";
+                                        $nombre_adm++;
                                     }
                                     break;
                                 case 2:
@@ -3279,8 +3337,10 @@ class CtAppImprimableController extends AbstractController
                                     $reference_operation = $visite->getVstNumPv();
                                     $carte_grise = $visite->getCtCarteGriseId();
                                     $immatriculation = $carte_grise->getCgImmatriculation();
+                                    $nombre_duplicata_visite++;
                                     if($visite->getCtUtilisationId()->getId() == 1){
                                         $administratif = "ADM";
+                                        $nombre_adm++;
                                     }
                                     break;
                                 case 3:
@@ -3288,24 +3348,30 @@ class CtAppImprimableController extends AbstractController
                                     $reference_operation = $visite->getVstNumPv();
                                     $carte_grise = $visite->getCtCarteGriseId();
                                     $immatriculation = $carte_grise->getCgImmatriculation();
+                                    $nombre_authenticite++;
                                     if($visite->getCtUtilisationId()->getId() == 1){
                                         $administratif = "ADM";
+                                        $nombre_adm++;
                                     }
                                     break;
                                 case 4:
                                     $reception = $ctReceptionRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                                     $reference_operation = $reception->getRcpNumPv();
                                     $immatriculation = $reception->getRcpImmatriculation();
+                                    $nombre_duplicata_reception++;
                                     if($reception->getCtUtilisationId()->getId() == 1){
                                         $administratif = "ADM";
+                                        $nombre_adm++;
                                     }
                                     break;
                                 case 5:
                                     $constatation = $ctConstAvDedRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
                                     $reference_operation = $constatation->getCadNumero();
                                     $immatriculation = $constatation->getCadImmatriculation();
+                                    $nombre_duplicata_constatation++;
                                     if($constatation->getCadImmatriculation() == 1){
                                         $administratif = "ADM";
+                                        $nombre_adm++;
                                     }
                                     break;
                                 case 6:
@@ -3313,8 +3379,10 @@ class CtAppImprimableController extends AbstractController
                                     $reference_operation = $visite->getVstNumPv();
                                     $carte_grise = $visite->getCtCarteGriseId();
                                     $immatriculation = $carte_grise->getCgImmatriculation();
+                                    $nombre_duplicata_authenticite++;
                                     if($visite->getCtUtilisationId()->getId() == 1){
                                         $administratif = "ADM";
+                                        $nombre_adm++;
                                     }
                                     break;
                                 case 7:
@@ -3322,8 +3390,10 @@ class CtAppImprimableController extends AbstractController
                                     $reference_operation = $visite->getVstNumPv();
                                     $carte_grise = $visite->getCtCarteGriseId();
                                     $immatriculation = $carte_grise->getCgImmatriculation();
+                                    $nombre_caracteristique++;
                                     if($visite->getCtUtilisationId()->getId() == 1){
                                         $administratif = "ADM";
+                                        $nombre_adm++;
                                     }
                                     break;
                                 case 8:
@@ -3331,9 +3401,31 @@ class CtAppImprimableController extends AbstractController
                                     $reference_operation = $visite->getVstNumPv();
                                     $carte_grise = $visite->getCtCarteGriseId();
                                     $immatriculation = $carte_grise->getCgImmatriculation();
+                                    $nombre_visite_speciale++;
                                     if($visite->getCtUtilisationId()->getId() == 1){
                                         $administratif = "ADM";
+                                        $nombre_adm++;
                                     }
+                                    break;
+                                case 9:
+                                    //$visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                                    //$reference_operation = $visite->getVstNumPv();
+                                    //$carte_grise = $visite->getCtCarteGriseId();
+                                    //$immatriculation = $carte_grise->getCgImmatriculation();
+                                    $nombre_rebut++;
+                                    /* if($visite->getCtUtilisationId()->getId() == 1){
+                                        $administratif = "ADM";
+                                    } */
+                                    break;
+                                default:
+                                    /* $visite = $ctVisiteRepository->findOneBy(["id" => $lst_ctrl->getCtControleId()]);
+                                    $reference_operation = $visite->getVstNumPv();
+                                    $carte_grise = $visite->getCtCarteGriseId();
+                                    $immatriculation = $carte_grise->getCgImmatriculation(); */
+                                    $nombre_autre++;
+                                    /* if($visite->getCtUtilisationId()->getId() == 1){
+                                        $administratif = "ADM";
+                                    } */
                                     break;
                             }
                         }
@@ -3362,36 +3454,58 @@ class CtAppImprimableController extends AbstractController
                 switch($it){
                     case 1:
                         $ce = $lst_ctrl->getItuNumero();
+                        $nombre_ce++;
+                        $nombre_carnet++;
                         break;
                     case 2:
                         $cb = $lst_ctrl->getItuNumero();
+                        $nombre_cb++;
+                        $nombre_carte++;
                         break;
                     case 3:
                         $cim_32_bis = $lst_ctrl->getItuNumero();
+                        $nombre_cim_32_bis++;
+                        $nombre_carte++;
                         break;
                     case 4:
                         $cj = $lst_ctrl->getItuNumero();
+                        $nombre_cj++;
+                        $nombre_carte++;
                         break;
                     case 5:
                         $cjbr = $lst_ctrl->getItuNumero();
+                        $nombre_cjbr++;
+                        $nombre_carte++;
                         break;
                     case 6:
                         $cr = $lst_ctrl->getItuNumero();
+                        $nombre_cr++;
+                        $nombre_carte++;
                         break;
                     case 7:
                         $cae = $lst_ctrl->getItuNumero();
+                        $nombre_cae++;
+                        $nombre_carte++;
                         break;
                     case 8:
                         $plaque_chassis = $lst_ctrl->getItuNumero();
+                        $nombre_plaque_chassis++;
+                        $nombre_plaque++;
                         break;
                     case 9:
                         $cim_31 = $lst_ctrl->getItuNumero();
+                        $nombre_cim_31++;
+                        $nombre_carte++;
                         break;
                     case 10:
                         $cim_31_bis = $lst_ctrl->getItuNumero();
+                        $nombre_cim_31_bis++;
+                        $nombre_carte++;
                         break;
                     case 11:
                         $cim_32 = $lst_ctrl->getItuNumero();
+                        $nombre_cim_32++;
+                        $nombre_carte++;
                         break;
                     case 12:
                         if($pvo == ""){
@@ -3399,12 +3513,18 @@ class CtAppImprimableController extends AbstractController
                         }else{
                             $pvo2 = $lst_ctrl->getItuNumero();
                         }
+                        $nombre_pvo++;
+                        $nombre_pv++;
                         break;
                     case 13:
                         $pvm = $lst_ctrl->getItuNumero();
+                        $nombre_pvm++;
+                        $nombre_pv++;
                         break;
                     case 14:
                         $pvmc = $lst_ctrl->getItuNumero();
+                        $nombre_pvmc++;
+                        $nombre_pv++;
                         break;
                     case 15:
                         if($pvmr == ""){
@@ -3412,6 +3532,8 @@ class CtAppImprimableController extends AbstractController
                         }else{
                             $pvmr2 = $lst_ctrl->getItuNumero();
                         }
+                        $nombre_pvmr++;
+                        $nombre_pv++;
                         break;
                 }
                 $utiliser_1=[
@@ -3518,6 +3640,41 @@ class CtAppImprimableController extends AbstractController
             'province' => $centre->getCtProvinceId()->getPrvNom(),
             'ct_imprime_tech_uses' => $liste_utiliser,
             'user' => $this->getUser(),
+            'nombre_ce' => $nombre_ce,
+            'nombre_cb' => $nombre_cb,
+            'nombre_cim_32_bis' => $nombre_cim_32_bis,
+            'nombre_cj' => $nombre_cj,
+            'nombre_cjbr' => $nombre_cjbr,
+            'nombre_cr' => $nombre_cr,
+            'nombre_cae' => $nombre_cae,
+            'nombre_plaque_chassis' => $nombre_plaque_chassis,
+            'nombre_cim_31' => $nombre_cim_31,
+            'nombre_cim_31_bis' => $nombre_cim_31_bis,
+            'nombre_cim_32' => $nombre_cim_32,
+            'nombre_pvo' => $nombre_pvo,
+            'nombre_pvm' => $nombre_pvm,
+            'nombre_pvmc' => $nombre_pvmc,
+            'nombre_pvmr' => $nombre_pvmr,
+            'nombre_authenticite' => $nombre_authenticite,
+            'nombre_autre' => $nombre_autre,
+            'nombre_caracteristique' => $nombre_caracteristique,
+            'nombre_constatation' => $nombre_constatation,
+            'nombre_contre' => $nombre_contre,
+            'nombre_duplicata_visite' => $nombre_duplicata_visite,
+            'nombre_duplicata_reception' => $nombre_duplicata_reception,
+            'nombre_duplicata_constatation' => $nombre_duplicata_constatation,
+            'nombre_duplicata_authenticite' => $nombre_duplicata_authenticite,
+            'nombre_mutation' => $nombre_mutation,
+            'nombre_rebut' => $nombre_rebut,
+            'nombre_reception' => $nombre_reception,
+            'nombre_visite' => $nombre_visite,
+            'nombre_visite_speciale' => $nombre_visite_speciale,
+            'nombre_transfert' => $nombre_transfert,
+            'nombre_adm' => $nombre_adm,
+            'nombre_pv' => $nombre_pv,
+            'nombre_carnet' => $nombre_carnet,
+            'nombre_carte' => $nombre_carte,
+            'nombre_plaque' => $nombre_plaque,
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');

@@ -126,7 +126,135 @@
             {% endfor %}
         </table>
         <br>
-       
+        <div>
+            <strong><u>RECAPITULATION PAR TYPE D'IMPRIME TECHNIQUE</u> :</strong>
+        </div>
+        <div>
+            {% set col1 = 30 %}
+            {% set col2 = 190 %}
+            {% set col3 = 30 %}
+            <table style="font-size:10px;">
+                <tr>
+                    <td width="{{ col1 }}px" valign="top" align="right"><strong>(1) -</strong></td>
+                    <td width="{{ col2 }}px" valign="top" align="left">Procès-verbal ordinateur utilisé :</td>
+                    <td width="{{ col3 }}px" valign="top" align="right"><strong>{{ nombre_pvo }}</strong></td>
+                    <td width="{{ col1 }}px" valign="top" align="right"><strong>(2) -</strong></td>
+                    <td width="{{ col2 }}px" valign="top" align="left">Procès-verbal MAE apte/inapte utilisé :</td>
+                    <td width="{{ col3 }}px" valign="top" align="right"><strong>{{ nombre_pvm }}</strong></td>
+                    <td width="{{ col1 }}px" valign="top" align="right"><strong>(3) -</strong></td>
+                    <td width="{{ col2 }}px" valign="top" align="left">Procès-verbal MAE contre utilisé :</td>
+                    <td width="{{ col3 }}px" valign="top" align="right"><strong>{{ nombre_pvmc }}</strong></td>
+                    <td width="{{ col1 }}px" valign="top" align="right"><strong>(4) -</strong></td>
+                    <td width="{{ col2 }}px" valign="top" align="left">Procès-verbal MAE réception :</td>
+                    <td width="{{ col3 }}px" valign="top" align="right"><strong>{{ nombre_pvmr }}</strong></td>
+                </tr>
+                <tr>
+                    <td valign="top" align="right"><strong>(5) -</strong></td>
+                    <td valign="top" align="left">Carnet d’entretien utilisé :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_ce }}</strong></td>
+                    <td valign="top" align="right"><strong>(6) -</strong></td>
+                    <td valign="top" align="left">Carte blanche utilisé :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_cb }}</strong></td>
+                    <td valign="top" align="right"><strong>(7) -</strong></td>
+                    <td valign="top" align="left">Carte jaune utilisé :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_cj }}</strong></td>
+                    <td valign="top" align="right"><strong>(8) -</strong></td>
+                    <td valign="top" align="left">Carte jaune barrée rouge utilisé :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_cjbr }}</strong></td>
+                </tr>
+                <tr>
+                    <td valign="top" align="right"><strong>(9) -</strong></td>
+                    <td valign="top" align="left">Carte rouge utilisé :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_cr }}</strong></td>
+                    <td valign="top" align="right"><strong>(10) -</strong></td>
+                    <td valign="top" align="left">Carte auto-école utilisé :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_cae }}</strong></td>
+                    <td valign="top" align="right"><strong>(11) -</strong></td>
+                    <td valign="top" align="left">CIM 31 utilisé :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_cim_31 }}</strong></td>
+                    <td valign="top" align="right"><strong>(12) -</strong></td>
+                    <td valign="top" align="left">CIM 31 Bis utilisé :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_cim_31_bis }}</strong></td>
+                </tr>
+                <tr>
+                    <td valign="top" align="right"><strong>(13) -</strong></td>
+                    <td valign="top" align="left">CIM 32 utilisé :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_cim_32 }}</strong></td>
+                    <td valign="top" align="right"><strong>(14) -</strong></td>
+                    <td valign="top" align="left">CIM 32 Bis utilisé (Carte violette taxi aéroport et/ou car agréés) :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_cim_32_bis }}</strong></td>
+                    <td valign="top" align="right"><strong>(15) -</strong></td>
+                    <td valign="top" align="left">Plaque châssis utilisé :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_plaque_chassis }}</strong></td>
+                    <td valign="top" align="right"><strong>(16) -</strong></td>
+                    <td valign="top" align="left">ADM :</td>
+                    <td valign="top" align="right"><strong>{{ nombre_adm }}</strong></td>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <div>
+            <strong><u>RECAPITULATION PAR GENRE D'IMPRIMER TECHNIQUE</u> :</strong>
+        </div>
+        <div>
+            {% set col6 = 150 %}
+            {% set col7 = 30 %}
+            <table style="font-size:10px;">
+                <tr>
+                    <td width="{{ col6 }}px" valign="top" align="right">Nombre de procès-verbal utilisés : </td>
+                    <td width="{{ col7 }}px" valign="top" align="left"><strong>{{ nombre_pv }}</strong></td>
+                    <td width="{{ col6 }}px" valign="top" align="right">Nombre de carnet d'entretien utilisés : </td>
+                    <td width="{{ col7 }}px" valign="top" align="left"><strong>{{ nombre_carnet }}</strong></td>
+                    <td width="{{ col6 }}px" valign="top" align="right">Nombre de carte utilisés</td>
+                    <td width="{{ col7 }}px" valign="top" align="left"><strong>{{ nombre_carte }}</strong></td>
+                    <td width="{{ col6 }}px" valign="top" align="right">Nombre de plaque chassis utilisés : </td>
+                    <td width="{{ col7 }}px" valign="top" align="left"><strong>{{ nombre_plaque }}</strong></td>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <div>
+            <strong><u>RECAPITULATION PAR TYPE D'UTILISATION</u> :</strong>
+        </div>
+        <div>
+            {% set col4 = 110 %}
+            {% set col5 = 30 %}
+            <table style="font-size:10px;">
+                <tr>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Authenticité : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_authenticite }}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Autres : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_autre }}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Caractéristique : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_caracteristique }}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Constatation : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_constatation }}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Contre : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_contre }}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Duplicata Authenticité : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_duplicata_authenticite }}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Duplicata Constatation : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_duplicata_constatation }}</strong></td>
+                </tr>
+                <tr>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Duplicata Réception : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_duplicata_reception }}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Duplicata Visite : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_duplicata_visite }}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Mutation : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_mutation }}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Rébut : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_rebut}}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Réception : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_reception }}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Visite : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_visite }}</strong></td>
+                    <td width="{{ col4 }}px" valign="top" align="right"><strong>Visite spéciale : </strong></td>
+                    <td width="{{ col5 }}px" valign="top" align="left"><strong>{{ nombre_visite_speciale }}</strong></td>
+                </tr>
+            </table>
+        </div>
+        <br>
         <div style="font-size:14px;margin-left:600px;" align="center">
             <br><br>
             {{ province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}<br>
