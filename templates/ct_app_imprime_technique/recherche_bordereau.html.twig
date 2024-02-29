@@ -91,6 +91,17 @@
 </div>
 <div class="box">
     {# <a href="{{ path('app_ct_app_imprimable_bordereau_envoi', {'numero' : numero }) }}" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Imprimer</a> #}
-    <a href="#" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Imprimer</a>
+    {# <a href="#" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Imprimer</a> #}
+    <form method="post" class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_imprimable_bordereau_envoi') }}">
+        <div class="">
+            {# <strong>Numéro du bordereau :</strong><br>
+            <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span> #}
+            <input type="hidden" name="numero" id="numero" class="form-control" placeholder="numéro du bordereau..." value="{{ numero }}">
+            <br>
+            <button class="btn btn-primary" type="submit" style="left">
+                Rechercher
+            </button>
+        </div>
+    </form>
 </div>
 {% endblock %}

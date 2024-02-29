@@ -1,0 +1,161 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Bordereau d'envoi</title>
+        <style>
+            html{margin:20px 20px 20px 20px;}
+            .footer{
+                position:fixed;
+                bottom:10px;
+                left:0px;
+                right:40px;
+                height:20px;
+                align:center;
+
+                /** Extra personal styles **/
+                width: 100%;
+                /* background-color: #03a9f4; */
+                color: black;
+                margin-right: 20px;
+                text-align: center;
+                line-height: 20px;
+            }
+            .footer .page-number:after { content: counter(page); }
+        </style>
+    </head>
+    <body style="font-size:10px;border:0px solid black;">
+        <div>
+            <table style="font-size:12px">
+                <tr>
+                    <td width="250" align="center" style="line-height:1em;">
+                        <strong>SECRETARIAT GENERAL</strong>
+                        <br>-----------------------------<br>
+                        <strong>DIRECTION GENERALE DE LA SECURITE ROUTIERE</strong>
+                        <br>-----------------------------<br>
+                        <strong>
+                            AGENCE COMPTABLE
+                        </strong>
+                        <br>-----------------------------<br>
+                        {# <img src="{{ logo }}" alt="logo" width="50px" height="50px" type="images/png"> #}
+                        <img src="{{ logo }}" alt="logo" width="25px" height="25px" type="images/png">
+                        <br>« LAHITOKANA NY AINA » <br>
+                        N° {{ bl_numero }}
+                    </td>
+                    <td width="100" align="center" valign="bottom" style="font-size:12px;">
+                        <div align="center">
+                            <strong>
+                                {# ANNEXE IV<br>
+                                ---------------- #}
+                            </strong>
+                        </div>
+                    </td>
+                    <td width="200" align="center" valign="top" style="font-size:12px;">
+                        {% set trans_day_hash = { 
+                                "January": "Janvier", 
+                                "February": "Février", 
+                                "March": "Mars", 
+                                "April": "Avril", 
+                                "May": "Mai", 
+                                "June": "Juin", 
+                                "July": "Juillet",
+                                "August": "Août",
+                                "September": "Septembre",
+                                "October": "Octobre",
+                                "November": "Novembre",
+                                "December": "Décembre" 
+                            } 
+                        %}
+                        <strong>REPOBLIKAN’I MADAGASIKARA</strong><br>
+                        <i>Fitiavana - Tanindrazana - Fandrosoana</i>
+                        <br>--------------------------<br><br>
+                        A Antananarivo, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
+                        <br><br>--------------------------<br><br>
+                    </td>
+                </tr>
+            </table>
+            <br><br><br>
+            <div style="font-size:14px;margin-left:300px;">
+                <div align="center">
+                    Monsieur <strong>L'AGENT COMPTABLE</strong>
+                </div>
+                <br>
+                <div align="right">
+                    <strong>- <u>ANTANANARIVO</u> -</strong>
+                </div>
+                <br>
+                <div align="center">
+                    à
+                </div>
+                <br>
+                <div align="center">
+                    Monsieur <strong>Le Chef de centre {{ centre }}</strong>
+                </div>
+                <br>
+                <div align="right">
+                    <strong>- <u>{{ province }}</u> -</strong>
+                </div>
+            </div>
+            <div align="center" style="font-size:16px;border:0px solid black;">
+                <h2><u>BORDEREAU D'ENVOI</u></h2>
+            </div>
+            <div style="font-size:12px;margin-left:15px;">
+                <table style="border:1px solid black;border-collapse : collapse;">
+                    <tr style="border:1px solid black;border-collapse : collapse;">
+                        <th width="20" style="border:1px solid black;border-collapse : collapse;" align="center"><strong>N° ordre</strong></th>
+                        <th width="250" style="border:1px solid black;border-collapse : collapse;" align="center"><strong>Designation des articles</strong></th>
+                        <th width="40" style="border:1px solid black;border-collapse : collapse;" align="center"><strong>Unité</strong></th>
+                        <th width="40" style="border:1px solid black;border-collapse : collapse;" align="center"><strong>Quantité</strong></th>
+                        <th width="175" style="border:1px solid black;border-collapse : collapse;" align="center"><strong>Observation</strong></th>
+                    </tr>
+                    {% for lst_brd in liste_bordereau %}
+                        <tr style="border:1px solid black;border-collapse : collapse;">
+                            <td align="center" style="border:1px solid black;border-collapse : collapse;">{{ lst_brd.numero }}</td>
+                            <td align="left" style="border:1px solid black;border-collapse : collapse;">{{ lst_brd.designation }}</td>
+                            <td align="left"style="border:1px solid black;border-collapse : collapse;">{{ lst_brd.unite }}</td>
+                            <td align="right" style="border:1px solid black;border-collapse : collapse;">{{ lst_brd.quantite }}</td>
+                            <td align="left" style="border:1px solid black;border-collapse : collapse;">{{ lst_brd.observation }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr style="border:1px solid black;border-collapse : collapse;">
+                        <td style="border:1px solid black;border-collapse : collapse;" align="right" colspan="3"><strong>Total : </strong></td>
+                        <td style="border:1px solid black;border-collapse : collapse;" align="center"><strong>{{ total }}</strong></td>
+                        <td style="border:1px solid black;border-collapse : collapse;" align="center"><strong></strong></td>
+                    </tr>
+                </table>
+            </div>
+            <div align="center" style="margin-top:40px;margin-right:20px;margin-left:400px;font-size:12px;">
+                <strong>
+                    A Antananarivo, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}<br>
+                    <u>L'AGENT COMPTABLE</u>
+                </strong>
+            </div>
+            <br><br><br>
+            <div style="font-size:14px;margin-left:20px;">
+                <div>
+                    <strong><u>Reçu par</u> : </strong>
+                </div>
+                <div>
+                    <strong><u>En date du</u> :</strong>
+                </div>
+                <div>
+                    - A CONSERVER<br>
+                    - A RETOURNER<br>
+                    &nbsp;&nbsp;<em>(Avec accusé de réception)</em>
+                </div>
+                <br>
+                <div>
+                    <strong><u>COPIE</u> :</strong>
+                </div>
+                <div>
+                    - DGSR/DOR<br>
+                    - DGSR/DAF/SCO<br>
+                    - DGSR/DAF/SFB/MAG-APPRO<br>
+                    - ARCHIVES<br>
+                </div>
+            </div>
+            <div class="footer">
+                <span>Direction Générale de la Sécurité Routière BP 784 Alarobia Antananarivo NIF : 4001 089525 STAT : 71102 11 2006 0 043 19</span>
+            </div>
+        </div>
+    </body>
+</html>

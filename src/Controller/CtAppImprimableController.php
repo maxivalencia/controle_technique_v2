@@ -3688,12 +3688,32 @@ class CtAppImprimableController extends AbstractController
     }
 
     /**
-     * @Route("/bordereau_envoi/{numero}", name="app_ct_app_imprimable_bordereau_envoi", methods={"GET", "POST"})
+     * @Route("/bordereau_envoi/", name="app_ct_app_imprimable_bordereau_envoi", methods={"GET", "POST"})
      */
-    public function BordereauEnvoi(Request $request, string $numero)//: Response
+    public function BordereauEnvoi(Request $request, CtBordereauRepository $ctBordereauReposiroty, CtImprimeTechUseRepository $ctImprimeTechUseRepository)//: Response
     {
-        // $visite->setVstGenere($visite->getVstGenere() + 1);
-        // $ctVisiteRepository->add($visite, true);
+        $centre = "";
+        $province = "";
+        $num_ordre = 0;
+        $total = 0;
+        $numero = $request->request->get("numero");
+        $liste_imprimer = $ctBordereauReposiroty->findBy(["bl_numero" => $numero]);
+        $liste_bordereau = new ArrayCollection();
+        foreach($liste_imprimer as $lst_imp){
+            $quantite = intval($lst_imp->getBlFinNumero()) - intval($lst_imp->getBlDebutNumero());
+            $imp = [
+                "numero" => ++$num_ordre,
+                //"nature" => ,
+                "designation" => $lst_imp->getCtImprimeTechId()->getNomImprimeTech(),
+                "unite" => $lst_imp->getCtImprimeTechId()->getUteImprimeTech(),
+                "quantite" => $quantite,
+                "observation" => $lst_imp->getRefExpr(),
+            ];
+            $total = $total + $quantite;
+            $centre = $lst_imp->getCtCentreId()->getCtrNom();
+            $province = $lst_imp->getCtCentreId()->getCtProvinceId()->getPrvNom();
+            $liste_bordereau->add($imp);
+        }
 
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
@@ -3712,6 +3732,11 @@ class CtAppImprimableController extends AbstractController
         $html = $this->renderView('ct_app_imprimable/bordereau_envoi.html.twig', [
             'logo' => $logo,
             'date' => $date,
+            'bl_numero' => $numero,
+            'total' => $total,
+            'liste_bordereau' => $liste_bordereau,
+            'centre' => $centre,
+            'province' => $province
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
