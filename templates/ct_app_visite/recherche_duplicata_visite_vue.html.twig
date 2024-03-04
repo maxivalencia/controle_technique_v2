@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}duplicata visite vehicule {{ immatriculation }}{% endblock %}
+
+{% block app_ct %}
+
+<div class="box">
+    <div class="box-header">VISITE VEHICULE IMMATRICULE : {{ immatriculation }}</div><br>
+</div>
+
+{{ form_start(form_visite) }}
+    {# {{ form_widget(form_carte_grise.ct_vehicule_id) }} #}
+    <table class="table bordure" style="width:100%;">
+        <tbody>
+            <tr>
+                <td style="width:50%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Information carte grise</div><hr>
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_centre_id) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_date_emission) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_immatriculation) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_num_identification) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_nom) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_prenom) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_profession) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_adresse) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_phone) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_commune) }}
+                            <hr>
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_is_transport) }}
+                            <div class="sitransport">
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_nom_cooperative) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_itineraire) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_num_vignette) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_lieu_vignette) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_date_vignette) }}
+                            {# {{ form_row(form_visite.ct_carte_grise_id.ct_zone_desserte_id) }} #}
+                            {# {% do form_visite.ct_carte_grise_id.ct_zone_desserte_id.setRendered() %} #}
+                            </div>
+                            <hr>
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_num_carte_violette) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_lieu_carte_violette) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_date_carte_violette) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_patente) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_ani) }}
+                    </div>
+                    <div class="box">
+                        <div class="entete-formulaire">Information véhicule</div><hr>
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.ct_genre_id) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_type) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.ct_marque_id) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_num_serie) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_carrosserie_id) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_num_moteur) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_source_energie_id) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_cylindre) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_puissance) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_nbr_assis) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_poids_vide) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_charge_utile) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_vehicule_id.vhc_poids_total_charge) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.cg_mise_en_service) }}
+                    </div>
+                </td>
+
+                <td style="width:50%;">
+                    <div class="box">
+                        <div class="entete-formulaire">Information visite technique</div><hr>
+                            {# <input type="text" name="immatriculation" id="immatriculation" class="form-control" value="{{ immatriculation }}" placeholder="immatriculation..." required disabled><br> #}
+                            {# <div class="form-group"><label for="ct_visite_visite_ct_carte_grise_id">Carte Grise identification</label><input type="text" id="ct_visite_visite_ct_carte_grise_id" name="ct_visite_visite[ct_carte_grise_id]" maxlength="255" class="form-control" value="{{ immatriculation }}" /></div> #}
+                            {{ form_row(form_visite.vst_observation) }}
+                            {{ form_row(form_visite.ct_centre_id) }}
+                            {{ form_row(form_visite.ct_type_visite_id) }}
+                            {{ form_row(form_visite.ct_usage_id) }}
+                            {{ form_row(form_visite.ct_utilisation_id) }}
+                            {{ form_row(form_visite.vst_anomalie_id) }}
+                            <div class="duree">
+                            {{ form_row(form_visite.vst_duree_reparation) }}
+                            </div>
+                            {{ form_row(form_visite.vst_date_expiration) }}
+                            {# {{ form_row(form_visite.vst_date_expiration) }} #}
+                            {{ form_row(form_visite.ct_verificateur_id) }}
+                            {{ form_row(form_visite.vst_extra) }}
+                            
+                            {{ form_end(form_visite) }}
+                            <hr>
+                            {{ form_start(form_autre_vente) }}
+                            {{ form_row(form_autre_vente.auv_extra) }}
+                            <input type="hidden" id="id" name="id" value="{{ id }}">
+
+                    </div>
+                </td>
+            </tr>
+            <tr>
+            </tr>
+        </tbody>
+    </table>
+    <div class="box">
+        <button class="btn btn-primary" type="submit" style="right">
+            Dupliquer
+        </button>
+        <table>
+            <tr>
+                {# <td>
+                    <a href="{{ path('app_ct_app_imprimable_proces_verbal_visite', {'id' : id }) }}" class="btn btn-danger"><i class="fa fa-book" aria-hidden="true"></i> Dupliquer</a>
+                </td> #}
+                <td width="50px">
+                </td>
+                {# <td>
+                    <a href="{{ path('app_ct_app_visite_modification_visite', { 'search-immatriculation' : immatriculation }) }}" class="btn btn-primary"><i class="fa fa-book" aria-hidden="true"></i> Modifier</a>
+                </td> #}     
+            </tr>    
+        </table>
+    </div>
+{{ form_end(form_autre_vente) }}
+{% endblock %}

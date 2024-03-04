@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Attestation authenticité{% endblock %}
+
+{% block app_ct %}
+<div class="box">
+    {# <div class="box-header-right"></div>
+    <div class="box-header-left"></div> #}
+    <div class="box-header">NOUVEAU ATTESTATION AUTHENTICITE</div>
+</div>
+
+{{ form_start(form_autre_vente) }}
+    <div class="box">
+        {{ form_widget(form_autre_vente) }}
+    </div>
+    <div class="box">
+        <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Enregistrer') }}</button>
+    </div>
+{{ form_end(form_autre_vente) }}
+
+{# à mettre ici un message flash quand l'information véhicule n'existe pas #}
+{# {% if recherche_ok == true and contre == false %}
+    <div style="text-align:center;align:center;color:white;background-color:red">
+        {{  message_indisponible_contre }}
+    </div>
+{% endif %}
+
+{% if enregistrement_ok is not empty or enregistrement_ok is not null %}
+    {% if enregistrement_ok == true %}
+        <div style="text-align:center;align:center;color:white;background-color:green">
+            {{ message }}
+        </div>
+    {% endif %}
+    {% if enregistrement_ok == false %}
+        <div style="text-align:center;align:center;color:white;background-color:red">
+            {{ message }}
+        </div>
+    {% endif %}
+{% endif %} #}
+{% endblock %}

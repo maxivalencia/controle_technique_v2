@@ -16,10 +16,15 @@ use App\Entity\CtUtilisation;
 use App\Form\CtCarteGriseType;
 use App\Form\CtAnomalieType;
 use App\Entity\CtImprimeTechUse;
+use App\Entity\CtAutreVente;
 use App\Form\CtCarteGriseType as FormCtCarteGriseType;
 use App\Repository\CtTypeVisiteRepository;
+use App\Repository\CtVisiteExtraRepository;
 use App\Repository\CtCarteGriseRepository;
 use App\Repository\CtVehiculeRepository;
+use App\Repository\CtAutreTarifRepository;
+use App\Repository\CtAutreVenteRepository;
+use App\Repository\CtUsageImprimeTechniqueRepository;
 use App\Repository\CtUserRepository;
 use App\Form\CtRensCarteGriseType;
 use App\Form\CtVisiteCarteGriseType;
@@ -28,7 +33,12 @@ use App\Form\CtVehiculeType;
 use App\Form\CtVisiteVehiculeType;
 use App\Form\CtVisiteVisiteType;
 use App\Form\CtVisiteVisiteDisableType;
+use App\Form\CtVisiteVisiteDuplicataType;
 use App\Form\CtVisiteType;
+use App\Form\CtAutreVenteType;
+use App\Form\CtAutreVenteAutreVenteType;
+use App\Form\CtAutreVenteAuthenticiteType;
+use App\Form\CtAutreVenteVisiteSpecialType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\DataTransformer\IssueToNumberTransformer;
 use App\Repository\CtUtilisationRepository;
@@ -968,10 +978,11 @@ class CtAppVisiteController extends AbstractController
     /**
      * @Route("/recherche_visite_resultat", name="app_ct_app_visite_recherche_visite_resultat", methods={"GET", "POST"})
      */
-    public function RechercheVisiteImmatriculation(Request $request, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
+    public function RechercheVisiteResultat(Request $request, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
     {
         $recherche = "";
         $ctVisite = new CtVisite();
+        $ctCarteGrise = new CtCarteGrise();
         if($request){
             if($request->request->get("immatriculation")){
                 $recherche = strtoupper($request->request->get('immatriculation'));
@@ -981,31 +992,36 @@ class CtAppVisiteController extends AbstractController
                 $recherche = strtoupper($request->query->get('immatriculation'));
                 $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
             }
-            if($request->request->get("immatriculation")){
-                $recherche = strtoupper($request->request->get('immatriculation'));
+            if($request->request->get("search-numero-serie")){
+                $recherche = strtoupper($request->request->get('search-numero-serie'));
                 $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
                 $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
             }
-            if($request->query->get("immatriculation")){
-                $recherche = strtoupper($request->query->get('immatriculation'));
+            if($request->query->get("search-numero-serie")){
+                $recherche = strtoupper($request->query->get('search-numero-serie'));
                 $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
                 $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
             }
-            /* $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
-            if($ctCarteGrise == null){
+            //$ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            /* if($ctCarteGrise == null){
                 $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            } */
+            //var_dump($ctCarteGrise);
+            if($ctCarteGrise != null){
+                $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
+                //$centre = $this->getUser()->getCtCentreId();
+                // $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite, ["immatriculation" => $recherche, "centre" => $centre]);
+                //$form_visite = $this->createForm(CtVisiteVisiteDisableType::class, $ctVisite, ["immatriculation" => $recherche, "disable" => true]);
+                if($ctVisite != null){
+                    $form_visite = $this->createForm(CtVisiteVisiteDisableType::class, $ctVisite, ["immatriculation" => $recherche, "disable" => true]);
+                    $form_visite->handleRequest($request);
+                    return $this->render('ct_app_visite/recherche_visite_vue.html.twig', [
+                        'form_visite' => $form_visite->createView(),
+                        'immatriculation' => $recherche,
+                        'id' => $ctVisite->getId(),
+                    ]);
+                }
             }
-            $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]); */
-            //$centre = $this->getUser()->getCtCentreId();
-            // $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite, ["immatriculation" => $recherche, "centre" => $centre]);
-            //$form_visite = $this->createForm(CtVisiteVisiteDisableType::class, $ctVisite, ["immatriculation" => $recherche, "disable" => true]);
-            $form_visite = $this->createForm(CtVisiteVisiteDisableType::class, $ctVisite, ["immatriculation" => $recherche]);
-            $form_visite->handleRequest($request);
-            return $this->render('ct_app_visite/recherche_visite_vue.html.twig', [
-                'form_visite' => $form_visite->createView(),
-                'immatriculation' => $recherche,
-                'id' => $ctVisite->getId(),
-            ]);
         }
         return $this->redirectToRoute('app_ct_app_visite_recherche_visite');
     }
@@ -1168,4 +1184,301 @@ class CtAppVisiteController extends AbstractController
             'ct_visite' => $ctVisite,
         ]);
     }
+
+    /**
+     * @Route("/recherche_duplicata_visite", name="app_ct_app_visite_recherche_duplicata_visite", methods={"GET", "POST"})
+     */
+    public function RechercheDuplicataVisite(Request $request): Response
+    {
+        // efa ok ko ito
+        return $this->render('ct_app_visite/recherche_duplicata.html.twig', [
+            'controller_name' => 'CtAppVisiteController',
+        ]);
+    }
+
+    /**
+     * @Route("/recherche_duplicata_visite_resultat", name="app_ct_app_visite_recherche_duplicata_visite_resultat", methods={"GET", "POST"})
+     */
+    public function RechercheDuplicataVisiteResultat(Request $request, CtVisiteExtraRepository $ctVisiteExtraRepository, CtAutreVenteRepository $ctAutreRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
+    {
+        $recherche = "";
+        $ctVisite = new CtVisite();
+        $ctCarteGrise = new CtCarteGrise();
+        $form_autre_vente = $this->createFormBuilder()
+            ->add('auv_extra', EntityType::class, [
+                'label' => 'Extra Duplicata',
+                'class' => CtVisiteExtra::class,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'multi select',
+                    'multiple' => true,
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+                'query_builder' => function(CtVisiteExtraRepository $ctVisiteExtraRepository){
+                    $qb = $ctVisiteExtraRepository->createQueryBuilder('u');
+                    return $qb
+                        ->orderBy('u.id', 'ASC')
+                        ->setMaxResults(11)
+                    ;
+                },
+                'required' => false,
+                'disabled' => false,
+            ])        
+            ->getForm();
+        $form_autre_vente->handleRequest($request);
+        if($request){            
+            $auv = $request->request->get('form');
+            if(length($auv["auv_extra"]) > 0){
+                $usage_it = $ctUsageImprimeTechinqueRepository->findOneBy(["id" => 2]);
+                $autre_tarif = $ctAutreTarifRepository->findOneBy(["ct_usage_imprime_technique_id" => $usage_it], ["aut_arrete" => "DESC"]);
+                $autre_vente_extra = $ctVisiteExtraRepository->findOneBy(["vste_libelle" => "PVO"]);
+                $date = new \DateTime();
+                $identification = $auv["id"];
+                $ct_autre_vente = new CtAutreVente();
+                $ct_autre_vente->setCtUsageIt($usage_it);
+                $ct_autre_vente->setCtAutreTarifId($autre_tarif);
+                $ct_autre_vente->setAuvIsVisible(true);
+                $ct_autre_vente->setUserId($this->getUser());
+                $ct_autre_vente->setVerificateurId(null);
+                $ct_autre_vente->setCtCarteGriseId(null);
+                $ct_autre_vente->setCtCentreId($this->getUser()->getCtCentreId());
+                $ct_autre_vente->setAuvCreatedAt(new \DateTime());
+                $ct_autre_vente->setControleId($identification);
+                $ct_autre_vente->addAuvExtra($autre_vente_extra);
+                foreach($auv["auv_extra"] as $a){
+                    $autre_vente_extra = $ctVisiteExtraRepository->findOneBy(["id" => $a]);
+                    $ct_autre_vente->addAuvExtra($autre_vente_extra);
+                }
+                $ct_autre_vente->setAuvValidite("");
+                $ct_autre_vente->setAuvItineraire("");
+                $ctAutreVenteRepository->add($ct_autre_vente, true);
+                $ct_autre_vente->setAuvNumPv($ct_autre_vente->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ct_autre_vente->getCtCentreId()->getCtrCode().'/'.'AUV/'.$date->format("Y"));
+                $ctAutreVenteRepository->add($ct_autre_vente, true);
+                $id = $auv["id"];
+
+                return $this->redirectToRoute('app_ct_app_imprimable_proces_verbal_visite_duplicata', ['id' => $id]);
+            }
+            if($request->request->get("immatriculation")){
+                $recherche = strtoupper($request->request->get('immatriculation'));
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            }
+            if($request->query->get("immatriculation")){
+                $recherche = strtoupper($request->query->get('immatriculation'));
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            }
+            if($request->request->get("search-numero-serie")){
+                $recherche = strtoupper($request->request->get('search-numero-serie'));
+                $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            }
+            if($request->query->get("search-numero-serie")){
+                $recherche = strtoupper($request->query->get('search-numero-serie'));
+                $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            }
+            if($ctCarteGrise != null){
+                $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
+                if($ctVisite != null){
+                    $form_visite = $this->createForm(CtVisiteVisiteDuplicataType::class, $ctVisite, ["immatriculation" => $recherche, "disable" => true]);
+                    $form_visite->handleRequest($request);
+                    return $this->render('ct_app_visite/recherche_duplicata_visite_vue.html.twig', [
+                        'form_visite' => $form_visite->createView(),                        
+                        'form_autre_vente' => $form_autre_vente->createView(),
+                        'immatriculation' => $recherche,
+                        'id' => $ctVisite->getId(),
+                    ]);
+                }
+            }
+        }
+        return $this->redirectToRoute('app_ct_app_visite_recherche_duplicata_visite');
+    }
+
+    /**
+     * @Route("/recherche_visite_technique_special", name="app_ct_app_visite_recherche_visite_technique_special", methods={"GET", "POST"})
+     */
+    public function RechercheVisiteSpecial(Request $request): Response
+    {
+        // efa ok ko ito
+        return $this->render('ct_app_visite/recherche_visite_special.html.twig', [
+            'controller_name' => 'CtAppVisiteController',
+        ]);
+    }
+
+    /**
+     * @Route("/creer_visite_technique_speciale", name="app_ct_app_visite_creer_visite_technique_speciale", methods={"GET", "POST"})
+     */
+    public function CreerVisiteTechniqueSpeciale(Request $request, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtAutreTarifRepository $ctAutreTarifRepository, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository): Response
+    {
+        $ctCarteGrise = new CtCarteGrise();
+        if($request->request->get('immatriculation')){
+            $recherche = strtoupper($request->request->get('immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+        }
+        if($request->query->get('immatriculation')){
+            $recherche = strtoupper($request->query->get('immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+        }
+        if($request->request->get("search-numero-serie")){
+            $recherche = strtoupper($request->request->get('search-numero-serie'));
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+        }
+        if($request->query->get("search-numero-serie")){
+            $recherche = strtoupper($request->query->get('search-numero-serie'));
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+        }
+        $ctAutreVente = new CtAutreVente();
+        $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
+        
+        $form_autre_vente = $this->createForm(CtAutreVenteAutreVenteType::class, $ctAutreVente, ["centre" => $this->getUser()->getCtCentreId()]);
+        if($ctVisite != null){
+            $usage = $ctUsageImprimeTechinqueRepository->findOneBy(["id" => 8]);
+            $immatriculation = $ctVisite->getCtCarteGriseId()->getCgImmatriculation();
+            $form_autre_vente = $this->createForm(CtAutreVenteVisiteSpecialType::class, $ctAutreVente, ["centre" => $this->getUser()->getCtCentreId(), "controle" => $ctVisite->getId(), "usage" => $usage, "immatriculation" => $immatriculation]);
+        }
+        $form_autre_vente->handleRequest($request);
+
+        if ($form_autre_vente->isSubmitted() && $form_autre_vente->isValid()) {
+            $usage_it = $ctUsageImprimeTechinqueRepository->findOneBy(["id" => 8]);
+            $autre_tarif = $ctAutreTarifRepository->findOneBy(["ct_usage_imprime_technique_id" => $usage_it], ["aut_arrete" => "DESC"]);
+            $autre_vente_extra = $ctVisiteExtraRepository->findOneBy(["vste_libelle" => "PVO"]);
+            $identification = $ctVisite->getId();
+            $date = new \DateTime();
+            $ct_autre_vente = new CtAutreVente();
+            $ct_autre_vente->setCtUsageIt($usage_it);
+            $ct_autre_vente->setCtAutreTarifId($autre_tarif);
+            $ct_autre_vente->setAuvIsVisible(true);
+            $ct_autre_vente->setUserId($this->getUser());
+            //$ct_autre_vente->setVerificateurId(null);
+            $ct_autre_vente->setCtCarteGriseId($ctCarteGrise);
+            $ct_autre_vente->setCtCentreId($this->getUser()->getCtCentreId());
+            $ct_autre_vente->setAuvCreatedAt(new \DateTime());
+            $ct_autre_vente->setControleId($identification);
+            $ct_autre_vente->addAuvExtra($autre_vente_extra);
+            /* foreach($auv["auv_extra"] as $a){
+                $autre_vente_extra = $ctVisiteExtraRepository->findOneBy(["id" => $a]);
+                $ct_autre_vente->addAuvExtra($autre_vente_extra);
+            } */
+            //$ct_autre_vente->setAuvValidite("");
+            //$ct_autre_vente->setAuvItineraire("");
+            $ctAutreVenteRepository->add($ct_autre_vente, true);
+            $ct_autre_vente->setAuvNumPv($ct_autre_vente->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ct_autre_vente->getCtCentreId()->getCtrCode().'/'.'AUV/'.$date->format("Y"));
+            $ctAutreVenteRepository->add($ct_autre_vente, true);
+            //$id = $auv["id"];
+
+            //return $this->redirectToRoute('app_ct_autre_vente_index', [], Response::HTTP_SEE_OTHER);
+        }
+        if($ctVisite == null){
+            return $this->redirectToRoute('app_ct_app_visite_recherche_visite_technique_special');
+        }
+
+        return $this->renderForm('ct_app_visite/creer_visite_speciale.html.twig', [
+            'ct_autre_vente' => $ctAutreVente,
+            'form_autre_vente' => $form_autre_vente,
+        ]);        
+    }
+
+    /**
+     * @Route("/recherche_visite_authenticite", name="app_ct_app_visite_recherche_visite_authenticite", methods={"GET", "POST"})
+     */
+    public function RechercheVisiteAuthenticite(Request $request): Response
+    {
+        // efa ok ko ito
+        return $this->render('ct_app_visite/recherche_authenticite.html.twig', [
+            'controller_name' => 'CtAppVisiteController',
+        ]);
+    }
+
+    /**
+     * @Route("/creer_attestation_authenticite", name="app_ct_app_visite_creer_attestation_authenticite", methods={"GET", "POST"})
+     */
+    public function CreerAttestationAuthenticite(Request $request, CtUserRepository $ctUserRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtAutreTarifRepository $ctAutreTarifRepository, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository): Response
+    {
+        $ctCarteGrise = new CtCarteGrise();
+        if($request->request->get('immatriculation')){
+            $recherche = strtoupper($request->request->get('immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+        }
+        if($request->query->get('immatriculation')){
+            $recherche = strtoupper($request->query->get('immatriculation'));
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+        }
+        if($request->request->get("search-numero-serie")){
+            $recherche = strtoupper($request->request->get('search-numero-serie'));
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+        }
+        if($request->query->get("search-numero-serie")){
+            $recherche = strtoupper($request->query->get('search-numero-serie'));
+            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+        }
+        $ctAutreVente = new CtAutreVente();
+        $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
+        
+        $form_autre_vente = $this->createForm(CtAutreVenteAutreVenteType::class, $ctAutreVente, ["centre" => $this->getUser()->getCtCentreId()]);
+        if($ctVisite != null){
+            $usage = $ctUsageImprimeTechinqueRepository->findOneBy(["id" => 3]);
+            $immatriculation = $ctVisite->getCtCarteGriseId()->getCgImmatriculation();
+            $form_autre_vente = $this->createForm(CtAutreVenteAuthenticiteType::class, $ctAutreVente, ["centre" => $this->getUser()->getCtCentreId(), "controle" => $ctVisite->getId(), "usage" => $usage, "immatriculation" => $immatriculation]);
+        }
+        $form_autre_vente->handleRequest($request);
+
+        if ($form_autre_vente->isSubmitted() && $form_autre_vente->isValid()) {
+            $auv = $request->request->get('ct_autre_vente_authenticite');
+            $usage_it = $ctUsageImprimeTechinqueRepository->findOneBy(["id" => 3]);
+            $autre_tarif = $ctAutreTarifRepository->findOneBy(["ct_usage_imprime_technique_id" => $usage_it], ["aut_arrete" => "DESC"]);
+            $autre_vente_extra = $ctVisiteExtraRepository->findOneBy(["vste_libelle" => "PVO"]);
+            $identification = $ctVisite->getId();
+            $date = new \DateTime();
+            //var_dump($auv['verificateur_id']);
+            $ct_autre_vente = new CtAutreVente();
+            $ct_autre_vente->setCtUsageIt($usage_it);
+            $ct_autre_vente->setCtAutreTarifId($autre_tarif);
+            $ct_autre_vente->setAuvIsVisible(true);
+            $ct_autre_vente->setUserId($this->getUser());
+            $ct_autre_vente->setVerificateurId($ctUserRepository->findOneBy(["id" => $auv['verificateur_id']]));
+            $ct_autre_vente->setCtCarteGriseId($ctCarteGrise);
+            $ct_autre_vente->setCtCentreId($this->getUser()->getCtCentreId());
+            $ct_autre_vente->setAuvCreatedAt(new \DateTime());
+            $ct_autre_vente->setControleId($identification);
+            $ct_autre_vente->addAuvExtra($autre_vente_extra);
+            if($auv['lateral_arriere'] == true){
+                $ct_autre_vente->setAuvItineraire($ct_autre_vente->getAuvItineraire().", latérales arrière");
+            }
+            if($auv['lateral_avant'] == true){
+                $ct_autre_vente->setAuvItineraire($ct_autre_vente->getAuvItineraire().", latérales avant");
+            }
+            if($auv['lunette_arriere'] == true){
+                $ct_autre_vente->setAuvItineraire($ct_autre_vente->getAuvItineraire().", lunette arrière");
+            }
+            if($auv['pare_brise'] == true){
+                $ct_autre_vente->setAuvItineraire($ct_autre_vente->getAuvItineraire().", pare-brise");
+            }
+            /* foreach($auv["option_fumee"] as $a){
+                //$autre_vente_extra = $ctVisiteExtraRepository->findOneBy(["id" => $a]);
+                $ct_autre_vente->setAuvItineraire($ct_autre_vente->getAuvItineraire().", ".$a);
+            } */
+            //$ct_autre_vente->setAuvValidite("");
+            //$ct_autre_vente->setAuvItineraire("");
+            $ctAutreVenteRepository->add($ct_autre_vente, true);
+            $ct_autre_vente->setAuvNumPv($ct_autre_vente->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ct_autre_vente->getCtCentreId()->getCtrCode().'/'.'AUV/'.$date->format("Y"));
+            $ctAutreVenteRepository->add($ct_autre_vente, true);
+            //$id = $auv["id"];
+
+
+            //return $this->redirectToRoute('app_ct_autre_vente_index', [], Response::HTTP_SEE_OTHER);
+        }
+        if($ctVisite == null){
+            return $this->redirectToRoute('app_ct_app_visite_recherche_visite_authenticite');
+        }
+
+        return $this->renderForm('ct_app_visite/creer_authenticite.html.twig', [
+            'ct_autre_vente' => $ctAutreVente,
+            'form_autre_vente' => $form_autre_vente,
+        ]);
+    }
+      
 }

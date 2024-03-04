@@ -119,7 +119,7 @@ class CtAppConstatationController extends AbstractController
     /**
      * @Route("/creer_constatation_avant_dedouanement", name="app_ct_app_constatation_creer_constatation_avant_dedouanement", methods={"GET", "POST"})
      */
-    public function CreerConstataionAvantDedouanement(Request $request, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
+    public function CreerConstatationAvantDedouanement(Request $request, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
     {
         $ctConstatation = new CtConstAvDed();
         $ctConstatation_new = new CtConstAvDed();
@@ -352,7 +352,7 @@ class CtAppConstatationController extends AbstractController
     /**
      * @Route("/duplicata_constatation_avant_dedouanement", name="app_ct_app_constatation_duplicata_constatation_avant_dedouanement", methods={"GET", "POST"})
      */
-    public function DuplicataConstataionAvantDedouanement(Request $request, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
+    public function DuplicataConstatationAvantDedouanement(Request $request, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
     {
         $ctConstatation = new CtConstAvDed();
         $ctConstatation_new = new CtConstAvDed();
@@ -420,7 +420,7 @@ class CtAppConstatationController extends AbstractController
     /**
      * @Route("/modification_constatation_avant_dedouanement/{id}", name="app_ct_app_constatation_modification_constatation_avant_dedouanement", methods={"GET", "POST"})
      */
-    public function ModificationConstataionAvantDedouanement(Request $request, CtConstAvDed $ctConstatation, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
+    public function ModificationConstatationAvantDedouanement(Request $request, CtConstAvDed $ctConstatation, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
     {
         //$ctConstatation = new CtConstAvDed();
         $ctConstatation_new = new CtConstAvDed();
@@ -575,7 +575,7 @@ class CtAppConstatationController extends AbstractController
     /**
      * @Route("/voir_constatation_avant_dedouanement/{id}", name="app_ct_app_constatation_voir_constatation_avant_dedouanement", methods={"GET", "POST"})
      */
-    public function VoirConstataionAvantDedouanement(Request $request, int $id, CtConstAvDed $ctConstatation, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
+    public function VoirConstatationAvantDedouanement(Request $request, int $id, CtConstAvDed $ctConstatation, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
     {
         //$ctConstatation = new CtConstAvDed();
         $ctConstatation = $ctConstAvDedRepository->findOneBy(["id" => $id], ["id" => "DESC"]);
@@ -607,7 +607,7 @@ class CtAppConstatationController extends AbstractController
     /**
      * @Route("/voir_constatation_avant_dedouanement_modification/{id}/{old}", name="app_ct_app_constatation_voir_constatation_avant_dedouanement_modification", methods={"GET", "POST"})
      */
-    public function VoirConstataionAvantDedouanementModification(Request $request, int $id, int $old, CtConstAvDed $ctConstatation, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
+    public function VoirConstatationAvantDedouanementModification(Request $request, int $id, int $old, CtConstAvDed $ctConstatation, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
     {
         //$ctConstatation = new CtConstAvDed();
         $ctConstatation = $ctConstAvDedRepository->findOneBy(["id" => $id], ["id" => "DESC"]);

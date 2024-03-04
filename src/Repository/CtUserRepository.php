@@ -161,7 +161,7 @@ class CtUserRepository extends ServiceEntityRepository implements PasswordUpgrad
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.ct_role_id = :val1')
-            ->setParameter('val2', 22)
+            ->setParameter('val1', 22)
             ->orderBy('c.id', 'ASC')
             //->setMaxResults(10)
             ->getQuery()

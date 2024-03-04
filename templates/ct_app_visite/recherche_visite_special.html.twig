@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche Visite spécial{% endblock %}
+
+{% block app_ct %}
+<div class="box">
+    <div class="box-header">RECHERCHE VISITE POUR ATTESTATION VISITE TECHNIQUE SPECIAL</div>
+</div>
+<div class="box">
+    <div class="entete-formulaire">Recherche</div><br>
+    <div>
+        <table class="table" style="width:100%;">
+            <tbody>
+                <tr>
+                    <td style="width:50%;">
+                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_visite_creer_visite_technique_speciale') }}">
+                            <div class="">
+                                <strong>Par numéro d'immatriculation :</strong><br>
+                                <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
+                                <input type="text" name="immatriculation" id="immatriculation" class="form-control" placeholder="numéro d'immatriculation...">
+                                <button class="btn btn-primary" type="submit" style="float:right">
+                                    Rechercher
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                    <td style="width:50%;">
+                        <form class="mt-2 mt-md-0 d-none d-lg-block search-input" action="{{ path('app_ct_app_visite_creer_visite_technique_speciale') }}">
+                            <div class="">
+                                <strong>Par numéro dans la série du type :</strong><br>
+                                <span class="input-group-addon d-flex align-items-center"><i class="icon-magnifier icons"></i></span>
+                                <input type="text" name="search-numero-serie" id="search-numero-serie" class="form-control" placeholder="numéro de série...">
+                                <button class="btn btn-primary" type="submit" style="float:right">
+                                    Rechercher
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -13,11 +13,13 @@ use App\Repository\CtVisiteExtraTarifRepository;
 use App\Repository\CtTypeDroitPTACRepository;
 use App\Repository\CtAutreRepository;
 use App\Repository\CtAutreVenteRepository;
+use App\Repository\CtAutreTarifRepository;
 use App\Repository\CtTypeReceptionRepository;
 use App\Repository\CtImprimeTechRepository;
 use App\Repository\CtDroitPTACRepository;
 use App\Repository\CtCentreRepository;
 use App\Repository\CtUtilisationRepository;
+use App\Repository\CtExtraVenteRepository;
 use App\Repository\CtVehiculeRepository;
 use App\Repository\CtTypeVisiteRepository;
 use App\Repository\CtUsageTarifRepository;
@@ -42,6 +44,7 @@ use App\Entity\CtVisite;
 use App\Entity\CtMarque;
 use App\Entity\CtUser;
 use App\Entity\CtImprimeTech;
+use App\Entity\CtAutreVente;
 use App\Form\CtImprimeTechType;
 use App\Entity\CtBordereau;
 use App\Form\CtBordereauType;
@@ -1991,7 +1994,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/proces_verbal_reception_duplicata/{id}", name="app_ct_app_imprimable_proces_verbal_reception_duplicata", methods={"GET", "POST"})
      */
-    public function ProcesVerbalReceptionDuplicata(Request $request, int $id, CtVehiculeRepository $ctVehiculeRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    public function ProcesVerbalReceptionDuplicata(Request $request, int $id, CtVisiteExtraRepository $ctVisiteExtraRepository, CtAutreTarifRepository $ctAutreTarifRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVehiculeRepository $ctVehiculeRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
     {
         $identification = intval($id);
         $reception = $ctReceptionRepository->findOneBy(["id" => $identification], ["id" => "DESC"]);
@@ -2032,6 +2035,26 @@ class CtAppImprimableController extends AbstractController
         ];
         $reception->setRcpGenere($reception->getRcpGenere() + 1);
         $ctReceptionRepository->add($reception, true);
+        $usage_it = $ctUsageImprimeTechinqueRepository->findOneBy(["id" => 4]);
+        $autre_tarif = $ctAutreTarifRepository->findOneBy(["ct_usage_imprime_technique_id" => $usage_it], ["aut_arrete" => "DESC"]);
+        $autre_vente_extra = $ctVisiteExtraRepository->findOneBy(["vste_libelle" => "PVO"]);
+        $date = new \DateTime();
+        $ct_autre_vente = new CtAutreVente();
+        $ct_autre_vente->setCtUsageIt($usage_it);
+        $ct_autre_vente->setCtAutreTarifId($autre_tarif);
+        $ct_autre_vente->setAuvIsVisible(true);
+        $ct_autre_vente->setUserId($this->getUser());
+        $ct_autre_vente->setVerificateurId(null);
+        $ct_autre_vente->setCtCarteGriseId(null);
+        $ct_autre_vente->setCtCentreId($this->getUser()->getCtCentreId());
+        $ct_autre_vente->setAuvCreatedAt(new \DateTime());
+        $ct_autre_vente->setControleId($identification);
+        $ct_autre_vente->addAuvExtra($autre_vente_extra);
+        $ct_autre_vente->setAuvValidite("");
+        $ct_autre_vente->setAuvItineraire("");
+        $ctAutreVenteRepository->add($ct_autre_vente, true);
+        $ct_autre_vente->setAuvNumPv($ct_autre_vente->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ct_autre_vente->getCtCentreId()->getCtrCode().'/'.'AUV/'.$date->format("Y"));
+        $ctAutreVenteRepository->add($ct_autre_vente, true);
 
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
@@ -2164,7 +2187,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/proces_verbal_constatation_duplicata/{id}", name="app_ct_app_imprimable_proces_verbal_constatation_duplicata", methods={"GET", "POST"})
      */
-    public function ProcesVerbalConstatationDuplicata(Request $request, int $id, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository, CtConstAvDedCaracRepository $ctConstAvDedCaracRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtVehiculeRepository $ctVehiculeRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    public function ProcesVerbalConstatationDuplicata(Request $request, int $id, CtVisiteExtraRepository $ctVisiteExtraRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository, CtConstAvDedCaracRepository $ctConstAvDedCaracRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtVehiculeRepository $ctVehiculeRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
     {
         $identification = intval($id);
         $constatation = $ctConstAvDedRepository->findOneBy(["id" => $identification], ["id" => "DESC"]);
@@ -2331,6 +2354,26 @@ class CtAppImprimableController extends AbstractController
 
         $constatation->setCadGenere($constatation->getCadGenere() + 1);
         $ctConstAvDedRepository->add($constatation, true);
+        $usage_it = $ctUsageImprimeTechinqueRepository->findOneBy(["id" => 5]);
+        $autre_tarif = $ctAutreTarifRepository->findOneBy(["ct_usage_imprime_technique_id" => $usage_it], ["aut_arrete" => "DESC"]);
+        $autre_vente_extra = $ctVisiteExtraRepository->findOneBy(["vste_libelle" => "PVO"]);
+        $date = new \DateTime();
+        $ct_autre_vente = new CtAutreVente();
+        $ct_autre_vente->setCtUsageIt($usage_it);
+        $ct_autre_vente->setCtAutreTarifId($autre_tarif);
+        $ct_autre_vente->setAuvIsVisible(true);
+        $ct_autre_vente->setUserId($this->getUser());
+        $ct_autre_vente->setVerificateurId(null);
+        $ct_autre_vente->setCtCarteGriseId(null);
+        $ct_autre_vente->setCtCentreId($this->getUser()->getCtCentreId());
+        $ct_autre_vente->setAuvCreatedAt(new \DateTime());
+        $ct_autre_vente->setControleId($identification);
+        $ct_autre_vente->addAuvExtra($autre_vente_extra);
+        $ct_autre_vente->setAuvValidite("");
+        $ct_autre_vente->setAuvItineraire("");
+        $ctAutreVenteRepository->add($ct_autre_vente, true);
+        $ct_autre_vente->setAuvNumPv($ct_autre_vente->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ct_autre_vente->getCtCentreId()->getCtrCode().'/'.'AUV/'.$date->format("Y"));
+        $ctAutreVenteRepository->add($ct_autre_vente, true);
 
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
@@ -2665,11 +2708,12 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/proces_verbal_visite_mutation/{id}", name="app_ct_app_imprimable_proces_verbal_visite_mutation", methods={"GET", "POST"})
      */
-    public function ProcesVerbalVisiteMutation(Request $request, int $id, CtVehiculeRepository $ctVehiculeRepository, CtUsageRepository $ctUsageRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageTarifRepository $ctUsageTarifRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    public function ProcesVerbalVisiteMutation(Request $request, int $id, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVehiculeRepository $ctVehiculeRepository, CtUsageRepository $ctUsageRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageTarifRepository $ctUsageTarifRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
     {
         $visite = $ctVisiteRepository->findOneBy(["id" => $id], ["id" => "DESC"]);
         $carte_grise = $visite->getCtCarteGriseId();
         $vehicule = $carte_grise->getCtVehiculeId();
+        $identification = $visite->getId();
         $vst = [
             "centre" => $visite->getCtCentreId()->getCtrNom(),
             "province" => $visite->getCtCentreId()->getCtProvinceId()->getPrvNom(),
@@ -2712,6 +2756,26 @@ class CtAppImprimableController extends AbstractController
 
         $visite->setVstGenere($visite->getVstGenere() + 1);
         $ctVisiteRepository->add($visite, true);
+        $usage_it = $ctUsageImprimeTechinqueRepository->findOneBy(["id" => 1]);
+        $autre_tarif = $ctAutreTarifRepository->findOneBy(["ct_usage_imprime_technique_id" => $usage_it], ["aut_arrete" => "DESC"]);
+        $autre_vente_extra = $ctVisiteExtraRepository->findOneBy(["vste_libelle" => "PVO"]);
+        $date = new \DateTime();
+        $ct_autre_vente = new CtAutreVente();
+        $ct_autre_vente->setCtUsageIt($usage_it);
+        $ct_autre_vente->setCtAutreTarifId($autre_tarif);
+        $ct_autre_vente->setAuvIsVisible(true);
+        $ct_autre_vente->setUserId($this->getUser());
+        $ct_autre_vente->setVerificateurId(null);
+        $ct_autre_vente->setCtCarteGriseId(null);
+        $ct_autre_vente->setCtCentreId($this->getUser()->getCtCentreId());
+        $ct_autre_vente->setAuvCreatedAt(new \DateTime());
+        $ct_autre_vente->setControleId($identification);
+        $ct_autre_vente->addAuvExtra($autre_vente_extra);
+        $ct_autre_vente->setAuvValidite("");
+        $ct_autre_vente->setAuvItineraire("");
+        $ctAutreVenteRepository->add($ct_autre_vente, true);
+        $ct_autre_vente->setAuvNumPv($ct_autre_vente->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ct_autre_vente->getCtCentreId()->getCtrCode().'/'.'AUV/'.$date->format("Y"));
+        $ctAutreVenteRepository->add($ct_autre_vente, true);
 
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
@@ -3103,10 +3167,34 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/caracteristique/{id}", name="app_ct_app_imprimable_caracteristique", methods={"GET", "POST"})
      */
-    public function RenseignementVehicule(Request $request, int $id, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository)//: Response
+    public function RenseignementVehicule(Request $request, int $id, CtVisiteExtraRepository $ctVisiteExtraRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository)//: Response
     {
         $carte_grise = $ctCarteGriseRepository->findOneBy(["id" => $id]);
         $vehicule = $carte_grise->getCtVehiculeId();
+        $identification = $carte_grise->getId();
+        $num_pv = "";
+        
+        $usage_it = $ctUsageImprimeTechinqueRepository->findOneBy(["id" => 7]);
+        $autre_tarif = $ctAutreTarifRepository->findOneBy(["ct_usage_imprime_technique_id" => $usage_it], ["aut_arrete" => "DESC"]);
+        $autre_vente_extra = $ctVisiteExtraRepository->findOneBy(["vste_libelle" => "PVO"]);
+        $date = new \DateTime();
+        $ct_autre_vente = new CtAutreVente();
+        $ct_autre_vente->setCtUsageIt($usage_it);
+        $ct_autre_vente->setCtAutreTarifId($autre_tarif);
+        $ct_autre_vente->setAuvIsVisible(true);
+        $ct_autre_vente->setUserId($this->getUser());
+        $ct_autre_vente->setVerificateurId(null);
+        $ct_autre_vente->setCtCarteGriseId($carte_grise);
+        $ct_autre_vente->setCtCentreId($this->getUser()->getCtCentreId());
+        $ct_autre_vente->setAuvCreatedAt(new \DateTime());
+        $ct_autre_vente->setControleId($identification);
+        $ct_autre_vente->addAuvExtra($autre_vente_extra);
+        $ct_autre_vente->setAuvValidite("");
+        $ct_autre_vente->setAuvItineraire("");
+        $ctAutreVenteRepository->add($ct_autre_vente, true);
+        $ct_autre_vente->setAuvNumPv($ct_autre_vente->getId().'/'.'CENSERO/'.$this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvCode().'/'.$ct_autre_vente->getCtCentreId()->getCtrCode().'/'.'AUV/'.$date->format("Y"));
+        $ctAutreVenteRepository->add($ct_autre_vente, true);
+        $num_pv = $ct_autre_vente->getAuvNumPv();
 
         $pdfOptions = new Options();
         $pdfOptions->set('isRemoteEnabled', true);
@@ -3129,6 +3217,7 @@ class CtAppImprimableController extends AbstractController
             'province' => $this->getUser()->getCtCentreId()->getCtProvinceId()->getPrvNom(),
             'ct_carte_grise' => $carte_grise,
             'vehicule_identification' => $vehicule,
+            'num_pv' => $num_pv,
         ]);
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
