@@ -24,6 +24,11 @@ parameters:
     dossier_visite_speciale: '%kernel.project_dir%/public/generated/visite_speciale/'
     dossier_authenticite: '%kernel.project_dir%/public/generated/authenticite/'
     dossier_fiche_de_stock: '%kernel.project_dir%/public/generated/fiche_de_stock/'
+    dossier_statistique_visite: '%kernel.project_dir%/public/generated/statistique/visite/'
+    dossier_statistique_reception: '%kernel.project_dir%/public/generated/statistique/reception/'
+    dossier_statistique_constatation: '%kernel.project_dir%/public/generated/statistique/constatation/'
+    dossier_statistique_imprime_technique: '%kernel.project_dir%/public/generated/statistique/imprime_technique/'
+    dossier_statistique_autre_service: '%kernel.project_dir%/public/generated/statistique/autre_service/'
 
 services:
     # default configuration for services in *this* file

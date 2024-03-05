@@ -100,10 +100,25 @@ class CtAppSatistiqueController extends AbstractController
             "semestre 1" => 1,
             "semestre 2" => 2,
         ];
+        $date = new \DateTime();
+        $annee_max = intval($date->format('Y'));
+        $liste_annee = [
+            strval($annee_max) => $annee_max,
+            strval($annee_max - 1) => $annee_max - 1,
+            strval($annee_max - 2) => $annee_max - 2,
+            strval($annee_max - 3) => $annee_max - 3,
+            strval($annee_max - 4) => $annee_max - 4,
+            strval($annee_max - 5) => $annee_max - 5,
+            strval($annee_max - 6) => $annee_max - 6,
+            strval($annee_max - 7) => $annee_max - 7,
+            strval($annee_max - 8) => $annee_max - 8,
+            strval($annee_max - 9) => $annee_max - 9,
+            strval($annee_max - 10) => $annee_max - 10,
+        ];
         $form_annuel = $this->createFormBuilder()
             ->add('date', DateTimeType::class, [
                 'label' => 'Séléctionner l\'année',
-                'input_format' => 'yyyy', 
+                'input_format' => 'Y', 
                 /* 'widget' => 'single_text',
                 'attr' => [
                     'class' => 'datetimepicker',
