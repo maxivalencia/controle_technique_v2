@@ -101,15 +101,15 @@ class CtAppSatistiqueController extends AbstractController
             "semestre 2" => 2,
         ];
         $form_annuel = $this->createFormBuilder()
-            ->add('date', DateType::class, [
+            ->add('date', DateTimeType::class, [
                 'label' => 'Séléctionner l\'année',
-                'input_format' => 'Y', 
-                'widget' => 'single_text',
+                'input_format' => 'yyyy', 
+                /* 'widget' => 'single_text',
                 'attr' => [
                     'class' => 'datetimepicker',
                     'style' => 'width:100%;',
-                ],
-                'data' => new \DateTime('now'),
+                ], */
+                /* 'data' => new \DateTime('now'), */
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -134,7 +134,7 @@ class CtAppSatistiqueController extends AbstractController
                     'class' => 'datetimepicker',
                     'style' => 'width:100%;',
                 ],
-                'data' => new \DateTime('now'),
+                /* 'data' => new \DateTime('now'), */
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -159,7 +159,7 @@ class CtAppSatistiqueController extends AbstractController
                     'class' => 'datetimepicker',
                     'style' => 'width:100%;',
                 ],
-                'data' => new \DateTime('now'),
+                /* 'data' => new \DateTime('now'), */
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -184,7 +184,7 @@ class CtAppSatistiqueController extends AbstractController
                     'class' => 'datetimepicker',
                     'style' => 'width:100%;',
                 ],
-                'data' => new \DateTime('now'),
+                /* 'data' => new \DateTime('now'), */
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -215,7 +215,10 @@ class CtAppSatistiqueController extends AbstractController
     public function StatistiqueReception(Request $request): Response
     {
         return $this->render('ct_app_satistique/statistique_reception.html.twig', [
-            'controller_name' => 'CtAppSatistiqueController',
+            'form_annuel' => $form_annuel->createView(),
+            'form_semestriel' => $form_semestriel->createView(),
+            'form_trimestriel' => $form_trimestriel->createView(),
+            'form_mensuel' => $form_mensuel->createView(),
         ]);
     }
 
@@ -225,7 +228,10 @@ class CtAppSatistiqueController extends AbstractController
     public function StatistiqueConstatation(Request $request): Response
     {
         return $this->render('ct_app_satistique/statistique_constatation.html.twig', [
-            'controller_name' => 'CtAppSatistiqueController',
+            'form_annuel' => $form_annuel->createView(),
+            'form_semestriel' => $form_semestriel->createView(),
+            'form_trimestriel' => $form_trimestriel->createView(),
+            'form_mensuel' => $form_mensuel->createView(),
         ]);
     }
 
@@ -235,7 +241,10 @@ class CtAppSatistiqueController extends AbstractController
     public function StatistiqueImprimeTechnique(Request $request): Response
     {
         return $this->render('ct_app_satistique/statistique_imprime_technique.html.twig', [
-            'controller_name' => 'CtAppSatistiqueController',
+            'form_annuel' => $form_annuel->createView(),
+            'form_semestriel' => $form_semestriel->createView(),
+            'form_trimestriel' => $form_trimestriel->createView(),
+            'form_mensuel' => $form_mensuel->createView(),
         ]);
     }
 
@@ -245,7 +254,10 @@ class CtAppSatistiqueController extends AbstractController
     public function StatistiqueAutreService(Request $request): Response
     {
         return $this->render('ct_app_satistique/statistique_autre_service.html.twig', [
-            'controller_name' => 'CtAppSatistiqueController',
+            'form_annuel' => $form_annuel->createView(),
+            'form_semestriel' => $form_semestriel->createView(),
+            'form_trimestriel' => $form_trimestriel->createView(),
+            'form_mensuel' => $form_mensuel->createView(),
         ]);
     }
 }
