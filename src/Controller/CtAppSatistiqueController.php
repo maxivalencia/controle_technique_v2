@@ -116,15 +116,10 @@ class CtAppSatistiqueController extends AbstractController
             strval($annee_max - 10) => $annee_max - 10,
         ];
         $form_annuel = $this->createFormBuilder()
-            ->add('date', DateTimeType::class, [
+            ->add('date', ChoiceType::class, [
                 'label' => 'Séléctionner l\'année',
-                'input_format' => 'Y', 
-                /* 'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker',
-                    'style' => 'width:100%;',
-                ], */
-                /* 'data' => new \DateTime('now'), */
+                'choices' => $liste_annee,
+                'data' => $annee_max,
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
