@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Visite spéciale{% endblock %}
+
+{% block app_ct %}
+    <div class="box-header">Visite spéciale</div><br>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ct_autre_vente.id }}</td>
+            </tr>
+            <tr>
+                <th>est-svisible</th>
+                <td>{{ ct_autre_vente.auvIsVisible ? 'Oui' : 'Non' }}</td>
+            </tr>
+            <tr>
+                <th>created_at</th>
+                <td>{{ ct_autre_vente.auvCreatedAt ? ct_autre_vente.auvCreatedAt|date('d/m/Y H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Controle_id</th>
+                <td>{{ ct_autre_vente.controleId }}</td>
+            </tr>
+        </tbody>
+    </table>
+	<a href="{{ path('app_ct_app_imprimable_visite_special', {'id': ct_autre_vente.id}) }}" class="btn btn-danger"><i class="fa fa-book" aria-hidden="true"></i> Imprimer</a>
+{% endblock %}

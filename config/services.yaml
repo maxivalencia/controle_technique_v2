@@ -21,6 +21,8 @@ parameters:
     dossier_caracteristique: '%kernel.project_dir%/public/generated/caracteristique/carte_grise/'
     dossier_feuille_utilisation_imprime_technique: '%kernel.project_dir%/public/generated/feuille_utilisation_imprime_technique/'
     dossier_bordereau_envoi: '%kernel.project_dir%/public/generated/bordereau_envoi/'
+    dossier_visite_speciale: '%kernel.project_dir%/public/generated/visite_speciale/'
+    dossier_authenticite: '%kernel.project_dir%/public/generated/authenticite/'
 
 services:
     # default configuration for services in *this* file
