@@ -76,7 +76,7 @@ class CtAppSatistiqueController extends AbstractController
      */
     public function StatistiqueVisite(Request $request): Response
     {
-        $month = [
+        $mois = [
             "Janvier" => 1,
             "Février" => 2,
             "Mars" => 3,
@@ -116,7 +116,7 @@ class CtAppSatistiqueController extends AbstractController
             strval($annee_max - 10) => $annee_max - 10,
         ];
         $form_annuel = $this->createFormBuilder()
-            ->add('date', ChoiceType::class, [
+            ->add('annee', ChoiceType::class, [
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
@@ -136,15 +136,14 @@ class CtAppSatistiqueController extends AbstractController
             ->getForm();
         $form_annuel->handleRequest($request);
         $form_semestriel = $this->createFormBuilder()
-            ->add('date', DateType::class, [
+            ->add('annee', ChoiceType::class, [
                 'label' => 'Séléctionner l\'année',
-                'input_format' => 'Y', 
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker',
-                    'style' => 'width:100%;',
-                ],
-                /* 'data' => new \DateTime('now'), */
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('date', ChoiceType::class, [
+                'label' => 'Séléctionner le semestre',
+                'choices' => $semestre,
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -161,15 +160,14 @@ class CtAppSatistiqueController extends AbstractController
             ->getForm();
         $form_semestriel->handleRequest($request);
         $form_trimestriel = $this->createFormBuilder()
-            ->add('date', DateType::class, [
+            ->add('annee', ChoiceType::class, [
                 'label' => 'Séléctionner l\'année',
-                'input_format' => 'Y', 
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker',
-                    'style' => 'width:100%;',
-                ],
-                /* 'data' => new \DateTime('now'), */
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('date', ChoiceType::class, [
+                'label' => 'Séléctionner le trimestre',
+                'choices' => $trimestre,
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -186,15 +184,14 @@ class CtAppSatistiqueController extends AbstractController
             ->getForm();
         $form_trimestriel->handleRequest($request);
         $form_mensuel = $this->createFormBuilder()
-            ->add('date', DateType::class, [
+            ->add('annee', ChoiceType::class, [
                 'label' => 'Séléctionner l\'année',
-                'input_format' => 'Y', 
-                'widget' => 'single_text',
-                'attr' => [
-                    'class' => 'datetimepicker',
-                    'style' => 'width:100%;',
-                ],
-                /* 'data' => new \DateTime('now'), */
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('mois', ChoiceType::class, [
+                'label' => 'Séléctionner le mois',
+                'choices' => $mois,
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
