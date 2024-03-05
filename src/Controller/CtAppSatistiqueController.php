@@ -643,7 +643,7 @@ class CtAppSatistiqueController extends AbstractController
             ->getForm();
         $form_mensuel->handleRequest($request);
 
-        return $this->render('ct_app_satistique/statistique_imprime_technique.html.twig', [
+        return $this->render('ct_app_satistique/statistique_imprimer.html.twig', [
             'form_annuel' => $form_annuel->createView(),
             'form_semestriel' => $form_semestriel->createView(),
             'form_trimestriel' => $form_trimestriel->createView(),
