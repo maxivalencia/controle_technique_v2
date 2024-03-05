@@ -221,6 +221,138 @@ class CtAppSatistiqueController extends AbstractController
      */
     public function StatistiqueReception(Request $request): Response
     {
+        $mois = [
+            "Janvier" => 1,
+            "Février" => 2,
+            "Mars" => 3,
+            "Avril" => 4,
+            "Mai" => 5,
+            "Juin" => 6,
+            "Juillet" => 7,
+            "Août" => 8,
+            "Septembre" => 9,
+            "Octobre" => 10,
+            "Novembre" => 11,
+            "Décembre" => 12,
+        ];
+        $trimestre = [
+            "trimestre 1" => 1,
+            "trimestre 2" => 2,
+            "trimestre 3" => 3,
+            "trimestre 4" => 4,
+        ];
+        $semestre = [
+            "semestre 1" => 1,
+            "semestre 2" => 2,
+        ];
+        $date = new \DateTime();
+        $annee_max = intval($date->format('Y'));
+        $liste_annee = [
+            strval($annee_max) => $annee_max,
+            strval($annee_max - 1) => $annee_max - 1,
+            strval($annee_max - 2) => $annee_max - 2,
+            strval($annee_max - 3) => $annee_max - 3,
+            strval($annee_max - 4) => $annee_max - 4,
+            strval($annee_max - 5) => $annee_max - 5,
+            strval($annee_max - 6) => $annee_max - 6,
+            strval($annee_max - 7) => $annee_max - 7,
+            strval($annee_max - 8) => $annee_max - 8,
+            strval($annee_max - 9) => $annee_max - 9,
+            strval($annee_max - 10) => $annee_max - 10,
+        ];
+        $form_annuel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_annuel->handleRequest($request);
+        $form_semestriel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('semestre', ChoiceType::class, [
+                'label' => 'Séléctionner le semestre',
+                'choices' => $semestre,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_semestriel->handleRequest($request);
+        $form_trimestriel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('trimestre', ChoiceType::class, [
+                'label' => 'Séléctionner le trimestre',
+                'choices' => $trimestre,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_trimestriel->handleRequest($request);
+        $form_mensuel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('mois', ChoiceType::class, [
+                'label' => 'Séléctionner le mois',
+                'choices' => $mois,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_mensuel->handleRequest($request);
+
         return $this->render('ct_app_satistique/statistique_reception.html.twig', [
             'form_annuel' => $form_annuel->createView(),
             'form_semestriel' => $form_semestriel->createView(),
@@ -234,6 +366,138 @@ class CtAppSatistiqueController extends AbstractController
      */
     public function StatistiqueConstatation(Request $request): Response
     {
+        $mois = [
+            "Janvier" => 1,
+            "Février" => 2,
+            "Mars" => 3,
+            "Avril" => 4,
+            "Mai" => 5,
+            "Juin" => 6,
+            "Juillet" => 7,
+            "Août" => 8,
+            "Septembre" => 9,
+            "Octobre" => 10,
+            "Novembre" => 11,
+            "Décembre" => 12,
+        ];
+        $trimestre = [
+            "trimestre 1" => 1,
+            "trimestre 2" => 2,
+            "trimestre 3" => 3,
+            "trimestre 4" => 4,
+        ];
+        $semestre = [
+            "semestre 1" => 1,
+            "semestre 2" => 2,
+        ];
+        $date = new \DateTime();
+        $annee_max = intval($date->format('Y'));
+        $liste_annee = [
+            strval($annee_max) => $annee_max,
+            strval($annee_max - 1) => $annee_max - 1,
+            strval($annee_max - 2) => $annee_max - 2,
+            strval($annee_max - 3) => $annee_max - 3,
+            strval($annee_max - 4) => $annee_max - 4,
+            strval($annee_max - 5) => $annee_max - 5,
+            strval($annee_max - 6) => $annee_max - 6,
+            strval($annee_max - 7) => $annee_max - 7,
+            strval($annee_max - 8) => $annee_max - 8,
+            strval($annee_max - 9) => $annee_max - 9,
+            strval($annee_max - 10) => $annee_max - 10,
+        ];
+        $form_annuel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_annuel->handleRequest($request);
+        $form_semestriel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('semestre', ChoiceType::class, [
+                'label' => 'Séléctionner le semestre',
+                'choices' => $semestre,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_semestriel->handleRequest($request);
+        $form_trimestriel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('trimestre', ChoiceType::class, [
+                'label' => 'Séléctionner le trimestre',
+                'choices' => $trimestre,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_trimestriel->handleRequest($request);
+        $form_mensuel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('mois', ChoiceType::class, [
+                'label' => 'Séléctionner le mois',
+                'choices' => $mois,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_mensuel->handleRequest($request);
+
         return $this->render('ct_app_satistique/statistique_constatation.html.twig', [
             'form_annuel' => $form_annuel->createView(),
             'form_semestriel' => $form_semestriel->createView(),
@@ -247,6 +511,138 @@ class CtAppSatistiqueController extends AbstractController
      */
     public function StatistiqueImprimeTechnique(Request $request): Response
     {
+        $mois = [
+            "Janvier" => 1,
+            "Février" => 2,
+            "Mars" => 3,
+            "Avril" => 4,
+            "Mai" => 5,
+            "Juin" => 6,
+            "Juillet" => 7,
+            "Août" => 8,
+            "Septembre" => 9,
+            "Octobre" => 10,
+            "Novembre" => 11,
+            "Décembre" => 12,
+        ];
+        $trimestre = [
+            "trimestre 1" => 1,
+            "trimestre 2" => 2,
+            "trimestre 3" => 3,
+            "trimestre 4" => 4,
+        ];
+        $semestre = [
+            "semestre 1" => 1,
+            "semestre 2" => 2,
+        ];
+        $date = new \DateTime();
+        $annee_max = intval($date->format('Y'));
+        $liste_annee = [
+            strval($annee_max) => $annee_max,
+            strval($annee_max - 1) => $annee_max - 1,
+            strval($annee_max - 2) => $annee_max - 2,
+            strval($annee_max - 3) => $annee_max - 3,
+            strval($annee_max - 4) => $annee_max - 4,
+            strval($annee_max - 5) => $annee_max - 5,
+            strval($annee_max - 6) => $annee_max - 6,
+            strval($annee_max - 7) => $annee_max - 7,
+            strval($annee_max - 8) => $annee_max - 8,
+            strval($annee_max - 9) => $annee_max - 9,
+            strval($annee_max - 10) => $annee_max - 10,
+        ];
+        $form_annuel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_annuel->handleRequest($request);
+        $form_semestriel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('semestre', ChoiceType::class, [
+                'label' => 'Séléctionner le semestre',
+                'choices' => $semestre,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_semestriel->handleRequest($request);
+        $form_trimestriel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('trimestre', ChoiceType::class, [
+                'label' => 'Séléctionner le trimestre',
+                'choices' => $trimestre,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_trimestriel->handleRequest($request);
+        $form_mensuel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('mois', ChoiceType::class, [
+                'label' => 'Séléctionner le mois',
+                'choices' => $mois,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_mensuel->handleRequest($request);
+
         return $this->render('ct_app_satistique/statistique_imprime_technique.html.twig', [
             'form_annuel' => $form_annuel->createView(),
             'form_semestriel' => $form_semestriel->createView(),
@@ -260,6 +656,138 @@ class CtAppSatistiqueController extends AbstractController
      */
     public function StatistiqueAutreService(Request $request): Response
     {
+        $mois = [
+            "Janvier" => 1,
+            "Février" => 2,
+            "Mars" => 3,
+            "Avril" => 4,
+            "Mai" => 5,
+            "Juin" => 6,
+            "Juillet" => 7,
+            "Août" => 8,
+            "Septembre" => 9,
+            "Octobre" => 10,
+            "Novembre" => 11,
+            "Décembre" => 12,
+        ];
+        $trimestre = [
+            "trimestre 1" => 1,
+            "trimestre 2" => 2,
+            "trimestre 3" => 3,
+            "trimestre 4" => 4,
+        ];
+        $semestre = [
+            "semestre 1" => 1,
+            "semestre 2" => 2,
+        ];
+        $date = new \DateTime();
+        $annee_max = intval($date->format('Y'));
+        $liste_annee = [
+            strval($annee_max) => $annee_max,
+            strval($annee_max - 1) => $annee_max - 1,
+            strval($annee_max - 2) => $annee_max - 2,
+            strval($annee_max - 3) => $annee_max - 3,
+            strval($annee_max - 4) => $annee_max - 4,
+            strval($annee_max - 5) => $annee_max - 5,
+            strval($annee_max - 6) => $annee_max - 6,
+            strval($annee_max - 7) => $annee_max - 7,
+            strval($annee_max - 8) => $annee_max - 8,
+            strval($annee_max - 9) => $annee_max - 9,
+            strval($annee_max - 10) => $annee_max - 10,
+        ];
+        $form_annuel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_annuel->handleRequest($request);
+        $form_semestriel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('semestre', ChoiceType::class, [
+                'label' => 'Séléctionner le semestre',
+                'choices' => $semestre,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_semestriel->handleRequest($request);
+        $form_trimestriel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('trimestre', ChoiceType::class, [
+                'label' => 'Séléctionner le trimestre',
+                'choices' => $trimestre,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_trimestriel->handleRequest($request);
+        $form_mensuel = $this->createFormBuilder()
+            ->add('annee', ChoiceType::class, [
+                'label' => 'Séléctionner l\'année',
+                'choices' => $liste_annee,
+                'data' => $annee_max,
+            ])
+            ->add('mois', ChoiceType::class, [
+                'label' => 'Séléctionner le mois',
+                'choices' => $mois,
+            ])
+            ->add('ct_centre_id', EntityType::class, [
+                'label' => 'Séléctionner le centre',
+                'class' => CtCentre::class,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->getForm();
+        $form_mensuel->handleRequest($request);
+
         return $this->render('ct_app_satistique/statistique_autre_service.html.twig', [
             'form_annuel' => $form_annuel->createView(),
             'form_semestriel' => $form_semestriel->createView(),
