@@ -23,6 +23,7 @@ parameters:
     dossier_bordereau_envoi: '%kernel.project_dir%/public/generated/bordereau_envoi/'
     dossier_visite_speciale: '%kernel.project_dir%/public/generated/visite_speciale/'
     dossier_authenticite: '%kernel.project_dir%/public/generated/authenticite/'
+    dossier_fiche_de_stock: '%kernel.project_dir%/public/generated/fiche_de_stock/'
 
 services:
     # default configuration for services in *this* file

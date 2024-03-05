@@ -4000,7 +4000,7 @@ class CtAppImprimableController extends AbstractController
 
         $date = new \DateTime();
         $logo = file_get_contents($this->getParameter('logo').'logo.txt');
-        $dossier = $this->getParameter('dossier_authenticite').'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+        $dossier = $this->getParameter('dossier_authenticite').'/'.'DUPLICATA/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
         if (!file_exists($dossier)) {
             mkdir($dossier, 0777, true);
         }
@@ -4069,7 +4069,7 @@ class CtAppImprimableController extends AbstractController
         $date = new \DateTime();
         $logo = file_get_contents($this->getParameter('logo').'logo.txt');
 
-        $dossier = $this->getParameter('dossier_fiche_verificateur')."/".$centre->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
+        $dossier = $this->getParameter('dossier_fiche_de_stock')."/".$centre->getCtrNom().'/'.$date->format('Y').'/'.$date->format('M').'/'.$date->format('d').'/';
         if (!file_exists($dossier)) {
             mkdir($dossier, 0777, true);
         }
@@ -4188,7 +4188,7 @@ class CtAppImprimableController extends AbstractController
             }
         }
 
-        $html = $this->renderView('ct_app_imprimable/fiche_verificateur.html.twig', [
+        $html = $this->renderView('ct_app_imprimable/fiche_de_stock.html.twig', [
             'logo' => $logo,
             'date' => $date,
             'province' => $centre->getCtProvinceId()->getPrvNom(),

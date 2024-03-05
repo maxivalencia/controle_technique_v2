@@ -29,7 +29,7 @@ class CtAppAdministrationController extends AbstractController
             'controller_name' => 'CtAppAdministrationController',
         ]);
     }
-    
+
     /**
      * @Route("/liste_verificateur", name="app_ct_app_administration_liste_verificateur", methods={"GET"})
      */
@@ -42,7 +42,7 @@ class CtAppAdministrationController extends AbstractController
             'ct_users' => $liste,
         ]);
     }
-    
+
     /**
      * @Route("/liste_secretaire", name="app_ct_app_administration_liste_secretaire", methods={"GET"})
      */
