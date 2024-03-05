@@ -141,7 +141,7 @@ class CtAppSatistiqueController extends AbstractController
                 'choices' => $liste_annee,
                 'data' => $annee_max,
             ])
-            ->add('semstre', ChoiceType::class, [
+            ->add('semestre', ChoiceType::class, [
                 'label' => 'Séléctionner le semestre',
                 'choices' => $semestre,
             ])
@@ -165,7 +165,7 @@ class CtAppSatistiqueController extends AbstractController
                 'choices' => $liste_annee,
                 'data' => $annee_max,
             ])
-            ->add('trimstre', ChoiceType::class, [
+            ->add('trimestre', ChoiceType::class, [
                 'label' => 'Séléctionner le trimestre',
                 'choices' => $trimestre,
             ])
