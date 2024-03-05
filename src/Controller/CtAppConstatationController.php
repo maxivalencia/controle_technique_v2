@@ -355,7 +355,7 @@ class CtAppConstatationController extends AbstractController
     public function DuplicataConstatationAvantDedouanement(Request $request, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
     {
         $ctConstatation = new CtConstAvDed();
-        $ctConstatation_new = new CtConstAvDed();
+        $ctConstatation_carac = new CtConstAvDedCarac();
         $ctConstAvDedCarac_noteDescriptive = new CtConstAvDedCarac();
         $ctConstAvDedCarac_carteGrise = new CtConstAvDedCarac();
         $ctConstAvDedCarac_corpsDuVehicule = new CtConstAvDedCarac();
@@ -372,20 +372,20 @@ class CtAppConstatationController extends AbstractController
             $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche], ["id" => "DESC"]);
             //var_dump($ctConstatation);
         }
-        /* if($request->request->get('search-numero-serie')){
+        if($request->request->get('search-numero-serie')){
             $recherche = $request->request->get('search-numero-serie');
-            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            if($vehicule_id != null){
-                $ctReception = $ctConstAvDedRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctConstatation_carac = $ctConstAvDecCaracRepository->findOneBy(["cad_num_serie_type" => $recherche], ["id" => "DESC"]);
+            if($ctConstatation_carac != null){
+                $ctConstatation = $ctConstAvDedRepository->findOneBy(["ct_const_av_ded_carac" => $ctConstatation_carac], ["id" => "DESC"]);
             }
         }
         if($request->query->get('search-numero-serie')){
             $recherche = $request->query->get('search-numero-serie');
-            $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            if($vehicule_id != null){
-                $ctConstatation = $ctConstAvDedRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctConstatation_carac = $ctConstAvDecCaracRepository->findOneBy(["cad_num_serie_type" => $recherche], ["id" => "DESC"]);
+            if($ctConstatation_carac != null){
+                $ctConstatation = $ctConstAvDedRepository->findOneBy(["ct_const_av_ded_carac" => $ctConstatation_carac], ["id" => "DESC"]);
             }
-        } */
+        }
         //$ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => "BW-589-TG"], ["id" => "DESC"]);
         if($ctConstatation != null){
             $id = $ctConstatation->getId();
