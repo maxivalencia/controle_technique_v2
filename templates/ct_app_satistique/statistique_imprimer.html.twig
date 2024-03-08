@@ -20,6 +20,7 @@
                         {% else %}
                             {% do form_annuel.ct_centre_id.setRendered() %}
                         {% endif %}
+                        <div style="height:88px;"></div>
                         <button class="btn btn-primary" type="submit" formaction="{{ path('app_ct_app_statistique_statistique_imprime_technique') }}">Générer</button>
                     {{ form_end(form_annuel) }}
                 </div>

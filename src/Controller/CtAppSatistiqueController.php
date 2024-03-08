@@ -120,6 +120,14 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -140,10 +148,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('semestre', ChoiceType::class, [
                 'label' => 'Séléctionner le semestre',
                 'choices' => $semestre,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -164,10 +188,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('trimestre', ChoiceType::class, [
                 'label' => 'Séléctionner le trimestre',
                 'choices' => $trimestre,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -188,10 +228,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('mois', ChoiceType::class, [
                 'label' => 'Séléctionner le mois',
                 'choices' => $mois,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -265,6 +321,14 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -285,10 +349,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('semestre', ChoiceType::class, [
                 'label' => 'Séléctionner le semestre',
                 'choices' => $semestre,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -309,10 +389,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('trimestre', ChoiceType::class, [
                 'label' => 'Séléctionner le trimestre',
                 'choices' => $trimestre,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -333,10 +429,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('mois', ChoiceType::class, [
                 'label' => 'Séléctionner le mois',
                 'choices' => $mois,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -410,6 +522,14 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -430,10 +550,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('semestre', ChoiceType::class, [
                 'label' => 'Séléctionner le semestre',
                 'choices' => $semestre,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -454,10 +590,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('trimestre', ChoiceType::class, [
                 'label' => 'Séléctionner le trimestre',
                 'choices' => $trimestre,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -478,10 +630,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('mois', ChoiceType::class, [
                 'label' => 'Séléctionner le mois',
                 'choices' => $mois,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -555,6 +723,14 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -575,10 +751,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('semestre', ChoiceType::class, [
                 'label' => 'Séléctionner le semestre',
                 'choices' => $semestre,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -599,10 +791,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('trimestre', ChoiceType::class, [
                 'label' => 'Séléctionner le trimestre',
                 'choices' => $trimestre,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -623,10 +831,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('mois', ChoiceType::class, [
                 'label' => 'Séléctionner le mois',
                 'choices' => $mois,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -700,6 +924,14 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -720,10 +952,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('semestre', ChoiceType::class, [
                 'label' => 'Séléctionner le semestre',
                 'choices' => $semestre,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -744,10 +992,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('trimestre', ChoiceType::class, [
                 'label' => 'Séléctionner le trimestre',
                 'choices' => $trimestre,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
@@ -768,10 +1032,26 @@ class CtAppSatistiqueController extends AbstractController
                 'label' => 'Séléctionner l\'année',
                 'choices' => $liste_annee,
                 'data' => $annee_max,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('mois', ChoiceType::class, [
                 'label' => 'Séléctionner le mois',
                 'choices' => $mois,
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => false,
+                    'style' => 'width:100%;',
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
             ])
             ->add('ct_centre_id', EntityType::class, [
                 'label' => 'Séléctionner le centre',
