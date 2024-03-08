@@ -16,6 +16,8 @@ use App\Repository\CtConstAvDedTypeRepository;
 use App\Repository\CtConstAvDedCaracRepository;
 use App\Repository\CtConstAvDedRepository;
 use App\Repository\CtUserRepository;
+use App\Entity\CtImprimeTech;
+use App\Repository\CtImprimeTechRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

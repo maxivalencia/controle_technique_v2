@@ -20,6 +20,8 @@ use App\Repository\CtTypeReceptionRepository;
 use App\Repository\CtVehiculeRepository;
 use App\Repository\CtUserRepository;
 use App\Repository\CtRoleRepository;
+use App\Entity\CtImprimeTech;
+use App\Repository\CtImprimeTechRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
