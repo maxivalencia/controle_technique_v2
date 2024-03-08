@@ -17,6 +17,8 @@ use App\Entity\CtCentre;
 use App\Entity\CtUser;
 use App\Entity\CtImprimeTech;
 use App\Repository\CtImprimeTechRepository;
+use App\Form\CtImprimeTechUseType;
+use App\Form\CtImprimeTechUseModulableType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

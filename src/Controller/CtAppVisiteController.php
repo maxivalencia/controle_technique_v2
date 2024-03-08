@@ -37,6 +37,8 @@ use App\Form\CtVisiteVisiteDuplicataType;
 use App\Form\CtVisiteType;
 use App\Form\CtAutreVenteType;
 use App\Form\CtAutreVenteAutreVenteType;
+use App\Form\CtImprimeTechUseType;
+use App\Form\CtImprimeTechUseModulableType;
 use App\Form\CtAutreVenteAuthenticiteType;
 use App\Form\CtAutreVenteVisiteSpecialType;
 use App\Entity\CtImprimeTech;
@@ -939,7 +941,7 @@ class CtAppVisiteController extends AbstractController
             //$ctVisite_contre->setVstAnomalieId($ctVisite->getVstAnomalieId());
             $liste_anomalie =$ctVisite->getVstAnomalieId();
             foreach($liste_anomalie as $anomalie){
-                $ctVisite_new->addVstAnomalieId($anomalie);
+                $ctVisite_contre->addVstAnomalieId($anomalie);
             } 
             $ctVisite_contre->setVstIsApte($anml->count()>0?false:true);
             $ctVisite_contre->setVstIsContreVisite(true);
@@ -1109,7 +1111,7 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_new->setVstDateExpiration($ctVisite_new->getVstDateExpiration());
             $date = new \DateTime();
             $ctVisite_new->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.$date->format("Y"));
-            $ctVisite_new->setVstCreated($ctVisite->setVstCreated());
+            $ctVisite_new->setVstCreated($ctVisite->getVstCreated());
             $ctVisite_new->setVstUpdated(new \DateTime());
             $ctVisite_new->setCtUtilisationId($ctVisite->getCtUtilisationId());
             $anml = $ctVisite_new->getVstAnomalieId();
@@ -1120,12 +1122,12 @@ class CtAppVisiteController extends AbstractController
             //var_dump($ctVisite->getCtExtraVentes());
             foreach($liste_extra as $extra){
                 $ctVisite_new->addCtExtraVente($extra);
-            }            
+            }
             //$ctVisite_new->setVstAnomalieId($ctVisite->getVstAnomalieId());
             $liste_anomalie =$ctVisite->getVstAnomalieId();
             foreach($liste_anomalie as $anomalie){
                 $ctVisite_new->addVstAnomalieId($anomalie);
-            }  
+            }
             $ctVisite_new->setVstIsActive(true);
             $ctVisite_new->setVstGenere(0);
             $ctVisite_new->setVstObservation($ctVisite->getVstObservation().", visite modifier, ID initial : ".$ctVisite->getId().", date modification ".$date->format("d/m/Y"));
@@ -1201,7 +1203,7 @@ class CtAppVisiteController extends AbstractController
     /**
      * @Route("/recherche_duplicata_visite_resultat", name="app_ct_app_visite_recherche_duplicata_visite_resultat", methods={"GET", "POST"})
      */
-    public function RechercheDuplicataVisiteResultat(Request $request, CtVisiteExtraRepository $ctVisiteExtraRepository, CtAutreVenteRepository $ctAutreRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
+    public function RechercheDuplicataVisiteResultat(Request $request, CtAutreTarifRepository $ctAutreTarifRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtAutreVenteRepository $ctAutreRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVisiteRepository $ctVisiteRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository): Response
     {
         $recherche = "";
         $ctVisite = new CtVisite();
@@ -1229,7 +1231,7 @@ class CtAppVisiteController extends AbstractController
             ])        
             ->getForm();
         $form_autre_vente->handleRequest($request);
-        if($request){            
+        if($request){
             $auv = $request->request->get('form');
             if(length($auv["auv_extra"]) > 0){
                 $usage_it = $ctUsageImprimeTechinqueRepository->findOneBy(["id" => 2]);
@@ -1285,7 +1287,7 @@ class CtAppVisiteController extends AbstractController
                     $form_visite = $this->createForm(CtVisiteVisiteDuplicataType::class, $ctVisite, ["immatriculation" => $recherche, "disable" => true]);
                     $form_visite->handleRequest($request);
                     return $this->render('ct_app_visite/recherche_duplicata_visite_vue.html.twig', [
-                        'form_visite' => $form_visite->createView(),                        
+                        'form_visite' => $form_visite->createView(),
                         'form_autre_vente' => $form_autre_vente->createView(),
                         'immatriculation' => $recherche,
                         'id' => $ctVisite->getId(),
@@ -1310,7 +1312,7 @@ class CtAppVisiteController extends AbstractController
     /**
      * @Route("/creer_visite_technique_speciale", name="app_ct_app_visite_creer_visite_technique_speciale", methods={"GET", "POST"})
      */
-    public function CreerVisiteTechniqueSpeciale(Request $request, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtAutreTarifRepository $ctAutreTarifRepository, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository): Response
+    public function CreerVisiteTechniqueSpeciale(Request $request, CtVehiculeRepository $ctVehiculeRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtAutreTarifRepository $ctAutreTarifRepository, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository): Response
     {
         $ctCarteGrise = new CtCarteGrise();
         if($request->request->get('immatriculation')){
@@ -1396,7 +1398,7 @@ class CtAppVisiteController extends AbstractController
     /**
      * @Route("/creer_attestation_authenticite", name="app_ct_app_visite_creer_attestation_authenticite", methods={"GET", "POST"})
      */
-    public function CreerAttestationAuthenticite(Request $request, CtUserRepository $ctUserRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtAutreTarifRepository $ctAutreTarifRepository, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository): Response
+    public function CreerAttestationAuthenticite(Request $request, CtVehiculeRepository $ctVehiculeRepository, CtUserRepository $ctUserRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtAutreTarifRepository $ctAutreTarifRepository, CtCarteGriseRepository $ctCarteGriseRepository, CtAutreVenteRepository $ctAutreVenteRepository): Response
     {
         $ctCarteGrise = new CtCarteGrise();
         if($request->request->get('immatriculation')){
@@ -1484,20 +1486,21 @@ class CtAppVisiteController extends AbstractController
     }
 
     /**
-     * @Route("/it_visite", name="app_ct_app_visite_it_visite", methods={"GET", "POST"})
+     * @Route("/it_visite/{id}", name="app_ct_app_visite_it_visite", methods={"GET", "POST"})
      */
-    public function ItVisite(Request $request, CtAutreVenteRepository $ctAutreVenteRepository, CtVisiteRepository $ctVisiteRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
+    public function ItVisite(Request $request, int $id, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechniqueRepository, CtVisiteRepository $ctVisiteRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
     {
         $ct_imprime_tech_use = new CtImprimeTechUse();
+        $usage = $ctUsageImprimeTechniqueRepository->findOneby(["id" => 10]);
         //$ct_imprime_tech_use = $ctImprimeTechUseRepository->findOneBy(["id" => $id]);
-        $form_imprime_tech_use = $this->createForm(CtImprimeTechUseMultipleType::class, $ct_imprime_tech_use, ["centre" => $this->getUser()->getCtCentreId()]);
+        $form_imprime_tech_use = $this->createForm(CtImprimeTechUseModulableType::class, $ct_imprime_tech_use, ["multiple" => true, "carte" => true,"controle" => $id,"usage" => $usage, "centre" => $this->getUser()->getCtCentreId()]);
         $form_imprime_tech_use->handleRequest($request);
 
         if($form_imprime_tech_use->isSubmitted() && $form_imprime_tech_use->isValid()) {
-            $itu_utilisable = false;
             //$ct_imprime_tech_use_get->setCtCarrosserieId($form_imprime_tech_use['ct_imprime_tech_use_multiple']['imprime_technique_use_numero']->getData());
             $ct_imprime_tech_use_get = $form_imprime_tech_use['ct_imprime_tech_use_multiple']['imprime_technique_use_numero']->getData();
             foreach($ct_imprime_tech_use_get as $ct_itu){
+                $itu_utilisable = false;
                 $ct_itu->setItuUsed(1);
                 $ct_itu->setCreatedAt(new \DateTime());
                 $ct_itu->setCtUserId($this->getUser());
@@ -1508,35 +1511,18 @@ class CtAppVisiteController extends AbstractController
                     if($controle != null){
                         $itu_utilisable = true;
                     }
-                }elseif($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "RECEPTION"){
-                    $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
-                    $controle = $ctReceptionRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
-                    if($controle != null){
-                        $itu_utilisable = true;
-                    }
-                }elseif($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "CONSTATATION"){
-                    $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
-                    $controle = $ctConstAvDedRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
-                    if($controle != null){
-                        $itu_utilisable = true;
-                    }
-                }else{
-                    $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
-                    $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
-                    if($controle != null){
-                        $itu_utilisable = true;
-                    }
                 }
                 // asiana même principe ny utilisation sasany rehetra
                 if($itu_utilisable == true){
                     $ctImprimeTechUseRepository->add($ct_itu, true);
-                    return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_utilisation', [], Response::HTTP_SEE_OTHER);
+                    //return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_utilisation', [], Response::HTTP_SEE_OTHER);
                 }
             }
+            return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite', ["id" => $id], Response::HTTP_SEE_OTHER);
         }
-        return $this->render('ct_app_imprime_technique/mise_a_jour_multiple.html.twig', [
+        /* return $this->render('ct_app_imprime_technique/mise_a_jour_multiple.html.twig', [
             'form_imprime_tech_use' => $form_imprime_tech_use->createView(),
-        ]);
+        ]); */
+        return $this->redirectToRoute('app_ct_app_visite_it_visite', ["id" => $id], Response::HTTP_SEE_OTHER);
     }
-      
 }

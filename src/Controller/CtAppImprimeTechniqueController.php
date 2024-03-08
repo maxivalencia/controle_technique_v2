@@ -306,10 +306,10 @@ class CtAppImprimeTechniqueController extends AbstractController
         $form_imprime_tech_use->handleRequest($request);
 
         if($form_imprime_tech_use->isSubmitted() && $form_imprime_tech_use->isValid()) {
-            $itu_utilisable = false;
             //$ct_imprime_tech_use_get->setCtCarrosserieId($form_imprime_tech_use['ct_imprime_tech_use_multiple']['imprime_technique_use_numero']->getData());
             $ct_imprime_tech_use_get = $form_imprime_tech_use['ct_imprime_tech_use_multiple']['imprime_technique_use_numero']->getData();
             foreach($ct_imprime_tech_use_get as $ct_itu){
+                $itu_utilisable = false;
                 $ct_itu->setItuUsed(1);
                 $ct_itu->setCreatedAt(new \DateTime());
                 $ct_itu->setCtUserId($this->getUser());
@@ -342,9 +342,9 @@ class CtAppImprimeTechniqueController extends AbstractController
                 // asiana même principe ny utilisation sasany rehetra
                 if($itu_utilisable == true){
                     $ctImprimeTechUseRepository->add($ct_itu, true);
-                    return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_utilisation', [], Response::HTTP_SEE_OTHER);
                 }
             }
+            return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_utilisation', [], Response::HTTP_SEE_OTHER);
         }
         return $this->render('ct_app_imprime_technique/mise_a_jour_multiple.html.twig', [
             'form_imprime_tech_use' => $form_imprime_tech_use->createView(),
