@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des imprimés utilisés{% endblock %}
+
+{% block app_ct %}
+<div class="box">
+    <div class="box-header">UTILISATION IMPRIME</div><br>
+</div>
+<div class="box">
+    <div class="entete-formulaire">Mise à jour utilisation des imprimés</div><hr>
+    <div>
+        {{ form_start(form_imprime_tech_use) }}
+            {{ form_row(form_imprime_tech_use.ct_usage_it_id) }}
+            {{ form_row(form_imprime_tech_use.ct_controle_id) }}
+            {{ form_row(form_imprime_tech_use.imprime_technique_use_numero) }}
+            <div align="left">
+                <button class="btn btn-primary" type="submit" style="float:left">
+                    Enregistrer
+                </button>
+            </div>
+        {{ form_end(form_imprime_tech_use) }}
+        <br><br>
+    </div>
+</div>
+{% endblock %}
