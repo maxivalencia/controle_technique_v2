@@ -22,6 +22,10 @@ class CtImprimeTechUseModulableType extends AbstractType
         $this->controle = $options["controle"];
         $this->multiple = $options["multiple"];
         $this->carte = $options["carte"];
+        $selection_multiple = false;
+        if($this->multiple == true OR $this->carte == true){
+            $selection_multiple = true;
+        }
         $builder
             ->add('ct_controle_id', null, [
                 'label' => 'N° controle / N° enregistrement',
@@ -44,16 +48,34 @@ class CtImprimeTechUseModulableType extends AbstractType
                         return $qb
                             ->Where('u.itu_used = :val1')
                             ->andWhere('u.ct_centre_id = :val2')
-                            ->andWhere('u.ct_centre_id = :val2')
+                            ->andWhere('u.ct_imprime_tech_id = :val3 OR u.ct_imprime_tech_id = :val4 OR u.ct_imprime_tech_id = :val5 OR u.ct_imprime_tech_id = :val6')
                             ->setParameter('val1', 0)
                             ->setParameter('val2', $this->centre)
+                            ->setParameter('val3', 12)
+                            ->setParameter('val4', 13)
+                            ->setParameter('val5', 14)
+                            ->setParameter('val6', 15)
+                        ;
+                    }else{
+                        $qb = $ctImprimeTechUseRepository->createQueryBuilder('u');
+                        return $qb
+                            ->Where('u.itu_used = :val1')
+                            ->andWhere('u.ct_centre_id = :val2')
+                            ->andWhere('u.ct_centre_id = :val2')
+                            ->andWhere('u.ct_imprime_tech_id = :val3 OR u.ct_imprime_tech_id = :val4 OR u.ct_imprime_tech_id = :val5 OR u.ct_imprime_tech_id = :val6')
+                            ->setParameter('val1', 0)
+                            ->setParameter('val2', $this->centre)
+                            ->setParameter('val3', 12)
+                            ->setParameter('val4', 13)
+                            ->setParameter('val5', 14)
+                            ->setParameter('val6', 15)
                         ;
                     }
                 },
-                'multiple' => true,
+                'multiple' => $selection_multiple,
                 'attr' => [
                     'class' => 'multi select',
-                    'multiple' => true,
+                    'multiple' => $selection_multiple,
                     'data-live-search' => true,
                     'data-select' => true,
                 ],
