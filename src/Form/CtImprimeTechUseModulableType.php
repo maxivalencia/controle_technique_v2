@@ -18,8 +18,8 @@ class CtImprimeTechUseModulableType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->centre = $options["centre"];
-        $this->usage = $options["usage"];
-        $this->controle = $options["controle"];
+        $usage = $options["usage"];
+        $controle = $options["controle"];
         $this->multiple = $options["multiple"];
         $this->carte = $options["carte"];
         $selection_multiple = false;
@@ -29,6 +29,7 @@ class CtImprimeTechUseModulableType extends AbstractType
         $builder
             ->add('ct_controle_id', null, [
                 'label' => 'N° controle / N° enregistrement',
+                'data' => $controle,
                 'disabled' => true,
             ])
             ->add('imprime_technique_use_numero', EntityType::class, [
@@ -84,6 +85,7 @@ class CtImprimeTechUseModulableType extends AbstractType
             ])
             ->add('ct_usage_it_id', null, [
                 'label' => 'Motif d\'utilisation IT',
+                'data' => $usage,
                 'disabled' => true,
             ])
             /* ->add('ct_controle_id')
