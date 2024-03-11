@@ -1914,7 +1914,7 @@ def RecuperationTableCtImprimeTechUse():
             header = [row[0] for row in cursor.description]
             rows = cursor.fetchall()
             cnx.close()
-            f.write("INSERT IGNORE INTO " + table_name + " (`id`, `ct_bordereau_id_id`, `ct_centre_id_id`, `ct_imprime_tech_id_id`, `ct_user_id_id`, `ct_controle_id`, `itu_numero`, `itu_used`, `ct_usage_it_id`, `actived_at`, `created_at`, `updated_at`, `itu_observation`, `itu_is_visible`) VALUES")
+            f.write("INSERT IGNORE INTO " + table_name + " (`id`, `ct_bordereau_id_id`, `ct_centre_id_id`, `ct_imprime_tech_id_id`, `ct_user_id_id`, `ct_controle_id`, `itu_numero`, `itu_used`, `ct_usage_it_id_id`, `actived_at`, `created_at`, `updated_at`, `itu_observation`, `itu_is_visible`) VALUES")
             i = 0
             for row in rows:
                 lst_row = list(row)

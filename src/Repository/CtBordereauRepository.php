@@ -64,7 +64,11 @@ class CtBordereauRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function findBordereauDoublon($imprime, $min, $max): ?CtBordereau
+
+    /**
+     * @return CtBordereau[] Returns an array of CtBordereau objects
+     */
+    public function findBordereauDoublon($imprime, $min, $max): array
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.ct_imprime_tech_id = :val1')
@@ -73,7 +77,7 @@ class CtBordereauRepository extends ServiceEntityRepository
             ->setParameter('val2', $min)
             ->setParameter('val3', $max)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
 }

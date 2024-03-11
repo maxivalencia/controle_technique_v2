@@ -561,10 +561,9 @@ class CtAppImprimableController extends AbstractController
             $date_of_visite = new \DateTime($date_visite);
             $type_visite_id = $ctTypeVisiteRepository->findOneBy(["id" => $recherche]);
             $type_visite = $type_visite_id->getTpvLibelle();
+            $centre = $this->getUser()->getCtCentreId();
             if($rechercheform['ct_centre_id'] != ""){
                 $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
-            } else{
-                $centre = $this->getUser()->getCtCentreId();
             }
         }
         $pdfOptions = new Options();
@@ -597,12 +596,14 @@ class CtAppImprimableController extends AbstractController
         $totalDesPrixCartes = 0;
         $totalDesPrixCarnets = 0;
         $montantTotal = 0;
-        if(new \DateTime($dateDeploiement) > $date_of_visite){
+        //if(new \DateTime($dateDeploiement) > $date_of_visite){
+        /* if(strtotime($dateDeploiement) > $date_of_visite){
             $liste_visites = $ctVisiteRepository->findByFicheDeControle($type_visite_id->getId(), $centre->getId(), $date_of_visite);
         }else{
             $nomGroup = $date_of_visite->format('d').'/'.$date_of_visite->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$type_visite.'/'.$date_of_visite->format("Y");
             $liste_visites = $ctVisiteRepository->findBy(["vst_num_feuille_caisse" => $nomGroup, "vst_is_active" => true]);
-        }
+        } */
+        $liste_visites = $ctVisiteRepository->findByFicheDeControle($type_visite_id->getId(), $centre->getId(), $date_of_visite);
         $liste_des_visites = new ArrayCollection();
         $tarif = 0;
         if($liste_visites != null){
