@@ -21,4 +21,6 @@
 
 ###> pour ignorer le dossier generated afin de ne pas trop charger git ###
 /public/generated/
+/database_migration/data/
+/database_migration/controle_technique_v2.sql
 ###< pour ignorer le dossier generated afin de ne pas trop charger git ###

@@ -4028,31 +4028,16 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/fiche_de_stock", name="app_ct_app_imprimable_fiche_de_stock", methods={"GET", "POST"})
      */
-    public function FicheDeStock(Request $request, CtUserRepository $ctUserRepository, CtUsageRepository $ctUsageRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageTarifRepository $ctUsageTarifRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    public function FicheDeStock(Request $request, CtConstAvDedRepository $ctConstAvDedRepository, CtImprimeTechUseRepository $ctImprimeTechUseRepository, CtUserRepository $ctUserRepository, CtUsageRepository $ctUsageRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageTarifRepository $ctUsageTarifRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
     {
-        $type_visite = "";
-        $date_visite = new \DateTime();
-        $date_of_visite = new \DateTime();
-        $type_visite_id = new CtTypeReception();
+        $date_stock = new \DateTime();
+        $date_of_stock = new \DateTime();
         $centre = new CtCentre();
-        $verificateur = new CtUser();
-
-        $liste_usage = $ctUsageRepository->findAll();
-        $liste_des_usages = new ArrayCollection();
-        foreach($liste_usage as $lstu){
-            $usg = [
-                "usage" => $lstu->getUsgLibelle(),
-                "nombre" => 0,
-            ];
-            $liste_des_usages->add($usg);
-        }
 
         if($request->request->get('form')){
             $rechercheform = $request->request->get('form');
-            $recherche = $rechercheform['ct_user_id'];
-            $date_visite = $rechercheform['date'];
-            $date_of_visite = new \DateTime($date_visite);
-            $verificateur = $ctUserRepository->findOneBy(["id" => $recherche]);
+            $date_stock = $rechercheform['date'];
+            $date_of_stock = new \DateTime($date_stock);
             if($rechercheform['ct_centre_id'] != ""){
                 $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
             } else{
@@ -4074,144 +4059,105 @@ class CtAppImprimableController extends AbstractController
             mkdir($dossier, 0777, true);
         }
         // teste date, comparaison avant utilisation rcp_num_group
-        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
-        $dateDeploiement = $deploiement->getAttribut();
-        $autreTva = $ctAutreRepository->findOneBy(["nom" => "TVA"]);
-        $prixTva = $autreTva->getAttribut();
-        $autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
-        $prixTimbre = $autreTimbre->getAttribut();
-        $timbre = floatval($prixTimbre);
-        $nombreReceptions = 0;
-        $totalDesDroits = 0;
-        $totalDesPrixPv = 0;
-        $totalDesTVA = 0;
-        $totalDesTimbres = 0;
-        $totalDesPrixCartes = 0;
-        $totalDesPrixCarnets = 0;
-        $montantTotal = 0;
-        $apte = 0;
-        $inapte = 0;
-        if(new \DateTime($dateDeploiement) > $date_of_visite){
-            // $liste_visites = $ctVisiteRepository->findByFicheDeControle($type_visite_id->getId(), $centre->getId(), $date_of_visite);
-            $liste_visites = $ctVisiteRepository->findBy(["ct_verificateur_id" => $verificateur, "ct_centre_id" => $centre, "vst_created" => $date_of_visite], ["id" => "ASC"]);
-        }else{
-            $nomGroup = $date_of_visite->format('d').'/'.$date_of_visite->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$type_visite.'/'.$date_of_visite->format("Y");
-            //$liste_visites = $ctVisiteRepository->findBy(["vst_num_feuille_caisse" => $nomGroup, "vst_is_active" => true]);
-            $liste_visites = $ctVisiteRepository->findBy(["ct_verificateur_id" => $verificateur, "ct_centre_id" => $centre, "vst_created" => $date_of_visite], ["id" => "ASC"]);
-        }
-        $liste_des_visites = new ArrayCollection();
-        $tarif = 0;
-        if($liste_visites != null){
-            foreach($liste_visites as $liste){
-                if($liste->isVstIsContreVisite() == true){
-                    continue;
+
+        $liste_imprime = $ctImprimeTechRepository->findAll();
+        $liste_des_stocks = new ArrayCollection();
+        $numero = 0;
+        $liste_centres = $ctCentreRepository->findBy(["ctr_code" => $centre->getCtrCode()]);
+        foreach($liste_imprime as $lstimp){
+            $existant = 0;
+            $recu = 0;
+            $vendus = 0;
+            $adm = 0;
+            $rebut = 0;
+            foreach($liste_centres as $ctr){
+                $lst_imp_non_use = $ctImprimeTechUseRepository->findExistant($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                if($lst_imp_non_use != null){
+                    $existant = $existant + count($lst_imp_non_use);
                 }
-                $usage = $liste->getCtUsageId();
-                $tarif = 0;
-                $prixPv = 0;
-                $carnet = 0;
-                $carte = 0;
-                $aptitude = "Inapte";
-                $listes_autre = $liste->getVstExtra();
-                $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
-                $utilisation = $liste->getCtUtilisationId();
-                if($utilisation != $utilisationAdministratif){
-                    $usage_tarif = $ctUsageTarifRepository->findOneBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
-                    $tarif = $usage_tarif->getUsgTrfPrix();
-                    $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
-                    $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
-                    foreach($arretePvTarif as $apt){
-                        $arretePrix = $apt->getCtArretePrixId();
-                        //if(new \DateTime() >= $arretePrix->getArtDateApplication()){
-                        if($liste->isVstIsContreVisite() == false){
-                            if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
-                                if($liste->isVstIsApte()){
-                                    $prixPv = $apt->getVetPrix();
-                                    $aptitude = "Apte";
-                                    $apte = $apte + 1;
-                                } else {
-                                    $prixPv = 2 * $apt->getVetPrix();
-                                    $aptitude = "Inapte";
-                                    $inapte = $inapte + 1;
-                                }
-                                break;
+                $lst_imp_recue = $ctImprimeTechUseRepository->findRecu($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                if($lst_imp_recue != null){
+                    $recu = $recu + count($lst_imp_recue);
+                }
+                $lst_utiliser = $ctImprimeTechUseRepository->findUtiliser($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                if($lst_utiliser != null){
+                    foreach($lst_utiliser as $utiliser){
+                        $utilisation = $utiliser->getCtUsageItId();
+                        if($utilisation->getId() == 9){
+                            $rebut++;
+                        }else{
+                            switch($utilisation->getId()){
+                                case 10:
+                                    $visite = $ctVisiteRepository->findOneBy(["id" => $utiliser->getCtControleId()]);
+                                    if($visite != null){
+                                        if($visite->getCtUtilisationId()->getId() == 1){
+                                            $adm++;
+                                        }else{
+                                            $vendus++;
+                                        }
+                                    }else{
+                                        $vendus++;
+                                    }
+                                    break;
+                                case 11:
+                                    $reception = $ctReceptionRepository->findOneBy(["id" => $utiliser->getCtControleId()]);
+                                    if($reception != null){
+                                        if($reception->getCtUtilisationId()->getId() == 1){
+                                            $adm++;
+                                        }else{
+                                            $vendus++;
+                                        }
+                                    }else{
+                                        $vendus++;
+                                    }
+                                    break;
+                                /* case 12:
+                                    $constatation = $ctConstAvDedRepository->findOneBy(["id" => $utiliser->getCtControleId()]);
+                                    if($constatation != null){
+                                        if($constatation->getCtUtilisationId()->getId() == 1){
+                                            $adm++;
+                                        }else{
+                                            $vendus++;
+                                        }
+                                    }else{
+                                        $vendus++;
+                                    }
+                                    break */;
+                                default:
+                                    $vendus++;
+                                    break;
                             }
-                        } else {
-                            continue;
                         }
                     }
                 }
-                foreach($listes_autre as $autre){
-                    $vet = $ctVisiteExtraTarifRepository->findOneBy(["ct_imprime_tech_id" => $autre->getId()], ["vet_annee" => "DESC"]);
-                    if($autre->getId() == 1){
-                        $carnet = $carnet + $vet->getVetPrix();
-                    } else {
-                        $carte = $carte + $vet->getVetPrix();
-                    }
-                }
-                $compteur_usage = 0;
-                foreach($liste_des_usages as $ldu){
-                    if($liste_des_usages[$compteur_usage]["usage"] == $liste->getCtUsageId()->getUsgLibelle()){
-                        $ldu["nombre"]++;
-                    }
-                    $compteur_usage++;
-                }
-
-                $droit = $tarif + $prixPv + $carnet + $carte;
-                $tva = ($droit * floatval($prixTva)) / 100;
-                $montant = $droit + $tva + $timbre;
-                $vst = [
-                    "controle_pv" => $liste->getVstNumPv(),
-                    "immatriculation" => $liste->getCtCarteGriseId()->getCgImmatriculation(),
-                    "usage" => $liste->getCtUsageId()->getUsgLibelle(),
-                    "aptitude" => $aptitude,
-                    "verificateur" => $liste->getCtVerificateurId()->getUsrNom(),
-                    "cooperative" => $liste->getCtCarteGriseId()->getCgNomCooperative(),
-                    "droit" => $tarif,
-                    "prix_pv" => $prixPv,
-                    "carnet" => $carnet,
-                    "carte" => $carte,
-                    "tva" => $tva,
-                    "timbre" => $timbre,
-                    "montant" => $montant,
-                    "utilisation" => $utilisation,
-                ];
-                $liste_des_visites->add($vst);
-                $nombreReceptions = $nombreReceptions + 1;
-                $totalDesDroits = $totalDesDroits + $tarif;
-                $totalDesPrixPv = $totalDesPrixPv + $prixPv;
-                $totalDesTVA = $totalDesTVA + $tva;
-                $totalDesTimbres = $totalDesTimbres + $timbre;
-                $montantTotal = $montantTotal + $montant;
-                $totalDesPrixCartes = $totalDesPrixCartes + $carte;
-                $totalDesPrixCarnets = $totalDesPrixCarnets + $carnet;
             }
+            $stock = [
+                "numero" => ++$numero,
+                "nature" =>  ucfirst(strtolower($lstimp->getNomImprimeTech()))." (".$lstimp->getAbrevImprimeTech().")",
+                "existant" => $existant,
+                "recu" => $recu,
+                "total" => $existant + $recu,
+                "vendus" => $vendus,
+                "adm" => $adm,
+                "rebut" => $rebut,
+                "total_consomme" => $vendus + $adm + $rebut,
+                "stocks" => ($existant + $recu) - ($vendus + $adm + $rebut),
+                "observation" => "",
+            ];
+            $liste_des_stocks->add($stock);
         }
+        
 
         $html = $this->renderView('ct_app_imprimable/fiche_de_stock.html.twig', [
             'logo' => $logo,
-            'date' => $date,
+            'date_stock' => $date,
             'province' => $centre->getCtProvinceId()->getPrvNom(),
             'centre' => $centre->getCtrNom(),
             'user' => $this->getUser(),
-            'type' => $type_visite,
-            'date_visite' => $date_of_visite,
-            'nombre_visite' => $nombreReceptions,
-            'total_des_droits' => $totalDesDroits,
-            'total_des_prix_pv' => $totalDesPrixPv,
-            'total_des_tva' => $totalDesTVA,
-            'total_des_timbres' => $totalDesTimbres,
-            'total_des_carnets' => $totalDesPrixCarnets,
-            'total_des_cartes' => $totalDesPrixCartes,
-            'montant_total' => $montantTotal,
-            'ct_visites' => $liste_visites,
-            'liste_usage' => $liste_des_usages,
-            'verificateur' => $verificateur->getUsrNom(),
-            'nbr_apte' => $apte,
-            'nbr_inapte' => $inapte,
+            'ct_stocks'=> $liste_des_stocks,
         ]);
         $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         $output = $dompdf->output();
         $filename = "FICHE_DE_STOCK_".$centre->getCtrNom().'_'.$date->format('Y_M_d_H_i_s').".pdf";

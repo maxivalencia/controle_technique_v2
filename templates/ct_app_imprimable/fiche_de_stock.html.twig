@@ -41,7 +41,7 @@
                         <img src="{{ logo }}" alt="logo" width="25px" height="25px" type="images/png">
                         <br>« LAHITOKANA NY AINA » 
                     </td>
-                    <td width="400" align="center" valign="bottom" style="font-size:12px;">
+                    <td width="150" align="center" valign="bottom" style="font-size:12px;">
                         <div align="center">
                             <strong>
                                 {# ANNEXE IV<br>
@@ -68,84 +68,72 @@
                         <strong>REPOBLIKAN’I MADAGASIKARA</strong><br>
                         <i>Fitiavana - Tanindrazana - Fandrosoana</i>
                         <br>--------------------------<br><br>
-                        {# Enregistrer sous<br>
-                        N° : <strong>{{ reception.rcp_num_pv }}</strong><br>
-                        -------------------------- #}
-                        {# {{ ct_visite.province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
-                        <br><br>--------------------------<br><br> #}
+                        {{ province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}
+                        <br><br>--------------------------<br><br>
                     </td>
                 </tr>
             </table>
+            <br><br>
             <div align="center">
-                <table width="600" style="font-size:18px;border:0px solid black;" align="center">
+                <table width="600" style="font-size:16px;border:0px solid black;" align="center">
                     <tr align="center">
                         <td align="center">
                             <strong>
-                                FICHE DE STOCK DU {{ date_stock|date('d') }} {{ trans_day_hash[date_stock|date('F')] }} {{ date_stock|date('Y') }}
+                                <u>SITUATION MENSUELLE DES IMPRIMES TECHNIQUES MOIS DE {{ trans_day_hash[date_stock|date('F')]|upper }} {{ date_stock|date('Y') }}</u>
                             </strong>
                         </td>
                     </tr>
                 </table>
             </div>
             <br><br><br>
-            <div style="font-size:16px;">
-                <u>Vérificateur</u> : <strong>{{ verificateur }}</strong>
-            </div>
             <br>
-            <table align="center" style="border: 2px solid black;border-collapse: collapse;font-size:14px;">
+            <table align="center" style="border: 2px solid black;border-collapse: collapse;font-size:10px;">
                 <tr align="center">
-                    <td width="75" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Immatriculation</i></strong></td>
-                    <td width="75" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Mode</i></strong></td>
-                    <td width="75" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Type</i></strong></td>
-                    <td width="125" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Secrétaire</i></strong></td>
-                    <td width="125" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Usage</i></strong></td>
-                    <td width="75" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Heure Passage</i></strong></td>
-                    <td width="75" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Aptitude</i></strong></td>
-                    <td width="75" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Utilisation</i></strong></td>
-                    <td width="75" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Anomalies</i></strong></td>
+                    <td valign="middle" align="center" rowspan="3" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong>N°</strong></td>
+                    <td valign="middle" align="center" rowspan="3" width="100" style="border: 1px solid black;border-collapse: collapse;"><strong>NATURE DES IMPRIMES TECHNIQUES</strong></td>
+                    <td valign="middle" align="center" rowspan="3" width="40" style="border: 1px solid black;border-collapse: collapse;"><strong>Existant au 1er jour du mois<br><br>(A)</strong></td>
+                    <td valign="middle" align="center" rowspan="3" width="40" style="border: 1px solid black;border-collapse: collapse;"><strong>Reçu au cours du mois<br><br>(B)</strong></td>
+                    <td valign="middle" align="center" rowspan="3" width="40" style="border: 1px solid black;border-collapse: collapse;"><strong>TOTAL (A+B)<br><br>(C)</strong></td>
+                    <td valign="middle" align="center" colspan="4" width="80" style="border: 1px solid black;border-collapse: collapse;"><strong>Nombre consommés</strong></td>
+                    <td valign="middle" align="center" rowspan="3" width="40" style="border: 1px solid black;border-collapse: collapse;"><strong>Stocks à la fin du mois (C-D4)<br><br>(E)</strong></td>
+                    <td valign="middle" align="center" rowspan="3" width="75" style="border: 1px solid black;border-collapse: collapse;"><strong>Observation</strong></td>
                 </tr>
-                {% for ct_visite in ct_visites %}
+                <tr align="center">
+                    <td valign="middle" align="center" width="40" style="border: 1px solid black;border-collapse: collapse;"><strong>Vendus<br>(D1)</strong></td>
+                    <td valign="middle" align="center" width="40" style="border: 1px solid black;border-collapse: collapse;"><strong>Adm<br>(D2)</strong></td>
+                    <td valign="middle" align="center" width="40" style="border: 1px solid black;border-collapse: collapse;"><strong>Rebuts<br>(D3)</strong></td>
+                    <td valign="middle" align="center" width="40" style="border: 1px solid black;border-collapse: collapse;"><strong>Total<br>(D1+D2+D3)<br>(D4)</strong></td>
+                </tr>
+                <tr align="center">
+                    <td valign="middle" align="center" colspan="4" width="80" style="border: 1px solid black;border-collapse: collapse;"><strong>(D)</strong></td>
+                </tr>
+                {% for ct_stock in ct_stocks %}
                     <tr style="font-size:12px;">
-                        <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.ct_carte_grise_id.cg_immatriculation }}</td>
-                        <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.vst_is_contre_visite ? CONTRE : PREMIERE }}</td>
-                        <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.ct_type_visite_id }}</td>
-                        <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.ct_user_id }}</td>
-                        <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.ct_usage_id }}</td>
-                        <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.vstCreated ? ct_visite.vstCreated|date('H:i:s') : '' }}</td>
-                        <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.vst_is_apte ? APTE : INAPTE }}</td>
-                        <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.ct_utilisation_id }}</td>
-                            {% for anomalie in ct_visite.vstAnomalieId %}
-                                {{ anomalie.anmlLibelle }},&nbsp; 
-                            {% endfor %}
-                        </td>
+                        <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_stock.numero }}</td>
+                        <td align="left" style="border: 1px solid black;border-collapse: collapse;">{{ ct_stock.nature }}</td>
+                        <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_stock.existant }}</td>
+                        <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_stock.recu }}</td>
+                        <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_stock.total }}</td>
+                        <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_stock.vendus }}</td>
+                        <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_stock.adm }}</td>
+                        <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_stock.rebut }}</td>
+                        <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_stock.total_consomme }}</td>
+                        <td align="right" style="border: 1px solid black;border-collapse: collapse;">{{ ct_stock.stocks }}</td>
+                        <td align="left" style="border: 1px solid black;border-collapse: collapse;">{{ ct_stock.observation }}</td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="9">Aucune visite trouvé</td>
+                        <td colspan="11">Aucune visite trouvé</td>
                     </tr>
                 {% endfor %}
             </table>
-            <br>
-            <br>
-            <div style="font-size:14px;margin-left:600px;" align="center">
-                <table>
-                    <tr>
-                        <td><strong>APTE</strong></td>
-                        <td><strong> : </strong></td>
-                        <td><strong> {{ nbr_apte }} </strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>INAPTE</strong></td>
-                        <td><strong> : </strong></td>
-                        <td><strong> {{ nbr_inapte }} </strong></td>
-                    </tr>
-                </table>
+            <div style="font-size:14px;margin-left:400px;" align="center">
                 <br><br>
                 {{ province }}, le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }}<br>
                 <strong>Le chef de Centre<strong>
             </div>
             <div class="footer">
-                <span>Direction Générale de la Sécurité Routière BP 784 Alarobia Antananarivo NIF : 4001 089525 STAT : 71102 11 2006 0 043 19</span>
+                {# <span>Direction Générale de la Sécurité Routière BP 784 Alarobia Antananarivo NIF : 4001 089525 STAT : 71102 11 2006 0 043 19</span> #}
                 <script type="text/php">
                     if ( isset($pdf) ) {
                         // OLD 
@@ -162,6 +150,11 @@
                         $char_space = 0.0;  //  default
                         $angle = 0.0;   //  default
                         $pdf->page_text($x, $y, $text, $font, $size, $color, $word_space, $char_space, $angle);
+                    
+                        $x2 = 40;
+                        $y2 = 800;
+                        $text2 = "Editée le {{ "now"|date('d') }} {{ trans_day_hash["now"|date('F')] }} {{ "now"|date('Y') }} à {{ "now"|date('H') }}:{{ "now"|date('m') }}:{{ "now"|date('s') }} par {{ user.usrNom }}"; 
+                        $pdf->page_text($x2, $y2, $text2, $font, $size, $color, $word_space, $char_space, $angle);
                     }
                 </script>
             </div>

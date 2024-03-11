@@ -114,6 +114,7 @@
                         <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.vstCreated ? ct_visite.vstCreated|date('H:i:s') : '' }}</td>
                         <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.vst_is_apte ? APTE : INAPTE }}</td>
                         <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_visite.ct_utilisation_id }}</td>
+                        <td align="center" style="border: 1px solid black;border-collapse: collapse;">
                             {% for anomalie in ct_visite.vstAnomalieId %}
                                 {{ anomalie.anmlLibelle }},&nbsp; 
                             {% endfor %}

@@ -103,4 +103,59 @@ class CtImprimeTechUseRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @return CtImprimeTechUse[] Returns an array of CtImprimeTechUse objects
+     */
+    public function findExistant($centre, $mois, $annee, $id_imprime): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.ct_centre_id = :val1')
+            ->andWhere('c.actived_at < :val2')
+            ->andWhere('c.itu_used = :val3')
+            ->andWhere('c.ct_imprime_tech_id = :val4')
+            ->setParameter('val1', $centre)
+            ->setParameter('val2', $annee.'-'.$mois.'-01')
+            ->setParameter('val3', 0)
+            ->setParameter('val4', $id_imprime)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return CtImprimeTechUse[] Returns an array of CtImprimeTechUse objects
+     */
+    public function findRecu($centre, $mois, $annee, $id_imprime): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.ct_centre_id = :val1')
+            ->andWhere('c.actived_at LIKE :val2')
+            ->andWhere('c.ct_imprime_tech_id = :val3')
+            ->setParameter('val1', $centre)
+            ->setParameter('val2', '%'.$annee.'-'.$mois.'-31%')
+            ->setParameter('val3', $id_imprime)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return CtImprimeTechUse[] Returns an array of CtImprimeTechUse objects
+     */
+    public function findUtiliser($centre, $mois, $annee, $id_imprime): array
+    {
+        return $this->createQueryBuilder('c')
+        ->andWhere('c.ct_centre_id = :val1')
+        ->andWhere('c.created_at LIKE :val2')
+        ->andWhere('c.itu_used = :val3')
+        ->andWhere('c.ct_imprime_tech_id = :val4')
+        ->setParameter('val1', $centre)
+        ->setParameter('val2', '%'.$annee.'-'.$mois.'%')
+        ->setParameter('val3', 1)
+        ->setParameter('val4', $id_imprime)
+        ->getQuery()
+        ->getResult()
+        ;
+    }
 }

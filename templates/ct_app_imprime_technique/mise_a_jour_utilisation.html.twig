@@ -58,7 +58,10 @@
                         {{ form_row(form_imprime_tech_use.ct_usage_it_id) }}
                         <br><br>
                         {# <button class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i> {{ button_label|default('Modifier') }}</button> #}
+                        {% if bouton_modifier %}
                         <a href="{{ path('app_ct_app_imprime_technique_mise_a_jour_utilisation_effectif', {'id': id}) }}" class="btn btn-success"><i class="fa fa-success" aria-hidden="true"></i> Modifer</a>
+                        {% endif %}
+                        
                     </td>
                 </tr>
             </tbody>
