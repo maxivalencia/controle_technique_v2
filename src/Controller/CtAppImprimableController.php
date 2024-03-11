@@ -83,9 +83,10 @@ class CtAppImprimableController extends AbstractController
             $date_of_reception = new \DateTime($date_reception);
             $type_reception_id = $ctTypeReceptionRepository->findOneBy(["id" => $recherche]);
             $type_reception = $type_reception_id->getTprcpLibelle();
+            $centre = $this->getUser()->getCtCentreId();
             if($rechercheform['ct_centre_id'] != ""){
                 $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
-            } else{
+            }else{
                 $centre = $this->getUser()->getCtCentreId();
             }
         }
@@ -153,9 +154,10 @@ class CtAppImprimableController extends AbstractController
             $date_of_constatation = new \DateTime($date_constatation);
             //$type_reception_id = $ctTypeReceptionRepository->findOneBy(["id" => $recherche]);
             //$type_reception = $type_reception_id->getTprcpLibelle();
+            $centre = $this->getUser()->getCtCentreId();
             if($rechercheform['ct_centre_id'] != ""){
                 $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
-            } else{
+            }else{
                 $centre = $this->getUser()->getCtCentreId();
             }
         }
@@ -239,9 +241,10 @@ class CtAppImprimableController extends AbstractController
             $date_of_reception = new \DateTime($date_reception);
             $type_reception_id = $ctTypeReceptionRepository->findOneBy(["id" => $recherche]);
             $type_reception = $type_reception_id->getTprcpLibelle();
+            $centre = $this->getUser()->getCtCentreId();
             if($rechercheform['ct_centre_id'] != ""){
                 $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
-            } else{
+            }else{
                 $centre = $this->getUser()->getCtCentreId();
             }
         }
@@ -407,9 +410,10 @@ class CtAppImprimableController extends AbstractController
             $rechercheform = $request->request->get('form');
             $date_constatation = $rechercheform['date'];
             $date_of_constatation = new \DateTime($date_constatation);
+            $centre = $this->getUser()->getCtCentreId();
             if($rechercheform['ct_centre_id'] != ""){
                 $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
-            } else {
+            }else{
                 $centre = $this->getUser()->getCtCentreId();
             }
         }
@@ -566,6 +570,8 @@ class CtAppImprimableController extends AbstractController
             $centre = $this->getUser()->getCtCentreId();
             if($rechercheform['ct_centre_id'] != ""){
                 $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
+            }else{
+                $centre = $this->getUser()->getCtCentreId();
             }
         }
         $pdfOptions = new Options();
@@ -1633,9 +1639,10 @@ class CtAppImprimableController extends AbstractController
             $date_visite = $rechercheform['date'];
             $date_of_visite = new \DateTime($date_visite);
             $verificateur = $ctUserRepository->findOneBy(["id" => $recherche]);
+            $centre = $this->getUser()->getCtCentreId();
             if($rechercheform['ct_centre_id'] != ""){
                 $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
-            } else{
+            }else{
                 $centre = $this->getUser()->getCtCentreId();
             }
         }
@@ -1828,9 +1835,10 @@ class CtAppImprimableController extends AbstractController
             $rechercheform = $request->request->get('form');
             $date_visite = $rechercheform['date'];
             $date_of_visite = new \DateTime($date_visite);
+            $centre = $this->getUser()->getCtCentreId();
             if($rechercheform['ct_centre_id'] != ""){
                 $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
-            } else{
+            }else{
                 $centre = $this->getUser()->getCtCentreId();
             }
         }
@@ -3253,6 +3261,7 @@ class CtAppImprimableController extends AbstractController
             $date_of_utilisation = new \DateTime($date_utilisation);
             //$type_reception_id = $ctTypeReceptionRepository->findOneBy(["id" => $recherche]);
             //$type_reception = $type_reception_id->getTprcpLibelle();
+            $centre = $this->getUser()->getCtCentreId();
             if($rechercheform['ct_centre_id'] != ""){
                 $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
             } else{
@@ -4043,6 +4052,7 @@ class CtAppImprimableController extends AbstractController
             $rechercheform = $request->request->get('form');
             $date_stock = $rechercheform['date'];
             $date_of_stock = new \DateTime($date_stock);
+            $centre = $this->getUser()->getCtCentreId();
             if($rechercheform['ct_centre_id'] != ""){
                 $centre = $ctCentreRepository->findOneBy(["id" => $rechercheform['ct_centre_id']]);
             } else{
