@@ -75,7 +75,6 @@ class CtConstAvDedRepository extends ServiceEntityRepository
             ->andWhere('c.rcp_is_active = :val3')
             ->setParameter('val1', $centre)
             ->setParameter('val2', '%'.$date->format('Y-m-d').'%')
-            //->setParameter('val2', '%'.$date->format('Y-m-d').'%')
             ->setParameter('val3', 1)
             ->orderBy('c.id', 'ASC')
             ->getQuery()
