@@ -106,13 +106,14 @@ class CtAppImprimableController extends AbstractController
         // teste date, comparaison avant utilisation rcp_num_group
         $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
         $dateDeploiement = $deploiement->getAttribut();
-        if(new \DateTime($dateDeploiement) > $date_of_reception){
+        /* if(new \DateTime($dateDeploiement) > $date_of_reception){
             // $liste_receptions = $ctReceptionRepository->findBy(["ct_type_reception_id" => $type_reception_id, "ct_centre_id" => $centre, "rcp_created" => $date_of_reception]);
             $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
         }else{
             $nomGroup = $date_of_reception->format('d').'/'.$date_of_reception->format('m').'/'.$centre->getCtrCode().'/'.$type_reception.'/'.$date->format("Y");
             $liste_receptions = $ctReceptionRepository->findBy(["rcp_num_group" => $nomGroup, "rcp_is_active" => true]);
-        }
+        } */
+        $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
         $html = $this->renderView('ct_app_imprimable/fiche_de_controle_reception.html.twig', [
             'logo' => $logo,
             'date' => $date,
@@ -273,14 +274,15 @@ class CtAppImprimableController extends AbstractController
         $totalDesTimbres = 0;
         $montantTotal = 0;
         $motif_ptac = "";
-        if(new \DateTime($dateDeploiement) > $date_of_reception){
+        /* if(new \DateTime($dateDeploiement) > $date_of_reception){
             //$liste_receptions = $ctReceptionRepository->findBy(["ct_type_reception_id" => $type_reception_id, "ct_centre_id" => $centre, "rcp_created" => $date_of_reception]);
             $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
         }else{
             //$nomGroup = $date_of_reception->format('d').'/'.$date_of_reception->format('m').'/'.$centre->getCtrCode().'/'.$type_reception.'/'.$date->format("Y");
             //$liste_receptions = $ctReceptionRepository->findBy(["rcp_num_group" => $nomGroup, "rcp_is_active" => true]);
             $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
-        }
+        } */
+        $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
         $liste_des_receptions = new ArrayCollection();
         $tarif = 0;
         if($liste_receptions != null){
@@ -1669,14 +1671,15 @@ class CtAppImprimableController extends AbstractController
         $montantTotal = 0;
         $apte = 0;
         $inapte = 0;
-        if(new \DateTime($dateDeploiement) > $date_of_visite){
+        /* if(new \DateTime($dateDeploiement) > $date_of_visite){
             // $liste_visites = $ctVisiteRepository->findByFicheDeControle($type_visite_id->getId(), $centre->getId(), $date_of_visite);
             $liste_visites = $ctVisiteRepository->findBy(["ct_verificateur_id" => $verificateur, "ct_centre_id" => $centre, "vst_created" => $date_of_visite], ["id" => "ASC"]);
         }else{
             $nomGroup = $date_of_visite->format('d').'/'.$date_of_visite->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$type_visite.'/'.$date_of_visite->format("Y");
             //$liste_visites = $ctVisiteRepository->findBy(["vst_num_feuille_caisse" => $nomGroup, "vst_is_active" => true]);
             $liste_visites = $ctVisiteRepository->findBy(["ct_verificateur_id" => $verificateur, "ct_centre_id" => $centre, "vst_created" => $date_of_visite], ["id" => "ASC"]);
-        }
+        } */
+        $liste_visites = $ctVisiteRepository->findBy(["ct_verificateur_id" => $verificateur, "ct_centre_id" => $centre, "vst_created" => $date_of_visite, "vst_is_active" => 1], ["id" => "ASC"]);
         $liste_des_visites = new ArrayCollection();
         $tarif = 0;
         if($liste_visites != null){
@@ -1863,14 +1866,15 @@ class CtAppImprimableController extends AbstractController
         $montantTotal = 0;
         $apte = 0;
         $inapte = 0;
-        if(new \DateTime($dateDeploiement) > $date_of_visite){
+        /* if(new \DateTime($dateDeploiement) > $date_of_visite){
             // $liste_visites = $ctVisiteRepository->findByFicheDeControle($type_visite_id->getId(), $centre->getId(), $date_of_visite);
             $liste_visites = $ctVisiteRepository->findBy(["vst_is_apte" => 0, "ct_centre_id" => $centre, "vst_created" => $date_of_visite], ["id" => "ASC"]);
         }else{
             $nomGroup = $date_of_visite->format('d').'/'.$date_of_visite->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$type_visite.'/'.$date_of_visite->format("Y");
             //$liste_visites = $ctVisiteRepository->findBy(["vst_num_feuille_caisse" => $nomGroup, "vst_is_active" => true]);
             $liste_visites = $ctVisiteRepository->findBy(["vst_is_apte" => 0, "ct_centre_id" => $centre, "vst_created" => $date_of_visite], ["id" => "ASC"]);
-        }
+        } */
+        $liste_visites = $ctVisiteRepository->findBy(["vst_is_apte" => 0, "ct_centre_id" => $centre, "vst_created" => $date_of_visite, "vst_is_active" => 1], ["id" => "ASC"]);
         $liste_des_visites = new ArrayCollection();
         $tarif = 0;
         if($liste_visites != null){
@@ -2188,7 +2192,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/proces_verbal_constatation_duplicata/{id}", name="app_ct_app_imprimable_proces_verbal_constatation_duplicata", methods={"GET", "POST"})
      */
-    public function ProcesVerbalConstatationDuplicata(Request $request, int $id, CtVisiteExtraRepository $ctVisiteExtraRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository, CtConstAvDedCaracRepository $ctConstAvDedCaracRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtVehiculeRepository $ctVehiculeRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    public function ProcesVerbalConstatationDuplicata(Request $request, int $id, CtAutreTarifRepository $ctAutreTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository, CtConstAvDedCaracRepository $ctConstAvDedCaracRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtVehiculeRepository $ctVehiculeRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
     {
         $identification = intval($id);
         $constatation = $ctConstAvDedRepository->findOneBy(["id" => $identification], ["id" => "DESC"]);
@@ -2709,7 +2713,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/proces_verbal_visite_mutation/{id}", name="app_ct_app_imprimable_proces_verbal_visite_mutation", methods={"GET", "POST"})
      */
-    public function ProcesVerbalVisiteMutation(Request $request, int $id, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVehiculeRepository $ctVehiculeRepository, CtUsageRepository $ctUsageRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageTarifRepository $ctUsageTarifRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    public function ProcesVerbalVisiteMutation(Request $request, int $id, CtAutreTarifRepository $ctAutreTarifRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVehiculeRepository $ctVehiculeRepository, CtUsageRepository $ctUsageRepository, CtVisiteRepository $ctVisiteRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtUsageTarifRepository $ctUsageTarifRepository, CtTypeVisiteRepository $ctTypeVisiteRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
     {
         $visite = $ctVisiteRepository->findOneBy(["id" => $id], ["id" => "DESC"]);
         $carte_grise = $visite->getCtCarteGriseId();
@@ -3168,7 +3172,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/caracteristique/{id}", name="app_ct_app_imprimable_caracteristique", methods={"GET", "POST"})
      */
-    public function RenseignementVehicule(Request $request, int $id, CtVisiteExtraRepository $ctVisiteExtraRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository)//: Response
+    public function RenseignementVehicule(Request $request, int $id, CtAutreTarifRepository $ctAutreTarifRepository, CtVisiteExtraRepository $ctVisiteExtraRepository, CtAutreVenteRepository $ctAutreVenteRepository, CtUsageImprimeTechniqueRepository $ctUsageImprimeTechinqueRepository, CtVehiculeRepository $ctVehiculeRepository, CtCarteGriseRepository $ctCarteGriseRepository)//: Response
     {
         $carte_grise = $ctCarteGriseRepository->findOneBy(["id" => $id]);
         $vehicule = $carte_grise->getCtVehiculeId();
