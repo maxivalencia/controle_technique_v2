@@ -336,7 +336,8 @@ class CtAppConstatationController extends AbstractController
      */
     public function ListeConstatationAvantDedouanement(CtConstAvDedRepository $ctConstAvDedRepository): Response
     {
-        $ctConstatations = $ctConstAvDedRepository->findBy(["ct_centre_id" => $this->getUser()->getCtCentreId(), "cad_created" => new \DateTime], ["id" => "DESC"]);
+        //$ctConstatations = $ctConstAvDedRepository->findBy(["ct_centre_id" => $this->getUser()->getCtCentreId(), "cad_created" => new \DateTime, "cad_is_active" => 1], ["id" => "DESC"]);
+        $ctConstatations = $ctConstAvDedRepository->findByFicheDeControle($this->getUser()->getCtCentreId(), new \DateTime);
         $liste_des_constatations = new ArrayCollection();
         foreach($ctConstatations as $ctConstatation){
             $ctConst = [
@@ -370,25 +371,25 @@ class CtAppConstatationController extends AbstractController
 
         if($request->request->get('search-immatriculation')){
             $recherche = strtoupper($request->request->get('search-immatriculation'));
-            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche, "cad_is_active" => true], ["id" => "DESC"]);
         }
         if($request->query->get('search-immatriculation')){
             $recherche = strtoupper($request->query->get('search-immatriculation'));
-            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche, "cad_is_active" => true], ["id" => "DESC"]);
             //var_dump($ctConstatation);
         }
         if($request->request->get('search-numero-serie')){
             $recherche = $request->request->get('search-numero-serie');
             $ctConstatation_carac = $ctConstAvDecCaracRepository->findOneBy(["cad_num_serie_type" => $recherche], ["id" => "DESC"]);
             if($ctConstatation_carac != null){
-                $ctConstatation = $ctConstAvDedRepository->findOneBy(["ct_const_av_ded_carac" => $ctConstatation_carac], ["id" => "DESC"]);
+                $ctConstatation = $ctConstAvDedRepository->findOneBy(["ct_const_av_ded_carac" => $ctConstatation_carac, "cad_is_active" => true], ["id" => "DESC"]);
             }
         }
         if($request->query->get('search-numero-serie')){
             $recherche = $request->query->get('search-numero-serie');
             $ctConstatation_carac = $ctConstAvDecCaracRepository->findOneBy(["cad_num_serie_type" => $recherche], ["id" => "DESC"]);
             if($ctConstatation_carac != null){
-                $ctConstatation = $ctConstAvDedRepository->findOneBy(["ct_const_av_ded_carac" => $ctConstatation_carac], ["id" => "DESC"]);
+                $ctConstatation = $ctConstAvDedRepository->findOneBy(["ct_const_av_ded_carac" => $ctConstatation_carac, "cad_is_active" => true], ["id" => "DESC"]);
             }
         }
         //$ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => "BW-589-TG"], ["id" => "DESC"]);
@@ -434,11 +435,11 @@ class CtAppConstatationController extends AbstractController
         $ctConstAvDedCarac_corpsDuVehicule = new CtConstAvDedCarac();
         if($request->request->get('search-immatriculation')){
             $recherche = strtoupper($request->request->get('search-immatriculation'));
-            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche, "cad_is_active" => true], ["id" => "DESC"]);
         }
         if($request->query->get('search-immatriculation')){
             $recherche = strtoupper($request->query->get('search-immatriculation'));
-            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctConstatation = $ctConstAvDedRepository->findOneBy(["cad_immatriculation" => $recherche, "cad_is_active" => true], ["id" => "DESC"]);
             //var_dump($ctConstatation);
         }
         $identification_constatation = $ctConstatation->getId();
@@ -583,7 +584,7 @@ class CtAppConstatationController extends AbstractController
     public function VoirConstatationAvantDedouanement(Request $request, int $id, CtConstAvDed $ctConstatation, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
     {
         //$ctConstatation = new CtConstAvDed();
-        $ctConstatation = $ctConstAvDedRepository->findOneBy(["id" => $id], ["id" => "DESC"]);
+        $ctConstatation = $ctConstAvDedRepository->findOneBy(["id" => $id, "cad_is_active" => true], ["id" => "DESC"]);
         $ctConstAvDedCarac = $ctConstatation->getCtConstAvDedCarac();
         $ctConstAvDedCarac_noteDescriptive = new CtConstAvDedCarac();
         $ctConstAvDedCarac_carteGrise = new CtConstAvDedCarac();
@@ -615,7 +616,7 @@ class CtAppConstatationController extends AbstractController
     public function VoirConstatationAvantDedouanementModification(Request $request, int $id, int $old, CtConstAvDed $ctConstatation, CtConstAvDedRepository $ctConstAvDedRepository, CtConstAvDedCaracRepository $ctConstAvDecCaracRepository, CtConstAvDedTypeRepository $ctConstAvDedTypeRepository): Response
     {
         //$ctConstatation = new CtConstAvDed();
-        $ctConstatation = $ctConstAvDedRepository->findOneBy(["id" => $id], ["id" => "DESC"]);
+        $ctConstatation = $ctConstAvDedRepository->findOneBy(["id" => $id, "cad_is_active" => true], ["id" => "DESC"]);
         $ctConstAvDedCarac = $ctConstatation->getCtConstAvDedCarac();
         $ctConstAvDedCarac_noteDescriptive = new CtConstAvDedCarac();
         $ctConstAvDedCarac_carteGrise = new CtConstAvDedCarac();

@@ -271,17 +271,17 @@ class CtAppImprimeTechniqueController extends AbstractController
             $ct_imprime_tech_use->setCtUserId($this->getUser());
             $itu_utilisable = false;
             if($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "VISITE"){
-                $controle = $ctVisiteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                $controle = $ctVisiteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId(), "vst_is_active" => true]);
                 if($controle != null){
                     $itu_utilisable = true;
                 }
             }elseif($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "RECEPTION"){
-                $controle = $$ctReceptionRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                $controle = $$ctReceptionRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId(), "rcp_is_active" => true]);
                 if($controle != null){
                     $itu_utilisable = true;
                 }
             }elseif($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle() == "CONSTATATION"){
-                $controle = $ctConstAvDedRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                $controle = $ctConstAvDedRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId(), "cad_is_active" => true]);
                 if($controle != null){
                     $itu_utilisable = true;
                 }

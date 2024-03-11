@@ -441,24 +441,24 @@ class CtAppReceptionController extends AbstractController
 
         if($request->request->get('search-immatriculation')){
             $recherche = $request->request->get('search-immatriculation');
-            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche, "rcp_is_active" => true], ["id" => "DESC"]);
         }
         if($request->query->get('search-immatriculation')){
             $recherche = $request->query->get('search-immatriculation');
-            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche, "rcp_is_active" => true], ["id" => "DESC"]);
         }
         if($request->request->get('search-numero-serie')){
             $recherche = $request->request->get('search-numero-serie');
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+                $ctReception = $ctReceptionRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "rcp_is_active" => true], ["id" => "DESC"]);
             }
         }
         if($request->query->get('search-numero-serie')){
             $recherche = $request->query->get('search-numero-serie');
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+                $ctReception = $ctReceptionRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "rcp_is_active" => true], ["id" => "DESC"]);
             }
         }
 
@@ -539,24 +539,24 @@ class CtAppReceptionController extends AbstractController
 
         if($request->request->get('search-immatriculation')){
             $recherche = $request->request->get('search-immatriculation');
-            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche, "rcp_is_active" => true], ["id" => "DESC"]);
         }
         if($request->query->get('search-immatriculation')){
             $recherche = $request->query->get('search-immatriculation');
-            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche, "rcp_is_active" => true], ["id" => "DESC"]);
         }
         if($request->query->get('search-numero-serie')){
             $recherche = $request->query->get('search-numero-serie');
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+                $ctReception = $ctReceptionRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "rcp_is_active" => true], ["id" => "DESC"]);
             }
         }
         if($request->request->get('search-numero-serie')){
             $recherche = $request->request->get('search-numero-serie');
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctReception = $ctReceptionRepository->findOneBy(["rcp_immatriculation" => $recherche], ["id" => "DESC"]);
+                $ctReception = $ctReceptionRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "rcp_is_active" => true], ["id" => "DESC"]);
             }
         }
 
@@ -725,7 +725,7 @@ class CtAppReceptionController extends AbstractController
         //récapitulation réception isolé
         //$id = $request->query->get("id");
         $identification = intval($id);
-        $reception = $ctReceptionRepository->findOneBy(["id" => $identification], ["id" => "DESC"]);
+        $reception = $ctReceptionRepository->findOneBy(["id" => $identification, "rcp_is_active" => true], ["id" => "DESC"]);
         $vehicule = $ctVehiculeRepository->findOneBy(["id" => $reception->getCtVehiculeId()], ["id" => "DESC"]);
         /* if($vehicule == null){
             return $this->redirectToRoute('app_ct_app_reception_creer_reception_isole');
@@ -771,7 +771,7 @@ class CtAppReceptionController extends AbstractController
         //$id = $request->query->get("id");
         $liste_reception = new ArrayCollection();
         $identification = $id;
-        $receptions = $ctReceptionRepository->findBy(["rcp_num_group" => $identification], ["id" => "DESC"]);
+        $receptions = $ctReceptionRepository->findBy(["rcp_num_group" => $identification, "rcp_is_active" => true], ["id" => "DESC"]);
         foreach($receptions as $reception){
             $vehicule = $ctVehiculeRepository->findOneBy(["id" => $reception->getCtVehiculeId()], ["id" => "DESC"]);
             /* if($vehicule == null){
@@ -825,7 +825,7 @@ class CtAppReceptionController extends AbstractController
         //récapitulation réception isolé
         //$id = $request->query->get("id");
         $identification = intval($id);
-        $reception = $ctReceptionRepository->findOneBy(["id" => $identification], ["id" => "DESC"]);
+        $reception = $ctReceptionRepository->findOneBy(["id" => $identification, "rcp_is_active" => true], ["id" => "DESC"]);
         $vehicule = $ctVehiculeRepository->findOneBy(["id" => $reception->getCtVehiculeId()], ["id" => "DESC"]);
         $reception_old = $ctReceptionRepository->findOneBy(["id" => $old], ["id" => "DESC"]);
         $reception_old->setRcpIsActive(false);

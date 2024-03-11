@@ -158,29 +158,29 @@ class CtAppVisiteController extends AbstractController
         $ctVehicule = new CtVehicule();
         if($request->request->get('search-immatriculation')){
             $recherche = strtoupper($request->request->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->request->get('search-numero-serie')){
             $recherche = strtoupper($request->request->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->request->get('search-identification')){
             $recherche = strtoupper($request->request->get('search-identification'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->query->get('search-immatriculation')){
             $recherche = strtoupper($request->query->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->query->get('search-numero-serie')){
             $recherche = $request->query->get('search-numero-serie');
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->query->get('search-identification')){
             $recherche = $request->query->get('search-identification');
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
 
         if($ctCarteGrise == null){
@@ -281,34 +281,34 @@ class CtAppVisiteController extends AbstractController
         $immatriculation = '';
         if($request->request->get('search-immatriculation')){
             $recherche = strtoupper($request->request->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
         if($request->request->get('search-numero-serie')){
             $recherche = strtoupper($request->request->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
         if($request->request->get('search-identification')){
             $recherche = strtoupper($request->request->get('search-identification'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
         if($request->query->get('search-immatriculation')){
             $recherche = strtoupper($request->query->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
         if($request->query->get('search-numero-serie')){
             $recherche = $request->query->get('search-numero-serie');
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
         if($request->query->get('search-identification')){
             $recherche = $request->query->get('search-identification');
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
 
@@ -441,34 +441,34 @@ class CtAppVisiteController extends AbstractController
         $immatriculation = '';
         if($request->request->get('search-immatriculation')){
             $recherche = strtoupper($request->request->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
         if($request->request->get('search-numero-serie')){
             $recherche = strtoupper($request->request->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
         if($request->request->get('search-identification')){
             $recherche = strtoupper($request->request->get('search-identification'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
         if($request->query->get('search-immatriculation')){
             $recherche = strtoupper($request->query->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
         if($request->query->get('search-numero-serie')){
             $recherche = $request->query->get('search-numero-serie');
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
         if($request->query->get('search-identification')){
             $recherche = $request->query->get('search-identification');
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
 
@@ -518,33 +518,33 @@ class CtAppVisiteController extends AbstractController
         $centre = $this->getUser()->getCtCentreId();
         if($request->request->get('search-immatriculation')){
             $recherche = strtoupper($request->request->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->request->get('search-numero-serie')){
             $recherche = strtoupper($request->request->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             }
         }
         if($request->request->get('search-identification')){
             $recherche = strtoupper($request->request->get('search-identification'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->query->get('search-immatriculation')){
             $recherche = strtoupper($request->query->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->query->get('search-numero-serie')){
             $recherche = strtoupper($request->query->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             }
         }
         if($request->query->get('search-identification')){
             $recherche = strtoupper($request->query->get('search-identification'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
 
         if($ctCarteGrise != null){
@@ -701,7 +701,7 @@ class CtAppVisiteController extends AbstractController
                 //$recherche = $request->request->get('ct_visite_visite');
                 $recherche = $request->request->get('ct_visite_visite');
                 $rech = strtoupper($recherche['vst_observation']);
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $rech], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $rech, "cg_is_active" => 1], ["id" => "DESC"]);
 
             }
             //$ctVisite_new->setCtCarteGriseId($ctCarteGrise->getId());
@@ -851,38 +851,38 @@ class CtAppVisiteController extends AbstractController
         $immatriculation = "";
         if($request->request->get('search-immatriculation')){
             $recherche = strtoupper($request->request->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $recherche_ok = true;
         }
         if($request->request->get('search-numero-serie')){
             $recherche = strtoupper($request->request->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             }
             $recherche_ok = true;
         }
         if($request->request->get('ssearch-identification')){
             $recherche = strtoupper($request->request->get('search-identification'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $recherche_ok = true;
         }
         if($request->query->get('search-immatriculation')){
             $recherche = strtoupper($request->query->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $recherche_ok = true;
         }
         if($request->query->get('search-numero-serie')){
             $recherche = strtoupper($request->query->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             }
             $recherche_ok = true;
         }
         if($request->query->get('ssearch-identification')){
             $recherche = strtoupper($request->query->get('search-identification'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             $recherche_ok = true;
         }
 
@@ -915,7 +915,7 @@ class CtAppVisiteController extends AbstractController
                 //$recherche = $request->request->get('ct_visite_visite');
                 $recherche = $request->request->get('ct_visite_visite');
                 $rech = strtoupper($recherche['vst_observation']);
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $rech], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $rech, "cg_is_active" => 1], ["id" => "DESC"]);
 
             }
             //$ctVisite_contre = $ctVisite;
@@ -942,7 +942,7 @@ class CtAppVisiteController extends AbstractController
             $liste_anomalie =$ctVisite->getVstAnomalieId();
             foreach($liste_anomalie as $anomalie){
                 $ctVisite_contre->addVstAnomalieId($anomalie);
-            } 
+            }
             $ctVisite_contre->setVstIsApte($anml->count()>0?false:true);
             $ctVisite_contre->setVstIsContreVisite(true);
             $ctVisite_contre->setVstDureeReparation($ctVisite->getVstDureeReparation());
@@ -990,21 +990,21 @@ class CtAppVisiteController extends AbstractController
         if($request){
             if($request->request->get("immatriculation")){
                 $recherche = strtoupper($request->request->get('immatriculation'));
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             }
             if($request->query->get("immatriculation")){
                 $recherche = strtoupper($request->query->get('immatriculation'));
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             }
             if($request->request->get("search-numero-serie")){
                 $recherche = strtoupper($request->request->get('search-numero-serie'));
                 $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             }
             if($request->query->get("search-numero-serie")){
                 $recherche = strtoupper($request->query->get('search-numero-serie'));
                 $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             }
             //$ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
             /* if($ctCarteGrise == null){
@@ -1012,7 +1012,7 @@ class CtAppVisiteController extends AbstractController
             } */
             //var_dump($ctCarteGrise);
             if($ctCarteGrise != null){
-                $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
+                $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise, "vst_is_active" => 1], ["id" => "DESC"]);
                 //$centre = $this->getUser()->getCtCentreId();
                 // $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite, ["immatriculation" => $recherche, "centre" => $centre]);
                 //$form_visite = $this->createForm(CtVisiteVisiteDisableType::class, $ctVisite, ["immatriculation" => $recherche, "disable" => true]);
@@ -1044,40 +1044,40 @@ class CtAppVisiteController extends AbstractController
         $centre = $this->getUser()->getCtCentreId();
         if($request->request->get('search-immatriculation')){
             $recherche = strtoupper($request->request->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->request->get('search-numero-serie')){
             $recherche = strtoupper($request->request->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             }
         }
         if($request->request->get('search-identification')){
             $recherche = strtoupper($request->request->get('search-identification'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->query->get('search-immatriculation')){
             $recherche = strtoupper($request->query->get('search-immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->query->get('search-numero-serie')){
             $recherche = strtoupper($request->query->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
             if($vehicule_id != null){
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             }
         }
         if($request->query->get('search-identification')){
             $recherche = strtoupper($request->query->get('search-identification'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_num_identification" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
 
         if($ctCarteGrise != null){
             $ctVisite->setCtCarteGriseId($ctCarteGrise);
             $immatriculation = $ctCarteGrise->getCgImmatriculation();
         }
-        $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
+        $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise, "vst_is_active" => 1], ["id" => "DESC"]);
         $ctVisite->setCtCentreId($this->getUser()->getCtCentreId());
 
         $form_visite = $this->createForm(CtVisiteVisiteType::class, $ctVisite, ["immatriculation" => $immatriculation, "centre" => $centre]);
@@ -1228,7 +1228,7 @@ class CtAppVisiteController extends AbstractController
                 },
                 'required' => false,
                 'disabled' => false,
-            ])        
+            ])
             ->getForm();
         $form_autre_vente->handleRequest($request);
         if($request){
@@ -1265,24 +1265,24 @@ class CtAppVisiteController extends AbstractController
             }
             if($request->request->get("immatriculation")){
                 $recherche = strtoupper($request->request->get('immatriculation'));
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             }
             if($request->query->get("immatriculation")){
                 $recherche = strtoupper($request->query->get('immatriculation'));
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
             }
             if($request->request->get("search-numero-serie")){
                 $recherche = strtoupper($request->request->get('search-numero-serie'));
                 $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             }
             if($request->query->get("search-numero-serie")){
                 $recherche = strtoupper($request->query->get('search-numero-serie'));
                 $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+                $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
             }
             if($ctCarteGrise != null){
-                $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
+                $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise, "vst_is_active" => 1], ["id" => "DESC"]);
                 if($ctVisite != null){
                     $form_visite = $this->createForm(CtVisiteVisiteDuplicataType::class, $ctVisite, ["immatriculation" => $recherche, "disable" => true]);
                     $form_visite->handleRequest($request);
@@ -1317,24 +1317,24 @@ class CtAppVisiteController extends AbstractController
         $ctCarteGrise = new CtCarteGrise();
         if($request->request->get('immatriculation')){
             $recherche = strtoupper($request->request->get('immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->query->get('immatriculation')){
             $recherche = strtoupper($request->query->get('immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->request->get("search-numero-serie")){
             $recherche = strtoupper($request->request->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->query->get("search-numero-serie")){
             $recherche = strtoupper($request->query->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         $ctAutreVente = new CtAutreVente();
-        $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
+        $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise, "vst_is_active" => 1], ["id" => "DESC"]);
         
         $form_autre_vente = $this->createForm(CtAutreVenteAutreVenteType::class, $ctAutreVente, ["centre" => $this->getUser()->getCtCentreId()]);
         if($ctVisite != null){
@@ -1403,24 +1403,24 @@ class CtAppVisiteController extends AbstractController
         $ctCarteGrise = new CtCarteGrise();
         if($request->request->get('immatriculation')){
             $recherche = strtoupper($request->request->get('immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->query->get('immatriculation')){
             $recherche = strtoupper($request->query->get('immatriculation'));
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["cg_immatriculation" => $recherche, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->request->get("search-numero-serie")){
             $recherche = strtoupper($request->request->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         if($request->query->get("search-numero-serie")){
             $recherche = strtoupper($request->query->get('search-numero-serie'));
             $vehicule_id = $ctVehiculeRepository->findOneBy(["vhc_num_serie" => $recherche], ["id" => "DESC"]);
-            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id], ["id" => "DESC"]);
+            $ctCarteGrise = $ctCarteGriseRepository->findOneBy(["ct_vehicule_id" => $vehicule_id, "cg_is_active" => 1], ["id" => "DESC"]);
         }
         $ctAutreVente = new CtAutreVente();
-        $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise], ["id" => "DESC"]);
+        $ctVisite = $ctVisiteRepository->findOneBy(["ct_carte_grise_id" => $ctCarteGrise, "vst_is_active" => 1], ["id" => "DESC"]);
         
         $form_autre_vente = $this->createForm(CtAutreVenteAutreVenteType::class, $ctAutreVente, ["centre" => $this->getUser()->getCtCentreId()]);
         if($ctVisite != null){
