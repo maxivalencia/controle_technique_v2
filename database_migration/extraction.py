@@ -28,7 +28,7 @@ newhost = 'localhost'
 newuser = 'root'
 newpass = 'root'
  '''
- 
+
 olddb = 'controle_technique_v2'
 oldhost = '127.0.0.1'
 olduser = 'root'
@@ -84,6 +84,7 @@ def RecuperationTableCtZoneDesserte():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -138,6 +139,7 @@ def RecuperationTableCtVisiteExtraTarif():
             #lst_row = list(row)
             #lst_row[2] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -221,6 +223,7 @@ def RecuperationTableCtVisiteExtra():
                 #lst_row = list(row)
                 #lst_row[0] = 1
                 #row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -303,6 +306,7 @@ def RecuperationTableCtVisiteCtVisiteExtra():
                 #lst_row = list(row)
                 #lst_row[0] = 1
                 #row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -385,6 +389,7 @@ def RecuperationTableCtVisiteCtAnomalie():
                 #lst_row = list(row)
                 #lst_row[0] = 1
                 #row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -506,6 +511,7 @@ def RecuperationTableCtVisite():
                 lst_row.append(1)
                 lst_row.append(1)
                 row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -620,6 +626,7 @@ def RecuperationTableCtVehicule():
                 else:
                     lst_row[12] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -676,6 +683,7 @@ def RecuperationTableCtUtilisation():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -765,6 +773,7 @@ def RecuperationTableCtUser():
                 lst_row[6] = '["ROLE_VISITE"]'
                 lst_row[13] = 5
             row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -818,6 +827,7 @@ def RecuperationTableCtUsageTarif():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -872,6 +882,7 @@ def RecuperationTableCtUsageImprimeTechnique():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -930,6 +941,7 @@ def RecuperationTableCtUsage():
                 lst_row[3] = datetime.datetime.now().strftime("%Y-%m-%d")
             lst_row[4] = 1
             row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -983,6 +995,7 @@ def RecuperationTableCtTypeVisite():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1036,6 +1049,7 @@ def RecuperationTableCtTypeUsage():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1089,6 +1103,7 @@ def RecuperationTableCtTypeReception():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1142,6 +1157,7 @@ def RecuperationTableCtTypeDroitPTAC():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1195,6 +1211,7 @@ def RecuperationTableCtSourceEnergie():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1249,6 +1266,7 @@ def RecuperationTableCtAutre():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1303,6 +1321,7 @@ def RecuperationTableCtAutreDonne():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1357,6 +1376,7 @@ def RecuperationTableCtRole():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1481,6 +1501,7 @@ def RecuperationTableCtReception():
                 lst_row.append(1)
                 lst_row.append(1)
                 row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -1544,6 +1565,7 @@ def RecuperationTableCtProvince():
             else:
                 lst_row[4] = datetime.datetime.now().strftime("%Y-%m-%d")
             row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1597,6 +1619,7 @@ def RecuperationTableCtProcesVerbal():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1650,6 +1673,7 @@ def RecuperationTableCtPhoto():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1708,6 +1732,7 @@ def RecuperationTableCtMotifTarif():
             else:
                 lst_row[3] = datetime.datetime.now().strftime("%Y-%m-%d")
             row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1761,6 +1786,7 @@ def RecuperationTableCtMotif():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1814,6 +1840,7 @@ def RecuperationTableCtMarque():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -1954,6 +1981,7 @@ def RecuperationTableCtImprimeTechUse():
                     lst_row[11] = None
                 lst_row.append(1)
                 row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -2017,6 +2045,7 @@ def RecuperationTableCtImprimeTech():
             else:
                 lst_row[6] = datetime.datetime.now().strftime("%Y-%m-%d")
             row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -2071,6 +2100,7 @@ def RecuperationTableCtHistoriqueType():
             # lst_row = list(row)
             # lst_row[0] = 1
             # row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -2172,6 +2202,7 @@ def RecuperationTableCtHistorique():
                 else:
                     lst_row[2] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -2224,6 +2255,7 @@ def RecuperationTableCtGenreTarif():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -2278,6 +2310,7 @@ def RecuperationTableCtGenreCategorie():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -2335,6 +2368,7 @@ def RecuperationTableCtGenre():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -2384,6 +2418,7 @@ def RecuperationTableCtExtraVente():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -2451,6 +2486,7 @@ def RecuperationTableCtDroitPTAC():
             if(lst_row[3] is None):
                 lst_row[3] = None
             row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -2504,6 +2540,7 @@ def RecuperationTableCtConstAvDedType():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -2587,6 +2624,7 @@ def RecuperationTableCtConstAvDedCtConstAvDedCarac():
                 #lst_row = list(row)
                 #lst_row[0] = 1
                 #row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -2734,6 +2772,7 @@ def RecuperationTableCtConstAvDedCarac():
                 if lst_row[19] is None :
                     lst_row[19] = None
                 row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -2875,6 +2914,7 @@ def RecuperationTableCtConstAvDed():
                 lst_row.append(1)
                 lst_row.append(1)
                 row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -2997,6 +3037,7 @@ def RecuperationTableCtCentre():
                 lst_row_test = None
             lst_row.append(lst_row_test)
             row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -3192,6 +3233,7 @@ def RecuperationTableCtCarteGrise():
                     lst_row[26] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 lst_row.append(1)
                 row = tuple(lst_row)
+                row = tuple(value if value is not None else 'NULL' for value in row)
                 if(i > 0):
                     f.write(",") 
                 f.write("%s" % str(row))
@@ -3248,6 +3290,7 @@ def RecuperationTableCtCarrosserie():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -3328,6 +3371,7 @@ def RecuperationTableCtBordereau():
             else:
                 lst_row[10] = datetime.datetime.now().strftime("%Y-%m-%d")
             row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -3398,9 +3442,10 @@ def RecuperationTableCtAutreVente():
         # f.write("INSERT IGNORE INTO " + table_name + " (`id`, ``) VALUES")
         # i = 0
         # for row in rows:
-            #lst_row = list(row)
-            #lst_row[0] = 1
-            #row = tuple(lst_row)
+            # lst_row = list(row)
+            # lst_row[0] = 1
+            # row = tuple(lst_row)
+            # row = tuple(value if value is not None else 'NULL' for value in row)
             # if(i > 0):
                 # f.write(",") 
             # f.write("%s" % str(row))
@@ -3459,6 +3504,7 @@ def RecuperationTableCtAutreTarif():
             # lst_row = list(row)
             # lst_row[0] = 1
             # row = tuple(lst_row)
+            # row = tuple(value if value is not None else 'NULL' for value in row)
             # if(i > 0):
                 # f.write(",") 
             # f.write("%s" % str(row))
@@ -3535,6 +3581,7 @@ def RecuperationTableCtArretePrix():
             else:
                 lst_row[6] = datetime.datetime.now().strftime("%Y-%m-%d")
             row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -3588,6 +3635,7 @@ def RecuperationTableCtAnomalieType():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -3646,6 +3694,7 @@ def RecuperationTableCtAnomalie():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 
             f.write("%s" % str(row))
@@ -3738,10 +3787,10 @@ def Recuperation():
     # RecuperationTableCtAutreTarif()
     # RecuperationTableCtExtraVente()
     # RecuperationTableCtPhoto()
+    # RecuperationTableCtAutreDonne()
     
     RecuperationTableCtUsageImprimeTechnique()
     RecuperationTableCtAutre()
-    # RecuperationTableCtAutreDonne()
     RecuperationTableCtZoneDesserte()
     RecuperationTableCtProvince()
     RecuperationTableCtArretePrix()
