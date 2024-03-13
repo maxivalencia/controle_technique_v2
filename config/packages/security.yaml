@@ -88,6 +88,7 @@ security:
         - { path: ^/ct_role, roles: ROLE_ADMIN }
         - { path: ^/ct_source_energie, roles: ROLE_ADMIN }
         - { path: ^/ct_type_droit_ptac, roles: ROLE_ADMIN }
+        - { path: ^/ct_type_imprime, roles: ROLE_ADMIN }
         - { path: ^/ct_type_usage, roles: ROLE_ADMIN }
         - { path: ^/ct_type_visite, roles: ROLE_ADMIN }
         - { path: ^/ct_type_reception, roles: ROLE_ADMIN }

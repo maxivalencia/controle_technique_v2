@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition Type Imprime{% endblock %}
+
+{% block body %}
+    <div class="box-header">Edition Type Imprime</div><br>
+
+    {{ include('ct_type_imprime/_form.html.twig', {'button_label': 'Modifier'}) }}
+            </td>
+            <td style="width:150px;">
+    <a href="{{ path('app_ct_type_imprime_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            </td>
+            <td style="width:150px;">
+    {{ include('ct_type_imprime/_delete_form.html.twig') }}
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

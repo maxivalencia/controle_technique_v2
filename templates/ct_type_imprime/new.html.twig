@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création Type Imprime{% endblock %}
+
+{% block body %}
+    <div class="box-header">Création Type Imprime</div><br>
+
+    {{ include('ct_type_imprime/_form.html.twig') }}
+            </td>
+            <td style="width:150px;">
+    <a href="{{ path('app_ct_type_imprime_index') }}" class="btn btn-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Retour</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
