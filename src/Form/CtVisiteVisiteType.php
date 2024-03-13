@@ -43,10 +43,10 @@ class CtVisiteVisiteType extends AbstractType
                 'label' => 'Usage',
                 //'required' => true,
             ])
-            ->add('ct_utilisation_id', null, [
+            /* ->add('ct_utilisation_id', null, [
                 'label' => 'Utilisation',
                 //'required' => true,
-            ])
+            ]) */
             ->add('vst_anomalie_id', EntityType::class, [
                 'label' => 'Anomalies',
                 'class' => CtAnomalie::class,

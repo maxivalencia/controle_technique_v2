@@ -43,11 +43,11 @@ class CtVisiteVisiteDuplicataType extends AbstractType
                 //'required' => true,
                 'disabled' => $disable,
             ])
-            ->add('ct_utilisation_id', null, [
+            /* ->add('ct_utilisation_id', null, [
                 'label' => 'Utilisation',
                 //'required' => true,
                 'disabled' => $disable,
-            ])
+            ]) */
             ->add('vst_anomalie_id', EntityType::class, [
                 'label' => 'Anomalies',
                 'class' => CtAnomalie::class,

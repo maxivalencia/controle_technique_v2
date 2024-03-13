@@ -82,6 +82,7 @@
                             {{ form_row(form_visite.ct_carte_grise_id.cg_adresse) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_phone) }}
                             {{ form_row(form_visite.ct_carte_grise_id.cg_commune) }}
+                            {{ form_row(form_visite.ct_carte_grise_id.ct_utilisation_id) }}
                             <hr>
                             {{ form_row(form_visite.ct_carte_grise_id.cg_is_transport) }}
                             <div class="sitransport">
@@ -129,7 +130,7 @@
                                 {{ form_row(form_visite.ct_centre_id) }}
                                 {{ form_row(form_visite.ct_type_visite_id) }}
                                 {{ form_row(form_visite.ct_usage_id) }}
-                                {{ form_row(form_visite.ct_utilisation_id) }}
+                                {# {{ form_row(form_visite.ct_utilisation_id) }} #}
                                 {{ form_row(form_visite.vst_anomalie_id) }}
                                 <div class="duree">
                                 {{ form_row(form_visite.vst_duree_reparation, { 'attr':{'disabled':'disabled'} }) }}
