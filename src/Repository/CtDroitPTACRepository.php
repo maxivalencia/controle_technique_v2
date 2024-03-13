@@ -63,4 +63,23 @@ class CtDroitPTACRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * @return CtDroitPTAC[] Returns an array of CtDroitPTAC objects
+     */
+    public function findDroitValide($genreCategorie, $droitPtac, $ptac): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.ct_genre_categorie_id = :val1')
+            ->andWhere('c.ct_type_droit_ptac_id = :val2')
+            ->andWhere('c.dp_prix_min <= :val3 AND c.dp_prix_max > :val3')
+            ->setParameter('val1', $genreCategorie)
+            ->setParameter('val2', $droitPtac)
+            ->setParameter('val3', $ptac)
+            ->orderBy('c.ct_arrete_prix_id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

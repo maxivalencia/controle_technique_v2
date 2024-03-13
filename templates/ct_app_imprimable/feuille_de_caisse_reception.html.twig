@@ -79,8 +79,8 @@
                 <td width="60" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Imm</i></strong></td>
                 <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Droit</i></strong></td>
                 <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Prix PV</i></strong></td>
+                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Plaques</i></strong></td>
                 <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>TVA</i></strong></td>
-                <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Timbre</i></strong></td>
                 <td width="50" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Montant</i></strong></td>
                 <td width="70" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Utilisation</i></strong></td>
             </tr>
@@ -92,8 +92,8 @@
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.immatriculation }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.droit|number_format(0, ',', ' ') }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.prix_pv|number_format(0, ',', ' ') }}</td>
+                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.plaque|number_format(0, ',', ' ') }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.tva|number_format(0, ',', ' ') }}</td>
-                    <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.timbre|number_format(0, ',', ' ') }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.montant|number_format(0, ',', ' ') }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_reception.utilisation }}</td>
                 </tr>
@@ -110,6 +110,7 @@
                     Nombre : {{ nombre_reception|number_format(0, ',', ' ') }}<br>
                     Total des Droits : Ar {{ total_des_droits|number_format(0, ',', ' ') }}<br>
                     Total des Prix PV : Ar {{ total_des_prix_pv|number_format(0, ',', ' ') }}<br>
+                    Total des Prix Plaque : Ar {{ total_des_plaques|number_format(0, ',', ' ') }}<br>
                     Total TVA : Ar {{ total_des_tva|number_format(0, ',', ' ') }}<br>
                     MONTANT TOTAL : Ar {{ montant_total|number_format(0, ',', ' ') }}<br>
                 </strong>

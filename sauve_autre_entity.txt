@@ -7,27 +7,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
-* @ORM\Entity(repositoryClass=CtAutreRepository::class)
-*/
+#[ORM\Entity(repositoryClass: CtAutreRepository::class)]
 class CtAutre
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $nom ;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null ;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $attribut;
+    #[ORM\Column(length: 255)]
+    private ?string $attribut = null;
 
     public function getId(): ?int
     {
@@ -39,7 +31,7 @@ class CtAutre
         return strtoupper($this->nom);
     }
 
-    public function setNom(string $nom): self
+    public function setNom(string $nom): static
     {
         $this->nom = strtoupper($nom);
 
@@ -51,7 +43,7 @@ class CtAutre
         return strtoupper($this->attribut);
     }
 
-    public function setAttribut(string $attribut): self
+    public function setAttribut(string $attribut): static
     {
         $this->attribut = strtoupper($attribut);
 

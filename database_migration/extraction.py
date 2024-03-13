@@ -134,7 +134,7 @@ def RecuperationTableCtVisiteExtraTarif():
         f.write('/*!40000 ALTER TABLE ' + table_name + ' DISABLE KEYS */;\n')
         f.write("INSERT IGNORE INTO " + table_name + " (`id`, `ct_imprime_tech_id_id`, `vet_annee`, `vet_prix`, `ct_arrete_prix_id_id`) VALUES")
         i = 0
-        rows = [(1, 1, "2017", 2000, 1), (2, 2, "2017", 2000, 1), (3, 3, "2017", 2000, 1), (4, 4, "2017", 2000, 1), (5, 5, "2017", 2000, 1), (6, 6, "2017", 2000, 1), (7, 7, "2017", 2000, 1), (8, 8, "2017", 2000, 1), (9, 9, "2017", 2000, 1), (10, 10, "2017", 2000, 1), (11, 11, "2017", 2000, 1), (12, 12, "2017", 6000, 1), (13, 13, "2017", 6000, 1), (14, 14, "2017", 6000, 1), (15, 15, "2017", 6000, 1), (16, 1, "2023", 5000, 3), (17, 2, "2023", 5000, 3), (18, 3, "2023", 5000, 3), (19, 4, "2023", 5000, 3), (20, 5, "2023", 5000, 3), (21, 6, "2023", 5000, 3), (22, 7, "2023", 5000, 3), (23, 8, "2023", 5000, 3), (24, 9, "2023", 5000, 3), (25, 10, "2023", 5000, 3), (26, 11, "2023", 5000, 3), (27, 12, "2023", 12000, 3), (28, 13, "2023", 12000, 3), (29, 14, "2023", 12000, 3), (30, 15, "2023", 12000, 3)]
+        rows = [(1, 1, "2017", 6000, 1), (2, 2, "2017", 2000, 1), (3, 3, "2017", 2000, 1), (4, 4, "2017", 2000, 1), (5, 5, "2017", 2000, 1), (6, 6, "2017", 2000, 1), (7, 7, "2017", 2000, 1), (8, 8, "2017", 2000, 1), (9, 9, "2017", 2000, 1), (10, 10, "2017", 2000, 1), (11, 11, "2017", 2000, 1), (12, 12, "2017", 2000, 1), (13, 13, "2017", 2000, 1), (14, 14, "2017", 2000, 1), (15, 15, "2017", 2000, 1), (16, 1, "2023", 12000, 3), (17, 2, "2023", 5000, 3), (18, 3, "2023", 5000, 3), (19, 4, "2023", 5000, 3), (20, 5, "2023", 5000, 3), (21, 6, "2023", 5000, 3), (22, 7, "2023", 5000, 3), (23, 8, "2023", 5000, 3), (24, 9, "2023", 5000, 3), (25, 10, "2023", 5000, 3), (26, 11, "2023", 5000, 3), (27, 12, "2023", 5000, 3), (28, 13, "2023", 5000, 3), (29, 14, "2023", 5000, 3), (30, 15, "2023", 5000, 3)]
         for row in rows:
             #lst_row = list(row)
             #lst_row[2] = 1
@@ -2095,7 +2095,7 @@ def RecuperationTableCtHistoriqueType():
         f.write('/*!40000 ALTER TABLE ' + table_name + ' DISABLE KEYS */;\n')
         f.write("INSERT IGNORE INTO " + table_name + " (`id`, `hst_libelle`) VALUES")
         i = 0
-        rows = [(1, "VISITE"), (2, "RECEPTION"), (3, "CONSTATATION"), (4, "CARTE-GRISE"), (5, "DUPLICATA VISITE"), (6, "DUPLICATA RECEPTION"), (7, "DUPLICATA CONSTATATION"), (8, "MUTATION"), (9, "AUTHENTICIE VITRE FUMEE"), (10, "DUPLICATA AUTHENTICITE VITRE FUMEE"), (11, "VISITE SPECIALE"), (11, "CARACTERISTIQUE")]
+        rows = [(1, "VISITE"), (2, "RECEPTION"), (3, "CONSTATATION"), (4, "CARTE-GRISE"), (5, "DUPLICATA VISITE"), (6, "DUPLICATA RECEPTION"), (7, "DUPLICATA CONSTATATION"), (8, "MUTATION"), (9, "AUTHENTICIE VITRE FUMEE"), (10, "DUPLICATA AUTHENTICITE VITRE FUMEE"), (11, "VISITE SPECIALE"), (12, "CARACTERISTIQUE")]
         for row in rows:
             # lst_row = list(row)
             # lst_row[0] = 1
@@ -3694,6 +3694,61 @@ def RecuperationTableCtAnomalie():
             #lst_row = list(row)
             #lst_row[0] = 1
             #row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
+            if(i > 0):
+                f.write(",") 
+            f.write("%s" % str(row))
+            i = i + 1
+        f.write(";\n")
+        f.write("/*!40000 ALTER TABLE " + table_name + " ENABLE KEYS */;\n")
+        f.write("UNLOCK TABLES;\n")
+        f.write("\n")
+        f.write('-- --------------------------------------------------------\n')
+
+def RecuperationTableCtAutre():
+    # The connect() constructor creates a connection to the MySQL server and returns a MySQLConnection object.
+    table_name = '`ct_autre`'
+    cnx = mysql.connector.connect(
+        host=oldhost,
+        database=olddb,
+        user=olduser,
+        password=oldpass
+    )
+    cursor = cnx.cursor()
+    query = ""
+    cursor.execute(query)
+    header = [row[0] for row in cursor.description]
+    rows = cursor.fetchall()
+    cnx.close()
+    with open(filename, 'a') as f:
+        # f.write('-- \n')
+        # f.write('-- Structure de la table ' + table_name + '\n')
+        # f.write('-- \n')
+        # f.write(' \n')
+        # f.write('DROP TABLE IF EXISTS ' + table_name+ ';\n')
+        # f.write('/*!40101 SET @SAVED_CS_CLIENT = @@CHARACTER_SET_CLIENT */;\n')
+        # f.write('/*!40101 SET CHARACTER_SET_CLIENT = utf8 */;\n')
+        # f.write('CREATE TABLE ' + table_name + ' (\n')
+        # f.write('  `id` int(11) NOT NULL AUTO_INCREMENT,\n')
+        # f.write('  `zd_libelle` varchar(255) NOT NULL,\n')
+        # f.write('  PRIMARY KEY (`id`)\n')
+        # f.write(') ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;\n')
+        # f.write('/*!40101 SET CHARACTER_SET_CLIENT = @SAVED_CS_CLIENT */;\n')
+        # f.write(' \n')
+        
+        f.write('-- \n')
+        f.write('-- Contenu de la table : ' + table_name + '\n')
+        f.write('-- \n')
+        f.write(' \n')
+        f.write('LOCK TABLES ' + table_name + ' WRITE;\n')
+        f.write('/*!40000 ALTER TABLE ' + table_name + ' DISABLE KEYS */;\n')
+        f.write("INSERT IGNORE INTO " + table_name + " (`id`, `nom`, `attribut`) VALUES")
+        i = 0
+        rows = [(1, "DEPLOIEMENT", "2024-02-16"), (2, "TVA", "20"), (3, "TIMBRE", "0"), (4, "PV_VISITE_APTE", "1"), (5, "PV_VISITE_INAPTE", "2"), (6, "PV_RECEPTION_ISOLE", "2"), (7, "PV_RECEPTION_PAR_TYPE", "2"), (8, "PV_VISITE_CONSTATATION", "1"), (9, "PV_VISITE_SPECIALE", "1"), (10, "PV_AUTHENTICITE", "1"), (11, "PV_CARACTERISTIQUE", "1"), (12, "PV_MUTATION", "1"), (13, "PV_DUPLICATA_VISITE", "1"), (14, "PV_DUPLICATA_RECEPTION", "1"), (15, "PV_DUPLICATA_CONSTATATION", "1"), (16, "PV_DUPLICATA_AUTHENTICITE", "1")]
+        for row in rows:
+            # lst_row = list(row)
+            # lst_row[0] = 1
+            # row = tuple(lst_row)
             row = tuple(value if value is not None else 'NULL' for value in row)
             if(i > 0):
                 f.write(",") 

@@ -28,6 +28,7 @@ use App\Repository\CtUserRepository;
 use App\Repository\CtCarteGriseRepository;
 use App\Repository\CtImprimeTechUseRepository;
 use App\Repository\CtUsageImprimeTechniqueRepository;
+use App\Repository\CtProcesVerbalRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -105,8 +106,8 @@ class CtAppImprimableController extends AbstractController
             mkdir($dossier, 0777, true);
         }
         // teste date, comparaison avant utilisation rcp_num_group
-        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
-        $dateDeploiement = $deploiement->getAttribut();
+        //$deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        //$dateDeploiement = $deploiement->getAttribut();
         /* if(new \DateTime($dateDeploiement) > $date_of_reception){
             // $liste_receptions = $ctReceptionRepository->findBy(["ct_type_reception_id" => $type_reception_id, "ct_centre_id" => $centre, "rcp_created" => $date_of_reception]);
             $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
@@ -176,8 +177,8 @@ class CtAppImprimableController extends AbstractController
             mkdir($dossier, 0777, true);
         }
         // teste date, comparaison avant utilisation rcp_num_group
-        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
-        $dateDeploiement = $deploiement->getAttribut();
+        //$deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        //$dateDeploiement = $deploiement->getAttribut();
         $liste_constatations = new ArrayCollection();
         //$lst_consts = $ctConstAvDedRepository->findBy(["id" => $centre->getId(), "cad_created" => $date_of_constatation]);
         $lst_consts = $ctConstAvDedRepository->findByFicheDeControle($centre->getId(), $date_of_constatation);
@@ -227,7 +228,7 @@ class CtAppImprimableController extends AbstractController
     /**
      * @Route("/feuille_de_caisse_reception", name="app_ct_app_imprimable_feuille_de_caisse_reception", methods={"GET", "POST"})
      */
-    public function FeuilleDeCaisseReception(Request $request, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
+    public function FeuilleDeCaisseReception(Request $request, CtProcesVerbalRepository $ctProcesVerbalRepository, CtUtilisationRepository $ctUtilisationRepository, CtCentreRepository $ctCentreRepository, CtDroitPTACRepository $ctDroitPTACRepository, CtTypeDroitPTACRepository $ctTypeDroitPTACRepository, CtVisiteExtraTarifRepository $ctVisiteExtraTarifRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtMotifTarifRepository $ctMotifTarifRepository, CtTypeReceptionRepository $ctTypeReceptionRepository, CtReceptionRepository $ctReceptionRepository, CtAutreRepository $ctAutreRepository)//: Response
     {
         $type_reception = "";
         $date_reception = new \DateTime();
@@ -263,18 +264,18 @@ class CtAppImprimableController extends AbstractController
             mkdir($dossier, 0777, true);
         }
         // teste date, comparaison avant utilisation rcp_num_group
-        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
-        $dateDeploiement = $deploiement->getAttribut();
+        //$deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        //$dateDeploiement = $deploiement->getAttribut();
         $autreTva = $ctAutreRepository->findOneBy(["nom" => "TVA"]);
         $prixTva = $autreTva->getAttribut();
-        $autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
-        $prixTimbre = $autreTimbre->getAttribut();
-        $timbre = floatval($prixTimbre);
+        //$autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
+        //$prixTimbre = $autreTimbre->getAttribut();
+        //$timbre = floatval($prixTimbre);
         $nombreReceptions = 0;
         $totalDesDroits = 0;
         $totalDesPrixPv = 0;
         $totalDesTVA = 0;
-        $totalDesTimbres = 0;
+        $totalDesPlaques  = 0;
         $montantTotal = 0;
         $motif_ptac = "";
         /* if(new \DateTime($dateDeploiement) > $date_of_reception){
@@ -296,6 +297,7 @@ class CtAppImprimableController extends AbstractController
                 $calculable = $motif->isMtfIsCalculable();
                 $tarif = 0;
                 $prixPv = 0;
+                $plaque = 0;
                 $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
                 $utilisation = $liste->getCtUtilisationId();
                 if($utilisation != $utilisationAdministratif){
@@ -308,13 +310,25 @@ class CtAppImprimableController extends AbstractController
                                 break;
                             }
                         }
+                        if($motif->getId() == 12){
+                            $tarif_paques = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => 8], ["ct_arrete_prix_id" => "DESC"]);
+                            foreach($tarif_paques as $trf_plq){
+                                $arretePrix = $trf_plq->getCtArretePrixId();
+                                if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
+                                    $plaque = $plaque + $trf_plq->getVetPrix();
+                                    break;
+                                }
+                            }
+                        }
                     }
                     if($calculable == true){
                         $genreCategorie = $genre->getCtGenreCategorieId();
-                        $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["tp_dp_libelle" => "Réception"]);
+                        //$typeDroit = $ctTypeDroitPTACRepository->findOneBy(["tp_dp_libelle" => "Réception"]);
+                        $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["id" => 1]);
                         $droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => $genreCategorie->getId(), "ct_type_droit_ptac_id" => $typeDroit->getId()], ["ct_arrete_prix_id" => "DESC", "dp_prix_max" => "DESC"]);
+                        //$droits = $ctDroitPTACRepository->findDroitValide($genreCategorie->getId(), $typeDroit->getId(), $liste->getCtVehiculeId()->getVhcPoidsTotalCharge());
                         foreach($droits as $dt){
-                            if(($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax())){
+                            if(($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax()) && ($liste->getRcpCreated() >= $dt->getCtArretePrixId()->getArtDateApplication())){
                                 $tarif = $dt->getDpDroit();
                                 if($dt->getDpPrixMax() > 0 && $dt->getDpPrixMin() > 0){
                                     $motif_ptac = $dt->getDpPrixMin().'T < PTAC < '.$dt->getDpPrixMax().'T';
@@ -338,14 +352,24 @@ class CtAppImprimableController extends AbstractController
                     foreach($arretePvTarif as $apt){
                         $arretePrix = $apt->getCtArretePrixId();
                         if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
-                            $prixPv = 2 * $apt->getVetPrix();
+                            if($type_reception_id->getId() == 1){
+                                $pv_reception_par_type = $ctAutreRepository->findOneBy(["nom" => "PV_RECEPTION_PAR_TYPE"]);
+                                $nb_pv_reception_pv_par_type = intval($pv_reception_par_type->getAttribut());
+                                $prixPv = $nb_pv_reception_pv_par_type * $apt->getVetPrix();
+                            }elseif($type_reception_id->getId() == 2){
+                                $pv_reception_isole = $ctAutreRepository->findOneBy(["nom" => "PV_RECEPTION_ISOLE"]);
+                                $nb_pv_reception_isole = intval($pv_reception_isole->getAttribut());
+                                $prixPv = $nb_pv_reception_isole * $apt->getVetPrix();
+                            }else{
+                                $prixPv = 2 * $apt->getVetPrix();
+                            }
                             break;
                         }
                     }
                 }
-                $droit = $tarif + $prixPv;
+                $droit = $tarif + $prixPv + $plaque;
                 $tva = ($droit * floatval($prixTva)) / 100;
-                $montant = $droit + $tva + $timbre;
+                $montant = $droit + $tva;
                 $rcp = [
                     "controle_pv" => $liste->getRcpNumPv(),
                     "motif" => $motif,
@@ -355,7 +379,7 @@ class CtAppImprimableController extends AbstractController
                     "droit" => $tarif,
                     "prix_pv" => $prixPv,
                     "tva" => $tva,
-                    "timbre" => $timbre,
+                    "plaque" => $plaque,
                     "montant" => $montant,
                     "utilisation" => $utilisation,
                 ];
@@ -364,7 +388,7 @@ class CtAppImprimableController extends AbstractController
                 $totalDesDroits = $totalDesDroits + $tarif;
                 $totalDesPrixPv = $totalDesPrixPv + $prixPv;
                 $totalDesTVA = $totalDesTVA + $tva;
-                $totalDesTimbres = $totalDesTimbres + $timbre;
+                $totalDesPlaques = $totalDesPlaques + $plaque;
                 $montantTotal = $montantTotal + $montant;
             }
         }
@@ -381,7 +405,7 @@ class CtAppImprimableController extends AbstractController
             'total_des_droits' => $totalDesDroits,
             'total_des_prix_pv' => $totalDesPrixPv,
             'total_des_tva' => $totalDesTVA,
-            'total_des_timbres' => $totalDesTimbres,
+            'total_des_plaques' => $totalDesPlaques,
             'montant_total' => $montantTotal,
             'ct_receptions' => $liste_des_receptions,
         ]);
@@ -432,13 +456,13 @@ class CtAppImprimableController extends AbstractController
             mkdir($dossier, 0777, true);
         }
         // teste date, comparaison avant utilisation rcp_num_group
-        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
-        $dateDeploiement = $deploiement->getAttribut();
+        //$deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        //$dateDeploiement = $deploiement->getAttribut();
         $autreTva = $ctAutreRepository->findOneBy(["nom" => "TVA"]);
         $prixTva = $autreTva->getAttribut();
-        $autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
-        $prixTimbre = $autreTimbre->getAttribut();
-        $timbre = floatval($prixTimbre);
+        //$autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
+        //$prixTimbre = $autreTimbre->getAttribut();
+        //$timbre = floatval($prixTimbre);
         $nombreConstatations = 0;
         $totalDesDroits = 0;
         $totalDesPrixPv = 0;
@@ -464,7 +488,7 @@ class CtAppImprimableController extends AbstractController
                 $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["tp_dp_libelle" => "Constatation"]);
                 $droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => $genreCategorie->getId(), "ct_type_droit_ptac_id" => $typeDroit->getId()], ["ct_arrete_prix_id" => "DESC", "dp_prix_max" => "DESC"]);
                 foreach($droits as $dt){
-                    if(($carac->getCadPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($carac->getCadPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax())){
+                    if(($carac->getCadPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($carac->getCadPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax()) && ($liste->getCadCreated() >= $dt->getCtArretePrixId()->getArtDateApplication())){
                         $tarif = $dt->getDpDroit();
                         break;
                     }elseif($dt->getDpPrixMin() <= $dt->getDpPrixMax() && $dt->getDpPrixMin() == 0 && $dt->getDpPrixMax() == 0){
@@ -477,7 +501,9 @@ class CtAppImprimableController extends AbstractController
                 foreach($arretePvTarif as $apt){
                     $arretePrix = $apt->getCtArretePrixId();
                     if($liste->getCadCreated() >= $arretePrix->getArtDateApplication()){
-                        $prixPv = $apt->getVetPrix();
+                        $pv_constatation = $ctAutreRepository->findOneBy(["nom" => "PV_CONSTATATION"]);
+                        $nb_pv_constatation = intval($pv_constatation->getAttribut());
+                        $prixPv = $nb_pv_constatation * $apt->getVetPrix();
                         break;
                     }
                 }
@@ -589,13 +615,13 @@ class CtAppImprimableController extends AbstractController
             mkdir($dossier, 0777, true);
         }
         // teste date, comparaison avant utilisation rcp_num_group
-        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
-        $dateDeploiement = $deploiement->getAttribut();
+        //$deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        //$dateDeploiement = $deploiement->getAttribut();
         $autreTva = $ctAutreRepository->findOneBy(["nom" => "TVA"]);
         $prixTva = $autreTva->getAttribut();
-        $autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
-        $prixTimbre = $autreTimbre->getAttribut();
-        $timbre = floatval($prixTimbre);
+        //$autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
+        //$prixTimbre = $autreTimbre->getAttribut();
+        //$timbre = floatval($prixTimbre);
         $nombreReceptions = 0;
         $totalDesDroits = 0;
         $totalDesPrixPv = 0;
@@ -632,8 +658,13 @@ class CtAppImprimableController extends AbstractController
                 $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
                 $utilisation = $liste->getCtUtilisationId();
                 if($utilisation != $utilisationAdministratif){
-                    $usage_tarif = $ctUsageTarifRepository->findOneBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
-                    $tarif = $usage_tarif->getUsgTrfPrix();
+                    //$usage_tarif = $ctUsageTarifRepository->findOneBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
+                    $usage_tarif = $ctUsageTarifRepository->findBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
+                    foreach($usage_tarif as $usg_trf){
+                        if($liste->getVstCreated() >= $usg_trf->getCtArretePrixId()->getArtDateApplication()){
+                            $tarif = $usage_tarif->getUsgTrfPrix();
+                        }
+                    }
                     $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
                     $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
                     foreach($arretePvTarif as $apt){
@@ -642,10 +673,14 @@ class CtAppImprimableController extends AbstractController
                         if($liste->isVstIsContreVisite() == false){
                             if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
                                 if($liste->isVstIsApte()){
-                                    $prixPv = $apt->getVetPrix();
+                                    $pv_visite_apte = $ctAutreRepository->findOneBy(["nom" => "PV_VISITE_APTE"]);
+                                    $nb_pv_visite_apte = intval($pv_visite_apte->getAttribut());
+                                    $prixPv = $nb_pv_visite_apte * $apt->getVetPrix();
                                     $aptitude = "Apte";
                                 } else {
-                                    $prixPv = 2 * $apt->getVetPrix();
+                                    $pv_visite_inapte = $ctAutreRepository->findOneBy(["nom" => "PV_VISITE_INAPTE"]);
+                                    $nb_pv_visite_inapte = intval($pv_visite_inapte->getAttribut());
+                                    $prixPv = $nb_pv_visite_inapte * $apt->getVetPrix();
                                     $aptitude = "Inapte";
                                 }
                                 break;
@@ -820,8 +855,8 @@ class CtAppImprimableController extends AbstractController
             mkdir($dossier, 0777, true);
         }
         // teste date, comparaison avant utilisation rcp_num_group
-        $deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
-        $dateDeploiement = $deploiement->getAttribut();
+        //$deploiement = $ctAutreRepository->findOneBy(["nom" => "DEPLOIEMENT"]);
+        //$dateDeploiement = $deploiement->getAttribut();
         $autreTva = $ctAutreRepository->findOneBy(["nom" => "TVA"]);
         $prixTva = $autreTva->getAttribut();
         $autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
@@ -860,7 +895,7 @@ class CtAppImprimableController extends AbstractController
                         $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["tp_dp_libelle" => "Réception"]);
                         $droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => $genreCategorie->getId(), "ct_type_droit_ptac_id" => $typeDroit->getId()], ["ct_arrete_prix_id" => "DESC", "dp_prix_max" => "DESC"]);
                         foreach($droits as $dt){;
-                            if(($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax())){
+                            if(($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax()) && ($liste->getRcpCreated() >= $dt->getCtArretePrixId()->getArtDateApplication())){
                                 $tarif = $dt->getDpDroit();
                                 break;
                             }elseif($dt->getDpPrixMin() <= $dt->getDpPrixMax() && $dt->getDpPrixMin() == 0 && $dt->getDpPrixMax() == 0){
@@ -874,7 +909,9 @@ class CtAppImprimableController extends AbstractController
                     foreach($arretePvTarif as $apt){
                         $arretePrix = $apt->getCtArretePrixId();
                         if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
-                            $prixPv = 2 * $apt->getVetPrix();
+                            $pv_reception_isole = $ctAutreRepository->findOneBy(["nom" => "PV_RECEPTION_ISOLE"]);
+                            $nb_pv_reception_isole = intval($pv_reception_isole->getAttribut());
+                            $prixPv = $nb_pv_reception_isole * $apt->getVetPrix();
                             break;
                         }
                     }
@@ -1038,7 +1075,7 @@ class CtAppImprimableController extends AbstractController
                         $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["tp_dp_libelle" => "Réception"]);
                         $droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => $genreCategorie->getId(), "ct_type_droit_ptac_id" => $typeDroit->getId()], ["ct_arrete_prix_id" => "DESC", "dp_prix_max" => "DESC"]);
                         foreach($droits as $dt){;
-                            if(($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax())){
+                            if(($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax()) && ($liste->getRcpCreated() >= $dt->getCtArretePrixId()->getArtDateApplication())){
                                 $tarif = $dt->getDpDroit();
                                 break;
                             }elseif($dt->getDpPrixMin() <= $dt->getDpPrixMax() && $dt->getDpPrixMin() == 0 && $dt->getDpPrixMax() == 0){
@@ -1052,7 +1089,9 @@ class CtAppImprimableController extends AbstractController
                     foreach($arretePvTarif as $apt){
                         $arretePrix = $apt->getCtArretePrixId();
                         if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
-                            $prixPv = 2 * $apt->getVetPrix();
+                            $pv_reception_par_type = $ctAutreRepository->findOneBy(["nom" => "PV_RECEPTION_PAR_TYPE"]);
+                            $nb_pv_reception_pv_par_type = intval($pv_reception_par_type->getAttribut());
+                            $prixPv = $nb_pv_reception_pv_par_type * $apt->getVetPrix();
                             break;
                         }
                     }
@@ -1323,7 +1362,7 @@ class CtAppImprimableController extends AbstractController
                 $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["id" => 2]);
                 $droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => $genreCategorie->getId(), "ct_type_droit_ptac_id" => $typeDroit->getId()], ["ct_arrete_prix_id" => "DESC", "dp_prix_max" => "DESC"]);
                 foreach($droits as $dt){
-                    if(($carac->getCadPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($carac->getCadPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax())){
+                    if(($carac->getCadPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($carac->getCadPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax()) && ($constatation->getRcpCreated() >= $dt->getCtArretePrixId()->getArtDateApplication())){
                         $tarif = $dt->getDpDroit();
                         break;
                     }elseif($dt->getDpPrixMin() <= $dt->getDpPrixMax() && $dt->getDpPrixMin() == 0 && $dt->getDpPrixMax() == 0){
@@ -1337,8 +1376,10 @@ class CtAppImprimableController extends AbstractController
                     $arretePrix = $apt->getCtArretePrixId();
                     //if($constatation->getCadCreated() >= $arretePrix->getArtDateApplication()){
                     // secours fotsiny  new date time fa mila atao daten'ilay pv no tena izy
-                    if(new \DateTime() >= $arretePrix->getArtDateApplication()){
-                        $prixPv = $apt->getVetPrix();
+                    if($liste->getCadCreated() >= $arretePrix->getArtDateApplication()){
+                        $pv_constatation = $ctAutreRepository->findOneBy(["nom" => "PV_CONSTATATION"]);
+                        $nb_pv_constatation = intval($pv_constatation->getAttribut());
+                        $prixPv = $nb_pv_constatation * $apt->getVetPrix();
                         break;
                     }
                 }
@@ -1496,20 +1537,30 @@ class CtAppImprimableController extends AbstractController
         $utilisation = $liste->getCtUtilisationId();
         if($utilisation != $utilisationAdministratif){
             $type_visite_id = $visite->getCtTypeVisiteId();
-            $usage_tarif = $ctUsageTarifRepository->findOneBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
-            $tarif = $usage_tarif->getUsgTrfPrix();
+            //$usage_tarif = $ctUsageTarifRepository->findOneBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
+            //$tarif = $usage_tarif->getUsgTrfPrix();
+            $usage_tarif = $ctUsageTarifRepository->findBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
+            foreach($usage_tarif as $usg_trf){
+                if($liste->getVstCreated() >= $usg_trf->getCtArretePrixId()->getArtDateApplication()){
+                    $tarif = $usage_tarif->getUsgTrfPrix();
+                }
+            }
             $pvId = $ctImprimeTechRepository->findOneBy(["id" => 12]);
             $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
             foreach($arretePvTarif as $apt){
                 $arretePrix = $apt->getCtArretePrixId();
                 if($liste->isVstIsContreVisite() == false){
-                    //if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
+                    if($liste->getVstCreated() >= $arretePrix->getArtDateApplication()){
                     // secours fotsiny  new date time fa mila atao daten'ilay pv no tena izy
-                    if(new \DateTime() >= $arretePrix->getArtDateApplication()){
+                    //if(new \DateTime() >= $arretePrix->getArtDateApplication()){
                         if($liste->isVstIsApte() == true){
-                            $prixPv = $apt->getVetPrix();
+                            $pv_visite_apte = $ctAutreRepository->findOneBy(["nom" => "PV_VISITE_APTE"]);
+                            $nb_pv_visite_apte = intval($pv_visite_apte->getAttribut());
+                            $prixPv = $nb_pv_visite_apte * $apt->getVetPrix();
                         } else {
-                            $prixPv = 2 * $apt->getVetPrix();
+                            $pv_visite_inapte = $ctAutreRepository->findOneBy(["nom" => "PV_VISITE_INAPTE"]);
+                            $nb_pv_visite_inapte = intval($pv_visite_inapte->getAttribut());
+                            $prixPv = $nb_pv_visite_inapte * $apt->getVetPrix();
                         }
                         break;
                     }
