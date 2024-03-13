@@ -63,7 +63,7 @@ class CtTypeImprime
     {
         if (!$this->ct_imprim_tech_id->contains($ct_imprim_tech_id)) {
             $this->ct_imprim_tech_id[] = $ct_imprim_tech_id;
-            $ct_imprim_tech_id->setCtUserId($this);
+            $ct_imprim_tech_id->setCtTypeImprimeId($this);
         }
 
         return $this;
@@ -73,8 +73,8 @@ class CtTypeImprime
     {
         if ($this->ct_imprim_tech_id->removeElement($ct_imprim_tech_id)) {
             // set the owning side to null (unless already changed)
-            if ($ct_imprim_tech_id->getCtUserId() === $this) {
-                $ct_imprim_tech_id->setCtUserId(null);
+            if ($ct_imprim_tech_id->getCtTypeImprimeId() === $this) {
+                $ct_imprim_tech_id->setCtTypeImprimeId(null);
             }
         }
 

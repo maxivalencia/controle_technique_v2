@@ -243,12 +243,12 @@ class CtImprimeTech
         return $this;
     }
 
-    public function getCtTypeImprime(): ?CtUser
+    public function getCtTypeImprimeId(): ?CtTypeImprime
     {
         return $this->ct_type_imprime_id;
     }
 
-    public function setCtTypeImprime(?CtUser $ct_type_imprime_id): self
+    public function setCtTypeImprimeId(?CtTypeImprime $ct_type_imprime_id): self
     {
         $this->ct_type_imprime_id = $ct_type_imprime_id;
 

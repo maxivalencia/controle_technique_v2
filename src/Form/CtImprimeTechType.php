@@ -42,7 +42,7 @@ class CtImprimeTechType extends AbstractType
             ])
             ->add('ct_type_imprime_id', null, [
                 'label' => 'Type de l\'imprimé technique',
-                'mapped' => false,
+                'mapped' => true,
             ])
         ;
     }
