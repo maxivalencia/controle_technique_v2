@@ -159,6 +159,9 @@ class CtCarteGriseType extends AbstractType
             ->add('cg_antecedant_id', null, [
                 'label' => 'Antécédant carte grise',
             ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
+            ])
         ;
     }
 

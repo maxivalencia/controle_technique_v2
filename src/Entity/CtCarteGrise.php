@@ -209,6 +209,11 @@ class CtCarteGrise
      */
     private $ctAutreVentes;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CtUtilisation::class, inversedBy="ctVisites")
+     */
+    private $ct_utilisation_id;
+
     public function __construct()
     {
         $this->ctCarteGrises = new ArrayCollection();
@@ -727,6 +732,18 @@ class CtCarteGrise
                 $ctAutreVente->setCtCarteGriseId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCtUtilisationId(): ?CtUtilisation
+    {
+        return $this->ct_utilisation_id;
+    }
+
+    public function setCtUtilisationId(?CtUtilisation $ct_utilisation_id): self
+    {
+        $this->ct_utilisation_id = $ct_utilisation_id;
 
         return $this;
     }

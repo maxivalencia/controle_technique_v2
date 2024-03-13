@@ -246,6 +246,7 @@ class CtAppVisiteController extends AbstractController
                 $ctCarteGrise_new->setCgObservation($ctCarteGrise->getCgObservation());
                 $ctCarteGrise_new->setCgCommune($ctCarteGrise->getCgCommune());
                 $ctCarteGrise_new->setCtVehiculeId($ctVehicule);
+                $ctCarteGrise_new->setCtUtilisationId($ctCarteGrise->getCtUtilisationId());
 
                 $ctCarteGriseRepository->add($ctCarteGrise_new, true);
 
@@ -392,6 +393,7 @@ class CtAppVisiteController extends AbstractController
                 $ctCarteGrise_new->setCgObservation($ctCarteGrise->getCgObservation());
                 $ctCarteGrise_new->setCgCommune($ctCarteGrise->getCgCommune());
                 $ctCarteGrise_new->setCtVehiculeId($ctVehicule);
+                $ctCarteGrise_new->setCtUtilisationId($ctCarteGrise->getCtUtilisationId());
 
                 $ctCarteGriseRepository->add($ctCarteGrise_new, true);
 
@@ -720,7 +722,7 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_new->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.$date->format("Y"));
             $ctVisite_new->setVstCreated(new \DateTime());
             $ctVisite_new->setVstUpdated($ctVisite->getVstUpdated());
-            $ctVisite_new->setCtUtilisationId($ctVisite->getCtUtilisationId());
+            $ctVisite_new->setCtUtilisationId($ctCarteGrise->getCtUtilisationId());
             $anml = $ctVisite_new->getVstAnomalieId();
             $ctVisite_new->setVstIsApte($anml->count()>0?false:true);
             $ctVisite_new->setVstIsContreVisite(false);
@@ -936,7 +938,7 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_contre->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.$date->format("Y"));
             $ctVisite_contre->setVstCreated(new \DateTime());
             $ctVisite_contre->setVstUpdated($ctVisite->getVstUpdated());
-            $ctVisite_contre->setCtUtilisationId($ctVisite->getCtUtilisationId());
+            $ctVisite_contre->setCtUtilisationId($ctCarteGrise->getCtUtilisationId());
             $anml = $ctVisite->getVstAnomalieId();
             //$ctVisite_contre->setVstAnomalieId($ctVisite->getVstAnomalieId());
             $liste_anomalie =$ctVisite->getVstAnomalieId();
@@ -1113,7 +1115,7 @@ class CtAppVisiteController extends AbstractController
             $ctVisite_new->setVstNumFeuilleCaisse($date->format('d').'/'.$date->format('m').'/'.$this->getUser()->getCtCentreId()->getCtrCode().'/'.$ctVisite->getCtTypeVisiteId().'/'.$date->format("Y"));
             $ctVisite_new->setVstCreated($ctVisite->getVstCreated());
             $ctVisite_new->setVstUpdated(new \DateTime());
-            $ctVisite_new->setCtUtilisationId($ctVisite->getCtUtilisationId());
+            $ctVisite_new->setCtUtilisationId($ctCarteGrise->getCtUtilisationId());
             $anml = $ctVisite_new->getVstAnomalieId();
             $ctVisite_new->setVstIsApte($anml->count()>0?false:true);
             $ctVisite_new->setVstIsContreVisite(false);

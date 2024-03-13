@@ -158,6 +158,17 @@ class CtVisiteCarteGriseType extends AbstractType
                 ],
                 'disabled' => true,
             ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
+                'multiple' => false,
+                'attr' => [
+                    'class' => 'multi select',
+                    'multiple' => false,
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+                'disabled' => true,
+            ])
             /* ->add('ct_zone_desserte_id', null, [
                 'label' => 'Zone desservie',
                 'attr' => [
