@@ -64,6 +64,11 @@ class CtImprimeTech
      */
     private $ctImprimeTechUses;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CtTypeImprime::class, inversedBy="ct_imprime_tech_id")
+     */
+    private $ct_type_imprime_id;
+
     public function __construct()
     {
         $this->ctVisiteExtraTarifs = new ArrayCollection();
@@ -234,6 +239,18 @@ class CtImprimeTech
                 $ctImprimeTechUse->setCtImprimeTechId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCtTypeImprime(): ?CtUser
+    {
+        return $this->ct_type_imprime_id;
+    }
+
+    public function setCtTypeImprime(?CtUser $ct_type_imprime_id): self
+    {
+        $this->ct_type_imprime_id = $ct_type_imprime_id;
 
         return $this;
     }

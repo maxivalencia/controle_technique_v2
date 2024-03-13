@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CtTypeImprimeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,6 +24,16 @@ class CtTypeImprime
      */
     private $tit_libelle;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CtImprimeTech::class, mappedBy="ct_type_imprime_id")
+     */
+    private $ct_imprim_tech_id;
+
+    public function __construct()
+    {
+        $this->ct_imprim_tech_id = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +47,36 @@ class CtTypeImprime
     public function setTitLibelle(string $tit_libelle): self
     {
         $this->tit_libelle = strtoupper($tit_libelle);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CtImprimeTechUse>
+     */
+    public function getCtImprimeTechId(): Collection
+    {
+        return $this->ct_imprim_tech_id;
+    }
+
+    public function addCtImprimeTechId(CtImprimeTech $ct_imprim_tech_id): self
+    {
+        if (!$this->ct_imprim_tech_id->contains($ct_imprim_tech_id)) {
+            $this->ct_imprim_tech_id[] = $ct_imprim_tech_id;
+            $ct_imprim_tech_id->setCtUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCtImprimeTechId(CtImprimeTech $ct_imprim_tech_id): self
+    {
+        if ($this->ct_imprim_tech_id->removeElement($ct_imprim_tech_id)) {
+            // set the owning side to null (unless already changed)
+            if ($ct_imprim_tech_id->getCtUserId() === $this) {
+                $ct_imprim_tech_id->setCtUserId(null);
+            }
+        }
 
         return $this;
     }
