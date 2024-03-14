@@ -69,8 +69,14 @@ class CtImprimeTech
      */
     private $ct_type_imprime_id;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=CtVisite::class, mappedBy="vst_extra")
+     */
+    private $ctVisites;
+
     public function __construct()
     {
+        $this->ctVisites = new ArrayCollection();
         $this->ctVisiteExtraTarifs = new ArrayCollection();
         $this->ctBordereaus = new ArrayCollection();
         $this->ctImprimeTechUses = new ArrayCollection();
@@ -251,6 +257,33 @@ class CtImprimeTech
     public function setCtTypeImprimeId(?CtTypeImprime $ct_type_imprime_id): self
     {
         $this->ct_type_imprime_id = $ct_type_imprime_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CtVisite>
+     */
+    public function getCtVisites(): Collection
+    {
+        return $this->ctVisites;
+    }
+
+    public function addCtVisite(CtVisite $ctVisite): self
+    {
+        if (!$this->ctVisites->contains($ctVisite)) {
+            $this->ctVisites[] = $ctVisite;
+            $ctVisite->addVstExtra($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCtVisite(CtVisite $ctVisite): self
+    {
+        if ($this->ctVisites->removeElement($ctVisite)) {
+            $ctVisite->removeVstExtra($this);
+        }
 
         return $this;
     }

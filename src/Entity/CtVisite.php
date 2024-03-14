@@ -124,11 +124,17 @@ class CtVisite
      */
     private $ctExtraVentes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=CtImprimeTech::class, inversedBy="ctVisites", cascade={"persist", "remove"})
+     */
+    private $vst_imprime_technique_id;
+
     public function __construct()
     {
         $this->vst_anomalie_id = new ArrayCollection();
         $this->vst_extra = new ArrayCollection();
         $this->ctExtraVentes = new ArrayCollection();
+        $this->vst_imprime_tech_id = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -396,6 +402,30 @@ class CtVisite
     public function removeVstExtra(CtVisiteExtra $vstExtra): self
     {
         $this->vst_extra->removeElement($vstExtra);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CtImprimeTech>
+     */
+    public function getVstImprimeTechId(): Collection
+    {
+        return $this->vst_imprime_tech_id;
+    }
+
+    public function addVstImprimeTechId(CtImprimeTech $vst_imprime_tech_id): self
+    {
+        if (!$this->vst_imprime_tech_id->contains($vst_imprime_tech_id)) {
+            $this->vst_imprime_tech_id[] = $vst_imprime_tech_id;
+        }
+
+        return $this;
+    }
+
+    public function removeVstImprimeTechId(CtImprimeTech $vst_imprime_tech_id): self
+    {
+        $this->vst_imprime_tech_id->removeElement($vst_imprime_tech_id);
 
         return $this;
     }

@@ -3760,6 +3760,61 @@ def RecuperationTableCtAutre():
         f.write("\n")
         f.write('-- --------------------------------------------------------\n')
 
+def RecuperationTableCtTypeImprime():
+    # The connect() constructor creates a connection to the MySQL server and returns a MySQLConnection object.
+    table_name = '`ct_type_imprime`'
+    cnx = mysql.connector.connect(
+        host=oldhost,
+        database=olddb,
+        user=olduser,
+        password=oldpass
+    )
+    cursor = cnx.cursor()
+    query = ""
+    cursor.execute(query)
+    header = [row[0] for row in cursor.description]
+    rows = cursor.fetchall()
+    cnx.close()
+    with open(filename, 'a') as f:
+        # f.write('-- \n')
+        # f.write('-- Structure de la table ' + table_name + '\n')
+        # f.write('-- \n')
+        # f.write(' \n')
+        # f.write('DROP TABLE IF EXISTS ' + table_name+ ';\n')
+        # f.write('/*!40101 SET @SAVED_CS_CLIENT = @@CHARACTER_SET_CLIENT */;\n')
+        # f.write('/*!40101 SET CHARACTER_SET_CLIENT = utf8 */;\n')
+        # f.write('CREATE TABLE ' + table_name + ' (\n')
+        # f.write('  `id` int(11) NOT NULL AUTO_INCREMENT,\n')
+        # f.write('  `zd_libelle` varchar(255) NOT NULL,\n')
+        # f.write('  PRIMARY KEY (`id`)\n')
+        # f.write(') ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;\n')
+        # f.write('/*!40101 SET CHARACTER_SET_CLIENT = @SAVED_CS_CLIENT */;\n')
+        # f.write(' \n')
+        
+        f.write('-- \n')
+        f.write('-- Contenu de la table : ' + table_name + '\n')
+        f.write('-- \n')
+        f.write(' \n')
+        f.write('LOCK TABLES ' + table_name + ' WRITE;\n')
+        f.write('/*!40000 ALTER TABLE ' + table_name + ' DISABLE KEYS */;\n')
+        f.write("INSERT IGNORE INTO " + table_name + " (`id`, `nom`, `attribut`) VALUES")
+        i = 0
+        rows = [(1, "CARNET"), (2, "CARTE"), (3, "PLAQUE"), (4, "PROCèS-VERBAL")]
+        for row in rows:
+            # lst_row = list(row)
+            # lst_row[0] = 1
+            # row = tuple(lst_row)
+            row = tuple(value if value is not None else 'NULL' for value in row)
+            if(i > 0):
+                f.write(",") 
+            f.write("%s" % str(row))
+            i = i + 1
+        f.write(";\n")
+        f.write("/*!40000 ALTER TABLE " + table_name + " ENABLE KEYS */;\n")
+        f.write("UNLOCK TABLES;\n")
+        f.write("\n")
+        f.write('-- --------------------------------------------------------\n')
+
 def ImportDataBase():
     file = open(filename)
     sql = file.read()
@@ -3844,6 +3899,7 @@ def Recuperation():
     # RecuperationTableCtPhoto()
     # RecuperationTableCtAutreDonne()
     
+    RecuperationTableCtTypeImprime()
     RecuperationTableCtUsageImprimeTechnique()
     RecuperationTableCtAutre()
     RecuperationTableCtZoneDesserte()

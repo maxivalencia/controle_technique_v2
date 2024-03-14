@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\CtAnomalie;
 use App\Entity\CtVisite;
 use App\Entity\CtVisiteExtra;
+use App\Entity\CtImprimeTech;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -122,6 +123,17 @@ class CtVisiteType extends AbstractType
             ->add('vst_extra', EntityType::class, [
                 'label' => 'Extra',
                 'class' => CtVisiteExtra::class,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => true,
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+            ])
+            ->add('vst_imprime_tech_id', EntityType::class, [
+                'label' => 'Extra',
+                'class' => CtImprimeTech::class,
                 'multiple' => true,
                 'attr' => [
                     'class' => 'multi',
