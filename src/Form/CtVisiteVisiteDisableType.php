@@ -14,6 +14,7 @@ use App\Form\CtRoleType;
 use App\Repository\CtRoleRepository;
 use App\Repository\CtUserRepository;
 use App\Repository\CtVisiteExtraRepository;
+use App\Repository\CtImprimeTechRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -88,7 +89,7 @@ class CtVisiteVisiteDisableType extends AbstractType
                 ],
                 'required' => false,
             ]) */
-            ->add('vst_extra', EntityType::class, [
+            /* ->add('vst_extra', EntityType::class, [
                 'label' => 'Extra',
                 'class' => CtVisiteExtra::class,
                 'multiple' => true,
@@ -107,6 +108,28 @@ class CtVisiteVisiteDisableType extends AbstractType
                 },
                 'required' => false,
                 'disabled' => $disable,
+            ]) */
+            ->add('vst_imprime_tech_id', EntityType::class, [
+                'label' => 'Extra',
+                'class' => CtImprimeTech::class,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => true,
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+                'query_builder' => function(CtImprimeTechRepository $ctImprimeTechRepository){
+                    $qb = $ctImprimeTechRepository->createQueryBuilder('u');
+                    return $qb
+                        ->andWhere('u.ct_type_imprime_id = :val1 OR u.ct_type_imprime_id = :val2')
+                        ->setParameter('val1', 1)
+                        ->setParameter('val2', 2)
+                        ->orderBy('u.id', 'ASC')
+                        //->setMaxResults(11)
+                    ;
+                },
+                'required' => false,
             ])
             ->add('ct_carte_grise_id', CtVisiteCarteGriseType::class, [
                 //'class' => CtCarteGrise::class,

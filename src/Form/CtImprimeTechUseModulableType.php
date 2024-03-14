@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Repository\CtImprimeTechUseRepository;
 use App\Entity\CtImprimeTechUse;
 use App\Entity\CtImprimeTech;
+use App\Repository\CtImprimeTechRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class CtImprimeTechUseModulableType extends AbstractType
 {
@@ -26,6 +29,12 @@ class CtImprimeTechUseModulableType extends AbstractType
         $selection_multiple = false;
         if($this->multiple == true OR $this->carte == true){
             $selection_multiple = true;
+        }
+        $imprimer_technique = new CtImprimeTechRepository();
+        $proces_verbal = $imprimer_technique->findBy(["ct_type_imprime_id" => 4]);
+        $this->$liste_proces = new ArrayCollection();
+        foreach($proces_verbal as $pv){
+            $this->$liste_proces->add($pv->getId());
         }
         $builder
             ->add('ct_controle_id', null, [
@@ -50,13 +59,15 @@ class CtImprimeTechUseModulableType extends AbstractType
                         return $qb
                             ->Where('u.itu_used = :val1')
                             ->andWhere('u.ct_centre_id = :val2')
-                            ->andWhere('u.ct_imprime_tech_id = :val3 OR u.ct_imprime_tech_id = :val4 OR u.ct_imprime_tech_id = :val5 OR u.ct_imprime_tech_id = :val6')
+                            //->andWhere('u.ct_imprime_tech_id = :val3 OR u.ct_imprime_tech_id = :val4 OR u.ct_imprime_tech_id = :val5 OR u.ct_imprime_tech_id = :val6')
+                            ->andWhere('u.ct_imprime_tech_id IN :val3')
                             ->setParameter('val1', 0)
                             ->setParameter('val2', $this->centre)
-                            ->setParameter('val3', 12)
-                            ->setParameter('val4', 13)
-                            ->setParameter('val5', 14)
-                            ->setParameter('val6', 15)
+                            ->setParameter('val3', $this->$liste_proces)
+                            //->setParameter('val3', 12)
+                            //->setParameter('val4', 13)
+                            //->setParameter('val5', 14)
+                            //->setParameter('val6', 15)
                         ;
                     }else{
                         $qb = $ctImprimeTechUseRepository->createQueryBuilder('u');
@@ -64,13 +75,15 @@ class CtImprimeTechUseModulableType extends AbstractType
                             ->Where('u.itu_used = :val1')
                             ->andWhere('u.ct_centre_id = :val2')
                             ->andWhere('u.ct_centre_id = :val2')
-                            ->andWhere('u.ct_imprime_tech_id = :val3 OR u.ct_imprime_tech_id = :val4 OR u.ct_imprime_tech_id = :val5 OR u.ct_imprime_tech_id = :val6')
+                            //->andWhere('u.ct_imprime_tech_id = :val3 OR u.ct_imprime_tech_id = :val4 OR u.ct_imprime_tech_id = :val5 OR u.ct_imprime_tech_id = :val6')
+                            ->andWhere('u.ct_imprime_tech_id IN :val3')
                             ->setParameter('val1', 0)
                             ->setParameter('val2', $this->centre)
-                            ->setParameter('val3', 12)
-                            ->setParameter('val4', 13)
-                            ->setParameter('val5', 14)
-                            ->setParameter('val6', 15)
+                            ->setParameter('val3', $this->$liste_proces)
+                            //->setParameter('val3', 12)
+                            //->setParameter('val4', 13)
+                            //->setParameter('val5', 14)
+                            //->setParameter('val6', 15)
                         ;
                     }
                 },

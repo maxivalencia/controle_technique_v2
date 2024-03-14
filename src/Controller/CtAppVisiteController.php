@@ -731,12 +731,16 @@ class CtAppVisiteController extends AbstractController
             //var_dump($ctVisite->getCtExtraVentes());
             foreach($liste_extra as $extra){
                 $ctVisite_new->addCtExtraVente($extra);
-            }            
+            }
             //$ctVisite_new->setVstAnomalieId($ctVisite->getVstAnomalieId());
-            $liste_anomalie =$ctVisite->getVstAnomalieId();
+            $liste_anomalie = $ctVisite->getVstAnomalieId();
             foreach($liste_anomalie as $anomalie){
                 $ctVisite_new->addVstAnomalieId($anomalie);
-            }  
+            }
+            $liste_imprime = $ctVisite->getVstImprimeTechId();
+            foreach($liste_imprime as $imprime){
+                $ctVisite_new->addVstImprimeTechId($imprime);
+            }
             $ctVisite_new->setVstIsActive(true);
             $ctVisite_new->setVstGenere(0);
             $ctVisite_new->setVstObservation(" - ");
@@ -1129,6 +1133,10 @@ class CtAppVisiteController extends AbstractController
             $liste_anomalie =$ctVisite->getVstAnomalieId();
             foreach($liste_anomalie as $anomalie){
                 $ctVisite_new->addVstAnomalieId($anomalie);
+            }
+            $liste_imprime = $ctVisite->getVstImprimeTechId();
+            foreach($liste_imprime as $imprime){
+                $ctVisite_new->addVstImprimeTechId($imprime);
             }
             $ctVisite_new->setVstIsActive(true);
             $ctVisite_new->setVstGenere(0);
