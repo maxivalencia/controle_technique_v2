@@ -6,6 +6,7 @@ use App\Entity\CtVisite;
 use App\Entity\CtAnomalie;
 use App\Entity\CtCarteGrise;
 use App\Entity\CtVisiteExtra;
+use App\Entity\CtImprimeTech;
 use App\Entity\CtUser;
 use App\Form\CtUserType;
 use App\Entity\CtRole;

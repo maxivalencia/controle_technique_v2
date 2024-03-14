@@ -127,7 +127,7 @@ class CtVisite
     /**
      * @ORM\ManyToMany(targetEntity=CtImprimeTech::class, inversedBy="ctVisites", cascade={"persist", "remove"})
      */
-    private $vst_imprime_technique_id;
+    private $vst_imprime_tech_id;
 
     public function __construct()
     {

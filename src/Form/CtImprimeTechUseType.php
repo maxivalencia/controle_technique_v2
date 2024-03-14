@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\CtImprimeTechUse;
 use DateTime;
 use Symfony\Component\Form\AbstractType;
+use App\Entity\CtImprimeTech;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\RadioType;

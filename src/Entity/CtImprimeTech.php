@@ -273,7 +273,7 @@ class CtImprimeTech
     {
         if (!$this->ctVisites->contains($ctVisite)) {
             $this->ctVisites[] = $ctVisite;
-            $ctVisite->addVstExtra($this);
+            $ctVisite->addVstImprimeTechId($this);
         }
 
         return $this;
@@ -282,7 +282,7 @@ class CtImprimeTech
     public function removeCtVisite(CtVisite $ctVisite): self
     {
         if ($this->ctVisites->removeElement($ctVisite)) {
-            $ctVisite->removeVstExtra($this);
+            $ctVisite->removeVstImprimeTechId($this);
         }
 
         return $this;

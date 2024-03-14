@@ -8,6 +8,7 @@ use App\Entity\CtVisite;
 use App\Entity\CtVisiteExtra;
 use App\Entity\CtUser;
 use App\Entity\CtImprimeTechUse;
+use App\Entity\CtImprimeTech;
 use App\Form\CtUserType;
 use App\Entity\CtRole;
 use App\Form\CtRoleType;
@@ -15,6 +16,7 @@ use App\Repository\CtRoleRepository;
 use App\Repository\CtUserRepository;
 use App\Repository\CtVisiteExtraRepository;
 use App\Repository\CtImprimeTechUseRepository;
+use App\Repository\CtImprimeTechRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -93,7 +95,7 @@ class CtVisiteVisiteType extends AbstractType
                 ],
                 'required' => false,
             ]) */
-            ->add('vst_extra', EntityType::class, [
+            /* ->add('vst_extra', EntityType::class, [
                 'label' => 'Extra',
                 'class' => CtVisiteExtra::class,
                 'multiple' => true,
@@ -108,6 +110,28 @@ class CtVisiteVisiteType extends AbstractType
                     return $qb
                         ->orderBy('u.id', 'ASC')
                         ->setMaxResults(11)
+                    ;
+                },
+                'required' => false,
+            ]) */
+            ->add('vst_imprime_tech_id', EntityType::class, [
+                'label' => 'Extra',
+                'class' => CtImprimeTech::class,
+                'multiple' => true,
+                'attr' => [
+                    'class' => 'multi',
+                    'multiple' => true,
+                    'data-live-search' => true,
+                    'data-select' => true,
+                ],
+                'query_builder' => function(CtImprimeTechRepository $ctImprimeTechRepository){
+                    $qb = $ctImprimeTechRepository->createQueryBuilder('u');
+                    return $qb
+                        ->andWhere('u.ct_type_imprime_id = :val1 OR u.ct_type_imprime_id = :val2')
+                        ->setParameter('val1', 1)
+                        ->setParameter('val2', 2)
+                        ->orderBy('u.id', 'ASC')
+                        //->setMaxResults(11)
                     ;
                 },
                 'required' => false,
