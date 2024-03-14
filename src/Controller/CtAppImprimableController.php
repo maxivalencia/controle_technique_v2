@@ -619,9 +619,9 @@ class CtAppImprimableController extends AbstractController
         //$dateDeploiement = $deploiement->getAttribut();
         $autreTva = $ctAutreRepository->findOneBy(["nom" => "TVA"]);
         $prixTva = $autreTva->getAttribut();
-        //$autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
-        //$prixTimbre = $autreTimbre->getAttribut();
-        //$timbre = floatval($prixTimbre);
+        $autreTimbre = $ctAutreRepository->findOneBy(["nom" => "TIMBRE"]);
+        $prixTimbre = $autreTimbre->getAttribut();
+        $timbre = floatval($prixTimbre);
         $nombreReceptions = 0;
         $totalDesDroits = 0;
         $totalDesPrixPv = 0;
@@ -654,7 +654,8 @@ class CtAppImprimableController extends AbstractController
                 $carte = 0;
                 $aptitude = "Inapte";
                 //$listes_cartes = $ctVisiteExtraRepository->findOneBy(["" => $liste->getId()]);
-                $listes_autre = $liste->getVstExtra();
+                //$listes_autre = $liste->getVstExtra();
+                $listes_autre = $liste->getVstImprimeTechId();
                 $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
                 $utilisation = $liste->getCtUtilisationId();
                 if($utilisation != $utilisationAdministratif){
@@ -662,7 +663,9 @@ class CtAppImprimableController extends AbstractController
                     $usage_tarif = $ctUsageTarifRepository->findBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
                     foreach($usage_tarif as $usg_trf){
                         if($liste->getVstCreated() >= $usg_trf->getCtArretePrixId()->getArtDateApplication()){
-                            $tarif = $usage_tarif->getUsgTrfPrix();
+                            //$tarif = $usage_tarif->getUsgTrfPrix();
+                            $tarif = $usg_trf->getUsgTrfPrix();
+                            break;
                         }
                     }
                     $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
@@ -692,6 +695,7 @@ class CtAppImprimableController extends AbstractController
                 }
                 foreach($listes_autre as $autre){
                     $vet = $ctVisiteExtraTarifRepository->findOneBy(["ct_imprime_tech_id" => $autre->getId()], ["vet_annee" => "DESC"]);
+                    //$vet = $$ctImprimeTechRepository->findOneBy(["ct_imprime_tech_id" => $autre->getId()], ["vet_annee" => "DESC"])
                     if($autre->getId() == 1){
                         $carnet = $carnet + $vet->getVetPrix();
                     } else {
@@ -1376,7 +1380,7 @@ class CtAppImprimableController extends AbstractController
                     $arretePrix = $apt->getCtArretePrixId();
                     //if($constatation->getCadCreated() >= $arretePrix->getArtDateApplication()){
                     // secours fotsiny  new date time fa mila atao daten'ilay pv no tena izy
-                    if($liste->getCadCreated() >= $arretePrix->getArtDateApplication()){
+                    if($constatation->getCadCreated() >= $arretePrix->getArtDateApplication()){
                         $pv_constatation = $ctAutreRepository->findOneBy(["nom" => "PV_CONSTATATION"]);
                         $nb_pv_constatation = intval($pv_constatation->getAttribut());
                         $prixPv = $nb_pv_constatation * $apt->getVetPrix();
@@ -1532,7 +1536,8 @@ class CtAppImprimableController extends AbstractController
         $tva = 0;
         $montant = 0;
         $aptitude = "Inapte";
-        $listes_autre = $liste->getVstExtra();
+        //$listes_autre = $liste->getVstExtra();
+        $listes_autre = $liste->getVstImprimeTechId();
         $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
         $utilisation = $liste->getCtUtilisationId();
         if($utilisation != $utilisationAdministratif){
@@ -1542,7 +1547,8 @@ class CtAppImprimableController extends AbstractController
             $usage_tarif = $ctUsageTarifRepository->findBy(["ct_usage_id" => $usage->getId(), "ct_type_visite_id" => $type_visite_id], ["usg_trf_annee" => "DESC"]);
             foreach($usage_tarif as $usg_trf){
                 if($liste->getVstCreated() >= $usg_trf->getCtArretePrixId()->getArtDateApplication()){
-                    $tarif = $usage_tarif->getUsgTrfPrix();
+                    $tarif = $usg_trf->getUsgTrfPrix();
+                    break;
                 }
             }
             $pvId = $ctImprimeTechRepository->findOneBy(["id" => 12]);
@@ -2649,7 +2655,8 @@ class CtAppImprimableController extends AbstractController
         $tva = 0;
         $montant = 0;
         $aptitude = "Inapte";
-        $listes_autre = $liste->getVstExtra();
+        //$listes_autre = $liste->getVstExtra();
+        $listes_autre = $liste->getVstImprimeTechId();
         $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
         $utilisation = $liste->getCtUtilisationId();
         if($utilisation != $utilisationAdministratif){
@@ -2889,7 +2896,8 @@ class CtAppImprimableController extends AbstractController
         $tva = 0;
         $montant = 0;
         $aptitude = "Inapte";
-        $listes_autre = $liste->getVstExtra();
+        //$listes_autre = $liste->getVstExtra();
+        $listes_autre = $liste->getVstImprimeTechId();
         $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
         $utilisation = $liste->getCtUtilisationId();
         if($utilisation != $utilisationAdministratif){
@@ -3108,7 +3116,8 @@ class CtAppImprimableController extends AbstractController
         $tva = 0;
         $montant = 0;
         $aptitude = "Inapte";
-        $listes_autre = $liste->getVstExtra();
+        //$listes_autre = $liste->getVstExtra();
+        $listes_autre = $liste->getVstImprimeTechId();
         $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
         $utilisation = $liste->getCtUtilisationId();
         if($utilisation != $utilisationAdministratif){
@@ -4137,15 +4146,18 @@ class CtAppImprimableController extends AbstractController
             $adm = 0;
             $rebut = 0;
             foreach($liste_centres as $ctr){
-                $lst_imp_non_use = $ctImprimeTechUseRepository->findExistant($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                /* $lst_imp_non_use = $ctImprimeTechUseRepository->findExistant($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
                 if($lst_imp_non_use != null){
                     $existant = $existant + count($lst_imp_non_use);
-                }
-                $lst_imp_recue = $ctImprimeTechUseRepository->findRecu($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                } */
+                $existant = $ctImprimeTechUseRepository->findNombreExistant($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                /* $lst_imp_recue = $ctImprimeTechUseRepository->findRecu($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
                 if($lst_imp_recue != null){
                     $recu = $recu + count($lst_imp_recue);
-                }
-                $lst_utiliser = $ctImprimeTechUseRepository->findUtiliser($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                } */
+                $recu = $ctImprimeTechUseRepository->findNombreRecu($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                //$lst_utiliser = $ctImprimeTechUseRepository->findUtiliser($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                $lst_utiliser = null;
                 if($lst_utiliser != null){
                     foreach($lst_utiliser as $utiliser){
                         $utilisation = $utiliser->getCtUsageItId();

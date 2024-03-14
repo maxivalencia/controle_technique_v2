@@ -2034,6 +2034,7 @@ def RecuperationTableCtImprimeTech():
         f.write('/*!40000 ALTER TABLE ' + table_name + ' DISABLE KEYS */;\n')
         f.write("INSERT IGNORE INTO " + table_name + " (`id`, `ct_user_id_id`, `nom_imprime_tech`, `ute_imprime_tech`, `abrev_imprime_tech`, `prtt_created_at`, `prtt_updated_at`) VALUES")
         i = 0
+        rows = [(1, 441, 'Carnet d\'entretien', 'Piece', 'CE', '2024-03-13', '2024-03-13', 1), (2, 1, 'Carte blanche', 'Piece', 'CB', '2021-07-22', '2024-03-11', 2), (3, 441, 'CIM 32 Bis', 'Piece', 'CIM 32 B', '2021-07-23', '2022-10-14', 2), (4, 1, 'Carte jaune', 'Piece', 'CJ', '2021-07-24', '2024-03-11', 2), (5, 1, 'Carte jaune barrée rouge', 'Piece', 'CJBR', '2021-07-25', '2024-03-11', 2), (6, 1, 'Carte rouge', 'Piece', 'CR', '2021-07-26', '2024-03-11', 2), (7, 441, 'Carte auto-école', 'Piece', 'CAE', '2021-07-27', '2022-10-14', 2), (8, 1, 'Plaque chassis', 'Piece', 'PC', '2021-07-28', '2024-03-11', 3), (9, 441, 'CIM 31', 'Piece', 'CIM 31', '2021-07-29', '2022-10-14', 2), (10, 441, 'CIM 31 Bis', 'Piece', 'CIM 31 B', '2021-07-30', '2022-10-14', 2), (11, 441, 'CIM 32', 'Piece', 'CIM 32', '2021-07-31', '2022-10-14', 2), (12, 441, 'PVO', 'Piece', 'PVO', '2021-08-01', '2022-10-14', 4), (13, 441, 'PVM', 'Piece', 'PVM', '2021-08-02', '2022-10-14', 4), (14, 441, 'PVMC', 'Piece', 'PVMC', '2021-08-02', '2022-10-14', 4), (15, 323, 'PVMR', 'Piece', 'PVMR', '2021-11-10', '2024-03-11', 4)]
         for row in rows:
             lst_row = list(row)
             if lst_row[5] is not None :
