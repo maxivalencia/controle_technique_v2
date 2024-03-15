@@ -485,31 +485,37 @@ class CtAppImprimableController extends AbstractController
                 $prixPv = 0;
                 //$utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
                 $genreCategorie = $genre->getCtGenreCategorieId();
+                $administratif = false;
+                if($genreCategorie->getId() == 10){
+                    $administratif = true;
+                }
                 $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["tp_dp_libelle" => "Constatation"]);
                 $droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => $genreCategorie->getId(), "ct_type_droit_ptac_id" => $typeDroit->getId()], ["ct_arrete_prix_id" => "DESC", "dp_prix_max" => "DESC"]);
-                foreach($droits as $dt){
-                    if(($carac->getCadPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($carac->getCadPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax()) && ($liste->getCadCreated() >= $dt->getCtArretePrixId()->getArtDateApplication())){
-                        $tarif = $dt->getDpDroit();
-                        break;
-                    }elseif($dt->getDpPrixMin() <= $dt->getDpPrixMax() && $dt->getDpPrixMin() == 0 && $dt->getDpPrixMax() == 0){
-                        $tarif = $dt->getDpDroit();
-                        break;
+                if($administratif == true){
+                    foreach($droits as $dt){
+                        if(($carac->getCadPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($carac->getCadPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax()) && ($liste->getCadCreated() >= $dt->getCtArretePrixId()->getArtDateApplication())){
+                            $tarif = $dt->getDpDroit();
+                            break;
+                        }elseif($dt->getDpPrixMin() <= $dt->getDpPrixMax() && $dt->getDpPrixMin() == 0 && $dt->getDpPrixMax() == 0){
+                            $tarif = $dt->getDpDroit();
+                            break;
+                        }
                     }
-                }
-                $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
-                $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
-                foreach($arretePvTarif as $apt){
-                    $arretePrix = $apt->getCtArretePrixId();
-                    if($liste->getCadCreated() >= $arretePrix->getArtDateApplication()){
-                        $pv_constatation = $ctAutreRepository->findOneBy(["nom" => "PV_CONSTATATION"]);
-                        $nb_pv_constatation = intval($pv_constatation->getAttribut());
-                        $prixPv = $nb_pv_constatation * $apt->getVetPrix();
-                        break;
+                    $pvId = $ctImprimeTechRepository->findOneBy(["abrev_imprime_tech" => "PVO"]);
+                    $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
+                    foreach($arretePvTarif as $apt){
+                        $arretePrix = $apt->getCtArretePrixId();
+                        if($liste->getCadCreated() >= $arretePrix->getArtDateApplication()){
+                            $pv_constatation = $ctAutreRepository->findOneBy(["nom" => "PV_CONSTATATION"]);
+                            $nb_pv_constatation = intval($pv_constatation->getAttribut());
+                            $prixPv = $nb_pv_constatation * $apt->getVetPrix();
+                            break;
+                        }
                     }
                 }
                 $droit = $tarif + $prixPv;
                 $tva = ($droit * floatval($prixTva)) / 100;
-                $montant = $droit + $tva + $timbre;
+                $montant = $droit + $tva;
                 $cad = [
                     "controle_pv" => $liste->getCadNumero(),
                     "proprietaire" => $liste->getCadProprietaireNom(),
@@ -520,7 +526,7 @@ class CtAppImprimableController extends AbstractController
                     "prix_pv" => $prixPv,
                     "tht" => $droit,
                     "tva" => $tva,
-                    "timbre" => $timbre,
+                    //"timbre" => $timbre,
                     "montant" => $montant,
                 ];
                 $liste_des_constatations->add($cad);
@@ -528,7 +534,7 @@ class CtAppImprimableController extends AbstractController
                 $totalDesDroits = $totalDesDroits + $tarif;
                 $totalDesPrixPv = $totalDesPrixPv + $prixPv;
                 $totalDesTVA = $totalDesTVA + $tva;
-                $totalDesTimbres = $totalDesTimbres + $timbre;
+                //$totalDesTimbres = $totalDesTimbres + $timbre;
                 $montantTotal = $montantTotal + $montant;
             }
         }
@@ -1393,28 +1399,34 @@ class CtAppImprimableController extends AbstractController
                 $tarif = 0;
                 $prixPv = 0;
                 $genreCategorie = $genre->getCtGenreCategorieId();
+                $administratif = false;
+                if($genreCategorie->getId() == 10){
+                    $administratif = true;
+                }
                 $typeDroit = $ctTypeDroitPTACRepository->findOneBy(["id" => 2]);
                 $droits = $ctDroitPTACRepository->findBy(["ct_genre_categorie_id" => $genreCategorie->getId(), "ct_type_droit_ptac_id" => $typeDroit->getId()], ["ct_arrete_prix_id" => "DESC", "dp_prix_max" => "DESC"]);
-                foreach($droits as $dt){
-                    if(($carac->getCadPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($carac->getCadPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax()) && ($constatation->getRcpCreated() >= $dt->getCtArretePrixId()->getArtDateApplication())){
-                        $tarif = $dt->getDpDroit();
-                        break;
-                    }elseif($dt->getDpPrixMin() <= $dt->getDpPrixMax() && $dt->getDpPrixMin() == 0 && $dt->getDpPrixMax() == 0){
-                        $tarif = $dt->getDpDroit();
-                        break;
+                if($administratif == true){
+                    foreach($droits as $dt){
+                        if(($carac->getCadPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($carac->getCadPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax()) && ($constatation->getRcpCreated() >= $dt->getCtArretePrixId()->getArtDateApplication())){
+                            $tarif = $dt->getDpDroit();
+                            break;
+                        }elseif($dt->getDpPrixMin() <= $dt->getDpPrixMax() && $dt->getDpPrixMin() == 0 && $dt->getDpPrixMax() == 0){
+                            $tarif = $dt->getDpDroit();
+                            break;
+                        }
                     }
-                }
-                $pvId = $ctImprimeTechRepository->findOneBy(["id" => 12]);
-                $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
-                foreach($arretePvTarif as $apt){
-                    $arretePrix = $apt->getCtArretePrixId();
-                    //if($constatation->getCadCreated() >= $arretePrix->getArtDateApplication()){
-                    // secours fotsiny  new date time fa mila atao daten'ilay pv no tena izy
-                    if($constatation->getCadCreated() >= $arretePrix->getArtDateApplication()){
-                        $pv_constatation = $ctAutreRepository->findOneBy(["nom" => "PV_CONSTATATION"]);
-                        $nb_pv_constatation = intval($pv_constatation->getAttribut());
-                        $prixPv = $nb_pv_constatation * $apt->getVetPrix();
-                        break;
+                    $pvId = $ctImprimeTechRepository->findOneBy(["id" => 12]);
+                    $arretePvTarif = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => $pvId->getId()], ["ct_arrete_prix_id" => "DESC"]);
+                    foreach($arretePvTarif as $apt){
+                        $arretePrix = $apt->getCtArretePrixId();
+                        //if($constatation->getCadCreated() >= $arretePrix->getArtDateApplication()){
+                        // secours fotsiny  new date time fa mila atao daten'ilay pv no tena izy
+                        if($constatation->getCadCreated() >= $arretePrix->getArtDateApplication()){
+                            $pv_constatation = $ctAutreRepository->findOneBy(["nom" => "PV_CONSTATATION"]);
+                            $nb_pv_constatation = intval($pv_constatation->getAttribut());
+                            $prixPv = $nb_pv_constatation * $apt->getVetPrix();
+                            break;
+                        }
                     }
                 }
                 $droit = $tarif + $prixPv;
