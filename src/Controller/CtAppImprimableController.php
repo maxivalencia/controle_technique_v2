@@ -331,7 +331,7 @@ class CtAppImprimableController extends AbstractController
                             if(($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() >= ($dt->getDpPrixMin() * 1000)) && ($liste->getCtVehiculeId()->getVhcPoidsTotalCharge() < ($dt->getDpPrixMax() * 1000)) && ($dt->getDpPrixMin() <= $dt->getDpPrixMax()) && ($liste->getRcpCreated() >= $dt->getCtArretePrixId()->getArtDateApplication())){
                                 $tarif = $dt->getDpDroit();
                                 if($dt->getDpPrixMax() > 0 && $dt->getDpPrixMin() > 0){
-                                    $motif_ptac = $dt->getDpPrixMin().'T < PTAC < '.$dt->getDpPrixMax().'T';
+                                    $motif_ptac = $dt->getDpPrixMin().'T <= PTAC < '.$dt->getDpPrixMax().'T';
                                 }elseif($dt->getDpPrixMin() == 0){
                                     $motif_ptac = 'PTAC < '.$dt->getDpPrixMax().'T';
                                 }
@@ -871,6 +871,7 @@ class CtAppImprimableController extends AbstractController
         $totalDesPrixPv = 0;
         $totalDesTVA = 0;
         $totalDesTimbres = 0;
+        $totalDesPlaques  = 0;
         $montantTotal = 0;
         
         $liste_des_receptions = new ArrayCollection();
@@ -881,6 +882,7 @@ class CtAppImprimableController extends AbstractController
                 $calculable = $motif->isMtfIsCalculable();
                 $tarif = 0;
                 $prixPv = 0;
+                $plaque = 0;
                 $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
                 $utilisation = $liste->getCtUtilisationId();
                 if($utilisation != $utilisationAdministratif){
@@ -891,6 +893,16 @@ class CtAppImprimableController extends AbstractController
                             if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
                                 $tarif = $mtf->getMtfTrfPrix();
                                 break;
+                            }
+                        }
+                        if($motif->getId() == 12){
+                            $tarif_paques = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => 8], ["ct_arrete_prix_id" => "DESC"]);
+                            foreach($tarif_paques as $trf_plq){
+                                $arretePrix = $trf_plq->getCtArretePrixId();
+                                if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
+                                    $plaque = $plaque + $trf_plq->getVetPrix();
+                                    break;
+                                }
                             }
                         }
                     }
@@ -920,7 +932,7 @@ class CtAppImprimableController extends AbstractController
                         }
                     }
                 }
-                $droit = $tarif + $prixPv;
+                $droit = $tarif + $prixPv + $plaque;
                 $tva = ($droit * floatval($prixTva)) / 100;
                 $montant = $droit + $tva + $timbre;
                 $rcp = [
@@ -932,6 +944,7 @@ class CtAppImprimableController extends AbstractController
                     "prix_pv" => $prixPv,
                     "tva" => $tva,
                     "timbre" => $timbre,
+                    "plaque" => $plaque,
                     "montant" => $montant,
                     "utilisation" => $utilisation,
                 ];
@@ -943,6 +956,7 @@ class CtAppImprimableController extends AbstractController
                 $totalDesTVA = $totalDesTVA + $tva;
                 $totalDesTimbres = $totalDesTimbres + $timbre;
                 $montantTotal = $montantTotal + $montant;
+                $totalDesPlaques = $totalDesPlaques + $plaque;
 
         $html = $this->renderView('ct_app_imprimable/proces_verbal_reception_isole.html.twig', [
             'logo' => $logo,
@@ -958,6 +972,7 @@ class CtAppImprimableController extends AbstractController
             'total_des_tht' => $totalDesTHT,
             'total_des_tva' => $totalDesTVA,
             'total_des_timbres' => $totalDesTimbres,
+            'total_des_plaques' => $$totalDesPlaques,
             'montant_total' => $montantTotal,
             'reception' => $reception_data,
         ]);
@@ -1051,6 +1066,7 @@ class CtAppImprimableController extends AbstractController
         $totalDesPrixPv = 0;
         $totalDesTVA = 0;
         $totalDesTimbres = 0;
+        $totalDesPlaques = 0;
         $montantTotal = 0;
 
         $liste_des_receptions = new ArrayCollection();
@@ -1061,6 +1077,7 @@ class CtAppImprimableController extends AbstractController
                 $calculable = $motif->isMtfIsCalculable();
                 $tarif = 0;
                 $prixPv = 0;
+                $plaque = 0;
                 $utilisationAdministratif = $ctUtilisationRepository->findOneBy(["ut_libelle" => "Administratif"]);
                 $utilisation = $liste->getCtUtilisationId();
                 if($utilisation != $utilisationAdministratif){
@@ -1071,6 +1088,16 @@ class CtAppImprimableController extends AbstractController
                             if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
                                 $tarif = $mtf->getMtfTrfPrix();
                                 break;
+                            }
+                        }
+                        if($motif->getId() == 12){
+                            $tarif_paques = $ctVisiteExtraTarifRepository->findBy(["ct_imprime_tech_id" => 8], ["ct_arrete_prix_id" => "DESC"]);
+                            foreach($tarif_paques as $trf_plq){
+                                $arretePrix = $trf_plq->getCtArretePrixId();
+                                if($liste->getRcpCreated() >= $arretePrix->getArtDateApplication()){
+                                    $plaque = $plaque + $trf_plq->getVetPrix();
+                                    break;
+                                }
                             }
                         }
                     }
@@ -1112,6 +1139,7 @@ class CtAppImprimableController extends AbstractController
                     "prix_pv" => $prixPv,
                     "tva" => $tva,
                     "timbre" => $timbre,
+                    "plaque" => $plaque,
                     "montant" => $montant,
                     "utilisation" => $utilisation,
                 ];
@@ -1123,6 +1151,7 @@ class CtAppImprimableController extends AbstractController
                 $totalDesTVA = $totalDesTVA + $tva;
                 $totalDesTimbres = $totalDesTimbres + $timbre;
                 $montantTotal = $montantTotal + $montant;
+                $totalDesPlaques = $totalDesPlaques + $plaque;
 
         $html = $this->renderView('ct_app_imprimable/proces_verbal_reception_par_type.html.twig', [
             'logo' => $logo,
@@ -1138,6 +1167,7 @@ class CtAppImprimableController extends AbstractController
             'total_des_tht' => $totalDesTHT,
             'total_des_tva' => $totalDesTVA,
             'total_des_timbres' => $totalDesTimbres,
+            'total_des_plaques' => $$totalDesPlaques,
             'montant_total' => $montantTotal,
             'receptions' => $liste_receptions,
         ]);

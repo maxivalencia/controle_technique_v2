@@ -2,6 +2,7 @@
     <html>
         <head>
             <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <title>Proces Verbal réception technique par type</title>
             <style>
                 html{margin:20px 20px 20px 20px;}
@@ -238,6 +239,13 @@
                             <td width="10"> : </td>
                             <td width="400"><strong>Ar {{ total_des_prix_pv|number_format(0, ',', ' ') }}</strong></td>
                         </tr>
+                        {% if total_des_plaques > 0 %}
+                            <tr>
+                                <td width="100">Prix du procès-verbal</td>
+                                <td width="10"> : </td>
+                                <td width="400"><strong>Ar {{ total_des_plaques|number_format(0, ',', ' ') }}</strong></td>
+                            </tr>
+                        {% endif %}
                         <tr>
                             <td width="100">THT</td>
                             <td width="10"> : </td>
