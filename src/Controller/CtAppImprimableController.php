@@ -78,6 +78,7 @@ class CtAppImprimableController extends AbstractController
         $date_reception = new \DateTime();
         $date_of_reception = new \DateTime();
         $type_reception_id = new CtTypeReception();
+        $total = 0;
         $centre = new CtCentre();
         if($request->request->get('form')){
             $rechercheform = $request->request->get('form');
@@ -118,6 +119,7 @@ class CtAppImprimableController extends AbstractController
             $liste_receptions = $ctReceptionRepository->findBy(["rcp_num_group" => $nomGroup, "rcp_is_active" => true]);
         } */
         $liste_receptions = $ctReceptionRepository->findByFicheDeControle($type_reception_id->getId(), $centre->getId(), $date_of_reception);
+        $total = count($liste_receptions);
         $html = $this->renderView('ct_app_imprimable/fiche_de_controle_reception.html.twig', [
             'logo' => $logo,
             'date' => $date,
@@ -127,6 +129,7 @@ class CtAppImprimableController extends AbstractController
             'type' => $type_reception,
             'date_reception' => $date_of_reception,
             'ct_receptions' => $liste_receptions,
+            'total' => $total,
         ]);
         $dompdf->loadHtml($html);
         /* $dompdf->setPaper('A4', 'portrait'); */
@@ -4176,12 +4179,13 @@ class CtAppImprimableController extends AbstractController
                 if($lst_imp_non_use != null){
                     $existant = $existant + count($lst_imp_non_use);
                 } */
-                $existant = $ctImprimeTechUseRepository->findNombreExistant($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                $existant += $ctImprimeTechUseRepository->findNombreExistant($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                //var_dump($existant);
                 /* $lst_imp_recue = $ctImprimeTechUseRepository->findRecu($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
                 if($lst_imp_recue != null){
                     $recu = $recu + count($lst_imp_recue);
                 } */
-                $recu = $ctImprimeTechUseRepository->findNombreRecu($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                $recu += $ctImprimeTechUseRepository->findNombreRecu($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
                 //$lst_utiliser = $ctImprimeTechUseRepository->findUtiliser($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
                 $lst_utiliser = null;
                 if($lst_utiliser != null){
@@ -4254,7 +4258,7 @@ class CtAppImprimableController extends AbstractController
 
         $html = $this->renderView('ct_app_imprimable/fiche_de_stock.html.twig', [
             'logo' => $logo,
-            'date_stock' => $date,
+            'date_stock' => $date_of_stock,
             'province' => $centre->getCtProvinceId()->getPrvNom(),
             'centre' => $centre->getCtrNom(),
             'user' => $this->getUser(),

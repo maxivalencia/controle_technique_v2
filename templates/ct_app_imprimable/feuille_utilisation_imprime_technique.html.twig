@@ -73,11 +73,11 @@
             </table>
         </div>
         <table align="center" style="border: 2px solid black;border-collapse: collapse;font-size:8px">
-            <tr align="center" style="font-size:8px;">
+            <tr align="center" style="font-size:10px;">
                 <td align="center" valign="middle" width="20" style="border: 1px solid black;border-collapse: collapse;"><strong><i>N°</i></strong></td>
                 <td align="center" valign="middle" width="120" style="border: 1px solid black;border-collapse: collapse;"><strong><i>REFERENCE OPERATION</i></strong></td>
                 <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>N° IMM</i></strong></td>
-                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>Motif</i></strong></td>
+                <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>MOTIF</i></strong></td>
                 <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PVO<br>(1)</i></strong></td>
                 <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PVM<br>(2)</i></strong></td>
                 <td align="center" valign="middle" width="30" style="border: 1px solid black;border-collapse: collapse;"><strong><i>PVMC<br>(3)</strong></td>
@@ -97,7 +97,7 @@
                 <td align="center" valign="middle" width="75" style="border: 1px solid black;border-collapse: collapse;"><strong><i>OBSERVATION</i></strong></td>
             </tr>
             {% for ct_imprime_tech_use in ct_imprime_tech_uses %}
-                <tr style="font-size:6px;">
+                <tr style="font-size:8px;">
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.numero }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.reference_operation }}</td>
                     <td align="center" style="border: 1px solid black;border-collapse: collapse;">{{ ct_imprime_tech_use.immatriculation }}</td>
