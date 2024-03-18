@@ -4175,69 +4175,14 @@ class CtAppImprimableController extends AbstractController
             $adm = 0;
             $rebut = 0;
             foreach($liste_centres as $ctr){
-                /* $lst_imp_non_use = $ctImprimeTechUseRepository->findExistant($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
-                if($lst_imp_non_use != null){
-                    $existant = $existant + count($lst_imp_non_use);
-                } */
                 $existant += $ctImprimeTechUseRepository->findNombreExistant($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
-                //var_dump($existant);
-                /* $lst_imp_recue = $ctImprimeTechUseRepository->findRecu($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
-                if($lst_imp_recue != null){
-                    $recu = $recu + count($lst_imp_recue);
-                } */
                 $recu += $ctImprimeTechUseRepository->findNombreRecu($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                $vendus += $ctImprimeTechUseRepository->findNombreUtiliserParticulier($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                //var_dump($vendus);
+                $adm += $ctImprimeTechUseRepository->findNombreUtiliserAdministratif($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                $rebut += $ctImprimeTechUseRepository->findNombreUtiliserRebut($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
+                $vendus -= $adm;
                 //$lst_utiliser = $ctImprimeTechUseRepository->findUtiliser($ctr, $date_of_stock->format('m'), $date_of_stock->format('Y'), $lstimp->getId());
-                $lst_utiliser = null;
-                if($lst_utiliser != null){
-                    foreach($lst_utiliser as $utiliser){
-                        $utilisation = $utiliser->getCtUsageItId();
-                        if($utilisation->getId() == 9){
-                            $rebut++;
-                        }else{
-                            switch($utilisation->getId()){
-                                case 10:
-                                    $visite = $ctVisiteRepository->findOneBy(["id" => $utiliser->getCtControleId()]);
-                                    if($visite != null){
-                                        if($visite->getCtUtilisationId()->getId() == 1){
-                                            $adm++;
-                                        }else{
-                                            $vendus++;
-                                        }
-                                    }else{
-                                        $vendus++;
-                                    }
-                                    break;
-                                case 11:
-                                    $reception = $ctReceptionRepository->findOneBy(["id" => $utiliser->getCtControleId()]);
-                                    if($reception != null){
-                                        if($reception->getCtUtilisationId()->getId() == 1){
-                                            $adm++;
-                                        }else{
-                                            $vendus++;
-                                        }
-                                    }else{
-                                        $vendus++;
-                                    }
-                                    break;
-                                /* case 12:
-                                    $constatation = $ctConstAvDedRepository->findOneBy(["id" => $utiliser->getCtControleId()]);
-                                    if($constatation != null){
-                                        if($constatation->getCtUtilisationId()->getId() == 1){
-                                            $adm++;
-                                        }else{
-                                            $vendus++;
-                                        }
-                                    }else{
-                                        $vendus++;
-                                    }
-                                    break */;
-                                default:
-                                    $vendus++;
-                                    break;
-                            }
-                        }
-                    }
-                }
             }
             $stock = [
                 "numero" => ++$numero,
