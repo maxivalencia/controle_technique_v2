@@ -84,6 +84,11 @@ class CtAutreVente
      */
     private $auv_num_pv;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CtUtilisation::class, inversedBy="ctAutreVentes")
+     */
+    private $ct_utilisation_id;
+
     public function __construct()
     {
         $this->auv_extra = new ArrayCollection();
@@ -258,6 +263,18 @@ class CtAutreVente
     public function setAuvNumPv(?string $auv_num_pv): self
     {
         $this->auv_num_pv = strtoupper($auv_num_pv);
+
+        return $this;
+    }
+
+    public function getCtUtilisationId(): ?CtUtilisation
+    {
+        return $this->ct_utilisation_id;
+    }
+
+    public function setCtUtilisationId(?CtUtilisation $ct_utilisation_id): self
+    {
+        $this->ct_utilisation_id = $ct_utilisation_id;
 
         return $this;
     }

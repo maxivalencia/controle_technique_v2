@@ -68,6 +68,9 @@ class CtConstatationEditType extends AbstractType
             ->add('cad_immatriculation', TextType::class, [
                 'label' => 'Immatriculation',
             ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
+            ])
             ->add('cad_provenance', TextType::class, [
                 'label' => 'Provenance',
             ])

@@ -47,6 +47,11 @@ class CtDroitPTAC
      */
     private $ct_arrete_prix_id;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CtTypeReception::class, inversedBy="ctDroitPTACs")
+     */
+    private $ct_type_reception_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +125,18 @@ class CtDroitPTAC
     public function setCtArretePrixId(?CtArretePrix $ct_arrete_prix_id): self
     {
         $this->ct_arrete_prix_id = $ct_arrete_prix_id;
+
+        return $this;
+    }
+
+    public function getCtTypeReceptionId(): ?CtTypeReception
+    {
+        return $this->ct_type_reception_id;
+    }
+
+    public function setCtTypeReceptionId(?CtTypeReception $ct_type_reception_id): self
+    {
+        $this->ct_type_reception_id = $ct_type_reception_id;
 
         return $this;
     }

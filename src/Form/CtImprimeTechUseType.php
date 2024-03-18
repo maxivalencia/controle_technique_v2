@@ -85,6 +85,9 @@ class CtImprimeTechUseType extends AbstractType
             ->add('ct_usage_it_id', null, [
                 'label' => 'Utilisation',
             ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
+            ])
         ;
     }
 

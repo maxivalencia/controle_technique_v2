@@ -42,6 +42,12 @@ use App\Entity\CtGenreCategorie;
 use App\Entity\CtVisite;
 use App\Entity\CtMarque;
 use App\Entity\CtUser;
+use App\Entity\CtHistorique;
+use App\Entity\CtHistoriqueType;
+//use App\Form\CtHistoriqueType;
+use App\Form\CtHistoriqueTypeType;
+use App\Repository\CtHistoriqueRepository;
+use App\Repository\CtHistoriqueTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -308,11 +314,14 @@ class CtAppImprimeTechniqueController extends AbstractController
     public function MiseAJourMultiple(Request $request, CtAutreVenteRepository $ctAutreVenteRepository, CtReceptionRepository $ctReceptionRepository, CtConstAvDedRepository $ctConstAvDedRepository, CtVisiteRepository $ctVisiteRepository, CtImprimeTechRepository $ctImprimeTechRepository, CtImprimeTechUseRepository $ctImprimeTechUseRepository): Response
     {
         $ct_imprime_tech_use = new CtImprimeTechUse();
-        $
+        $id = $request->query->get("id");
+        $old = $request->query->get("old");
+        $code = $request->query->get("code");
         //$ct_imprime_tech_use = $ctImprimeTechUseRepository->findOneBy(["id" => $id]);
         $form_imprime_tech_use = $this->createForm(CtImprimeTechUseMultipleType::class, $ct_imprime_tech_use, ["centre" => $this->getUser()->getCtCentreId()]);
         $form_imprime_tech_use->handleRequest($request);
         $utilisation = "";
+        $reception = "";
 
         if($form_imprime_tech_use->isSubmitted() && $form_imprime_tech_use->isValid()) {
             //$ct_imprime_tech_use_get->setCtCarrosserieId($form_imprime_tech_use['ct_imprime_tech_use_multiple']['imprime_technique_use_numero']->getData());
@@ -323,8 +332,8 @@ class CtAppImprimeTechniqueController extends AbstractController
                 $ct_itu->setCreatedAt(new \DateTime());
                 $ct_itu->setCtUserId($this->getUser());
                 $ct_itu->setCtControleId($ct_imprime_tech_use->getCtControleId());
-                switch($ct_imprime_tech_use->getCtUsageItId()->getUitLibelle()){
-                    case "VISITE":
+                switch($ct_imprime_tech_use->getCtUsageItId()->getId()){
+                    case 10:
                         $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
                         $utilisation = "VISITE";
                         $controle = $ctVisiteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
@@ -332,7 +341,7 @@ class CtAppImprimeTechniqueController extends AbstractController
                             $itu_utilisable = true;
                         }
                         break;
-                    case "CONTRE":
+                    case 13:
                         $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
                         $utilisation = "CONTRE";
                         $controle = $ctVisiteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
@@ -340,18 +349,99 @@ class CtAppImprimeTechniqueController extends AbstractController
                             $itu_utilisable = true;
                         }
                         break;
-                    case "RECEPTION":
+                    case 11:
                         $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
                         $utilisation = "RECEPTION";
                         $controle = $ctReceptionRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
                         if($controle != null){
                             $itu_utilisable = true;
+                            $reception = $controle->getTprcpLibelle();
                         }
                         break;
-                    case "CONSTATATION":
+                    case 12:
                         $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
                         $utilisation = "CONSTATATION";
                         $controle = $ctConstAvDedRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                        if($controle != null){
+                            $itu_utilisable = true;
+                        }
+                        break;
+                    case 1:
+                        $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                        $utilisation = "MUTATION";
+                        $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                        if($controle != null){
+                            $itu_utilisable = true;
+                        }
+                        break;
+                    case 2:
+                        $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                        $utilisation = "DUPLICATA_VISITE";
+                        $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                        if($controle != null){
+                            $itu_utilisable = true;
+                        }
+                        break;
+                    case 3:
+                        $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                        $utilisation = "AUTHENTICITE_VITRE_FUMEE";
+                        $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                        if($controle != null){
+                            $itu_utilisable = true;
+                        }
+                        break;
+                    case 4:
+                        $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                        $utilisation = "DUPLICATA_RECEPTION";
+                        $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                        if($controle != null){
+                            $itu_utilisable = true;
+                        }
+                        break;
+                    case 5:
+                        $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                        $utilisation = "DUPLICATA_CONSTATATION";
+                        $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                        if($controle != null){
+                            $itu_utilisable = true;
+                        }
+                        break;
+                    case 6:
+                        $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                        $utilisation = "DUPLICATA_AUTHENTICITE_VITRE_FUMEE";
+                        $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                        if($controle != null){
+                            $itu_utilisable = true;
+                        }
+                        break;
+                    case 7:
+                        $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                        $utilisation = "CARACTERISTIQUE";
+                        $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                        if($controle != null){
+                            $itu_utilisable = true;
+                        }
+                        break;
+                    case 8:
+                        $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                        $utilisation = "VISITE_SPECIALE";
+                        $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                        if($controle != null){
+                            $itu_utilisable = true;
+                        }
+                        break;
+                    case 9:
+                        $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                        $utilisation = "REBUT";
+                        $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
+                        if($controle != null){
+                            $itu_utilisable = true;
+                        }
+                        break;
+                    case 14:
+                        $ct_itu->setCtUsageItId($ct_imprime_tech_use->getCtUsageItId());
+                        $utilisation = "AUTRE";
+                        $controle = $ctAutreVenteRepository->findOneBy(["id" => $ct_imprime_tech_use->getCtControleId(), "ct_centre_id" => $this->getUser()->getCtCentreId()]);
                         if($controle != null){
                             $itu_utilisable = true;
                         }
@@ -377,19 +467,23 @@ class CtAppImprimeTechniqueController extends AbstractController
                     return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite', ["id" => $id], Response::HTTP_SEE_OTHER);
                     break;
                 case "CONTRE":
-                    //return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite_contre', ["id" => $ctVisite_contre->getId(), "old" => $ctVisite->getId()], Response::HTTP_SEE_OTHER);
+                    return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite_contre', ["id" => $id, "old" => $old], Response::HTTP_SEE_OTHER);
                     break;
                 case "RECEPTION":
-                    //return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_isole', ["id" => $ctReception_new->getId()]);
-                    //return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_par_type', ["id" => $code]);
+                    if($reception == "ISOLE"){
+                        return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_isole', ["id" => $id], Response::HTTP_SEE_OTHER);
+                    }else{
+                        return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_par_type', ["id" => $id], Response::HTTP_SEE_OTHER);
+                    }
                     break;
                 case "CONSTATATION":
-                    //return $this->redirectToRoute('app_ct_app_constatation_voir_constatation_avant_dedouanement', ["id" => $ctConstatation_new->getId()], Response::HTTP_SEE_OTHER);
+                    return $this->redirectToRoute('app_ct_app_constatation_voir_constatation_avant_dedouanement', ["id" => $id], Response::HTTP_SEE_OTHER);
                     break;
                 case "AUTRE":
-                    //return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_utilisation', [], Response::HTTP_SEE_OTHER);
+                    return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_utilisation', [], Response::HTTP_SEE_OTHER);
                     break;
                 default:
+                    return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_utilisation', [], Response::HTTP_SEE_OTHER);
                     break;
             }
         }

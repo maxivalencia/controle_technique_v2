@@ -102,6 +102,10 @@ class CtImprimeTechUseModulableType extends AbstractType
                 'data' => $usage,
                 'disabled' => true,
             ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
+                'disabled' => false,
+            ])
             /* ->add('ct_controle_id')
             ->add('itu_numero')
             ->add('itu_used')

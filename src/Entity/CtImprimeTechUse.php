@@ -82,6 +82,11 @@ class CtImprimeTechUse
      */
     private $itu_is_visible;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CtUtilisation::class, inversedBy="ctImprimeTechUses")
+     */
+    private $ct_utilisation_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -239,6 +244,18 @@ class CtImprimeTechUse
     public function setItuIsVisible(bool $itu_is_visible): self
     {
         $this->itu_is_visible = $itu_is_visible;
+
+        return $this;
+    }
+
+    public function getCtUtilisationId(): ?CtUtilisation
+    {
+        return $this->ct_utilisation_id;
+    }
+
+    public function setCtUtilisationId(?CtUtilisation $ct_utilisation_id): self
+    {
+        $this->ct_utilisation_id = $ct_utilisation_id;
 
         return $this;
     }

@@ -2,6 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\CtHistorique;
+use App\Entity\CtHistoriqueType;
+//use App\Form\CtHistoriqueType;
+use App\Form\CtHistoriqueTypeType;
+use App\Repository\CtHistoriqueRepository;
+use App\Repository\CtHistoriqueTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

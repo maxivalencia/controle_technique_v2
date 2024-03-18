@@ -26,6 +26,7 @@
                 <th>conforme</th>
                 <th>est-active</th>
                 <th>généré</th>
+                <th>Utilisation</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -50,6 +51,7 @@
                 <td>{{ ct_const_av_ded.cadConforme ? 'Oui' : 'Non' }}</td>
                 <td>{{ ct_const_av_ded.cadIsActive ? 'Oui' : 'Non' }}</td>
                 <td>{{ ct_const_av_ded.cadGenere }}</td>
+                <td>{{ ct_const_av_ded.cadUtilisationId }}</td>
                 <td>
                     <a href="{{ path('app_ct_const_av_ded_show', {'id': ct_const_av_ded.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
                     <a href="{{ path('app_ct_const_av_ded_edit', {'id': ct_const_av_ded.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>

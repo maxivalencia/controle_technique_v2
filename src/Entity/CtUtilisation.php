@@ -34,10 +34,28 @@ class CtUtilisation
      */
     private $ctVisites;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CtVisite::class, mappedBy="ct_utilisation_id")
+     */
+    private $ctConstAvDeds;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CtVisite::class, mappedBy="ct_utilisation_id")
+     */
+    private $ctAutreVentes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CtVisite::class, mappedBy="ct_utilisation_id")
+     */
+    private $ctImprimeTechUses;
+
     public function __construct()
     {
         $this->ctReceptions = new ArrayCollection();
         $this->ctVisites = new ArrayCollection();
+        $this->ctConstAvDeds = new ArrayCollection();
+        $this->ctAutreVentes = new ArrayCollection();
+        $this->ctImprimeTechUses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,6 +129,96 @@ class CtUtilisation
             // set the owning side to null (unless already changed)
             if ($ctVisite->getCtUtilisationId() === $this) {
                 $ctVisite->setCtUtilisationId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CtConstAvDed>
+     */
+    public function getCtConstAvDeds(): Collection
+    {
+        return $this->ctConstAvDeds;
+    }
+
+    public function addCtConstAvDed(CtConstAvDed $ctVisite): self
+    {
+        if (!$this->ctConstAvDeds->contains($ctVisite)) {
+            $this->ctConstAvDeds[] = $ctVisite;
+            $ctVisite->setCtUtilisationId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCtConstAvDed(CtConstAvDed $ctConstAvDed): self
+    {
+        if ($this->ctConstAvDeds->removeElement($ctConstAvDed)) {
+            // set the owning side to null (unless already changed)
+            if ($ctConstAvDed->getCtUtilisationId() === $this) {
+                $ctConstAvDed->setCtUtilisationId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CtAutreVente>
+     */
+    public function getCtAutreVentes(): Collection
+    {
+        return $this->ctAutreVentes;
+    }
+
+    public function addCtAutreVente(CtAutreVente $ctAutreVente): self
+    {
+        if (!$this->ctAutreVentes->contains($ctAutreVente)) {
+            $this->ctAutreVentes[] = $ctAutreVente;
+            $ctAutreVente->setCtUtilisationId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCtAutreVente(CtAutreVente $ctAutreVente): self
+    {
+        if ($this->ctAutreVentes->removeElement($ctAutreVente)) {
+            // set the owning side to null (unless already changed)
+            if ($ctAutreVente->getCtUtilisationId() === $this) {
+                $ctAutreVente->setCtUtilisationId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collections<int, CtImprimeTechUse>
+     */
+    public function getCtImprimeTechUses(): Collection
+    {
+        return $this->ctImprimeTechUses;
+    }
+
+    public function addCtImprimeTechUse(CtImprimeTechUse $ctImprimeTechUse): self
+    {
+        if (!$this->ctImprimeTechUses->contains($ctImprimeTechUse)) {
+            $this->ctImprimeTechUses[] = $ctImprimeTechUse;
+            $ctImprimeTechUse->setCtUtilisationId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCtImprimeTechUse(CtImprimeTechUse $ctImprimeTechUse): self
+    {
+        if ($this->ctImprimeTechUses->removeElement($ctImprimeTechUse)) {
+            // set the owning side to null (unless already changed)
+            if ($ctImprimeTechUse->getCtUtilisationId() === $this) {
+                $ctImprimeTechUse->setCtUtilisationId(null);
             }
         }
 

@@ -30,6 +30,9 @@ class CtDroitPTACType extends AbstractType
             ->add('ct_arrete_prix_id', null, [
                 'label' => 'Arrêté prix',
             ])
+            ->add('ct_type_reception_id', null, [
+                'label' => 'Type réception',
+            ])
         ;
     }
 

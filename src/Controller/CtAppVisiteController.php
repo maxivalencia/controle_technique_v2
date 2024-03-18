@@ -42,6 +42,12 @@ use App\Form\CtImprimeTechUseModulableType;
 use App\Form\CtAutreVenteAuthenticiteType;
 use App\Form\CtAutreVenteVisiteSpecialType;
 use App\Entity\CtImprimeTech;
+use App\Entity\CtHistorique;
+use App\Entity\CtHistoriqueType;
+//use App\Form\CtHistoriqueType;
+use App\Form\CtHistoriqueTypeType;
+use App\Repository\CtHistoriqueRepository;
+use App\Repository\CtHistoriqueTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\DataTransformer\IssueToNumberTransformer;
 use App\Repository\CtUtilisationRepository;
@@ -760,7 +766,8 @@ class CtAppVisiteController extends AbstractController
             $enregistrement_ok = true;
 
             // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
-            return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite', ["id" => $ctVisite_new->getId()], Response::HTTP_SEE_OTHER);
+            //return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite', ["id" => $ctVisite_new->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_multiple', ["id" => $ctVisite_new->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('ct_app_visite/creer_visite.html.twig', [
@@ -970,7 +977,8 @@ class CtAppVisiteController extends AbstractController
             $enregistrement_ok = true;
 
             // assiana redirection mandeha amin'ny générer rehefa vita ilay izy
-            return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite_contre', ["id" => $ctVisite_contre->getId(), "old" => $ctVisite->getId()], Response::HTTP_SEE_OTHER);
+            //return $this->redirectToRoute('app_ct_app_visite_recapitulation_visite_contre', ["id" => $ctVisite_contre->getId(), "old" => $ctVisite->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_multiple', ["id" => $ctVisite_contre->getId(), "old" => $ctVisite->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('ct_app_visite/contre_visite.html.twig', [

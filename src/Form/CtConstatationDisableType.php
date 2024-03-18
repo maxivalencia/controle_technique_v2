@@ -55,6 +55,10 @@ class CtConstatationDisableType extends AbstractType
                 ],
                 'disabled' => $disable,
             ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
+                'disabled' => $disable,
+            ])
             ->add('cad_immatriculation', TextType::class, [
                 'label' => 'Immatriculation',
                 'disabled' => $disable,

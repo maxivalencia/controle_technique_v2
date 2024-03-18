@@ -21,6 +21,12 @@ use App\Repository\CtImprimeTechRepository;
 use App\Repository\CtImprimeTechUseModulableRepository;
 use App\Form\CtImprimeTechUseType;
 use App\Form\CtImprimeTechUseModulableType;
+use App\Entity\CtHistorique;
+use App\Entity\CtHistoriqueType;
+//use App\Form\CtHistoriqueType;
+use App\Form\CtHistoriqueTypeType;
+use App\Repository\CtHistoriqueRepository;
+use App\Repository\CtHistoriqueTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -289,6 +295,7 @@ class CtAppConstatationController extends AbstractController
             $ctConstatation_new->setCtVerificateurId($ctConstatation->getCtVerificateurId());
             $ctConstatation_new->setCadProvenance($ctConstatation->getCadProvenance());
             $ctConstatation_new->setCadDivers($ctConstatation->getCadDivers());
+            $ctConstatation_new->setCtUtilisationId($ctConstatation->getCtUtilisationId());
             $ctConstatation_new->setCadProprietaireNom($ctConstatation->getCadProprietaireNom());
             $ctConstatation_new->setCadProprietaireAdresse($ctConstatation->getCadProprietaireAdresse());
             $ctConstatation_new->setCadBonEtat($ctConstatation->isCadBonEtat());
@@ -319,7 +326,8 @@ class CtAppConstatationController extends AbstractController
             $enregistrement_ok = true;
 
             // asiana redirection mandeha amin'ny générer rehefa vita ilay izy
-            return $this->redirectToRoute('app_ct_app_constatation_voir_constatation_avant_dedouanement', ["id" => $ctConstatation_new->getId()], Response::HTTP_SEE_OTHER);
+            //return $this->redirectToRoute('app_ct_app_constatation_voir_constatation_avant_dedouanement', ["id" => $ctConstatation_new->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_multiple', ["id" => $ctConstatation_new->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('ct_app_constatation/creer_constatation.html.twig', [
@@ -540,6 +548,7 @@ class CtAppConstatationController extends AbstractController
             $ctConstatation_new->setCtVerificateurId($ctConstatation->getCtVerificateurId());
             $ctConstatation_new->setCadProvenance($ctConstatation->getCadProvenance());
             $ctConstatation_new->setCadDivers($ctConstatation->getCadDivers());
+            $ctConstatation_new->setCtUtilisationId($ctConstatation->getCtUtilisationId());
             $ctConstatation_new->setCadProprietaireNom($ctConstatation->getCadProprietaireNom());
             $ctConstatation_new->setCadProprietaireAdresse($ctConstatation->getCadProprietaireAdresse());
             $ctConstatation_new->setCadBonEtat($ctConstatation->isCadBonEtat());

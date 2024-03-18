@@ -72,7 +72,7 @@ class CtBordereauRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.ct_imprime_tech_id = :val1')
-            ->andWhere('c.bl_debut_numero BETWEEN :val2 and :val3 OR c.bl_fin_numero BETWEEN :val2 and :val3')
+            ->andWhere('c.bl_debut_numero BETWEEN :val2 and :val3 OR c.bl_fin_numero BETWEEN :val2 and :val3 OR :val2 BETWEEN c.bl_debut_numero and c.bl_fin_numero OR :val3 BETWEEN c.bl_debut_numero and c.bl_fin_numero')
             ->setParameter('val1', $imprime)
             ->setParameter('val2', $min)
             ->setParameter('val3', $max)

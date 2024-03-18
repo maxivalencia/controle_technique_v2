@@ -25,6 +25,12 @@ use App\Repository\CtImprimeTechRepository;
 use App\Repository\CtImprimeTechUseRepository;
 use App\Form\CtImprimeTechUseType;
 use App\Form\CtImprimeTechUseModulableType;
+use App\Entity\CtHistorique;
+use App\Entity\CtHistoriqueType;
+//use App\Form\CtHistoriqueType;
+use App\Form\CtHistoriqueTypeType;
+use App\Repository\CtHistoriqueRepository;
+use App\Repository\CtHistoriqueTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -268,7 +274,9 @@ class CtAppReceptionController extends AbstractController
             $message = "Réception ajouter avec succes";
             $enregistrement_ok = true;
 
-            return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_isole', ["id" => $ctReception_new->getId()]);
+            //return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_isole', ["id" => $ctReception_new->getId()]);
+            return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_multiple', ["id" => $ctReception_new->getId()]);
+            
         }
         return $this->render('ct_app_reception/creer_reception_isole.html.twig', [
             'form_reception' => $form_reception->createView(),
@@ -392,7 +400,8 @@ class CtAppReceptionController extends AbstractController
             //$code = $request->request->get('code');
             if($vehicule_encours > $total_vehicule){
                 // eto no assiana ny redirection rehefa vita ny boucle rehetra
-                return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_par_type', ["id" => $code]);
+                //return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_par_type', ["id" => $code]);
+                return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_multiple', ["id" => $code]);
             }
         }
         if($request->request->get('total_vehicule')){
@@ -404,7 +413,8 @@ class CtAppReceptionController extends AbstractController
             //$code = $request->query->get('code');
             if($vehicule_encours > $total_vehicule){
                 // eto no assiana ny redirection rehefa vita ny boucle rehetra
-                return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_par_type', ["id" => $code]);
+                //return $this->redirectToRoute('app_ct_app_reception_recapitulation_reception_par_type', ["id" => $code]);
+                return $this->redirectToRoute('app_ct_app_imprime_technique_mise_a_jour_multiple', ["id" => $code]);
             }
         }
         if($request->query->get('total_vehicule')){

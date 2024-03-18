@@ -17,6 +17,7 @@
                 <th>Updated_at</th>
                 <th>observation</th>
                 <th>est visible</th>
+                <th>Utilisation</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -32,6 +33,7 @@
                 <td>{{ ct_imprime_tech_use.updatedAt ? ct_imprime_tech_use.updatedAt|date('d/m/Y H:i:s') : '' }}</td>
                 <td>{{ ct_imprime_tech_use.ituObservation }}</td>
                 <td>{{ ct_imprime_tech_use.ituIsVisible ? 'Oui' : 'Non' }}</td>
+                <td>{{ ct_imprime_tech_use.ctUtilisationId }}</td>
                 <td>
                     <a href="{{ path('app_ct_imprime_tech_use_show', {'id': ct_imprime_tech_use.id}) }}" class="btn btn-success"><i class="fa fa-book" aria-hidden="true"></i></a>
                     <a href="{{ path('app_ct_imprime_tech_use_edit', {'id': ct_imprime_tech_use.id}) }}" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>

@@ -91,6 +91,10 @@ class CtImprimeTechUseDisableType extends AbstractType
                 'label' => 'Motif d\'utilisation IT',
                 'disabled' => $disable,
             ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
+                'disabled' => $disable,
+            ])
         ;
     }
 

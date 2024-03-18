@@ -134,6 +134,9 @@ class CtConstAvDedType extends AbstractType
                     'data-select' => true,
                 ],
             ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
+            ])
         ;
     }
 

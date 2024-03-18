@@ -24,6 +24,9 @@ class CtAutreVenteAutreVenteType extends AbstractType
             ->add('ct_usage_it', null, [
                 'label' => 'Type autre service',
             ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
+            ])
             /* ->add('ct_autre_tarif_id') */
             /* ->add('user_id') */
             ->add('verificateur_id', EntityType::class, [

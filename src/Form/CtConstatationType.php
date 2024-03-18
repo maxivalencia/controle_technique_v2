@@ -69,6 +69,9 @@ class CtConstatationType extends AbstractType
             ->add('cad_provenance', TextType::class, [
                 'label' => 'Provenance',
             ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
+            ])
             ->add('cad_date_embarquement', DateType::class, [
                 'label' => 'Data d\'embarquement',
                 'widget' => 'single_text',

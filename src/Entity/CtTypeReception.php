@@ -29,9 +29,15 @@ class CtTypeReception
      */
     private $ctReceptions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CtReception::class, mappedBy="ct_type_reception_id")
+     */
+    private $ctDroitPTACs;
+
     public function __construct()
     {
         $this->ctReceptions = new ArrayCollection();
+        $this->ctDroitPTACs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,6 +81,36 @@ class CtTypeReception
             // set the owning side to null (unless already changed)
             if ($ctReception->getCtTypeReceptionId() === $this) {
                 $ctReception->setCtTypeReceptionId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CtDroitPTAC>
+     */
+    public function getCtDroitPTACs(): Collection
+    {
+        return $this->ctDroitPTACs;
+    }
+
+    public function addCtDroitPTAC(CtDroitPTAC $ctDroitPTAC): self
+    {
+        if (!$this->ctDroitPTACs->contains($ctDroitPTAC)) {
+            $this->ctDroitPTACs[] = $ctDroitPTAC;
+            $ctDroitPTAC->setCtTypeReceptionId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCtDoitPTAC(CtDroitPTAC $ctDroitPTAC): self
+    {
+        if ($this->ctDroitPTACs->removeElement($ctDroitPTAC)) {
+            // set the owning side to null (unless already changed)
+            if ($ctDroitPTAC->getCtTypeReceptionId() === $this) {
+                $ctDroitPTAC->setCtTypeReceptionId(null);
             }
         }
 

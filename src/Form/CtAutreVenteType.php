@@ -22,6 +22,10 @@ class CtAutreVenteType extends AbstractType
             'Oui' => true,
             'Non' => false
         ];
+        /* $active = [
+            'Oui' => true,
+            'Non' => false
+        ]; */
         $builder
             ->add('auv_is_visible', ChoiceType::class, [
                 'label' => 'est-visible',
@@ -73,6 +77,12 @@ class CtAutreVenteType extends AbstractType
             ])
             ->add('auv_itineraire', null, [
                 'label' => 'Itinéraire',
+            ])
+            ->add('auv_num_pv', null, [
+                'label' => 'Numéro PV',
+            ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
             ])
         ;
     }

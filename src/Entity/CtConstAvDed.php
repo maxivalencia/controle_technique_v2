@@ -124,6 +124,11 @@ class CtConstAvDed
      */
     private $ct_user_id;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CtUtilisation::class, inversedBy="ctConstAvDeds")
+     */
+    private $ct_utilisation_id;
+
     public function __construct()
     {
         $this->ct_const_av_ded_carac = new ArrayCollection();
@@ -394,6 +399,18 @@ class CtConstAvDed
     public function setCtUserId(?CtUser $ct_user_id): self
     {
         $this->ct_user_id = $ct_user_id;
+
+        return $this;
+    }
+
+    public function getCtUtilisationId(): ?CtUtilisation
+    {
+        return $this->ct_utilisation_id;
+    }
+
+    public function setCtUtilisationId(?CtUtilisation $ct_utilisation_id): self
+    {
+        $this->ct_utilisation_id = $ct_utilisation_id;
 
         return $this;
     }

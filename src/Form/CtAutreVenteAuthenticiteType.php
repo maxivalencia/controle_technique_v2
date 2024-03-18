@@ -52,6 +52,9 @@ class CtAutreVenteAuthenticiteType extends AbstractType
                 'data' => $usage,
                 'disabled' => true,
             ])
+            ->add('ct_utilisation_id', null, [
+                'label' => 'Utilisation',
+            ])
             /* ->add('ct_autre_tarif_id') */
             /* ->add('user_id') */
             ->add('verificateur_id', EntityType::class, [
